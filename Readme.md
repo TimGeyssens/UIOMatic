@@ -4,6 +4,8 @@
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a petapoco poco**
 
+![](logo.png)
+
 Implement an interface and decorate your class and properties with some additional attributes.
 
 ## Example ##
