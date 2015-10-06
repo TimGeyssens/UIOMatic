@@ -110,6 +110,7 @@
     <add type="Umbraco.Web.WebServices.ExamineManagementApiController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.WebServices.TagsController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.WebServices.XmlDataIntegrityController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
+    <add type="UIOMatic.Controllers.ExampleApiController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <add type="UIOMatic.Controllers.PetaPocoObjectController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <add type="UIOMatic.Trees.UIOMaticTreeController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </baseType>

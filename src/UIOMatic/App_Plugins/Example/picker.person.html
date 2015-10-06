@@ -1,0 +1,10 @@
+﻿<div ng-controller="Example.Picker.Person">
+    <select ng-model="property.Value">
+        <option value="0">---Please select---</option>
+        <option ng-selected="{{person.Id == property.Value}}"
+                ng-repeat="person in persons"
+                value="{{person.Id}}">
+            {{person.FirstName}} {{person.LastName}} 
+        </option>
+    </select><br>
+</div>

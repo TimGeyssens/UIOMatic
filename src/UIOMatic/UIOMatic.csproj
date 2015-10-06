@@ -258,6 +258,7 @@
     <Compile Include="Atributes\UIOMaticAttribute.cs" />
     <Compile Include="Atributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Atributes\UIOMaticIgnoreFieldAttribute.cs" />
+    <Compile Include="Controllers\ExampleApiController.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
@@ -271,6 +272,8 @@
     <Compile Include="Trees\UIOMaticTreeController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\Example\picker.person.controller.js" />
+    <Content Include="App_Plugins\Example\picker.person.html" />
     <Content Include="App_Plugins\Grid\Config\FanoeConfig.txt" />
     <Content Include="App_Plugins\Grid\Editors\Views\media_with_description.html" />
     <Content Include="App_Plugins\Grid\Editors\Views\quote_with_description.html" />
@@ -411,6 +414,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\UIOMatic\package.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\Example\package.manifest" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -17,8 +17,8 @@ namespace UIOMatic
             if (!db.TableExist("People"))
                 db.CreateTable<Person>(false);
 
-            //if (!db.TableExist("Dogs"))
-            //    db.CreateTable<Dog>(false);
+            if (!db.TableExist("Dogs"))
+                db.CreateTable<Dog>(false);
 
             //foreach (var tableType in Helper.GetTypesWithUIOMaticAttribute())
             //{
