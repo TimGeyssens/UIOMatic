@@ -1,0 +1,61 @@
+﻿<form name="objectForm"
+      ng-controller="uioMatic.ObjectEditController"
+      ng-show="loaded"
+      ng-submit="save(object)"
+      val-form-manager>
+    <umb-panel>
+        <umb-header>
+
+            <div class="span7">
+                <h1 ng-show="isNumber(id)">Object Editor</h1>
+                <h1 ng-hide="isNumber(id)">Object Creator</h1>
+            </div>
+
+            <div class="span5">
+                <div class="btn-toolbar pull-right umb-btn-toolbar">
+                    <umb-options-menu ng-show="currentNode"
+                                      current-node="currentNode"
+                                      current-section="{{currentSection}}">
+                    </umb-options-menu>
+                </div>
+            </div>
+        </umb-header>
+
+        <div class="umb-panel-body umb-scrollable row-fluid">
+            <div class="tab-content form-horizontal" style="padding-bottom: 90px">
+                <div class="umb-pane">
+
+                    <!--<h1>Properties</h1>
+                    {{properties | json}}
+                    <h1>Object</h1>
+                  {{ object | json }}-->
+                   
+                  
+                    <umb-control-group ng-repeat="property in properties" label="{{property.Name}}" description="{{property.Description}}">
+                        <div ng-include="property.View"></div>
+                    </umb-control-group>
+
+                    <div class="umb-tab-buttons" detect-fold>
+                        <div class="btn-group">
+
+                            <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="isNumber(id)">
+                                <localize key="buttons_save">Save</localize>
+                            </button>
+
+                            <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="isNumber(id)">
+                                Create
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </umb-panel>
+</form>
+
+
+
+

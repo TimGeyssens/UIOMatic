@@ -1,0 +1,50 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{ 
+    var home = CurrentPage.Site();
+}
+
+@if (home.Children.Where("Visible").Any())
+{
+    @* For each child page under the home node, where the property umbracoNaviHide is not True *@
+    foreach (var childPage in home.Children.Where("Visible"))
+    {   
+        <div class="col-xs-6 col-sm-3">
+            @if (childPage.Children.Where("Visible").Any())
+            {                    
+                <strong>@childPage.Name</strong>
+                @childPages(childPage.Children)
+            }
+        </div>
+    }
+}
+
+<div class="col-xs-6 col-sm-3">
+    <strong>Find us</strong>
+    <ul>
+        <li>
+            <a href="https://twitter.com/umbracoproject" target="_blank">Twitter</a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/Umbraco" target="_blank">Facebook</a>
+        </li>
+        <li>
+            <a href="http://umbraco.com/?utm_source=core&utm_medium=starterkit&utm_content=topic-link&utm_campaign=fanoe" target="_blank">Umbraco.com</a>
+        </li>
+    </ul>
+</div>
+
+@helper childPages(dynamic pages)
+{
+    @* Ensure that we have a collection of pages *@
+    if (pages.Any())
+    {
+        <ul>
+            @foreach (var page in pages.Where("Visible"))
+            {
+                <li>
+                    <a href="@page.Url">@page.Name</a>
+                </li>
+            }
+        </ul>
+    }
+}

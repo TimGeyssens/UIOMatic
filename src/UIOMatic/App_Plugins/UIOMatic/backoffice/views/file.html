@@ -1,0 +1,7 @@
+﻿<div ng-controller="UIOMatic.Views.File">
+    <div ng-show="isPicture(property.Value)">
+        <img src="{{property.Value}}?width=200" />
+    </div>
+    <small>{{property.Value}}</small><br/>
+    <a href="" ng-click="openMediaPicker()" class="btn">Pick</a>
+</div>

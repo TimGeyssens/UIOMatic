@@ -1,0 +1,28 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "Master.cshtml";
+}
+
+<div role="content">
+
+	<section class="light blogarchive equalizer">
+		<div class="container">
+
+			<div class="row">
+				@foreach(var post in CurrentPage.Children) 
+				{
+					<div class="col-sm-6">
+						<div class="content equal">
+							<a href="@post.Url">
+								<div class="date">@post.CreateDate.ToLongDateString()</div>
+								<h2>@post.Name</h2>		
+								<p>@Umbraco.Truncate(post.Introduction, 240, true)</p>
+							</a>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+
+</div>
