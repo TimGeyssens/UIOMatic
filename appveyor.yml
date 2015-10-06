@@ -6,7 +6,7 @@ skip_tags: true
 
 
 build_script:
-  - cd BuildPackages
+  - cd Build
   - Package.build.cmd
 
 artifacts:
