@@ -13,12 +13,12 @@ namespace UIOMatic
     {
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            var db = applicationContext.DatabaseContext.Database;
-            if (!db.TableExist("People"))
-                db.CreateTable<Person>(false);
+            //var db = applicationContext.DatabaseContext.Database;
+            //if (!db.TableExist("People"))
+            //    db.CreateTable<Person>(false);
 
-            if (!db.TableExist("Dogs"))
-                db.CreateTable<Dog>(false);
+            //if (!db.TableExist("Dogs"))
+            //    db.CreateTable<Dog>(false);
 
             //foreach (var tableType in Helper.GetTypesWithUIOMaticAttribute())
             //{
