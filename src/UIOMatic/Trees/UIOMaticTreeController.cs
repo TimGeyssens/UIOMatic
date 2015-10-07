@@ -9,6 +9,7 @@ using umbraco.BusinessLogic.Actions;
 using UIOMatic.Atributes;
 using UIOMatic.Controllers;
 using UIOMatic.Interfaces;
+using Umbraco.Core.Persistence.DatabaseAnnotations;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
@@ -55,12 +56,20 @@ namespace UIOMatic.Trees
                 var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
                 var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
+                var itemIdPropName = "Id";
+                foreach (var property in currentType.GetProperties())
+                {
+                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                    if (keyAttri.Any())
+                        itemIdPropName = property.Name;
+                }
+
                 foreach (dynamic item in ctrl.GetAll(id))
                 {
-                    
 
+                   
                     var node = CreateTreeNode(
-                        item.Id.ToString() + "?type=" + id,
+                        item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
                         id,
                         queryStrings,
                         item.UmbracoTreeNodeName,
