@@ -9,7 +9,7 @@ using UIOMatic.Models;
 
 namespace UIOMatic.Interfaces
 {
-    interface IUIOMaticObjectController
+    public interface IUIOMaticObjectController
     {
         IEnumerable<Object> GetAll(string typeName);
 
