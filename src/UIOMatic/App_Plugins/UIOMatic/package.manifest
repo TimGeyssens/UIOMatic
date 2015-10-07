@@ -16,7 +16,7 @@
                 },
 				{
                     label: "Object text template",
-                    description: "Enter the text template aka Name",
+                    description: "Enter the text template aka FirstName + ' ' + LastName ",
                     key: "objectTemplate",
                     view: "requiredfield",
                     validation: [
