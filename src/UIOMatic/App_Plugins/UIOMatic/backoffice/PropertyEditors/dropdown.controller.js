@@ -5,8 +5,7 @@
 	    });
 
 	    $scope.parseTemplate = function(object) {
-	        $scope.currentObject = object;
 	        var template = $parse($scope.model.config.objectTemplate);
-	        return template($scope);
+	        return template(object);
 	    }
 	});
