@@ -32,7 +32,7 @@ namespace UIOMatic.Trees
                     var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
                     var node = CreateTreeNode(
-                        type.FullName,
+                        type.AssemblyQualifiedName,
                         "-1",
                         queryStrings,
                         attri.Name,
@@ -45,14 +45,14 @@ namespace UIOMatic.Trees
 
             }
 
-            
 
-            if (types.Any(x => x.FullName == id))
+
+            if (types.Any(x => x.AssemblyQualifiedName == id))
             {
                 var ctrl = new PetaPocoObjectController();
                 var nodes = new TreeNodeCollection();
 
-                var currentType = types.SingleOrDefault(x => x.FullName == id);
+                var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
                 var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
                 foreach (dynamic item in ctrl.GetAll(id))

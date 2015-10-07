@@ -53,7 +53,8 @@ namespace UIOMatic.Controllers
 
         public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
-            var currentType = Type.GetType(typeName);
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
             foreach (var prop in currentType.GetProperties())
             {
                 if (prop.Name != "UmbracoTreeNodeName")
@@ -99,9 +100,10 @@ namespace UIOMatic.Controllers
         }
         public object GetById(string typeName, int id)
         {
-           
 
-            var currentType = Type.GetType(typeName);
+
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
             var primaryKeyColum = "id";
             foreach (var property in currentType.GetProperties())
@@ -122,7 +124,8 @@ namespace UIOMatic.Controllers
             var typeOfObject = objectToCreate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
             objectToCreate = (ExpandoObject)objectToCreate.FirstOrDefault(x => x.Key == "objectToCreate").Value;
 
-            var currentType = Type.GetType(typeOfObject);
+            var ar = typeOfObject.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
 
             object ob = Activator.CreateInstance(currentType, null);
 
@@ -149,7 +152,8 @@ namespace UIOMatic.Controllers
             var typeOfObject = objectToUpdate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
             objectToUpdate = (ExpandoObject)objectToUpdate.FirstOrDefault(x => x.Key == "objectToUpdate").Value;
 
-            var currentType = Type.GetType(typeOfObject);
+            var ar = typeOfObject.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
         
             object ob = Activator.CreateInstance(currentType,null);
 
@@ -172,7 +176,7 @@ namespace UIOMatic.Controllers
 
         public int DeleteById(string typeOfObject, int id)
         {
-            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.FullName == typeOfObject);
+            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
             
             var primaryKeyTable = string.Empty;
@@ -198,7 +202,9 @@ namespace UIOMatic.Controllers
             var typeOfObject = objectToValidate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
             objectToValidate = (ExpandoObject)objectToValidate.FirstOrDefault(x => x.Key == "objectToValidate").Value;
 
-            var currentType = Type.GetType(typeOfObject);
+            var ar = typeOfObject.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+          
 
             object ob = Activator.CreateInstance(currentType, null);
 
