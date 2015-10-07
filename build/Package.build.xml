@@ -88,6 +88,7 @@
       <RootFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\*.*" />
 	  <TreeFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\uioMaticTree\*.*" />
 	  <ViewFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\views\*.*" />
+	  <PropEditorFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\PropertyEditors\*.*" />
       <BinFiles Include="$(CoreProjectDir)\bin\**\UIOMatic.dll" />
 	  <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 	  <NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
@@ -102,7 +103,7 @@
 	<Copy SourceFiles="@(RootFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\" />
 	<Copy SourceFiles="@(TreeFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\uioMaticTree\" />
 	<Copy SourceFiles="@(ViewFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\views\" />
-	
+	<Copy SourceFiles="@(PropEditorFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\PropertyEditors\" />
     <Copy SourceFiles="@(BinFiles)"
     DestinationFiles="@(BinFiles->'$(BuildNuGetDir)\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
 	
