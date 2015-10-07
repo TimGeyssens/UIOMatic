@@ -1,7 +1,5 @@
 # UI-O-Matic #
 
-----------
-
 **Auto generate an integrated crud UI in Umbraco for a db table based on a petapoco poco**
 
 ![](logo.png)
