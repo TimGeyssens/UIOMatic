@@ -275,6 +275,7 @@
     <Content Include="App_Plugins\Grid\Editors\Views\quote_with_description.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.type.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\edit.controller.js" />
@@ -412,6 +413,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\UIOMatic\package.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.type.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

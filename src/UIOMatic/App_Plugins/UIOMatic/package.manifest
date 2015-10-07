@@ -12,12 +12,7 @@
                     label: "Type of object",
                     description: "Select the type of object",
                     key: "typeName",
-                    view: "requiredfield",
-                    validation: [
-                        {
-                            type: "Required" 
-                        }                        
-                    ]
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
                 },
 				{
                     label: "Object text template",
@@ -41,6 +36,7 @@
         '~/App_Plugins/UIOMatic/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js'
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js'
     ]
 }
