@@ -1,9 +1,46 @@
 ﻿{
-	javascript: [
+    propertyEditors: [
+        {
+        alias: "UIOMatic.Dropdown",
+        name: "UIOMatic Dropdown",
+        editor: {
+        view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.html"
+        },
+        prevalues: {
+            fields: [
+                {
+                    label: "Type of object",
+                    description: "Select the type of object",
+                    key: "typeName",
+                    view: "requiredfield",
+                    validation: [
+                        {
+                            type: "Required" 
+                        }                        
+                    ]
+                },
+				{
+                    label: "Object text template",
+                    description: "Enter the text template aka currentObject.Name",
+                    key: "objectTemplate",
+                    view: "requiredfield",
+                    validation: [
+                        {
+                            type: "Required" 
+                        }                        
+                    ]
+                },
+            ]
+        }
+        }
+    ]
+    ,
+    javascript: [
 	    '~/App_Plugins/UIOMatic/backoffice/uioMatictree/edit.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree//delete.controller.js',
         '~/App_Plugins/UIOMatic/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js'
-	]
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js'
+    ]
 }

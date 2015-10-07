@@ -259,6 +259,7 @@
     <Compile Include="Atributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Atributes\UIOMaticIgnoreFieldAttribute.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
+    <Compile Include="Controllers\PropertyEditorsApiController.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectController.cs" />
@@ -272,6 +273,8 @@
     <Content Include="App_Plugins\Grid\Config\FanoeConfig.txt" />
     <Content Include="App_Plugins\Grid\Editors\Views\media_with_description.html" />
     <Content Include="App_Plugins\Grid\Editors\Views\quote_with_description.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\edit.controller.js" />

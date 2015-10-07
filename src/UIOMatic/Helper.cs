@@ -26,22 +26,5 @@ namespace UIOMatic
             }
         }
 
-        public static object ChangeType(object value, Type conversionType)
-        {
-            if (conversionType == null)
-            {
-                throw new ArgumentNullException("conversionType");
-            }
-            if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-            {
-                if (value == null)
-                {
-                    return null;
-                }
-                NullableConverter nullableConverter = new NullableConverter(conversionType);
-                conversionType = nullableConverter.UnderlyingType;
-            }
-            return Convert.ChangeType(value, conversionType);
-        }
     }
 }
