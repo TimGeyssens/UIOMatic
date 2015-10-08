@@ -13,6 +13,7 @@
         });
 
         uioMaticObjectResource.getPrimaryKeyColumnName($scope.typeName).then(function (response) {
+            $scope.primaryKeyColumnName = response.data;
             $scope.predicate = response.data;
         });
 
