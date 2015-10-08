@@ -9,6 +9,7 @@ using umbraco.BusinessLogic.Actions;
 using UIOMatic.Atributes;
 using UIOMatic.Controllers;
 using UIOMatic.Interfaces;
+using Umbraco.Core.Persistence.DatabaseAnnotations;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
@@ -31,39 +32,63 @@ namespace UIOMatic.Trees
                 {
                     var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-                    var node = CreateTreeNode(
-                        type.FullName,
-                        "-1",
-                        queryStrings,
-                        attri.Name,
-                        attri.FolderIcon,
-                        true);
+                    if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                    {
+                        var node = CreateTreeNode(
+                            type.AssemblyQualifiedName,
+                            "-1",
+                            queryStrings,
+                            attri.Name,
+                            attri.FolderIcon,
+                            true);
 
-                    nodes.Add(node);                 
+                        nodes.Add(node);
+                    }
+                    else
+                    {
+                        var node = CreateTreeNode(
+                            type.AssemblyQualifiedName,
+                            "-1",
+                            queryStrings,
+                            attri.Name,
+                            attri.FolderIcon,
+                            false,
+                            "uiomatic/uioMaticTree/list/"+type.AssemblyQualifiedName);
+
+                        nodes.Add(node);
+                    }
                 }
                 return nodes;
 
             }
 
-            
 
-            if (types.Any(x => x.FullName == id))
+
+            if (types.Any(x => x.AssemblyQualifiedName == id))
             {
                 var ctrl = new PetaPocoObjectController();
                 var nodes = new TreeNodeCollection();
 
-                var currentType = types.SingleOrDefault(x => x.FullName == id);
+                var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
                 var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
-                foreach (dynamic item in ctrl.GetAll(id))
+                var itemIdPropName = "Id";
+                foreach (var property in currentType.GetProperties())
                 {
-                    
+                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                    if (keyAttri.Any())
+                        itemIdPropName = property.Name;
+                }
 
+                foreach (dynamic item in ctrl.GetAll(id, string.Empty,string.Empty))
+                {
+
+                   
                     var node = CreateTreeNode(
-                        item.Id.ToString() + "?type=" + id,
+                        item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
                         id,
                         queryStrings,
-                        item.UmbracoTreeNodeName,
+                        item.ToString(),
                         attri.ItemIcon,
                         false);
 

@@ -1,0 +1,70 @@
+﻿<div ng-controller="uioMatic.ObjectListController">
+
+    <umb-panel>
+    <umb-header>
+
+        <div class="span7">
+            <h1>Object List</h1>
+        </div>
+
+        <div class="span5">
+            <div class="btn-toolbar pull-right umb-btn-toolbar">
+                <umb-options-menu ng-show="currentNode"
+                                  current-node="currentNode"
+                                  current-section="{{currentSection}}">
+                </umb-options-menu>
+            </div>
+        </div>
+    </umb-header>
+        <div class="umb-panel-body umb-scrollable row-fluid">
+            <div class="tab-content form-horizontal" style="padding-bottom: 90px">
+                <div class="umb-pane">
+
+
+
+                    <div class="umb-sub-header">
+                        <div class="btn-group">
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
+                                <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
+                            </a>
+                        </div>
+
+                        <form class="form-search pull-right ng-pristine ng-valid" novalidate="">
+                            <div class="inner-addon left-addon">
+                                <i class="icon icon-search"></i>
+                                <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="umb-listview">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <td style="width: 35px">
+
+                                </td>
+                                <td ng-repeat="col in cols">
+                                    <!--{{property | json}}-->
+                                    <a href="" ng-click="order(col)">{{col}}</a>
+
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="object in objects | filter: searchFilter | orderBy:predicate:reverse">
+                                    <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
+                                    <td ng-repeat="column in object track by $index ">
+                                        {{column}}
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        
+     </umb-panel>
+</div>

@@ -22,13 +22,16 @@ namespace UIOMatic.Controllers
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
 
-        public IEnumerable<object> GetAll(string typeName)
+        public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
             var currentType = Type.GetType(typeName);
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
 
 
             var query = new Sql().Select("*").From(tableName.Value);
+
+            if(!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+                query.OrderBy(sortColumn + " " + sortOrder);
 
             foreach (dynamic item in DatabaseContext.Database.Fetch<dynamic>(query))
             {
@@ -53,7 +56,8 @@ namespace UIOMatic.Controllers
 
         public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
-            var currentType = Type.GetType(typeName);
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
             foreach (var prop in currentType.GetProperties())
             {
                 if (prop.Name != "UmbracoTreeNodeName")
@@ -69,25 +73,39 @@ namespace UIOMatic.Controllers
                                 (UIOMaticFieldAttribute)
                                     attris.SingleOrDefault(x => x.GetType() == typeof (UIOMaticFieldAttribute));
 
+                            string view = attri.GetView();
+                            if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                            if (prop.PropertyType == typeof(DateTime) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/date.html";
+                            if ((prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
                             var pi = new UIOMaticPropertyInfo
                             {
                                 Key = prop.Name,
                                 Name = attri.Name,
                                 Description = attri.Description,
                                 //Required = attri.Required,
-                                View = IOHelper.ResolveUrl(attri.GetView())
+                                View = IOHelper.ResolveUrl(view)
                             };
                             yield return pi;
                         }
                         else
                         {
+                            string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
+                            if(prop.PropertyType == typeof(bool))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                            if (prop.PropertyType == typeof(DateTime))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/date.html";
+                            if (prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
                             var pi = new UIOMaticPropertyInfo
                             {
                                 Key = prop.Name,
                                 Name = prop.Name,
                                 Description = string.Empty,
                                 //Required = false,
-                                View = IOHelper.ResolveUrl("~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html")
+                                View = IOHelper.ResolveUrl(view)
                             };
                             yield return pi;
                         }
@@ -97,11 +115,27 @@ namespace UIOMatic.Controllers
             }
 
         }
+
+        public string GetPrimaryKeyColumnName(string typeName)
+        {
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+
+            foreach (var property in currentType.GetProperties())
+            {
+                var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                if (keyAttri.Any())
+                    return property.Name;
+            }
+
+            return "id";
+        }
         public object GetById(string typeName, int id)
         {
-           
 
-            var currentType = Type.GetType(typeName);
+
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
             var primaryKeyColum = "id";
             foreach (var property in currentType.GetProperties())
@@ -122,7 +156,8 @@ namespace UIOMatic.Controllers
             var typeOfObject = objectToCreate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
             objectToCreate = (ExpandoObject)objectToCreate.FirstOrDefault(x => x.Key == "objectToCreate").Value;
 
-            var currentType = Type.GetType(typeOfObject);
+            var ar = typeOfObject.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
 
             object ob = Activator.CreateInstance(currentType, null);
 
@@ -131,10 +166,8 @@ namespace UIOMatic.Controllers
                 if (prop.Value != null)
                 {
                     PropertyInfo propI = currentType.GetProperty(prop.Key);
-                    if (propI.PropertyType.Name == "Int32")
-                        propI.SetValue(ob, Convert.ToInt32(prop.Value), null);
-                    else
-                        propI.SetValue(ob, prop.Value, null);
+                    Helper.SetValue(ob, propI.Name, prop.Value);
+
                 }
             }
 
@@ -149,7 +182,8 @@ namespace UIOMatic.Controllers
             var typeOfObject = objectToUpdate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
             objectToUpdate = (ExpandoObject)objectToUpdate.FirstOrDefault(x => x.Key == "objectToUpdate").Value;
 
-            var currentType = Type.GetType(typeOfObject);
+            var ar = typeOfObject.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
         
             object ob = Activator.CreateInstance(currentType,null);
 
@@ -158,10 +192,8 @@ namespace UIOMatic.Controllers
                 PropertyInfo propI = currentType.GetProperty(prop.Key);
                 if (propI != null)
                 {
-                    if (propI.PropertyType.Name == "Int32")
-                        propI.SetValue(ob, Convert.ToInt32(prop.Value), null);
-                    else
-                        propI.SetValue(ob, prop.Value, null);
+                    
+                    Helper.SetValue(ob, propI.Name, prop.Value);
                 }
             }
 
@@ -172,7 +204,7 @@ namespace UIOMatic.Controllers
 
         public int DeleteById(string typeOfObject, int id)
         {
-            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.FullName == typeOfObject);
+            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
             
             var primaryKeyTable = string.Empty;
@@ -198,7 +230,9 @@ namespace UIOMatic.Controllers
             var typeOfObject = objectToValidate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
             objectToValidate = (ExpandoObject)objectToValidate.FirstOrDefault(x => x.Key == "objectToValidate").Value;
 
-            var currentType = Type.GetType(typeOfObject);
+            var ar = typeOfObject.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+          
 
             object ob = Activator.CreateInstance(currentType, null);
 
@@ -207,10 +241,7 @@ namespace UIOMatic.Controllers
             {
                 if (values.ContainsKey(prop.Name))
                 {
-                    if (prop.PropertyType.Name == "Int32")
-                        prop.SetValue(ob, Convert.ToInt32(values[prop.Name]));
-                    else
-                        prop.SetValue(ob, values[prop.Name]);
+                    Helper.SetValue(ob, prop.Name, values[prop.Name]);
                 }
             }
                 

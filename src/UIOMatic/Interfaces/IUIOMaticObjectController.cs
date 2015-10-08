@@ -9,9 +9,9 @@ using UIOMatic.Models;
 
 namespace UIOMatic.Interfaces
 {
-    interface IUIOMaticObjectController
+    public interface IUIOMaticObjectController
     {
-        IEnumerable<Object> GetAll(string typeName);
+        IEnumerable<Object> GetAll(string typeName,string sortColumn, string sortOrder);
 
         IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName);
 

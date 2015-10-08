@@ -39,8 +39,8 @@
 
 	<PropertyGroup>
 		<VersionMajor>0</VersionMajor>
-		<VersionMinor>1</VersionMinor>
-		<VersionPatch>0</VersionPatch>
+		<VersionMinor>5</VersionMinor>
+		<VersionPatch>1</VersionPatch>
 		<VersionSuffix></VersionSuffix>
 		<UmbracoVersion>7.0.0</UmbracoVersion>
 	</PropertyGroup>
@@ -88,6 +88,9 @@
       <RootFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\*.*" />
 	  <TreeFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\uioMaticTree\*.*" />
 	  <ViewFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\views\*.*" />
+	  <PropEditorFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\PropertyEditors\*.*" />
+	  <PikadayFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\assets\pikaday\*.*" />
+	  <MomentFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\assets\moment\*.*" />
       <BinFiles Include="$(CoreProjectDir)\bin\**\UIOMatic.dll" />
 	  <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 	  <NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
@@ -102,7 +105,9 @@
 	<Copy SourceFiles="@(RootFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\" />
 	<Copy SourceFiles="@(TreeFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\uioMaticTree\" />
 	<Copy SourceFiles="@(ViewFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\views\" />
-	
+	<Copy SourceFiles="@(PropEditorFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\PropertyEditors\" />
+	<Copy SourceFiles="@(PikadayFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\assets\pikaday\" />
+	<Copy SourceFiles="@(MomentFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\assets\moment\" />
     <Copy SourceFiles="@(BinFiles)"
     DestinationFiles="@(BinFiles->'$(BuildNuGetDir)\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
 	

@@ -1,9 +1,62 @@
 ﻿{
-	javascript: [
+    propertyEditors: [
+        {
+        alias: "UIOMatic.Dropdown",
+        name: "UIOMatic Dropdown",
+        editor: {
+        view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.html"
+        },
+        prevalues: {
+            fields: [
+                {
+                    label: "Type of object",
+                    description: "Select the type of object",
+                    key: "typeName",
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
+                },
+				{
+                    label: "Object text template",
+                    description: "Enter the text template aka FirstName + ' ' + LastName ",
+                    key: "objectTemplate",
+                    view: "requiredfield",
+                    validation: [
+                        {
+                            type: "Required" 
+                        }                        
+                    ]
+                },
+				{
+                    label: "Column to sort on",
+                    description: "Enter the column name to sort on",
+                    key: "sortColumn",
+                    view: "textstring"                       
+                },
+				{
+                    label: "Sort order",
+                    description: "Select the sortorder",
+                    key: "sortOrder",
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/picker.tablesortorder.html"                       
+                }
+            ]
+        }
+        }
+    ]
+    ,
+    javascript: [
+		'~/App_Plugins/UIOMatic/assets/moment/moment.js',
+		'~/App_Plugins/UIOMatic/assets/pikaday/pikaday.js',
 	    '~/App_Plugins/UIOMatic/backoffice/uioMatictree/edit.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/uioMatictree//delete.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/delete.controller.js',
         '~/App_Plugins/UIOMatic/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js'
+		'~/App_Plugins/UIOMatic/backoffice/views/date.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js'
+		
+    ],
+	css: [
+		'~/App_Plugins/UIOMatic/assets/pikaday/pikaday.css'
 	]
 }

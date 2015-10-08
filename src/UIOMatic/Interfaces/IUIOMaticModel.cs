@@ -5,14 +5,8 @@ using System.Web;
 
 namespace UIOMatic.Interfaces
 {
-    interface IUIOMaticModel
+    public interface IUIOMaticModel
     {
-        string UmbracoTreeNodeName
-        {
-            get;
-            
-        }
-
         IEnumerable<Exception> Validate();
     }
 }
