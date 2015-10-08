@@ -1738,3 +1738,5 @@ Newtonsoft.Json.JsonReaderException: JsonToken EndArray is not valid for closing
  2015-10-08 18:39:21,628 [P5240/D2/T85] INFO  Umbraco.Core.PluginManager - Completed resolution of types of Umbraco.Web.Trees.TreeController, found 0 (took 0ms)
  2015-10-08 18:39:52,290 [P5240/D2/T106] INFO  Umbraco.Core.PluginManager - Starting resolution types of Umbraco.Web.Trees.TreeController
  2015-10-08 18:39:52,290 [P5240/D2/T106] INFO  Umbraco.Core.PluginManager - Completed resolution of types of Umbraco.Web.Trees.TreeController, found 0 (took 0ms)
+ 2015-10-08 18:40:52,554 [P5240/D2/T100] INFO  Umbraco.Core.PluginManager - Starting resolution types of Umbraco.Web.Trees.TreeController
+ 2015-10-08 18:40:52,554 [P5240/D2/T100] INFO  Umbraco.Core.PluginManager - Completed resolution of types of Umbraco.Web.Trees.TreeController, found 0 (took 0ms)

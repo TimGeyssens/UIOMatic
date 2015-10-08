@@ -52,7 +52,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse">
-                                    <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
+                                    <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{row.Id}}%3Ftype={{typeName}}">Edit</a></td>
                                     <td ng-repeat="column in cols ">
                                         {{row[column]}}
 
