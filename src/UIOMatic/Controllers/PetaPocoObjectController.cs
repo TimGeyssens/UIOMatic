@@ -78,7 +78,8 @@ namespace UIOMatic.Controllers
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
                             if (prop.PropertyType == typeof(DateTime) && attri.View == "textfield")
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/date.html";
-
+                            if ((prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
                             var pi = new UIOMaticPropertyInfo
                             {
                                 Key = prop.Name,
@@ -96,7 +97,8 @@ namespace UIOMatic.Controllers
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
                             if (prop.PropertyType == typeof(DateTime))
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/date.html";
-
+                            if (prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
                             var pi = new UIOMaticPropertyInfo
                             {
                                 Key = prop.Name,
