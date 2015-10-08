@@ -88,7 +88,7 @@ namespace UIOMatic.Trees
                         item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
                         id,
                         queryStrings,
-                        item.UmbracoTreeNodeName,
+                        item.ToString(),
                         attri.ItemIcon,
                         false);
 

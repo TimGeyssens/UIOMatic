@@ -26,12 +26,10 @@ namespace Example.Models
         [UIOMaticField("Picture", "Select a picture", View = "file")]
         public string Picture { get; set; }
 
-        [Ignore]
-        public string UmbracoTreeNodeName
+        public override string ToString()
         {
-            get { return FirstName + " " + LastName; }
+            return FirstName + " " + LastName;
         }
-
 
         public IEnumerable<Exception> Validate()
         {

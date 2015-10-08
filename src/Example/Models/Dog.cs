@@ -8,7 +8,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 
 namespace Example.Models
 {
-    [UIOMatic("Dogs", "icon-users", "icon-user")]
+    [UIOMatic("Dogs", "icon-users", "icon-user" )]
     [TableName("Dogs")]
     public class Dog : IUIOMaticModel
     {
@@ -31,12 +31,10 @@ namespace Example.Models
         [UIOMaticField("Owner", "Select the owner of the dog", View = "~/App_Plugins/Example/picker.person.html")]
         public int OwnerId { get; set; }
 
-        [Ignore]
-        public string UmbracoTreeNodeName
+        public override string ToString()
         {
-            get { return Name; }
+            return Name;
         }
-
 
         public IEnumerable<Exception> Validate()
         {

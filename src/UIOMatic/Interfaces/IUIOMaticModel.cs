@@ -7,12 +7,6 @@ namespace UIOMatic.Interfaces
 {
     public interface IUIOMaticModel
     {
-        string UmbracoTreeNodeName
-        {
-            get;
-            
-        }
-
         IEnumerable<Exception> Validate();
     }
 }
