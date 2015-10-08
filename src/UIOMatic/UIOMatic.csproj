@@ -260,6 +260,7 @@
     <Compile Include="Atributes\UIOMaticIgnoreFieldAttribute.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
     <Compile Include="Controllers\PropertyEditorsApiController.cs" />
+    <Compile Include="Enums\UIOMaticRenderType.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectController.cs" />
@@ -280,6 +281,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\edit.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\edit.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\list.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\list.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\checkbox.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\file.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\file.html" />

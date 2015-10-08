@@ -1,6 +1,9 @@
 ﻿angular.module("umbraco.resources")
 	.factory("uioMaticObjectResource", function ($http) {
 	    return {
+	        getAll: function (type) {
+	            return $http.get("backoffice/UIOMatic/PetaPocoObject/GetAll?typeName=" + type);
+	        },
 	        getAllProperties: function (type) {
 	            return $http.get("backoffice/UIOMatic/PetaPocoObject/GetAllProperties?typeName=" + type);
 	        },

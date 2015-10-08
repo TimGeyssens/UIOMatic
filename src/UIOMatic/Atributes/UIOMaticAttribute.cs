@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using UIOMatic.Enums;
 
 namespace UIOMatic.Atributes
 {
@@ -13,12 +14,14 @@ namespace UIOMatic.Atributes
 
         public string ItemIcon { get; set; }
 
-        
+        public UIOMaticRenderType RenderType { get; set; }
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
             this.Name = name;
             this.FolderIcon = folderIcon;
             this.ItemIcon = itemIcon;
+
+            this.RenderType = UIOMaticRenderType.Tree;
         }
     }
 }
