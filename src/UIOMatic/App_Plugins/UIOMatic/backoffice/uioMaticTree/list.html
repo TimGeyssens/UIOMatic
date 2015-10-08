@@ -40,17 +40,21 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <td style="width:35px">
+                                    
+                                </td>
                                 <td ng-repeat="col in cols">
                                     <!--{{property | json}}-->
                                     {{col}}
                                 </td>
                             </tr>
-                                <tr ng-repeat="object in objects | filter: searchFilter">
-                                    <td ng-repeat="column in object track by $index ">
-                                        {{column}}
-                                        {{object[column]}}
-                                    </td>
-                                </tr>
+                            <tr ng-repeat="object in objects | filter: searchFilter">
+                                <td style="width:35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
+                                <td ng-repeat="column in object track by $index ">
+                                    {{column}}
+                                    {{object[column]}}
+                                </td>
+                            </tr>
                         </table>
                     </div>
             </div>
