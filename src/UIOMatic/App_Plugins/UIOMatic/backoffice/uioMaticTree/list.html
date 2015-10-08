@@ -50,13 +50,16 @@
 
                                 </td>
                             </tr>
-                            <tr ng-repeat="object in objects | filter: searchFilter | orderBy:predicate:reverse">
-                                <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
-                                <td ng-repeat="column in object track by $index ">
-                                    {{column}}
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="object in objects | filter: searchFilter | orderBy:predicate:reverse">
+                                    <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
+                                    <td ng-repeat="column in object track by $index ">
+                                        {{column}}
 
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                         </div>
                     </div>
