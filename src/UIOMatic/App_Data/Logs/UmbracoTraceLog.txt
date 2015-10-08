@@ -1140,3 +1140,4 @@ _shutDownStack=   at System.Environment.GetStackTrace(Exception e, Boolean needF
  2015-10-08 16:29:26,466 [P7892/D2/T12] INFO  Umbraco.Core.PluginManager - Completed resolution of types of umbraco.interfaces.ITree, found 0 (took 20ms)
  2015-10-08 16:29:26,494 [P7892/D2/T12] INFO  Umbraco.Core.PluginManager - Starting resolution types of umbraco.interfaces.IApplication
  2015-10-08 16:29:26,507 [P7892/D2/T12] INFO  Umbraco.Core.PluginManager - Completed resolution of types of umbraco.interfaces.IApplication, found 0 (took 15ms)
+ 2015-10-08 16:30:14,485 [P7892/D2/T7] INFO  umbraco.BusinessLogic.Log - Log scrubbed.  Removed all items older than 2015-10-07 16:30:14

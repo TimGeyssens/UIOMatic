@@ -28,12 +28,10 @@ Implement an interface and decorate your class and properties with some addition
         [UIOMaticField("Picture", "Select a picture", View = "file")]
         public string Picture { get; set; }
 
-        [Ignore]
-        public string UmbracoTreeNodeName
+        public override string ToString()
         {
-            get { return FirstName + " " + LastName; }
+            return FirstName + " " + LastName;
         }
-
 
         public IEnumerable<Exception> Validate()
         {
