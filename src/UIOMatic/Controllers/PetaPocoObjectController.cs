@@ -98,6 +98,21 @@ namespace UIOMatic.Controllers
             }
 
         }
+
+        public string GetPrimaryKeyColumnName(string typeName)
+        {
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+
+            foreach (var property in currentType.GetProperties())
+            {
+                var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                if (keyAttri.Any())
+                    return property.Name;
+            }
+
+            return "id";
+        }
         public object GetById(string typeName, int id)
         {
 
