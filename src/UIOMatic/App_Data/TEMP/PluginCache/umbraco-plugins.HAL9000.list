@@ -200,13 +200,13 @@
     <add type="Umbraco.Web.PropertyEditors.TrueFalsePropertyEditor, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
   </baseType>
   <baseType type="Umbraco.Web.Trees.TreeController" resolutionType="FindTypesWithAttribute">
+    <add type="UIOMatic.Trees.UIOMaticTreeController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.Trees.DataTypeTreeController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.Trees.LanguageTreeController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.Trees.MemberTreeController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.Trees.TemplatesTreeController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.Trees.MediaTreeController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.Trees.ContentTreeController, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="UIOMatic.Trees.UIOMaticTreeController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </baseType>
   <baseType type="umbraco.interfaces.ITree" resolutionType="FindAllTypes">
     <add type="umbraco.editorControls.MultiNodeTreePicker.FilteredContentTree, umbraco.editorControls, Version=1.0.5750.18166, Culture=neutral, PublicKeyToken=null" />

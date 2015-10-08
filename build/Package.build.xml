@@ -90,6 +90,7 @@
 	  <ViewFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\views\*.*" />
 	  <PropEditorFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\PropertyEditors\*.*" />
 	  <PikadayFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\assets\pikaday\*.*" />
+	  <MomentFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\assets\moment\*.*" />
       <BinFiles Include="$(CoreProjectDir)\bin\**\UIOMatic.dll" />
 	  <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 	  <NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
@@ -106,6 +107,7 @@
 	<Copy SourceFiles="@(ViewFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\views\" />
 	<Copy SourceFiles="@(PropEditorFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\PropertyEditors\" />
 	<Copy SourceFiles="@(PikadayFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\assets\pikaday\" />
+	<Copy SourceFiles="@(MomentFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\assets\moment\" />
     <Copy SourceFiles="@(BinFiles)"
     DestinationFiles="@(BinFiles->'$(BuildNuGetDir)\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
 	

@@ -274,6 +274,7 @@
     <Content Include="App_Plugins\Grid\Config\FanoeConfig.txt" />
     <Content Include="App_Plugins\Grid\Editors\Views\media_with_description.html" />
     <Content Include="App_Plugins\Grid\Editors\Views\quote_with_description.html" />
+    <Content Include="App_Plugins\UIOMatic\assets\moment\moment.js" />
     <Content Include="App_Plugins\UIOMatic\assets\pikaday\pikaday.css" />
     <Content Include="App_Plugins\UIOMatic\assets\pikaday\pikaday.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.controller.js" />

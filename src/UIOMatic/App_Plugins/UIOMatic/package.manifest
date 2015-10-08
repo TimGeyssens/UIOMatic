@@ -31,6 +31,7 @@
     ]
     ,
     javascript: [
+		'~/App_Plugins/UIOMatic/assets/moment/moment.js',
 		'~/App_Plugins/UIOMatic/assets/pikaday/pikaday.js',
 	    '~/App_Plugins/UIOMatic/backoffice/uioMatictree/edit.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/delete.controller.js',

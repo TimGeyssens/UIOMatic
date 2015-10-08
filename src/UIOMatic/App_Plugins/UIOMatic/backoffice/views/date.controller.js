@@ -9,7 +9,7 @@
 	            var picker = new Pikaday(
 	            {
 	                field: document.getElementById("UIOMaticProperty" + $scope.property.Name),
-	                format: 'DD/MMM/YYYY',
+	                format: 'DD/M/YYYY',
 	                firstDay: 1,
 	                
 	            });
