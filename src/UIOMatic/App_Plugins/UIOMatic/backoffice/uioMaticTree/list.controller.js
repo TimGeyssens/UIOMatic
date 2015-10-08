@@ -24,4 +24,10 @@
             $scope.predicate = predicate;
         };
 
+        $scope.getObjectKey = function (object) {
+            //console.log($scope.primaryKeyColumnName);
+            return object["Id"];
+            //return object[$scope.primaryKeyColumnName];
+        }
+
     });
