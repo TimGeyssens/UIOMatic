@@ -70,25 +70,37 @@ namespace UIOMatic.Controllers
                                 (UIOMaticFieldAttribute)
                                     attris.SingleOrDefault(x => x.GetType() == typeof (UIOMaticFieldAttribute));
 
+                            string view = attri.GetView();
+                            if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                            if (prop.PropertyType == typeof(DateTime) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/date.html";
+
                             var pi = new UIOMaticPropertyInfo
                             {
                                 Key = prop.Name,
                                 Name = attri.Name,
                                 Description = attri.Description,
                                 //Required = attri.Required,
-                                View = IOHelper.ResolveUrl(attri.GetView())
+                                View = IOHelper.ResolveUrl(view)
                             };
                             yield return pi;
                         }
                         else
                         {
+                            string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
+                            if(prop.PropertyType == typeof(bool))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                            if (prop.PropertyType == typeof(DateTime))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/date.html";
+
                             var pi = new UIOMaticPropertyInfo
                             {
                                 Key = prop.Name,
                                 Name = prop.Name,
                                 Description = string.Empty,
                                 //Required = false,
-                                View = IOHelper.ResolveUrl("~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html")
+                                View = IOHelper.ResolveUrl(view)
                             };
                             yield return pi;
                         }

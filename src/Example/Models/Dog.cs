@@ -24,7 +24,7 @@ namespace Example.Models
         public DateTime BirthDay { get; set; }
 
 
-        [UIOMaticField("Is Castrated", "Has the dog been castrated", View = "checkbox")]
+         [UIOMaticField("Is castrated", "Has the dog been castrated")]
         public bool IsCastrated { get; set; }
 
 
