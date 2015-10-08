@@ -134,10 +134,13 @@ namespace UIOMatic.Controllers
                 if (prop.Value != null)
                 {
                     PropertyInfo propI = currentType.GetProperty(prop.Key);
-                    if (propI.PropertyType.Name == "Int32")
-                        propI.SetValue(ob, Convert.ToInt32(prop.Value), null);
-                    else
-                        propI.SetValue(ob, prop.Value, null);
+                    Helper.SetValue(ob, propI.Name, prop.Value);
+
+                    //PropertyInfo propI = currentType.GetProperty(prop.Key);
+                    //if (propI.PropertyType.Name == "Int32")
+                    //    propI.SetValue(ob, Convert.ToInt32(prop.Value), null);
+                    //else
+                    //    propI.SetValue(ob, prop.Value, null);
                 }
             }
 
@@ -162,10 +165,12 @@ namespace UIOMatic.Controllers
                 PropertyInfo propI = currentType.GetProperty(prop.Key);
                 if (propI != null)
                 {
-                    if (propI.PropertyType.Name == "Int32")
-                        propI.SetValue(ob, Convert.ToInt32(prop.Value), null);
-                    else
-                        propI.SetValue(ob, prop.Value, null);
+                    
+                    Helper.SetValue(ob, propI.Name, prop.Value);
+                    //if (propI.PropertyType.Name == "Int32")
+                    //    propI.SetValue(ob, Convert.ToInt32(prop.Value), null);
+                    //else
+                    //    propI.SetValue(ob, prop.Value, null);
                 }
             }
 
@@ -213,10 +218,11 @@ namespace UIOMatic.Controllers
             {
                 if (values.ContainsKey(prop.Name))
                 {
-                    if (prop.PropertyType.Name == "Int32")
-                        prop.SetValue(ob, Convert.ToInt32(values[prop.Name]));
-                    else
-                        prop.SetValue(ob, values[prop.Name]);
+                    Helper.SetValue(ob, prop.Name, values[prop.Name]);
+                    //if (prop.PropertyType.Name == "Int32")
+                    //    prop.SetValue(ob, Convert.ToInt32(values[prop.Name]));
+                    //else
+                    //    prop.SetValue(ob, values[prop.Name]);
                 }
             }
                 
