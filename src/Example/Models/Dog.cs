@@ -21,10 +21,10 @@ namespace Example.Models
 
         public string Name { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        //public DateTime BirthDay { get; set; }
 
 
-         [UIOMaticField("Is castrated", "Has the dog been castrated")]
+        [UIOMaticField("Is castrated", "Has the dog been castrated")]
         public bool IsCastrated { get; set; }
 
 
