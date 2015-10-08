@@ -15,7 +15,7 @@
 	            return $http.get("backoffice/UIOMatic/PetaPocoObject/GetById?typeName="+type+"&id=" + id);
 	        },
 	        getPrimaryKeyColumnName: function(type) {
-	            return $http.get("backoffice/UIOMatic/PetaPocoObject/ GetPrimaryKeyColumnName?typeName=" + type);
+	            return $http.get("backoffice/UIOMatic/PetaPocoObject/GetPrimaryKeyColumnName?typeName=" + type);
 	        },
 	        create: function (type, object) {
 	            var item = {};
