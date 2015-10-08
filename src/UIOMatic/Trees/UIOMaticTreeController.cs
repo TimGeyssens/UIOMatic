@@ -80,7 +80,7 @@ namespace UIOMatic.Trees
                         itemIdPropName = property.Name;
                 }
 
-                foreach (dynamic item in ctrl.GetAll(id))
+                foreach (dynamic item in ctrl.GetAll(id, string.Empty,string.Empty))
                 {
 
                    

@@ -279,6 +279,7 @@
     <Content Include="App_Plugins\UIOMatic\assets\pikaday\pikaday.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\picker.tablesortorder.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.type.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.html" />

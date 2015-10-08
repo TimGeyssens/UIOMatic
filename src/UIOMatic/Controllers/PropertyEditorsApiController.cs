@@ -17,10 +17,10 @@ namespace UIOMatic.Controllers
             return Helper.GetTypesWithUIOMaticAttribute();
         }
 
-        public IEnumerable<object> GetAllObjects(string typeName)
+        public IEnumerable<object> GetAllObjects(string typeName, string sortColumn, string sortOrder)
         {
             var ctrl = new PetaPocoObjectController();
-            return ctrl.GetAll(typeName);
+            return ctrl.GetAll(typeName,sortColumn,sortOrder);
         }
     }
 }

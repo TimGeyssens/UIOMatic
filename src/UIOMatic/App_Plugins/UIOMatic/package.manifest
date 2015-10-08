@@ -25,6 +25,18 @@
                         }                        
                     ]
                 },
+				{
+                    label: "Column to sort on",
+                    description: "Enter the column name to sort on",
+                    key: "sortColumn",
+                    view: "textstring"                       
+                },
+				{
+                    label: "Sort order",
+                    description: "Select the sortorder",
+                    key: "sortOrder",
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/picker.tablesortorder.html"                       
+                }
             ]
         }
         }

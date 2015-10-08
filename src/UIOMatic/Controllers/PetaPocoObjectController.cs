@@ -22,13 +22,16 @@ namespace UIOMatic.Controllers
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
 
-        public IEnumerable<object> GetAll(string typeName)
+        public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
             var currentType = Type.GetType(typeName);
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
 
 
             var query = new Sql().Select("*").From(tableName.Value);
+
+            if(!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+                query.OrderBy(sortColumn + " " + sortOrder);
 
             foreach (dynamic item in DatabaseContext.Database.Fetch<dynamic>(query))
             {
