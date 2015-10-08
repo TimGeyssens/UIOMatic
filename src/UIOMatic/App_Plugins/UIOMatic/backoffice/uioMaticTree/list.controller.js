@@ -8,8 +8,8 @@
         //});
 
         uioMaticObjectResource.getAll($scope.typeName).then(function (response) {
-            $scope.objects = response.data;
-            $scope.cols = Object.keys($scope.objects[0]);
+            $scope.rows = response.data;
+            $scope.cols = Object.keys($scope.rows[0]);
         });
 
         uioMaticObjectResource.getPrimaryKeyColumnName($scope.typeName).then(function (response) {

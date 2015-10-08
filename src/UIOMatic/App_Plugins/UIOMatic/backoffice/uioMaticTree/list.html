@@ -21,7 +21,7 @@
                 <div class="umb-pane">
 
 
-
+                    {{objects | json}}
                     <div class="umb-sub-header">
                         <div class="btn-group">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
@@ -45,17 +45,16 @@
 
                                 </td>
                                 <td ng-repeat="col in cols">
-                                    <!--{{property | json}}-->
                                     <a href="" ng-click="order(col)">{{col}}</a>
 
                                 </td>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="object in objects | filter: searchFilter | orderBy:predicate:reverse">
+                                <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse">
                                     <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
-                                    <td ng-repeat="column in object track by $index ">
-                                        {{column}}
+                                    <td ng-repeat="column in cols ">
+                                        {{row[column]}}
 
                                     </td>
                                 </tr>
