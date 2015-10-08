@@ -37,27 +37,28 @@
                         </form>
 
                     </div>
-
+                    <div class="umb-listview">
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td style="width:35px">
-                                    
+                                <td style="width: 35px">
+
                                 </td>
                                 <td ng-repeat="col in cols">
                                     <!--{{property | json}}-->
                                     <a href="" ng-click="order(col)">{{col}}</a>
-                                    
+
                                 </td>
                             </tr>
-                                <tr ng-repeat="object in objects | filter: searchFilter | orderBy:predicate:reverse">
-                                    <td style="width:35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
-                                    <td ng-repeat="column in object track by $index ">
-                                        {{column}}
+                            <tr ng-repeat="object in objects | filter: searchFilter | orderBy:predicate:reverse">
+                                <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{object.Id}}%3Ftype={{typeName}}">Edit</a></td>
+                                <td ng-repeat="column in object track by $index ">
+                                    {{column}}
 
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                         </table>
+                        </div>
                     </div>
             </div>
         </div>
