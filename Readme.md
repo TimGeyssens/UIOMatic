@@ -10,7 +10,16 @@
 Implement an interface and decorate your class and properties with some additional attributes.
 
 ## Example ##
+If you have the following db table
 
+    CREATE TABLE [People] (
+      [Id] int IDENTITY (1,1) NOT NULL
+    , [FirstName] nvarchar(255) NOT NULL
+    , [LastName] nvarchar(255) NOT NULL
+    , [Picture] nvarchar(255) NOT NULL
+    );
+
+This poco
 
     [UIOMaticAttribute("People","icon-users","icon-user")]
     [TableName("People")]
