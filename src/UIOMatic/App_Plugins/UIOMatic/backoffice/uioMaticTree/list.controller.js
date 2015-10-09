@@ -7,15 +7,20 @@
         //    $scope.properties = response.data;
         //});
 
-        uioMaticObjectResource.getAll($scope.typeName).then(function (response) {
-            $scope.rows = response.data;
-            $scope.cols = Object.keys($scope.rows[0]);
-        });
-
         uioMaticObjectResource.getPrimaryKeyColumnName($scope.typeName).then(function (response) {
             $scope.primaryKeyColumnName = response.data;
             $scope.predicate = response.data;
+
+            uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
+                $scope.rows = resp.data;
+                $scope.cols = Object.keys($scope.rows[0]);
+            });
+
         });
+
+        
+
+        
 
         //$scope.predicate = 'Id';
         $scope.reverse = true;
@@ -25,8 +30,12 @@
         };
 
         $scope.getObjectKey = function (object) {
+            var keyPropName = "Id";
+            //keyPropName = $scope.primaryKeyColumnName;
+
             //console.log($scope.primaryKeyColumnName);
-            return object["Id"];
+            //console.log(object[keyPropName]);
+            return object[keyPropName];
             //return object[$scope.primaryKeyColumnName];
         }
 

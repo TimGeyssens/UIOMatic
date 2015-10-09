@@ -14,6 +14,9 @@ namespace UIOMatic.Atributes
 
         public string ItemIcon { get; set; }
 
+        public string SortColumn{ get; set; }
+
+        public string SortOrder { get; set; }
         public UIOMaticRenderType RenderType { get; set; }
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
@@ -22,6 +25,7 @@ namespace UIOMatic.Atributes
             this.ItemIcon = itemIcon;
 
             this.RenderType = UIOMaticRenderType.Tree;
+            this.SortOrder = "asc";
         }
     }
 }
