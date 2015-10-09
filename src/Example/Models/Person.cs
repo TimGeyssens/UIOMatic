@@ -7,6 +7,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 
 namespace Example.Models
 {
+
     [UIOMatic("People", "icon-users", "icon-user")]
     [TableName("People")]
     public class Person : IUIOMaticModel
@@ -17,13 +18,13 @@ namespace Example.Models
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
 
-        [UIOMaticField("First name", "Enter the persons first name")]
+        [UIOMaticField("Firstname","Enter your firstname")]
         public string FirstName { get; set; }
 
-        [UIOMaticField("Last name", "Enter the persons last name")]
+        [UIOMaticField("Lastname", "Enter your lastname")]
         public string LastName { get; set; }
 
-        [UIOMaticField("Picture", "Select a picture", View = "file")]
+        [UIOMaticField("Picture", "Please select a picture",View ="file")]
         public string Picture { get; set; }
 
         public override string ToString()
