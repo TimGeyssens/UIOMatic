@@ -258,7 +258,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ExampleApiController.cs" />
-    <Compile Include="Models\DateTest.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
