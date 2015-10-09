@@ -1,4 +1,4 @@
 ﻿<div ng-controller="UIOMatic.Views.Date">
-
-    <input pikaday="property.picker" on-select="property.Value = property.picker.getDate()" >
+    
+    <input pikaday="property.picker" on-select="property.Value = property.picker.getDate().toLocaleDateString()">
 </div>
