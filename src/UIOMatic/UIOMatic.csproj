@@ -292,6 +292,7 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\file.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\file.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\label.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\number.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\password.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.content.controller.js" />
