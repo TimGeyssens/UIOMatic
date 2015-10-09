@@ -2,21 +2,12 @@
 	function ($scope) {
 
 	    angular.element(document).ready(function () {
-	        
-            //doesn't work without the timeout :(
+
 	        setTimeout(function() {
-	          
-	            var picker = new Pikaday(
-	            {
-	                field: document.getElementById("UIOMaticProperty" + $scope.property.Name),
-	                format: 'DD/M/YYYY',
-	                firstDay: 1,
-	                
-	            });
 
+	            if ($scope.property.Value) {
+	                $scope.property.picker.setMoment(moment($scope.property.Value, 'YYYY-MM-DD'));
+	            }
 	        }, 100);
-
-	        
 	    });
-
 	});

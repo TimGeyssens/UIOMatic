@@ -85,7 +85,6 @@ namespace UIOMatic.Controllers
                                 Key = prop.Name,
                                 Name = attri.Name,
                                 Description = attri.Description,
-                                //Required = attri.Required,
                                 View = IOHelper.ResolveUrl(view)
                             };
                             yield return pi;
@@ -104,7 +103,6 @@ namespace UIOMatic.Controllers
                                 Key = prop.Name,
                                 Name = prop.Name,
                                 Description = string.Empty,
-                                //Required = false,
                                 View = IOHelper.ResolveUrl(view)
                             };
                             yield return pi;

@@ -13,8 +13,8 @@ namespace Example
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             var db = applicationContext.DatabaseContext.Database;
-            if (!db.TableExist("Dogs"))
-                db.CreateTable<Dog>(false);
+            if (!db.TableExist("DateTest"))
+                db.CreateTable<DateTest>(false);
         }
     }
 }

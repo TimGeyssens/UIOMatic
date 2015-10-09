@@ -1,4 +1,10 @@
-﻿angular.module("umbraco").controller("uioMatic.ObjectEditController",
+﻿var app = angular.module("umbraco");
+
+//This is my Angular module that I want to inject/require
+app.requires.push('pikaday');
+
+
+angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	function ($scope, $routeParams, uioMaticObjectResource, notificationsService, navigationService) {
 
 	    $scope.loaded = false;
