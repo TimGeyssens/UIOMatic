@@ -307,9 +307,18 @@ namespace UIOMatic.Controllers
             var values = (IDictionary<string, object>)objectToValidate;
             foreach (var prop in currentType.GetProperties())
             {
-                if (values.ContainsKey(prop.Name))
+                var propKey = prop.Name;
+                
+
+                foreach (var attri in prop.GetCustomAttributes().Where(attri => attri.GetType() == typeof (ColumnAttribute)))
                 {
-                    Helper.SetValue(ob, prop.Name, values[prop.Name]);
+                    propKey = ((ColumnAttribute) attri).Name;
+                }
+                
+
+                if (values.ContainsKey(propKey))
+                {
+                    Helper.SetValue(ob, prop.Name, values[propKey]);
                 }
             }
                 
