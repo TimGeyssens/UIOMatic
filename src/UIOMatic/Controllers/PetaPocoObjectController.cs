@@ -165,7 +165,14 @@ namespace UIOMatic.Controllers
                 if (keyAttri.Any())
                     primaryKeyColum = property.Name;
             }
-            return DatabaseContext.Database.Query<dynamic>(Sql.Builder
+
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            return db.Query<dynamic>(Sql.Builder
                 .Append("SELECT * FROM " + tableName)
                 .Append("WHERE "+primaryKeyColum+"=@0", id));
 
@@ -202,7 +209,14 @@ namespace UIOMatic.Controllers
                 }
             }
 
-            DatabaseContext.Database.Save(ob);
+
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            db.Save(ob);
 
             return ob;
 
@@ -237,7 +251,14 @@ namespace UIOMatic.Controllers
                 }
             }
 
-            DatabaseContext.Database.Update(ob);
+
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            db.Update(ob);
 
             return ob;
         }
@@ -260,7 +281,14 @@ namespace UIOMatic.Controllers
                 
                 
             }
-            return DatabaseContext.Database.Delete(tableName, primaryKeyTable, null, id);
+
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            return db.Delete(tableName, primaryKeyTable, null, id);
 
         }
 
