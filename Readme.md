@@ -19,7 +19,7 @@ If you have the following db table
     , [Picture] nvarchar(255) NOT NULL
     );
 
-This poco
+This class
 
     [UIOMaticAttribute("People","icon-users","icon-user")]
     [TableName("People")]
