@@ -26,14 +26,18 @@ namespace UIOMatic.Controllers
         {
             var currentType = Type.GetType(typeName);
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
+            var db = (Database)DatabaseContext.Database;
+            if(!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
 
             var query = new Sql().Select("*").From(tableName.Value);
 
             if(!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
                 query.OrderBy(sortColumn + " " + sortOrder);
 
-            foreach (dynamic item in DatabaseContext.Database.Fetch<dynamic>(query))
+            foreach (dynamic item in db.Fetch<dynamic>(query))
             {
                 // get settable public properties of the type
                 var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -42,10 +46,19 @@ namespace UIOMatic.Controllers
                 // create an instance of the type
                 var obj = Activator.CreateInstance(currentType);
                 
+
                 // set property values using reflection
                 var values = (IDictionary<string, object>)item;
                 foreach (var prop in props)
-                    prop.SetValue(obj, values[prop.Name]);
+                {
+                    var columnAttri =
+                           prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                    var propName = prop.Name;
+                    if (columnAttri.Any())
+                        propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                    prop.SetValue(obj, values[propName]);
+                }
 
                 yield return obj;
             }
@@ -73,6 +86,11 @@ namespace UIOMatic.Controllers
                                 (UIOMaticFieldAttribute)
                                     attris.SingleOrDefault(x => x.GetType() == typeof (UIOMaticFieldAttribute));
 
+                            var key = prop.Name;
+                            if (attris.Any(x=> x.GetType() == typeof(ColumnAttribute)))
+                                key = ((ColumnAttribute)
+                                    attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
+
                             string view = attri.GetView();
                             if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
@@ -82,7 +100,7 @@ namespace UIOMatic.Controllers
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
                             var pi = new UIOMaticPropertyInfo
                             {
-                                Key = prop.Name,
+                                Key = key,
                                 Name = attri.Name,
                                 Description = attri.Description,
                                 View = IOHelper.ResolveUrl(view)
@@ -91,6 +109,11 @@ namespace UIOMatic.Controllers
                         }
                         else
                         {
+                            var key = prop.Name;
+                            if (attris.Any(x => x.GetType() == typeof(ColumnAttribute)))
+                                key = ((ColumnAttribute)
+                                    attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
+
                             string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
                             if(prop.PropertyType == typeof(bool))
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
@@ -100,7 +123,7 @@ namespace UIOMatic.Controllers
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
                             var pi = new UIOMaticPropertyInfo
                             {
-                                Key = prop.Name,
+                                Key = key,
                                 Name = prop.Name,
                                 Description = string.Empty,
                                 View = IOHelper.ResolveUrl(view)
@@ -163,7 +186,17 @@ namespace UIOMatic.Controllers
             {
                 if (prop.Value != null)
                 {
-                    PropertyInfo propI = currentType.GetProperty(prop.Key);
+
+                    var propKey = prop.Key;
+                    foreach (var proper in currentType.GetProperties())
+                    {
+                        foreach (var attri in proper.GetCustomAttributes())
+                        {
+                            if (attri.GetType() == typeof (ColumnAttribute) && ((ColumnAttribute) attri).Name == propKey)
+                                propKey = proper.Name;
+                        }
+                    }
+                    PropertyInfo propI = currentType.GetProperty(propKey);
                     Helper.SetValue(ob, propI.Name, prop.Value);
 
                 }
@@ -187,7 +220,16 @@ namespace UIOMatic.Controllers
 
             foreach (var prop in objectToUpdate)
             {
-                PropertyInfo propI = currentType.GetProperty(prop.Key);
+                var propKey = prop.Key;
+                foreach (var proper in currentType.GetProperties())
+                {
+                    foreach (var attri in proper.GetCustomAttributes())
+                    {
+                        if (attri.GetType() == typeof(ColumnAttribute) && ((ColumnAttribute)attri).Name == propKey)
+                            propKey = proper.Name;
+                    }
+                }
+                PropertyInfo propI = currentType.GetProperty(propKey);
                 if (propI != null)
                 {
                     

@@ -18,6 +18,9 @@ namespace UIOMatic.Atributes
 
         public string SortOrder { get; set; }
         public UIOMaticRenderType RenderType { get; set; }
+
+        public string ConnectionStringName { get; set; }
+
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
             this.Name = name;

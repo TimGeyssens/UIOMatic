@@ -13,6 +13,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
+using Umbraco.Core.Persistence;
 
 namespace UIOMatic.Trees
 {
@@ -77,7 +78,11 @@ namespace UIOMatic.Trees
                 {
                     var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
                     if (keyAttri.Any())
-                        itemIdPropName = property.Name;
+                    {
+                        var columnAttri =
+                            property.GetCustomAttributes().Where(x => x.GetType() == typeof (ColumnAttribute));
+                        itemIdPropName =property.Name;
+                    }
                 }
 
                 foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn,attri.SortOrder))
