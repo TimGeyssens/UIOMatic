@@ -291,6 +291,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\checkbox.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\datetime.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\datetime.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\file.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\file.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\label.html" />

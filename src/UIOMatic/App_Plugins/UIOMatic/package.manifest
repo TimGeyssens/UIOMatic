@@ -43,14 +43,12 @@
     ]
     ,
     javascript: [
-		'~/App_Plugins/UIOMatic/assets/moment/moment.js',
-		'~/App_Plugins/UIOMatic/assets/pikaday/pikaday.js',
-		'~/App_Plugins/UIOMatic/assets/pikaday/pikaday-angular.js',
 	    '~/App_Plugins/UIOMatic/backoffice/uioMatictree/edit.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/delete.controller.js',
         '~/App_Plugins/UIOMatic/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/date.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/datetime.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
