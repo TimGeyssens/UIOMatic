@@ -6,7 +6,7 @@ UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db
 UI-O-Matic can be installed from the [Nuget package repository](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
 
 ## Getting Started ##
-Of course make sure that UI-O-Matic is installed and then create your poco
+Of course make sure that UI-O-Matic is installed and you user has access to the new UI-O-Matic section and then create your poco
 
 ### Example  ###
 If you have the following db table
