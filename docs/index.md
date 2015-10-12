@@ -77,7 +77,7 @@ The next additions to the class (attributes and interface)
         }
     }
 
-will generate the following interface
+will generate the following crud UI
 
 ![](img/gettingstartedexample.png)
 
