@@ -7,7 +7,7 @@
 
 
 	var val = parseInt($scope.property.Value);
-	
+
 
 	if (!isNaN(val) && angular.isNumber(val)) {
 	    $scope.showQuery = false;
@@ -31,7 +31,7 @@
 	$scope.clear = function () {
 	    $scope.id = undefined;
 	    $scope.node = undefined;
-	    $scope.setting.value = undefined;
+	    $scope.property.Value = undefined;
 	};
 
 	function populate(item) {
@@ -39,7 +39,7 @@
 	    item.icon = iconHelper.convertFromLegacyIcon(item.icon);
 	    $scope.node = item;
 	    $scope.id = item.id;
-	    $scope.setting.value = item.id;
+	    $scope.property.Value = item.id;
 	}
 
 });

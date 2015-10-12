@@ -21,6 +21,7 @@ namespace Example.Models
          [Column("userId")]
         public int UserId { get; set; }
 
+      
         public int NodeId { get; set; }
 
         public DateTime Datestamp { get; set; }
