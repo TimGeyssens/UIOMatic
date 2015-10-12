@@ -64,6 +64,10 @@ Will generate the following UI
 
 ![](example.png)
 
+## Documentation ##
+
+For docs please go to[ http://uiomatic.readthedocs.org/](http://uiomatic.readthedocs.org/)
+
 ### Test site ###
 Backoffice credentials: 
 - tim@nibble.be / password
