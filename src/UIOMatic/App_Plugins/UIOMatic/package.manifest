@@ -43,6 +43,7 @@
     ]
     ,
     javascript: [
+	    '~/App_Plugins/UIOMatic/assets/moment.js',
 	    '~/App_Plugins/UIOMatic/backoffice/uioMatictree/edit.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/delete.controller.js',
         '~/App_Plugins/UIOMatic/uioMaticObject.resource.js',
