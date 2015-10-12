@@ -72,11 +72,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            angular.forEach($scope.properties, function (property) {
 	                var key = property.Key;
 	                var value = property.Value;
-	                $scope.object[0][key] = value;
+	                $scope.object[key] = value;
 
 	            });
 
-	            uioMaticObjectResource.validate($routeParams.id.split("=")[1], object[0]).then(function (resp) {
+	            uioMaticObjectResource.validate($routeParams.id.split("=")[1], object).then(function (resp) {
 
 	                if (resp.data.length > 0) {
 
@@ -106,21 +106,27 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    }
 
 	    var setValues = function () {
-
-	        angular.forEach($scope.object[0], function (value) {
+            
 	           
-	            for (var key in $scope.object[0]) {
-	               
-	                if ($scope.object[0].hasOwnProperty(key)) {
-
+	            for (var theKey in $scope.object) {
 	                
-	                    if (_.where($scope.properties, { Key: key }).length > 0) {
-	                        _.where($scope.properties, { Key: key })[0].Value = $scope.object[0][key];
+	                if ($scope.object.hasOwnProperty(theKey)) {
+
+	                    if (_.where($scope.properties, { Key: theKey }).length > 0) {
+	                     
+	                        //_.where($scope.properties, { Key: theKey }).Value = "test";
+	                        //_.where($scope.properties, { Key: theKey }).Value = $scope.object[theKey];
+
+	                        for (var prop in $scope.properties) {
+	                            if ($scope.properties[prop].Key == theKey) {
+	                                $scope.properties[prop].Value = $scope.object[theKey];
+	                            }
+	                        }
 	                    }
 
 	                }
 	            }
-	        });
+
 	    };
 
 	    

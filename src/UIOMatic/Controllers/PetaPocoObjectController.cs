@@ -87,9 +87,9 @@ namespace UIOMatic.Controllers
                                     attris.SingleOrDefault(x => x.GetType() == typeof (UIOMaticFieldAttribute));
 
                             var key = prop.Name;
-                            if (attris.Any(x=> x.GetType() == typeof(ColumnAttribute)))
-                                key = ((ColumnAttribute)
-                                    attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
+                            //if (attris.Any(x=> x.GetType() == typeof(ColumnAttribute)))
+                            //    key = ((ColumnAttribute)
+                            //        attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
 
                             string view = attri.GetView();
                             if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
@@ -110,9 +110,9 @@ namespace UIOMatic.Controllers
                         else
                         {
                             var key = prop.Name;
-                            if (attris.Any(x => x.GetType() == typeof(ColumnAttribute)))
-                                key = ((ColumnAttribute)
-                                    attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
+                            //if (attris.Any(x => x.GetType() == typeof(ColumnAttribute)))
+                            //    key = ((ColumnAttribute)
+                            //        attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
 
                             string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
                             if(prop.PropertyType == typeof(bool))
@@ -172,9 +172,31 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            return db.Query<dynamic>(Sql.Builder
+            var dyn = db.Query<dynamic>(Sql.Builder
                 .Append("SELECT * FROM " + tableName)
                 .Append("WHERE "+primaryKeyColum+"=@0", id));
+
+            var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                   .Where(x => x.GetSetMethod() != null);
+
+            // create an instance of the type
+            var obj = Activator.CreateInstance(currentType);
+
+
+            // set property values using reflection
+            var values = (IDictionary<string, object>)dyn.FirstOrDefault();
+            foreach (var prop in props)
+            {
+                var columnAttri =
+                       prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                var propName = prop.Name;
+                if (columnAttri.Any())
+                    propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                prop.SetValue(obj, values[propName]);
+            }
+
+            return obj;
 
            
         }
@@ -195,14 +217,14 @@ namespace UIOMatic.Controllers
                 {
 
                     var propKey = prop.Key;
-                    foreach (var proper in currentType.GetProperties())
-                    {
-                        foreach (var attri in proper.GetCustomAttributes())
-                        {
-                            if (attri.GetType() == typeof (ColumnAttribute) && ((ColumnAttribute) attri).Name == propKey)
-                                propKey = proper.Name;
-                        }
-                    }
+                    //foreach (var proper in currentType.GetProperties())
+                    //{
+                    //    foreach (var attri in proper.GetCustomAttributes())
+                    //    {
+                    //        if (attri.GetType() == typeof (ColumnAttribute) && ((ColumnAttribute) attri).Name == propKey)
+                    //            propKey = proper.Name;
+                    //    }
+                    //}
                     PropertyInfo propI = currentType.GetProperty(propKey);
                     Helper.SetValue(ob, propI.Name, prop.Value);
 
@@ -235,14 +257,14 @@ namespace UIOMatic.Controllers
             foreach (var prop in objectToUpdate)
             {
                 var propKey = prop.Key;
-                foreach (var proper in currentType.GetProperties())
-                {
-                    foreach (var attri in proper.GetCustomAttributes())
-                    {
-                        if (attri.GetType() == typeof(ColumnAttribute) && ((ColumnAttribute)attri).Name == propKey)
-                            propKey = proper.Name;
-                    }
-                }
+                //foreach (var proper in currentType.GetProperties())
+                //{
+                //    foreach (var attri in proper.GetCustomAttributes())
+                //    {
+                //        if (attri.GetType() == typeof(ColumnAttribute) && ((ColumnAttribute)attri).Name == propKey)
+                //            propKey = proper.Name;
+                //    }
+                //}
                 PropertyInfo propI = currentType.GetProperty(propKey);
                 if (propI != null)
                 {
@@ -310,10 +332,10 @@ namespace UIOMatic.Controllers
                 var propKey = prop.Name;
                 
 
-                foreach (var attri in prop.GetCustomAttributes().Where(attri => attri.GetType() == typeof (ColumnAttribute)))
-                {
-                    propKey = ((ColumnAttribute) attri).Name;
-                }
+                //foreach (var attri in prop.GetCustomAttributes().Where(attri => attri.GetType() == typeof (ColumnAttribute)))
+                //{
+                //    propKey = ((ColumnAttribute) attri).Name;
+                //}
                 
 
                 if (values.ContainsKey(propKey))

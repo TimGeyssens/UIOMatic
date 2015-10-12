@@ -12,7 +12,6 @@ namespace UIOMatic.Models
 
         public string Description { get; set; }
 
-        public bool Required { get; set; }
         public string View { get; set; }
 
     }

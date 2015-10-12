@@ -26,7 +26,7 @@
 	        update: function (type, object) {
 	            var item = {};
 	            item.typeOfObject = type;
-	            item.objectToUpdate = object[0];
+	            item.objectToUpdate = object;
 	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "PostUpdate", angular.toJson(item));
 	        },
 	        deleteById: function (type, id) {
