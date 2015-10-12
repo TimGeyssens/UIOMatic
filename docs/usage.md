@@ -1,6 +1,6 @@
 # Usage #
 
-With a db table and a petapoco poco in place you'll have a couple of steps to follow
+With a db table and a petapoco poco in place you'll have a couple of steps to follow. Important: your table **must have a primary key column** (and your poco must mark it with the **PrimaryKeyColumn** attribute)
 
 
 ## Decorate your class with the UIOMatic attribute ##
