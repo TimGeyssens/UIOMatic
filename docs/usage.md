@@ -53,7 +53,69 @@ If you wish that UI-O-Matic ignores specific properties (so doesn't display then
 
 	[UIOMaticIgnoreField]
 
+## Implement the IUIOMaticModel interface ##
 
+Besides the attributes you also need to implement an interface, the *IUIOMaticModel* interface, it has a single member, the Validate method, this method will be used to validate your object when it is being saved. The method needs to return a list of Exceptions so it allows for complex validation rules.
+
+        public IEnumerable<Exception> Validate()
+        {
+            var exs = new List<Exception>();
+
+            if (string.IsNullOrEmpty(FirstName))
+                exs.Add(new Exception("Please provide a value for first name"));
+
+            if (string.IsNullOrEmpty(LastName))
+                exs.Add(new Exception("Please provide a value for last name"));
+
+
+            return exs;
+        }
+
+## Override the ToString method ##
+
+
+
+## Complete example ##
+Here is a complete example that puts the different bits together.
+
+    [UIOMatic("People", "icon-users", "icon-user")]
+    [TableName("People")]
+    public class Person : IUIOMaticModel
+    {
+        public Person() { }
+
+        [UIOMaticIgnoreField]
+        [PrimaryKeyColumn(AutoIncrement = true)]
+        public int Id { get; set; }
+
+        [UIOMaticField("Firstname","Enter your firstname")]
+        public string FirstName { get; set; }
+
+        [UIOMaticField("Lastname", "Enter your lastname")]
+        public string LastName { get; set; }
+
+        [UIOMaticField("Picture", "Please select a picture",View ="file")]
+        public string Picture { get; set; }
+
+        public override string ToString()
+        {
+            return FirstName + " " + LastName;
+        }
+
+        public IEnumerable<Exception> Validate()
+        {
+            var exs = new List<Exception>();
+
+            if (string.IsNullOrEmpty(FirstName))
+                exs.Add(new Exception("Please provide a value for first name"));
+
+            if (string.IsNullOrEmpty(LastName))
+                exs.Add(new Exception("Please provide a value for last name"));
+
+
+            return exs;
+        }
+    }
 
 
 
