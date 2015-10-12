@@ -81,4 +81,8 @@ will generate the following crud UI
 
 ![](img/gettingstartedexample.png)
 
+## Video demonstration ##
+
+Watch UI-O-Matic on [uHangout EP72](https://www.youtube.com/watch?v=MUlAO85oQ4s)
+
 
