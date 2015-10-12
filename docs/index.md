@@ -3,7 +3,7 @@
 UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco](http://www.toptensoftware.com/petapoco/) poco.
 
 ## How can I install it? ##
-Ditto can be installed from the [Nuget package repository](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
+UI-O-Matic can be installed from the [Nuget package repository](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
 
 ## Getting Started ##
 Of course make sure that UI-O-Matic is installed and then create your poco
