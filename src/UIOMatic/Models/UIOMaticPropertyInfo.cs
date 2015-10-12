@@ -14,5 +14,6 @@ namespace UIOMatic.Models
 
         public string View { get; set; }
 
+        public string Type { get; set; }
     }
 }

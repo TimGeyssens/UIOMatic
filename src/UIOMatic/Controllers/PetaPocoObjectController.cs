@@ -103,7 +103,8 @@ namespace UIOMatic.Controllers
                                 Key = key,
                                 Name = attri.Name,
                                 Description = attri.Description,
-                                View = IOHelper.ResolveUrl(view)
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString() 
                             };
                             yield return pi;
                         }
@@ -126,7 +127,8 @@ namespace UIOMatic.Controllers
                                 Key = key,
                                 Name = prop.Name,
                                 Description = string.Empty,
-                                View = IOHelper.ResolveUrl(view)
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString() 
                             };
                             yield return pi;
                         }

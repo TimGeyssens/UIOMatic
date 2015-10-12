@@ -119,7 +119,12 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	                        for (var prop in $scope.properties) {
 	                            if ($scope.properties[prop].Key == theKey) {
-	                                $scope.properties[prop].Value = $scope.object[theKey];
+	                                if ($scope.properties[prop].Type == "System.DateTime") {
+	                                    var date = new Date($scope.object[theKey]);
+	                                    $scope.properties[prop].Value = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+	                                } else {
+	                                    $scope.properties[prop].Value = $scope.object[theKey];
+	                                }
 	                            }
 	                        }
 	                    }
