@@ -15,6 +15,13 @@ The UIOMatic attribute has a contructor with 3 parameters
 - Icon used for the main tree node
 - Icon used for the tree item nodes
 
+You can also specify additional parameters
+
+- ConnectionStringName, if you wish to use a different db then the current Umbraco one
+- RenderType, if you wish to render the items in a listview or in the tree
+- SortColumn, the default sort column
+- SortOrder, the order of the sord (asc or desc) 
+
 ## Decorate properties with the UIOMaticField attribute ##
 
 If your properties aren't marked with the *UIOMaticField* attribute, UI-O-Matic will display the property name as the label and also select a view based on the property type. If you wish to have more control you can mark your properties with the *UIOMaticField* attribute.
@@ -73,7 +80,12 @@ Besides the attributes you also need to implement an interface, the *IUIOMaticMo
 
 ## Override the ToString method ##
 
+UI-O-Matic will call the *ToString* method when it tries to fetch the tree item names, so make sure to override that one.
 
+    public override string ToString()
+    {
+        return FirstName + " " + LastName;
+    }
 
 ## Complete example ##
 Here is a complete example that puts the different bits together.
