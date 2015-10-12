@@ -4,7 +4,7 @@
 	    //setup the default config
 	    var config = {
 	        pickDate: true,
-	        pickTime: false,
+	        pickTime: true,
 	        useSeconds: true,
 	        format: "YYYY-MM-DD HH:mm:ss",
 	        icons: {
@@ -31,7 +31,8 @@
 	        });
 	    };
 
-	    var filesToLoad = ["lib/datetimepicker/bootstrap-datetimepicker.js"];
+	    var filesToLoad = ["lib/moment/moment-with-locales.js",
+            "lib/datetimepicker/bootstrap-datetimepicker.js"];
 
 	    assetsService.load(filesToLoad).then(
 	        function () {

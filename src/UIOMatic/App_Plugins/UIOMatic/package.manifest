@@ -54,8 +54,6 @@
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js'
 		
-    ],
-	css: [
-		'~/App_Plugins/UIOMatic/assets/pikaday/pikaday.css'
-	]
+    ]
+	
 }
