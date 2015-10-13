@@ -144,6 +144,10 @@ namespace UIOMatic.Controllers
             var ar = typeName.Split(',');
             var currentType = Type.GetType(ar[0] + ", " + ar[1]);
 
+            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            if (primKeyAttri.Any())
+                return ((PrimaryKeyAttribute) primKeyAttri.First()).Value;
+
             foreach (var property in currentType.GetProperties())
             {
                 var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
@@ -160,7 +164,13 @@ namespace UIOMatic.Controllers
             var ar = typeName.Split(',');
             var currentType = Type.GetType(ar[0] + ", " + ar[1]);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+
             var primaryKeyColum = "id";
+
+            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            if (primKeyAttri.Any())
+                primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
             foreach (var property in currentType.GetProperties())
             {
                 var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof (PrimaryKeyColumnAttribute));
