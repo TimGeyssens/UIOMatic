@@ -51,6 +51,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/date.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/datetime.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.media.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js'

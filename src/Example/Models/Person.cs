@@ -24,7 +24,7 @@ namespace Example.Models
         [UIOMaticField("Lastname", "Enter your lastname")]
         public string LastName { get; set; }
 
-        [UIOMaticField("Picture", "Please select a picture",View ="file")]
+        [UIOMaticField("Picture", "Please select a picture",View ="pickers.media")]
         public string Picture { get; set; }
 
         public override string ToString()

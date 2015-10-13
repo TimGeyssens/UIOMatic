@@ -297,6 +297,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\password.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.content.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.content.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.media.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.media.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\textarea.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\textfield.html" />
     <Content Include="App_Plugins\UIOMatic\uioMaticObject.resource.js" />
