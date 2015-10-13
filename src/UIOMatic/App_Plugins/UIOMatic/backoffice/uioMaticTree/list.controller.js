@@ -30,7 +30,7 @@
         };
 
         $scope.getObjectKey = function (object) {
-            keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '');
+            keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
             return object[keyPropName];
 
         }
