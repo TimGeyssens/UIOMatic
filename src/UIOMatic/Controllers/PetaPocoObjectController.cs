@@ -185,8 +185,8 @@ namespace UIOMatic.Controllers
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
             var dyn = db.Query<dynamic>(Sql.Builder
-                .Append("SELECT * FROM " + tableName)
-                .Append("WHERE "+primaryKeyColum+"=@0", id));
+                .Append("SELECT * FROM [" + tableName +"]")
+                .Append("WHERE ["+primaryKeyColum+"] =@0", id));
 
             var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                    .Where(x => x.GetSetMethod() != null);
