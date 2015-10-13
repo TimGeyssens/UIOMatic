@@ -47,6 +47,7 @@ There are a couple out of the box views you can use
 - number
 - password
 - pickers.content
+- pickers.media
 - textarea
 - textfield
 
