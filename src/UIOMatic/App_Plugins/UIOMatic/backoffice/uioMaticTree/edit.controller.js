@@ -59,6 +59,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                } else {
 	                    uioMaticObjectResource.create($routeParams.id.split("?")[0], object).then(function (response) {
 	                        $scope.object = response.data;
+	                        $scope.id = $scope.object.Id;
 	                        $scope.objectForm.$dirty = false;
 	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been created");
