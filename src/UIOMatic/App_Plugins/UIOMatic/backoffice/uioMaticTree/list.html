@@ -50,10 +50,12 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse">
-                                    <td style="width: 80px"><a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}">Edit</a> <a ng-click="delete(row)">Delete</a></td>
+                                    <td style="width: 80px"><a ng-click="delete(row)">Delete</a></td>
                                     <td ng-repeat="column in cols ">
-                                        {{row[column]}}
-
+                                        <div ng-switch="$index == 0 || ($index == 1 && cols[0] == primaryKeyColumnName)">
+                                            <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
+                                            <span ng-switch-when="false">{{row[column]}}</span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
