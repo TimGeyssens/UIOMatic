@@ -9,13 +9,16 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.loaded = false;
 	    $scope.id = $routeParams.id.split("?")[0];
 
-	    var typeName = "";
+	    $scope.typeName = "";
 	    if (isNaN($routeParams.id.split("?")[0])) {
-	        typeName = $routeParams.id;
+	        $scope.typeName = $routeParams.id;
 	    } else {
-	        typeName = $routeParams.id.split("=")[1];
+	        $scope.typeName = $routeParams.id.split("=").slice(1).join('=');
 	    }
-	    uioMaticObjectResource.getAllProperties(typeName).then(function (response) {
+	    uioMaticObjectResource.getType($scope.typeName).then(function (response) {
+	        $scope.type = response.data;
+	    });
+	    uioMaticObjectResource.getAllProperties($scope.typeName).then(function (response) {
 	        $scope.properties = response.data;
 	        
 

@@ -265,6 +265,7 @@
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectController.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />
+    <Compile Include="Models\UIOMaticTypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sections\Section.cs" />
     <Compile Include="ServerVariableParserEvent.cs" />

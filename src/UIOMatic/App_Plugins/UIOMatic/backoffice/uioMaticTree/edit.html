@@ -45,7 +45,12 @@
                             <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="isNumber(id)">
                                 Create
                             </button>
+                        </div>
 
+                        <div class="btn-group" ng-show="type.RenderType == 1">
+                            <a class="btn" href="#/uiomatic/uioMaticTree/list/{{typeName}}">
+                                <localize key="buttons_returnToList">Return to list</localize>
+                            </a>
                         </div>
                     </div>
 
