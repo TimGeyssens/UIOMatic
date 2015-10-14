@@ -139,24 +139,31 @@ namespace UIOMatic.Controllers
 
         }
 
-        public string GetPrimaryKeyColumnName(string typeName)
+        public UIOMaticTypeInfo GetType(string typeName)
         {
-            var ar = typeName.Split(',');
-            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+            var currentType = Type.GetType(typeName);
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
+            var primaryKey = "id";
             var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
-                return ((PrimaryKeyAttribute) primKeyAttri.First()).Value;
+                primaryKey = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
             foreach (var property in currentType.GetProperties())
             {
                 var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
                 if (keyAttri.Any())
-                    return property.Name;
+                    primaryKey = property.Name;
             }
 
-            return "id";
+            return new UIOMaticTypeInfo()
+            {
+                RenderType = uioMaticAttri.RenderType,
+                PrimaryKeyColumnName = primaryKey
+            };
         }
+
         public object GetById(string typeName, int id)
         {
 

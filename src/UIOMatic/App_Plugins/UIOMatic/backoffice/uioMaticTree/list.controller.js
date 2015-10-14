@@ -7,9 +7,9 @@
         //    $scope.properties = response.data;
         //});
 
-        uioMaticObjectResource.getPrimaryKeyColumnName($scope.typeName).then(function (response) {
-            $scope.primaryKeyColumnName = response.data;
-            $scope.predicate = response.data;
+        uioMaticObjectResource.getType($scope.typeName).then(function (response) {
+            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName;
+            $scope.predicate = response.data.PrimaryKeyColumnName;
 
             uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
                 $scope.rows = resp.data;
