@@ -26,6 +26,7 @@ namespace Example.Models
 
 
         [UIOMaticField("Owner", "Select the owner of the dog", View = "~/App_Plugins/Example/picker.person.html")]
+        [UIOMaticIgnoreFromListView]
         public int OwnerId { get; set; }
 
         public override string ToString()
