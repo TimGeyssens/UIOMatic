@@ -30,9 +30,18 @@
         };
 
         $scope.getObjectKey = function (object) {
-            keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
+            var keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
             return object[keyPropName];
 
+        }
+
+        $scope.delete = function (object) {
+            if (confirm("Are you sure you want to delete this object?")) {
+                var keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
+                uioMaticObjectResource.deleteById($routeParams.id, object[keyPropName]).then(function() {
+                    $scope.rows = _.reject($scope.rows, function(el) { return el[keyPropName] === object[keyPropName]; });
+                });
+            }
         }
 
     });

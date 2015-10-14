@@ -41,9 +41,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td style="width: 35px">
-
-                                </td>
+                                <td style="width: 80px"></td>
                                 <td ng-repeat="col in cols">
                                     <a href="" ng-click="order(col)">{{col}}</a>
 
@@ -52,7 +50,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse">
-                                    <td style="width: 35px"><a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}">Edit</a></td>
+                                    <td style="width: 80px"><a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}">Edit</a> <a ng-click="delete(row)">Delete</a></td>
                                     <td ng-repeat="column in cols ">
                                         {{row[column]}}
 
