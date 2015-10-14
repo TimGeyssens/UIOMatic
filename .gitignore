@@ -88,11 +88,11 @@ Desktop.ini
 
 
 # Data folders/files
-*/ExamineIndexes/*
-www/App_Data/umbraco.config
-*/App_Browsers/*
-*/App_Data/TEMP/*
-*/_systemUmbracoIndexDontDelete/*
+src/*/App_Browsers/*
+src/*/App_Data/Logs/
+src/*/App_Data/cache/
+src/*/App_Data/ExamineIndexes/*
+src/*/App_Data/TEMP/*
 
 
 # But not these files...

@@ -258,6 +258,7 @@
     <Compile Include="Atributes\UIOMaticAttribute.cs" />
     <Compile Include="Atributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Atributes\UIOMaticIgnoreFieldAttribute.cs" />
+    <Compile Include="Atributes\UIOMaticIgnoreFromListViewAttribute.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
     <Compile Include="Controllers\PropertyEditorsApiController.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />

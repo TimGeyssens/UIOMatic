@@ -145,6 +145,8 @@ namespace UIOMatic.Controllers
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
             var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
+            var ignoreColumnsFromListView = new List<string>();
+
             var primaryKey = "id";
             var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
@@ -155,12 +157,17 @@ namespace UIOMatic.Controllers
                 var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
                 if (keyAttri.Any())
                     primaryKey = property.Name;
+
+                var ignoreAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(UIOMaticIgnoreFromListViewAttribute));
+                if (ignoreAttri.Any())
+                    ignoreColumnsFromListView.Add(property.Name);
             }
 
             return new UIOMaticTypeInfo()
             {
                 RenderType = uioMaticAttri.RenderType,
-                PrimaryKeyColumnName = primaryKey
+                PrimaryKeyColumnName = primaryKey,
+                IgnoreColumnsFromListView = ignoreColumnsFromListView.ToArray()
             };
         }
 

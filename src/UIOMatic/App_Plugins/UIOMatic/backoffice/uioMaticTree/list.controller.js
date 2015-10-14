@@ -10,10 +10,13 @@
         uioMaticObjectResource.getType($scope.typeName).then(function (response) {
             $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName;
             $scope.predicate = response.data.PrimaryKeyColumnName;
+            $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
 
             uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
                 $scope.rows = resp.data;
-                $scope.cols = Object.keys($scope.rows[0]);
+                $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
+                    return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
+                });
             });
 
         });
