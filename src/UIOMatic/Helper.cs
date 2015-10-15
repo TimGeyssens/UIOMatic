@@ -14,17 +14,30 @@ namespace UIOMatic
 
         public static IEnumerable<Type> GetTypesWithUIOMaticAttribute()
         {
+            return (IEnumerable<Type>)HttpRuntime.Cache["UIOMaticTypes"] ?? EnsureTypes();
+        }
+
+        private static IEnumerable<Type> EnsureTypes()
+        {
+            var t = new List<Type>();
+
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (Type type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttributes(typeof(UIOMaticAttribute), true).Length > 0)
+                    if (type.GetCustomAttributes(typeof (UIOMaticAttribute), true).Length > 0)
                     {
-                        yield return type;
+                        t.Add(type);
                     }
                 }
             }
+
+            HttpRuntime.Cache.Insert("UIOMaticTypes", t);
+            
+
+            return t;
         }
+
 
         public static void SetValue(object inputObject, string propertyName, object propertyVal)
         {
