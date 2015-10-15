@@ -29,8 +29,8 @@
 	            item.objectToUpdate = object;
 	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "PostUpdate", angular.toJson(item));
 	        },
-	        deleteById: function (type, id) {
-	            return $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "DeleteById?typeOfObject=" + type + "&id=" + id);
+	        deleteByIds: function (type, idsArr) {
+	            return $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "DeleteByIds?typeOfObject=" + type + "&ids=" + idsArr.join(','));
 	        },
 	        validate: function (type, object) {
 	            var item = {};
