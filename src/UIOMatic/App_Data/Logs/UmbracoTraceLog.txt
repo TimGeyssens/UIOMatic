@@ -1000,3 +1000,5 @@ System.Web.Mvc.HttpAntiForgeryException (0x80004005): The anti-forgery token cou
  2015-10-15 16:51:50,207 [P2104/D2/T7] INFO  umbraco.BusinessLogic.Log - Log scrubbed.  Removed all items older than 2015-10-14 16:51:50
  2015-10-15 16:51:53,914 [P2104/D2/T16] INFO  Umbraco.Core.PluginManager - Starting resolution types of Umbraco.Web.Trees.TreeController
  2015-10-15 16:51:53,914 [P2104/D2/T16] INFO  Umbraco.Core.PluginManager - Completed resolution of types of Umbraco.Web.Trees.TreeController, found 0 (took 0ms)
+ 2015-10-15 17:10:53,664 [P2104/D2/T58] INFO  Umbraco.Core.Logging.OwinLogger - Event Id: 0, state: User logged will be logged out due to timeout: tim@nibble.be, IP Address: ::1
+ 2015-10-15 17:16:27,781 [P2104/D2/T70] INFO  Umbraco.Core.Security.BackOfficeSignInManager - Event Id: 0, state: Login attempt succeeded for username tim@nibble.be from IP address ::1

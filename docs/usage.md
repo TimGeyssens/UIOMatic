@@ -42,6 +42,7 @@ There are a couple out of the box views you can use
 - checkbox
 - date
 - datetime
+- dropdown (needs config)
 - file
 - label
 - number
