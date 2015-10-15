@@ -100,7 +100,8 @@ namespace UIOMatic.Controllers
                                 Name = attri.Name,
                                 Description = attri.Description,
                                 View = IOHelper.ResolveUrl(view),
-                                Type = prop.PropertyType.ToString() 
+                                Type = prop.PropertyType.ToString() ,
+                                Config = string.IsNullOrEmpty(attri.Config) ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri.Config)
                             };
                             yield return pi;
                         }
@@ -121,7 +122,8 @@ namespace UIOMatic.Controllers
                                 Name = prop.Name,
                                 Description = string.Empty,
                                 View = IOHelper.ResolveUrl(view),
-                                Type = prop.PropertyType.ToString() 
+                                Type = prop.PropertyType.ToString()
+                               
                             };
                             yield return pi;
                         }

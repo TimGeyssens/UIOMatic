@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json.Linq;
 
 namespace UIOMatic.Models
 {
@@ -15,5 +17,7 @@ namespace UIOMatic.Models
         public string View { get; set; }
 
         public string Type { get; set; }
+
+        public JObject Config { get; set; }
     }
 }

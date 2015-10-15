@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json.Linq;
 
 namespace UIOMatic.Atributes
 {
@@ -13,6 +14,8 @@ namespace UIOMatic.Atributes
         public string Description { get; set; }
 
         public string View { get; set; }
+
+        public string Config { get; set; }
 
         public UIOMaticFieldAttribute(string name, string description)
         {

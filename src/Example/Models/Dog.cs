@@ -25,7 +25,7 @@ namespace Example.Models
         public bool IsCastrated { get; set; }
 
 
-        [UIOMaticField("Owner", "Select the owner of the dog", View = "~/App_Plugins/Example/picker.person.html")]
+        [UIOMaticField("Owner", "Select the owner of the dog", View = "~/App_Plugins/Example/picker.person.html", Config="{'table':'Person', 'column': 'FirstName'}")]
         [UIOMaticIgnoreFromListView]
         public int OwnerId { get; set; }
 
