@@ -47,7 +47,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td></td>
+                                <td style="width:35px"></td>
                                 <td ng-repeat="col in cols">
                                     <a href="" class="sortable" ng-click="order(col)">{{col}}</a>
                                     <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
@@ -56,9 +56,9 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse" ng-class="{selected: isRowSelected(row)}">
-                                    <td>
+                                    <td style="width:35px">
                                         <i class="icon icon-edit"></i>
-                                        <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
+                                        <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
                                     </td>
                                     <td ng-repeat="column in cols ">
                                         <div ng-switch="$index == 0 || ($index == 1 && cols[0] == primaryKeyColumnName)">

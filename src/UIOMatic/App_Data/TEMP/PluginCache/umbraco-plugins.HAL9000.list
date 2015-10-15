@@ -124,6 +124,35 @@
   <baseType type="Umbraco.Core.Media.IImageUrlProvider" resolutionType="FindAllTypes">
     <add type="Umbraco.Web.Media.ImageUrlProviders.ImageUrlProvider, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
   </baseType>
+  <baseType type="Umbraco.Core.Persistence.Mappers.BaseMapper" resolutionType="FindTypesWithAttribute">
+    <add type="Umbraco.Core.Persistence.Mappers.AccessMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.DomainMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MigrationEntryMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MemberGroupMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.TagMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.TemplateMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MacroMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MemberMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MemberTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.ContentMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.ContentTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.DataTypeDefinitionMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.DictionaryMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.DictionaryTranslationMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.LanguageMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MediaMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.MediaTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.PropertyGroupMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.PropertyMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.PropertyTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.RelationMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.RelationTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.ServerRegistrationMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.UmbracoEntityMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.ExternalLoginMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.UserMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+    <add type="Umbraco.Core.Persistence.Mappers.UserTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
+  </baseType>
   <baseType type="Umbraco.Core.PropertyEditors.IParameterEditor" resolutionType="FindAllTypes">
     <add type="Umbraco.Core.PropertyEditors.ParameterEditor, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Core.PropertyEditors.PropertyEditor, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
@@ -169,35 +198,6 @@
     <add type="Umbraco.Web.PropertyEditors.TextAreaPropertyEditor, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.PropertyEditors.TextboxPropertyEditor, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="Umbraco.Web.PropertyEditors.TrueFalsePropertyEditor, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-  </baseType>
-  <baseType type="Umbraco.Core.Persistence.Mappers.BaseMapper" resolutionType="FindTypesWithAttribute">
-    <add type="Umbraco.Core.Persistence.Mappers.AccessMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.DomainMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MigrationEntryMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MemberGroupMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.TagMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.TemplateMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MacroMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MemberMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MemberTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.ContentMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.ContentTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.DataTypeDefinitionMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.DictionaryMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.DictionaryTranslationMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.LanguageMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MediaMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.MediaTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.PropertyGroupMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.PropertyMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.PropertyTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.RelationMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.RelationTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.ServerRegistrationMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.UmbracoEntityMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.ExternalLoginMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.UserMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Core.Persistence.Mappers.UserTypeMapper, Umbraco.Core, Version=1.0.5750.18157, Culture=neutral, PublicKeyToken=null" />
   </baseType>
   <baseType type="Umbraco.Web.Trees.TreeController" resolutionType="FindTypesWithAttribute">
     <add type="UIOMatic.Trees.UIOMaticTreeController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -273,27 +273,5 @@
     <add type="umbraco.loadXslt, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="umbraco.cms.presentation.Trees.UserPermissions, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
     <add type="umbraco.cms.presentation.Trees.UserTypes, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-  </baseType>
-  <baseType type="umbraco.interfaces.ICacheRefresher" resolutionType="FindAllTypes">
-    <add type="Umbraco.Web.Cache.ApplicationCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.ApplicationTreeCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.ContentTypeCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.DataTypeCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.DictionaryCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.DomainCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.LanguageCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.MacroCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.MediaCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.MemberCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.MemberGroupCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.PageCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.PublicAccessCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.StylesheetCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.StylesheetPropertyCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.TemplateCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.UnpublishedPageCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.UserCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.UserPermissionsCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
-    <add type="Umbraco.Web.Cache.UserTypeCacheRefresher, umbraco, Version=1.0.5750.18164, Culture=neutral, PublicKeyToken=null" />
   </baseType>
 </plugins>
