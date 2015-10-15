@@ -5,9 +5,6 @@
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
-        //uioMaticObjectResource.getAllProperties($scope.typeName).then(function (response) {
-        //    $scope.properties = response.data;
-        //});
 
         uioMaticObjectResource.getType($scope.typeName).then(function (response) {
             //.replace(' ', '_') nasty hack to allow columns with a space
@@ -26,11 +23,7 @@
 
         });
 
-        
 
-        
-
-        //$scope.predicate = 'Id';
         $scope.reverse = true;
         $scope.order = function (predicate) {
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
