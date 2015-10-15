@@ -10,8 +10,9 @@
         //});
 
         uioMaticObjectResource.getType($scope.typeName).then(function (response) {
-            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName;
-            $scope.predicate = response.data.PrimaryKeyColumnName;
+            //.replace('"', '').replace('"', '').replace(' ', '_') nasty hack to allo columns with a space
+            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
+            $scope.predicate = response.data.PrimaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
             $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
 
             uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
@@ -37,7 +38,7 @@
         };
 
         $scope.getObjectKey = function (object) {
-            var keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
+            var keyPropName = $scope.primaryKeyColumnName;
             return object[keyPropName];
 
         }
@@ -45,7 +46,7 @@
         $scope.delete = function (object) {
             if (confirm("Are you sure you want to delete " + $scope.selectedIds.length + " object" + ($scope.selectedIds.length > 1 ? "s" : "") + "?")) {
                 $scope.actionInProgress = true;
-                var keyPropName = $scope.primaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
+                var keyPropName = $scope.primaryKeyColumnName;
                 uioMaticObjectResource.deleteByIds($routeParams.id, $scope.selectedIds).then(function() {
                     $scope.rows = _.reject($scope.rows, function (el) { return $scope.selectedIds.indexOf(el[keyPropName]) > -1; });
                     $scope.selectedIds = [];
