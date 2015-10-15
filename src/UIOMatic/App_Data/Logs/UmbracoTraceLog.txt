@@ -823,3 +823,6 @@ System.Web.Mvc.HttpAntiForgeryException (0x80004005): The anti-forgery token cou
  2015-10-15 16:22:11,280 [P5440/D2/T12] INFO  Umbraco.Core.PluginManager - Starting resolution types of umbraco.interfaces.IApplication
  2015-10-15 16:22:11,301 [P5440/D2/T12] INFO  Umbraco.Core.PluginManager - Completed resolution of types of umbraco.interfaces.IApplication, found 0 (took 21ms)
  2015-10-15 16:23:05,696 [P5440/D2/T7] INFO  umbraco.BusinessLogic.Log - Log scrubbed.  Removed all items older than 2015-10-14 16:23:05
+ 2015-10-15 16:23:53,422 [P5440/D2/T23] INFO  Umbraco.Core.PluginManager - Starting resolution types of Umbraco.Web.Trees.TreeController
+ 2015-10-15 16:23:53,422 [P5440/D2/T23] INFO  Umbraco.Core.PluginManager - Completed resolution of types of Umbraco.Web.Trees.TreeController, found 0 (took 2ms)
+ 2015-10-15 16:23:54,902 [P5440/D2/T24] WARN  Umbraco.Web.UmbracoModule - Status code is 404 yet TrySkipIisCustomErrors is false - IIS will take over.

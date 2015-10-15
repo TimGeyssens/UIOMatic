@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using UIOMatic.Interfaces;
 using Umbraco.Core.Persistence;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
@@ -19,8 +20,9 @@ namespace UIOMatic.Controllers
 
         public IEnumerable<object> GetAllObjects(string typeName, string sortColumn, string sortOrder)
         {
-            var ctrl = new PetaPocoObjectController();
-            return ctrl.GetAll(typeName,sortColumn,sortOrder);
+            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetAll(typeName, sortColumn, sortOrder);
+
         }
     }
 }
