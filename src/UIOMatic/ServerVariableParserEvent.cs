@@ -27,7 +27,7 @@ namespace UIOMatic
             var urlHelper = new UrlHelper(new RequestContext(new HttpContextWrapper(HttpContext.Current), new RouteData()));
 
             var mainDictionary = new Dictionary<string, object>();
-            mainDictionary.Add("ppcBaseUrl", urlHelper.GetUmbracoApiServiceBaseUrl<PetaPocoObjectController>(controller => controller.PostCreate(null)));
+            mainDictionary.Add("ocBaseUrl", urlHelper.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.PostCreate(null)));
             mainDictionary.Add("pecBaseUrl", urlHelper.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller => controller.GetAllTypes()));
 
             if (!e.Keys.Contains("uioMatic"))

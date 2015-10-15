@@ -259,6 +259,8 @@
     <Compile Include="Atributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Atributes\UIOMaticIgnoreFieldAttribute.cs" />
     <Compile Include="Atributes\UIOMaticIgnoreFromListViewAttribute.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Controllers\ObjectController.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
     <Compile Include="Controllers\PropertyEditorsApiController.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />
@@ -431,6 +433,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.type.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\UIOMatic\UIOMatic.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

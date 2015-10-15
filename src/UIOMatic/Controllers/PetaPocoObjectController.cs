@@ -18,7 +18,7 @@ using Umbraco.Core;
 
 namespace UIOMatic.Controllers
 {
-    [PluginController("UIOMatic")]
+    
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
 

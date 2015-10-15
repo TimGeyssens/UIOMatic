@@ -15,6 +15,8 @@ namespace UIOMatic.Interfaces
 
         IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName);
 
+        UIOMaticTypeInfo GetType(string typeName);
+
         Object GetById(string typeName, int id);
 
         Object PostCreate(ExpandoObject objectToCreate);

@@ -74,6 +74,7 @@
   </baseType>
   <baseType type="Umbraco.Web.WebApi.UmbracoApiController" resolutionType="FindAllTypes">
     <add type="Example.Controllers.ExampleApiController, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <add type="UIOMatic.Controllers.ObjectController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <add type="UIOMatic.Controllers.PetaPocoObjectController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <add type="UIOMatic.Controllers.PropertyEditorsApiController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <add type="UIOMatic.Trees.UIOMaticTreeController, UIOMatic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />

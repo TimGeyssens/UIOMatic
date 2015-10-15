@@ -6,37 +6,37 @@
 	                sortColumn = "";
 	            if (sortOrder == undefined)
 	                sortOrder = "";
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "GetAll?typeName=" + type + "&sortColumn=" + sortColumn + "&sortOrder="+sortOrder);
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeName=" + type + "&sortColumn=" + sortColumn + "&sortOrder="+sortOrder);
 	        },
 	        getAllProperties: function (type) {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "GetAllProperties?typeName=" + type);
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type);
 	        },
 	        getById: function (type, id) {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "GetById?typeName=" + type + "&id=" + id);
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetById?typeName=" + type + "&id=" + id);
 	        },
 	        getType: function(type) {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "GetType?typeName=" + type);
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetType?typeName=" + type);
 	        },
 	        create: function (type, object) {
 	            var item = {};
 	            item.typeOfObject = type;
 	            item.objectToCreate = object;
-	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "PostCreate", angular.toJson(item));
+	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "PostCreate", angular.toJson(item));
 	        },
 	        update: function (type, object) {
 	            var item = {};
 	            item.typeOfObject = type;
 	            item.objectToUpdate = object;
-	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "PostUpdate", angular.toJson(item));
+	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "PostUpdate", angular.toJson(item));
 	        },
 	        deleteByIds: function (type, idsArr) {
-	            return $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "DeleteByIds?typeOfObject=" + type + "&ids=" + idsArr.join(','));
+	            return $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "DeleteByIds?typeOfObject=" + type + "&ids=" + idsArr.join(','));
 	        },
 	        validate: function (type, object) {
 	            var item = {};
 	            item.typeOfObject = type;
 	            item.objectToValidate = object;
-	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ppcBaseUrl + "Validate", angular.toJson(item));
+	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "Validate", angular.toJson(item));
 	        }
 	    };
 	});
