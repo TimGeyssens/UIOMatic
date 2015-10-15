@@ -73,8 +73,7 @@ namespace UIOMatic.Controllers
             var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
             foreach (var prop in currentType.GetProperties())
             {
-                if (prop.Name != "UmbracoTreeNodeName")
-                {
+               
                     var attris = prop.GetCustomAttributes();
 
                     if (attris.All(x => x.GetType() != typeof (UIOMaticIgnoreFieldAttribute)))
@@ -87,10 +86,7 @@ namespace UIOMatic.Controllers
                                     attris.SingleOrDefault(x => x.GetType() == typeof (UIOMaticFieldAttribute));
 
                             var key = prop.Name;
-                            //if (attris.Any(x=> x.GetType() == typeof(ColumnAttribute)))
-                            //    key = ((ColumnAttribute)
-                            //        attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
-
+                          
                             string view = attri.GetView();
                             if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
@@ -111,10 +107,7 @@ namespace UIOMatic.Controllers
                         else
                         {
                             var key = prop.Name;
-                            //if (attris.Any(x => x.GetType() == typeof(ColumnAttribute)))
-                            //    key = ((ColumnAttribute)
-                            //        attris.SingleOrDefault(x => x.GetType() == typeof(ColumnAttribute))).Name;
-
+                           
                             string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
                             if(prop.PropertyType == typeof(bool))
                                 view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
@@ -134,7 +127,7 @@ namespace UIOMatic.Controllers
                         }
                     }
 
-                }
+                
             }
 
         }
@@ -243,14 +236,7 @@ namespace UIOMatic.Controllers
                 {
 
                     var propKey = prop.Key;
-                    //foreach (var proper in currentType.GetProperties())
-                    //{
-                    //    foreach (var attri in proper.GetCustomAttributes())
-                    //    {
-                    //        if (attri.GetType() == typeof (ColumnAttribute) && ((ColumnAttribute) attri).Name == propKey)
-                    //            propKey = proper.Name;
-                    //    }
-                    //}
+                   
                     PropertyInfo propI = currentType.GetProperty(propKey);
                     Helper.SetValue(ob, propI.Name, prop.Value);
 
@@ -283,14 +269,7 @@ namespace UIOMatic.Controllers
             foreach (var prop in objectToUpdate)
             {
                 var propKey = prop.Key;
-                //foreach (var proper in currentType.GetProperties())
-                //{
-                //    foreach (var attri in proper.GetCustomAttributes())
-                //    {
-                //        if (attri.GetType() == typeof(ColumnAttribute) && ((ColumnAttribute)attri).Name == propKey)
-                //            propKey = proper.Name;
-                //    }
-                //}
+               
                 PropertyInfo propI = currentType.GetProperty(propKey);
                 if (propI != null)
                 {
@@ -365,12 +344,6 @@ namespace UIOMatic.Controllers
             foreach (var prop in currentType.GetProperties())
             {
                 var propKey = prop.Name;
-                
-
-                //foreach (var attri in prop.GetCustomAttributes().Where(attri => attri.GetType() == typeof (ColumnAttribute)))
-                //{
-                //    propKey = ((ColumnAttribute) attri).Name;
-                //}
                 
 
                 if (values.ContainsKey(propKey))
