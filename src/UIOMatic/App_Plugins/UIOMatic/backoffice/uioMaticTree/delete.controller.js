@@ -2,7 +2,9 @@
 .controller("uioMatic.ObjectDeleteController",
 	function ($scope, uioMaticObjectResource, navigationService, treeService) {
 	    $scope.delete = function (type, id) {
-	        uioMaticObjectResource.deleteById(type, id).then(function () {
+	        var arr = [];
+	        arr.push(id);
+	        uioMaticObjectResource.deleteByIds(type, arr).then(function () {
 	            treeService.removeNode($scope.currentNode);
 	            navigationService.hideNavigation();
 	            
