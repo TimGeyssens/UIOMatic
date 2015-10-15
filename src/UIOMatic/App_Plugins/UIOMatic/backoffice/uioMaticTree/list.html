@@ -29,6 +29,12 @@
                             </a>
                         </div>
 
+                        <div class="btn-group" ng-show="isAnythingSelected()" >
+                            <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
+                                <localize key="actions_delete">Delete</localize>
+                            </a>
+                        </div>
+
                         <form class="form-search pull-right ng-pristine ng-valid" novalidate="">
                             <div class="inner-addon left-addon">
                                 <i class="icon icon-search"></i>
@@ -41,7 +47,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td style="width: 80px"></td>
+                                <td></td>
                                 <td ng-repeat="col in cols">
                                     <a href="" ng-click="order(col)">{{col}}</a>
 
@@ -49,8 +55,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse">
-                                    <td style="width: 80px"><a ng-click="delete(row)">Delete</a></td>
+                                <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse" ng-class="{selected: isRowSelected(row)}">
+                                    <td>
+                                        <i class="icon icon-edit"></i>
+                                        <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
+                                    </td>
                                     <td ng-repeat="column in cols ">
                                         <div ng-switch="$index == 0 || ($index == 1 && cols[0] == primaryKeyColumnName)">
                                             <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>

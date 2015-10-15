@@ -21,7 +21,7 @@ namespace UIOMatic.Interfaces
 
         Object PostUpdate(ExpandoObject objectToUpdate);
 
-        int DeleteById(string typeOfObject, int id);
+        int[] DeleteByIds(string typeOfObject, string ids);
 
         IEnumerable<Exception> Validate(ExpandoObject objectToValidate);
     }

@@ -311,7 +311,7 @@ namespace UIOMatic.Controllers
             return ob;
         }
 
-        public int DeleteById(string typeOfObject, int id)
+        public int[] DeleteByIds(string typeOfObject, string ids)
         {
             var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
@@ -336,8 +336,17 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            return db.Delete(tableName, primaryKeyTable, null, id);
-
+            // TODO: Delete with one SQL statement?
+            var deletedIds = new List<int>();
+            foreach (var idStr in ids.Split(','))
+            {
+                var id = 0;
+                if (int.TryParse(idStr, out id))
+                {
+                    deletedIds.Add(db.Delete(tableName, primaryKeyTable, null, id));
+                }
+            }
+            return deletedIds.ToArray();
         }
 
         [HttpPost]
