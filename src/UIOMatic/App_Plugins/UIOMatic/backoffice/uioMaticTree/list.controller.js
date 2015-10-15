@@ -10,9 +10,9 @@
         //});
 
         uioMaticObjectResource.getType($scope.typeName).then(function (response) {
-            //.replace('"', '').replace('"', '').replace(' ', '_') nasty hack to allo columns with a space
-            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
-            $scope.predicate = response.data.PrimaryKeyColumnName.replace('"', '').replace('"', '').replace(' ', '_');
+            //.replace(' ', '_') nasty hack to allow columns with a space
+            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
+            $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
 
             uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
