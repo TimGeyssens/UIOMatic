@@ -16,9 +16,11 @@
 
             uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
                 $scope.rows = resp.data;
-                $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
-                    return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
-                });
+                if ($scope.rows.length > 0) {
+                    $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
+                        return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
+                    });
+                }
             });
 
         });
