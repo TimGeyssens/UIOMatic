@@ -49,8 +49,8 @@
                             <tr>
                                 <td></td>
                                 <td ng-repeat="col in cols">
-                                    <a href="" ng-click="order(col)">{{col}}</a>
-
+                                    <a href="" class="sortable" ng-click="order(col)">{{col}}</a>
+                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
                                 </td>
                             </tr>
                             </thead>
