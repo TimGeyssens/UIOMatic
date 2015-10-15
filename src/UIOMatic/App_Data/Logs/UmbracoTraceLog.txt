@@ -1003,3 +1003,5 @@ System.Web.Mvc.HttpAntiForgeryException (0x80004005): The anti-forgery token cou
  2015-10-15 17:10:53,664 [P2104/D2/T58] INFO  Umbraco.Core.Logging.OwinLogger - Event Id: 0, state: User logged will be logged out due to timeout: tim@nibble.be, IP Address: ::1
  2015-10-15 17:16:27,781 [P2104/D2/T70] INFO  Umbraco.Core.Security.BackOfficeSignInManager - Event Id: 0, state: Login attempt succeeded for username tim@nibble.be from IP address ::1
  2015-10-15 17:47:49,713 [P2104/D2/T56] INFO  Umbraco.Core.Logging.OwinLogger - Event Id: 0, state: User logged will be logged out due to timeout: tim@nibble.be, IP Address: ::1
+ 2015-10-15 18:08:56,395 [P2104/D2/T6] INFO  Umbraco.Core.Security.BackOfficeSignInManager - Event Id: 0, state: Login attempt succeeded for username tim@nibble.be from IP address ::1
+ 2015-10-15 18:28:27,894 [P2104/D2/T46] INFO  Umbraco.Core.Logging.OwinLogger - Event Id: 0, state: User logged will be logged out due to timeout: tim@nibble.be, IP Address: ::1
