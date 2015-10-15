@@ -295,14 +295,18 @@ namespace UIOMatic.Controllers
             var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
             
-            var primaryKeyTable = string.Empty;
+            var primaryKeyColum = string.Empty;
+
+            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            if (primKeyAttri.Any())
+                primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
             foreach (var prop in currentType.GetProperties())
             {
                 foreach (var attri in prop.GetCustomAttributes(true))
                 {
                     if (attri.GetType() == typeof (PrimaryKeyColumnAttribute))
-                        primaryKeyTable = ((PrimaryKeyColumnAttribute)attri).Name ?? prop.Name;
+                        primaryKeyColum = ((PrimaryKeyColumnAttribute)attri).Name ?? prop.Name;
 
                 }
                 
@@ -322,7 +326,7 @@ namespace UIOMatic.Controllers
                 var id = 0;
                 if (int.TryParse(idStr, out id))
                 {
-                    deletedIds.Add(db.Delete(tableName, primaryKeyTable, null, id));
+                    deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
                 }
             }
             return deletedIds.ToArray();
