@@ -252,7 +252,27 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            db.Save(ob);
+            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+
+            var primaryKeyColum = string.Empty;
+
+            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            if (primKeyAttri.Any())
+                primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+            foreach (var prop in currentType.GetProperties())
+            {
+                foreach (var attri in prop.GetCustomAttributes(true))
+                {
+                    if (attri.GetType() == typeof(PrimaryKeyColumnAttribute))
+                        primaryKeyColum = ((PrimaryKeyColumnAttribute)attri).Name ?? prop.Name;
+
+                }
+
+
+            }
+
+            db.Save(tableName,primaryKeyColum,ob);
 
             return ob;
 
@@ -287,7 +307,27 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            db.Update(ob);
+            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+
+            var primaryKeyColum = string.Empty;
+
+            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            if (primKeyAttri.Any())
+                primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+            foreach (var prop in currentType.GetProperties())
+            {
+                foreach (var attri in prop.GetCustomAttributes(true))
+                {
+                    if (attri.GetType() == typeof(PrimaryKeyColumnAttribute))
+                        primaryKeyColum = ((PrimaryKeyColumnAttribute)attri).Name ?? prop.Name;
+
+                }
+
+
+            }
+
+            db.Save(tableName, primaryKeyColum, ob);
 
             return ob;
         }
