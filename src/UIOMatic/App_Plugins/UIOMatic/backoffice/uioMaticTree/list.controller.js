@@ -5,21 +5,30 @@
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
+        $scope.currentPage = 1;
+        $scope.itemsPerPage = 25;
+        $scope.totalPages = 1;
+        
+        function fetchData() {
+            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage).then(function (resp) {
+                console.log(resp.data);
+                $scope.rows = resp.data.Items;
+                $scope.totalPages = resp.data.TotalPages;
 
-        uioMaticObjectResource.getType($scope.typeName).then(function (response) {
-            //.replace(' ', '_') nasty hack to allow columns with a space
-            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
-            $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
-            $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
-
-            uioMaticObjectResource.getAll($scope.typeName).then(function (resp) {
-                $scope.rows = resp.data;
                 if ($scope.rows.length > 0) {
                     $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
                         return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
                     });
                 }
             });
+        }
+        uioMaticObjectResource.getType($scope.typeName).then(function (response) {
+            //.replace(' ', '_') nasty hack to allow columns with a space
+            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
+            $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
+            $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
+
+            fetchData();
 
         });
 
@@ -66,4 +75,27 @@
             return $scope.selectedIds.length > 0;
         }
 
+        $scope.getNumber = function (num) {
+            return new Array(num);
+        }
+
+        $scope.prevPage = function () {
+            if ($scope.currentPage > 1) {
+                $scope.currentPage--;
+                fetchData();
+            }
+        };
+
+        $scope.nextPage = function () {
+            if ($scope.currentPage < $scope.totalPages) {
+                $scope.currentPage++;
+                fetchData();
+            }
+        };
+
+        $scope.setPage = function (pageNumber) {
+            console.log(pageNumber);
+            $scope.currentPage = pageNumber;
+            fetchData();
+        };
     });

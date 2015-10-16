@@ -55,19 +55,34 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse" ng-class="{selected: isRowSelected(row)}">
-                                    <td style="width:35px">
-                                        <i class="icon icon-edit"></i>
-                                        <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
-                                    </td>
-                                    <td ng-repeat="column in cols ">
-                                        <div ng-switch="$index == 0 || ($index == 1 && cols[0] == primaryKeyColumnName)">
-                                            <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
-                                            <span ng-switch-when="false">{{row[column]}}</span>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse" ng-class="{selected: isRowSelected(row)}">
+                                <td style="width: 35px">
+                                    <i class="icon icon-edit"></i>
+                                    <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
+                                </td>
+                                <td ng-repeat="column in cols ">
+                                    <div ng-switch="$index == 0 || ($index == 1 && cols[0] == primaryKeyColumnName)">
+                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
+                                        <span ng-switch-when="false">{{row[column]}}</span>
+                                    </div>
+                                </td>
+                            </tr>
                             </tbody>
+                            <tfoot>
+                            <td colspan="6">
+                                <div class="pagination pull-right">
+                                    <ul>
+                                        <li ng-class="{disabled: currentPage == 1}">
+                                            <a href ng-click="prevPage()">« Prev</a>
+                                        </li>
+                                        <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)"><span>{{$index+1}}</span></li>
+                                        <li ng-class="{disabled: currentPage == totalPages}">
+                                            <a href ng-click="nextPage()">Next »</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                            </tfoot>
                         </table>
                         </div>
                     </div>
