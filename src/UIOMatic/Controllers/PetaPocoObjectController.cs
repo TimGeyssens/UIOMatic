@@ -80,8 +80,25 @@ namespace UIOMatic.Controllers
 
             var query = new Sql().Select("*").From(tableName.Value);
 
-            if(!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
                 query.OrderBy(sortColumn + " " + sortOrder);
+            else
+            {
+                var primaryKeyColum = "id";
+
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                foreach (var property in currentType.GetProperties())
+                {
+                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                    if (keyAttri.Any())
+                        primaryKeyColum = property.Name;
+                }
+
+                query.OrderBy(primaryKeyColum + " asc");
+            }
 
             foreach (dynamic item in db.Page<dynamic>(pageNumber, itemsPerPage, query).Items)
             {

@@ -18,6 +18,12 @@ namespace UIOMatic.Controllers
             return ((IUIOMaticObjectController) ctrl).GetAll(typeName, sortColumn, sortOrder);
         }
 
+        public IEnumerable<object> GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder)
+        {
+            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetPaged(typeName,itemsPerPage,pageNumber, sortColumn, sortOrder);
+        }
+
         public IEnumerable<Models.UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
             object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);

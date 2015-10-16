@@ -2,6 +2,7 @@
 	.factory("uioMaticObjectResource", function ($http) {
 	    return {
 	        getAll: function (type, sortColumn, sortOrder) {
+	            //return this.getPaged(type, 1, 1, sortColumn, sortOrder);
 	            if (sortColumn == undefined)
 	                sortColumn = "";
 	            if (sortOrder == undefined)
@@ -13,7 +14,7 @@
 	                sortColumn = "";
 	            if (sortOrder == undefined)
 	                sortOrder = "";
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeName=" + type + "&itemsPerPage="+itemsPerPage+"&pageNumber="+pageNumber+"&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder);
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeName=" + type + "&itemsPerPage="+itemsPerPage+"&pageNumber="+pageNumber+"&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder);
 	        },
 	        getAllProperties: function (type) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type);
