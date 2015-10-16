@@ -8,6 +8,13 @@
 	                sortOrder = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeName=" + type + "&sortColumn=" + sortColumn + "&sortOrder="+sortOrder);
 	        },
+	        getPaged: function(type, itemsPerPage, pageNumber, sortColumn, sortOrder) {
+	            if (sortColumn == undefined)
+	                sortColumn = "";
+	            if (sortOrder == undefined)
+	                sortOrder = "";
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeName=" + type + "&itemsPerPage="+itemsPerPage+"&pageNumber="+pageNumber+"&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder);
+	        },
 	        getAllProperties: function (type) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type);
 	        },
