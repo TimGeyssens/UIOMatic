@@ -267,6 +267,7 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectController.cs" />
+    <Compile Include="Models\UIOMaticPagedResult.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />
     <Compile Include="Models\UIOMaticTypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

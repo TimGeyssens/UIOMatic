@@ -14,56 +14,56 @@ namespace UIOMatic.Controllers
     {
         public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController) ctrl).GetAll(typeName, sortColumn, sortOrder);
         }
 
-        public IEnumerable<object> GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder)
+        public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetPaged(typeName,itemsPerPage,pageNumber, sortColumn, sortOrder);
         }
 
         public IEnumerable<Models.UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController) ctrl).GetAllProperties(typeName);
         }
 
         public UIOMaticTypeInfo GetType(string typeName)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetType(typeName);
 
         }
 
         public object GetById(string typeName, int id)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetById(typeName, id);
         }
 
         public object PostCreate(System.Dynamic.ExpandoObject objectToCreate)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).PostCreate(objectToCreate);
         }
 
         public object PostUpdate(System.Dynamic.ExpandoObject objectToUpdate)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).PostUpdate(objectToUpdate);
         }
 
         public int[] DeleteByIds(string typeOfObject, string ids)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).DeleteByIds(typeOfObject,ids);
         }
 
         public IEnumerable<Exception> Validate(System.Dynamic.ExpandoObject objectToValidate)
         {
-            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).Validate(objectToValidate);
         }
     }

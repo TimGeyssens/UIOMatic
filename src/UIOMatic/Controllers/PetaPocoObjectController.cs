@@ -67,7 +67,7 @@ namespace UIOMatic.Controllers
             
         }
 
-        public IEnumerable<object> GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
+        public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
             string sortOrder)
         {
             var currentType = Type.GetType(typeName);
@@ -100,7 +100,17 @@ namespace UIOMatic.Controllers
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
-            foreach (dynamic item in db.Page<dynamic>(pageNumber, itemsPerPage, query).Items)
+            var p = db.Page<dynamic>(pageNumber, itemsPerPage, query);
+            var result = new UIOMaticPagedResult
+            {
+                CurrentPage = p.CurrentPage,
+                ItemsPerPage = p.ItemsPerPage,
+                TotalItems = p.TotalItems,
+                TotalPages = p.TotalPages
+            };
+            var items  = new List<object>();
+
+            foreach (dynamic item in p.Items)
             {
                 // get settable public properties of the type
                 var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -123,8 +133,10 @@ namespace UIOMatic.Controllers
                     prop.SetValue(obj, values[propName]);
                 }
 
-                yield return obj;
+                items.Add(obj);
             }
+            result.Items = items;
+            return result;
         }
         public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
