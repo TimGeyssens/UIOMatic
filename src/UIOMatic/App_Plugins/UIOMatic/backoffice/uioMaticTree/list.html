@@ -55,7 +55,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="row in rows | filter: searchFilter | orderBy:predicate:reverse" ng-class="{selected: isRowSelected(row)}">
+                            <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
                                 <td style="width: 35px">
                                     <i class="icon icon-edit"></i>
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
