@@ -68,20 +68,22 @@
                                 </td>
                             </tr>
                             </tbody>
-                            <tfoot>
-                            <td colspan="5">
-                                <div class="pagination pagination-right">
-                                    <ul>
-                                        <li ng-class="{disabled: currentPage == 1}">
-                                            <a href ng-click="prevPage()">Prev</a>
-                                        </li>
-                                        <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)"><span>{{$index+1}}</span></li>
-                                        <li ng-class="{disabled: currentPage == totalPages}">
-                                            <a href ng-click="nextPage()">Next</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
+                            <tfoot ng-show="totalPages > 1">
+                                <tr>
+                                    <th colspan="5">
+                                        <div class="pagination pagination-right">
+                                            <ul>
+                                                <li ng-class="{disabled: currentPage == 1}">
+                                                    <a href ng-click="prevPage()">Prev</a>
+                                                </li>
+                                                <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)"><span>{{$index+1}}</span></li>
+                                                <li ng-class="{disabled: currentPage == totalPages}">
+                                                    <a href ng-click="nextPage()">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </th>
+                                </tr>
                             </tfoot>
                         </table>
                         </div>
