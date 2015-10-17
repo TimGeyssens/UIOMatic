@@ -9,8 +9,11 @@
         $scope.itemsPerPage = 10;
         $scope.totalPages = 1;
         
-        function fetchData(sortColumn, sortOrder) {
-            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage,sortColumn,sortOrder).then(function (resp) {
+        $scope.reverse = false;
+
+
+        function fetchData() {
+            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc").then(function (resp) {
                 console.log(resp.data);
                 $scope.rows = resp.data.Items;
                 $scope.totalPages = resp.data.TotalPages;
@@ -33,12 +36,11 @@
         });
 
 
-        $scope.reverse = true;
         $scope.order = function (predicate) {
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
             $scope.currentPage = 1;
-            fetchData(predicate, $scope.reverse ? "desc" : "asc");
+            fetchData();
         };
 
         $scope.getObjectKey = function (object) {
