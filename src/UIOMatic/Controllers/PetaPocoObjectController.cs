@@ -90,8 +90,15 @@ namespace UIOMatic.Controllers
                         string b = "WHERE";
                         if (c > 0)
                             b = "OR";
-                            
-                        query.Append(b+" [" + property.Name + "] like @"+c, "%"+searchTerm+"%");
+
+                        var columnAttri =
+                           property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                        var columnName = property.Name;
+                        if (columnAttri.Any())
+                            columnName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+
+                        query.Append(b + " [" + columnName + "] like @" + c, "%" + searchTerm + "%");
                         c++;
 
                     }
