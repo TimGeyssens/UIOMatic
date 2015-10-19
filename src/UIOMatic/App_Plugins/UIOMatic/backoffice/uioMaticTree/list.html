@@ -38,7 +38,7 @@
                         <form class="form-search pull-right ng-pristine ng-valid" novalidate="">
                             <div class="inner-addon left-addon">
                                 <i class="icon icon-search"></i>
-                                <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="">
+                                <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
                             </div>
                         </form>
 
@@ -55,7 +55,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="row in rows | filter: searchFilter" ng-class="{selected: isRowSelected(row)}">
+                            <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
                                 <td style="width: 35px">
                                     <i class="icon icon-edit"></i>
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>

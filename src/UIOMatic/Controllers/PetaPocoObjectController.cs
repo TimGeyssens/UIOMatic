@@ -68,7 +68,7 @@ namespace UIOMatic.Controllers
         }
 
         public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
-            string sortOrder)
+            string sortOrder, string searchTerm)
         {
             var currentType = Type.GetType(typeName);
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
@@ -80,6 +80,23 @@ namespace UIOMatic.Controllers
 
             var query = new Sql().Select("*").From(tableName.Value);
 
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                int c = 0;
+                foreach (var property in currentType.GetProperties())
+                {
+                    if (property.PropertyType == typeof (string))
+                    {
+                        string b = "WHERE";
+                        if (c > 0)
+                            b = "OR";
+                            
+                        query.Append(b+" [" + property.Name + "] like @"+c, "%"+searchTerm+"%");
+                        c++;
+
+                    }
+                }
+            }
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
                 query.OrderBy(sortColumn + " " + sortOrder);
             else

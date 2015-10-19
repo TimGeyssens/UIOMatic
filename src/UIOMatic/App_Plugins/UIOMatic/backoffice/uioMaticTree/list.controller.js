@@ -11,10 +11,12 @@
         
         $scope.reverse = false;
 
+        $scope.searchTerm = "";
 
         function fetchData() {
-            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc").then(function (resp) {
-                console.log(resp.data);
+            
+            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", $scope.searchTerm).then(function (resp) {
+               
                 $scope.rows = resp.data.Items;
                 $scope.totalPages = resp.data.TotalPages;
 
@@ -100,6 +102,11 @@
         $scope.setPage = function (pageNumber) {
             console.log(pageNumber);
             $scope.currentPage = pageNumber;
+            fetchData();
+        };
+
+        $scope.search = function(searchFilter) {
+            $scope.searchTerm = searchFilter;
             fetchData();
         };
     });

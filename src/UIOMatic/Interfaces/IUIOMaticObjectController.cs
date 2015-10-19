@@ -14,7 +14,7 @@ namespace UIOMatic.Interfaces
         IEnumerable<Object> GetAll(string typeName,string sortColumn, string sortOrder);
 
         UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
-            string sortOrder);
+            string sortOrder, string searchTerm);
 
         IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName);
 
