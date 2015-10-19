@@ -15,6 +15,18 @@
                     view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
                 },
 				{
+					label: "Value column",
+					description: "Column that holds the value you wish to store",
+					key: "valueColumn",
+					view: "requiredfield",
+                    validation: [
+                        {
+                            type: "Required" 
+                        }                        
+                    ]
+
+				},
+				{
                     label: "Object text template",
                     description: "Enter the text template aka FirstName + ' ' + LastName ",
                     key: "objectTemplate",
