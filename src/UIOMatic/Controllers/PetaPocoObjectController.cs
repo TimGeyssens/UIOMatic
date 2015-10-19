@@ -87,9 +87,9 @@ namespace UIOMatic.Controllers
                 {
                     if (property.PropertyType == typeof (string))
                     {
-                        string b = "WHERE";
+                        string before = "WHERE";
                         if (c > 0)
-                            b = "OR";
+                            before = "OR";
 
                         var columnAttri =
                            property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
@@ -98,7 +98,7 @@ namespace UIOMatic.Controllers
                         if (columnAttri.Any())
                             columnName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
 
-                        query.Append(b + " [" + columnName + "] like @" + c, "%" + searchTerm + "%");
+                        query.Append(before + " [" + columnName + "] like @0", "%" + searchTerm + "%");
                         c++;
 
                     }
