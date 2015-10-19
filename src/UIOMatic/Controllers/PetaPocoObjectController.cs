@@ -85,8 +85,8 @@ namespace UIOMatic.Controllers
                 int c = 0;
                 foreach (var property in currentType.GetProperties())
                 {
-                    if (property.PropertyType == typeof (string))
-                    {
+                    //if (property.PropertyType == typeof (string))
+                    //{
                         string before = "WHERE";
                         if (c > 0)
                             before = "OR";
@@ -101,7 +101,7 @@ namespace UIOMatic.Controllers
                         query.Append(before + " [" + columnName + "] like @0", "%" + searchTerm + "%");
                         c++;
 
-                    }
+                    //}
                 }
             }
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
