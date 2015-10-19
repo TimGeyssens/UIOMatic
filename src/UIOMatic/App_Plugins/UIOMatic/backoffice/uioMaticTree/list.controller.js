@@ -107,6 +107,7 @@
 
         $scope.search = function(searchFilter) {
             $scope.searchTerm = searchFilter;
+            $scope.currentPage = 1;
             fetchData();
         };
     });
