@@ -229,6 +229,26 @@ namespace UIOMatic.Controllers
 
         }
 
+        public IEnumerable<string> GetAllColumns(string typeName)
+        {
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
+            foreach (var prop in currentType.GetProperties())
+            {
+                var attris = prop.GetCustomAttributes();
+
+                if (attris.All(x => x.GetType() != typeof (IgnoreAttribute)))
+                {
+                    string colName = prop.Name;
+
+                    if(attris.Any(x => x.GetType() == typeof (ColumnAttribute)))
+                        colName = ((ColumnAttribute) attris.First(x => x.GetType() == typeof (ColumnAttribute))).Name;
+
+                    yield return colName;
+                }
+            }
+
+        }
         public UIOMaticTypeInfo GetType(string typeName)
         {
             var currentType = Type.GetType(typeName);

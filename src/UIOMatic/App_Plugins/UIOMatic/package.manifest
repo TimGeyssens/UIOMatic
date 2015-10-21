@@ -36,7 +36,7 @@
                     label: "Column to sort on",
                     description: "Enter the column name to sort on",
                     key: "sortColumn",
-                    view: "textstring"                       
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.html"                      
                 },
 				{
                     label: "Sort order",
@@ -63,6 +63,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js'
 		
     ]

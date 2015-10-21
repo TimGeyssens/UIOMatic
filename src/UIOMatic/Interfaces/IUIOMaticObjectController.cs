@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace UIOMatic.Interfaces
             string sortOrder, string searchTerm);
 
         IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool includeIgnored = false);
+
+        IEnumerable<string> GetAllColumns(string typeName);
 
         UIOMaticTypeInfo GetType(string typeName);
 

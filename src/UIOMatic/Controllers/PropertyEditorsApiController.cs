@@ -35,10 +35,7 @@ namespace UIOMatic.Controllers
         public IEnumerable<string> GetAllColumns(string typeName)
         {
             object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            foreach (var prop in ctrl.GetType().GetProperties())
-            {
-                yield return prop.Name;
-            }
+            return ((IUIOMaticObjectController)ctrl).GetAllColumns(typeName);
         }
     }
 }
