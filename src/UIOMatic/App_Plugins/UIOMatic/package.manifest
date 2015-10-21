@@ -15,16 +15,11 @@
                     view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
                 },
 				{
-					label: "Value column",
-					description: "Column that holds the value you wish to store",
+					label: "Value property",
+					description: "Property that holds the value you wish to store",
 					key: "valueColumn",
-					view: "requiredfield",
-                    validation: [
-                        {
-                            type: "Required" 
-                        }                        
-                    ]
-
+					view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.html"
+                    
 				},
 				{
                     label: "Object text template",
@@ -67,6 +62,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.media.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js'
 		
     ]

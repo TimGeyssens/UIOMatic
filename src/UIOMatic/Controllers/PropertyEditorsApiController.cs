@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using UIOMatic.Interfaces;
+using UIOMatic.Models;
 using Umbraco.Core.Persistence;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
@@ -23,6 +24,21 @@ namespace UIOMatic.Controllers
             object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetAll(typeName, sortColumn, sortOrder);
 
+        }
+
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        {
+            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName,true);
+        }
+
+        public IEnumerable<string> GetAllColumns(string typeName)
+        {
+            object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            foreach (var prop in ctrl.GetType().GetProperties())
+            {
+                yield return prop.Name;
+            }
         }
     }
 }

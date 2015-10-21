@@ -162,7 +162,7 @@ namespace UIOMatic.Controllers
             result.Items = items;
             return result;
         }
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool includeIgnored = false)
         {
             var ar = typeName.Split(',');
             var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
@@ -171,7 +171,7 @@ namespace UIOMatic.Controllers
                
                     var attris = prop.GetCustomAttributes();
 
-                    if (attris.All(x => x.GetType() != typeof (UIOMaticIgnoreFieldAttribute)))
+                    if (includeIgnored || attris.All(x => x.GetType() != typeof(UIOMaticIgnoreFieldAttribute)))
                     {
 
                         if (attris.Any(x => x.GetType() == typeof (UIOMaticFieldAttribute)))
