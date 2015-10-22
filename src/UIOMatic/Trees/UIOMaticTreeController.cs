@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Web;
 using umbraco;
 using umbraco.BusinessLogic.Actions;
-using UIOMatic.Atributes;
+using UIOMatic.Attributes;
 using UIOMatic.Controllers;
 using UIOMatic.Interfaces;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
