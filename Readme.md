@@ -71,6 +71,9 @@ Will generate the following UI
 
 For docs please go to[ http://uiomatic.readthedocs.org/](http://uiomatic.readthedocs.org/)
 
+## Presentation ##
+For the quick intro check [http://slides.com/timgeyssens/uiomatic#/](http://slides.com/timgeyssens/uiomatic#/)
+
 ### Test site ###
 Backoffice credentials: 
 - tim@nibble.be / password
