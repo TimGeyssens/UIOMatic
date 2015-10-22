@@ -10,7 +10,7 @@
             fields: [
                 {
                     label: "Type of object",
-                    description: "Select the type of object",
+                    description: "Select the type of object (reload the page after selecting to populate dropdowns)",
                     key: "typeName",
                     view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
                 },
