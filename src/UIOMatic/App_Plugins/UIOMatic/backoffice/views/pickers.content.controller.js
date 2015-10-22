@@ -1,45 +1,49 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.Pickers.ContentController",
-	function ($scope, $routeParams, dialogService, entityResource, iconHelper) {
+    function ($scope, $routeParams, $http, dialogService, entityResource, iconHelper) {
 
-	if (!$scope.setting) {
-	    $scope.setting = {};
-	}
+        function init() {
+            if (!$scope.setting) {
+                $scope.setting = {};
+            }
 
+            var val = parseInt($scope.property.Value);
 
-	var val = parseInt($scope.property.Value);
+            if (!isNaN(val) && angular.isNumber(val)) {
+                $scope.showQuery = false;
 
+                entityResource.getById(val, "Document").then(function (item) {
+                    item.icon = iconHelper.convertFromLegacyIcon(item.icon);
+                    $scope.node = item;
+                });
+            }
 
-	if (!isNaN(val) && angular.isNumber(val)) {
-	    $scope.showQuery = false;
+            $scope.openContentPicker = function () {
+                var d = dialogService.treePicker({
+                    section: "content",
+                    treeAlias: "content",
+                    multiPicker: false,
+                    callback: populate
+                });
+            };
 
-	    entityResource.getById($scope.property.Value, "Document").then(function (item) {
-	        item.icon = iconHelper.convertFromLegacyIcon(item.icon);
-	        $scope.node = item;
-	    });
-	} 
+            $scope.clear = function () {
+                $scope.id = undefined;
+                $scope.node = undefined;
+                $scope.property.Value = undefined;
+            };
 
-	$scope.openContentPicker = function () {
-	    var d = dialogService.treePicker({
-	        section: "content",
-	        treeAlias: "content",
-	        multiPicker: false,
-	        callback: populate
-	    });
-	};
+            function populate(item) {
+                $scope.clear();
+                item.icon = iconHelper.convertFromLegacyIcon(item.icon);
+                $scope.node = item;
+                $scope.id = item.id;
+                $scope.property.Value = item.id;
+            }
+        };
 
+        init();
 
-	$scope.clear = function () {
-	    $scope.id = undefined;
-	    $scope.node = undefined;
-	    $scope.property.Value = undefined;
-	};
-
-	function populate(item) {
-	    $scope.clear();
-	    item.icon = iconHelper.convertFromLegacyIcon(item.icon);
-	    $scope.node = item;
-	    $scope.id = item.id;
-	    $scope.property.Value = item.id;
-	}
-
-});
+        $scope.$on('ValuesLoaded', function (event, data) {
+            init();
+        });
+    });
