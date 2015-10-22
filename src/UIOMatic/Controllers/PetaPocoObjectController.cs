@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
-using UIOMatic.Atributes;
+using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 using Umbraco.Core.Persistence;

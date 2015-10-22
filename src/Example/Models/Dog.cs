@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UIOMatic.Atributes;
+using UIOMatic.Attributes;
 using UIOMatic.Enums;
 using UIOMatic.Interfaces;
 using Umbraco.Core.Persistence;

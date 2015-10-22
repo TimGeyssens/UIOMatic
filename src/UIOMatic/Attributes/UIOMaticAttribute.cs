@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using UIOMatic.Enums;
 
-namespace UIOMatic.Atributes
+namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class UIOMaticAttribute : Attribute
