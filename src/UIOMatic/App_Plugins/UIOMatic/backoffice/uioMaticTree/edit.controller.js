@@ -31,7 +31,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                }
 	            }
 	        }, tabsArr);
-	        $scope.content = { tabs: tabsArr };
+	        if (tabsArr.length > 1 && tabsArr[0].id != 99) {
+	            $scope.content = { tabs: tabsArr };
+	        }
 	        
 
 	        if (isNaN($routeParams.id.split("?")[0])) {

@@ -27,13 +27,18 @@
                 {{properties | json}}
                 <h1>Object</h1>
                 {{ object | json }}-->
-                <umb-tab ng-repeat="tab in content.tabs" id="tab{{tab.id}}" rel="{{tab.label}}">
+                <umb-tab ng-repeat="tab in content.tabs | filter:content.Tabs != null" id="tab{{tab.id}}" rel="{{tab.label}}">
                     <div class="umb-pane">
                         <umb-control-group ng-repeat="property in properties | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
                             <div ng-include="property.View"></div>
                         </umb-control-group>
                     </div>
                 </umb-tab>
+                <div class="umb-pane" ng-if="content.tabs == null">
+                    <umb-control-group ng-repeat="property in properties | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
+                        <div ng-include="property.View"></div>
+                    </umb-control-group>
+                </div>
                 <div class="umb-tab-buttons" detect-fold>
                     <div class="btn-group" ng-show="type.RenderType == 1">
                         <a class="btn" href="#/uiomatic/uioMaticTree/list/{{typeName}}">
