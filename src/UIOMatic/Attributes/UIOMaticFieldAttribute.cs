@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json.Linq;
 
-namespace UIOMatic.Atributes
+namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class UIOMaticFieldAttribute: Attribute

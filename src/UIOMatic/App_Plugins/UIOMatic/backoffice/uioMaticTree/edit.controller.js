@@ -48,6 +48,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.loaded = true;
 
 	                setValues();
+
+	                $scope.$broadcast('ValuesLoaded');
 	            });
 	        }
 	    });

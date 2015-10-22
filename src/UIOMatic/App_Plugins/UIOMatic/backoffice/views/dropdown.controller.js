@@ -3,11 +3,15 @@
         //example config
         //"{'typeName':'Example.Models.Person, Example', 'valueColumn': 'Id', 'textColumn'='FirstName'}"
 
-        uioMaticObjectResource.getAll($scope.property.Config.typeName, $scope.property.Config.textColumn, "asc").then(function(response) {
-            $scope.objects = response.data;
+        function init() {
+            uioMaticObjectResource.getAll($scope.property.Config.typeName, $scope.property.Config.textColumn, "asc").then(function (response) {
+                $scope.objects = response.data;
+            });
+        }
+
+        init();
+
+        $scope.$on('ValuesLoaded', function (event, data) {
+            init();
         });
-
-       
-
-
-});
+    });

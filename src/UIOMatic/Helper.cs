@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using UIOMatic.Atributes;
+using UIOMatic.Attributes;
 using Umbraco.Core.Persistence;
 
 namespace UIOMatic
