@@ -11,6 +11,8 @@ namespace UIOMatic.Attributes
     {
         public string Name { get; set; }
 
+        public string Tab { get; set; }
+
         public string Description { get; set; }
 
         public string View { get; set; }

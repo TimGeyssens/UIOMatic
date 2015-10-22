@@ -193,6 +193,7 @@ namespace UIOMatic.Controllers
                             {
                                 Key = key,
                                 Name = attri.Name,
+                                Tab = string.IsNullOrEmpty(attri.Tab) ? "Misc" : attri.Tab,
                                 Description = attri.Description,
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString() ,
@@ -215,6 +216,7 @@ namespace UIOMatic.Controllers
                             {
                                 Key = key,
                                 Name = prop.Name,
+                                Tab = "Misc",
                                 Description = string.Empty,
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString()

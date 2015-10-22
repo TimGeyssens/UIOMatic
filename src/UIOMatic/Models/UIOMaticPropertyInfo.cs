@@ -12,6 +12,8 @@ namespace UIOMatic.Models
         public string Key { get; set; }
         public string Name { get; set; }
 
+        public string Tab { get; set; }
+
         public string Description { get; set; }
 
         public string View { get; set; }
