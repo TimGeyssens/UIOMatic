@@ -20,6 +20,18 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    });
 	    uioMaticObjectResource.getAllProperties($scope.typeName).then(function (response) {
 	        $scope.properties = response.data;
+
+	        var tabsArr = [];
+	        angular.forEach(response.data, function (value, key) {
+	            if (this.map(function (e) { return e.label; }).indexOf(value.Tab) == -1) {
+	                if (value.Tab == "") {
+	                    this.push({ id: 99, label: "Misc" });
+	                } else {
+	                    this.push({ id: key, label: value.Tab });
+	                }
+	            }
+	        }, tabsArr);
+	        $scope.content = { tabs: tabsArr };
 	        
 
 	        if (isNaN($routeParams.id.split("?")[0])) {
