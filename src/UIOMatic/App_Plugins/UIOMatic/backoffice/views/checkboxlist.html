@@ -1,0 +1,13 @@
+﻿<div ng-controller="UIOMatic.Views.Checkboxlist">
+
+   
+    {{property.Value | json}}
+    <div ng-repeat="object in objects">
+        <label>
+            <input type="checkbox"
+                   ng-model="object.selected"
+                   ng-change="setValue()"
+                   value="{{object[property.Config.valueColumn]}}"> {{object[property.Config.textColumn]}}
+        </label>
+    </div>
+</div>
