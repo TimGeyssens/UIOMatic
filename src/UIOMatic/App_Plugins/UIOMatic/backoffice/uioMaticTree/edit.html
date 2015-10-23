@@ -7,8 +7,8 @@
         <umb-header tabs="content.tabs">
 
             <div class="span7">
-                <h1 ng-show="isNumber(id)">Object Editor</h1>
-                <h1 ng-hide="isNumber(id)">Object Creator</h1>
+                <h1 ng-show="editing">Object Editor</h1>
+                <h1 ng-hide="editing">Object Creator</h1>
             </div>
 
             <div class="span5">
@@ -47,10 +47,10 @@
                     </div>
 
                     <div class="btn-group">
-                        <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="isNumber(id)">
+                        <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="editing">
                             <localize key="buttons_save">Save</localize>
                         </button>
-                        <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="isNumber(id)">
+                        <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="editing">
                             Create
                         </button>
                     </div>

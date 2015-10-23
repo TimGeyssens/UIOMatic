@@ -7,6 +7,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	function ($scope, $routeParams, uioMaticObjectResource, notificationsService, navigationService) {
 
 	    $scope.loaded = false;
+	    $scope.editing = false;
+
 	    $scope.id = $routeParams.id.split("?")[0];
 
 	    $scope.typeName = "";
@@ -46,7 +48,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.object = response.data;
 
 	                $scope.loaded = true;
-
+	                $scope.editing = true;
 	                setValues();
 
 	                $scope.$broadcast('ValuesLoaded');
@@ -78,7 +80,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                } else {
 	                    uioMaticObjectResource.create($routeParams.id.split("?")[0], object).then(function (response) {
 	                        $scope.object = response.data;
-	                        $scope.id = $scope.object.Id;
+	                        $scope.editing = true;
 	                        $scope.objectForm.$dirty = false;
 	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been created");
