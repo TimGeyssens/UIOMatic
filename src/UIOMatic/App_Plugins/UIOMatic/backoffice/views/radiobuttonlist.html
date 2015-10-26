@@ -6,8 +6,7 @@
             <input type="radio"
                    ng-model="property.Value"
                    name="{{property.Key}}"
-                  
-                   value="{{object[property.Config.valueColumn]}}"> {{object[property.Config.textColumn]}}
+                   value="{{object[property.Config.valueColumn]}}"> {{parseTemplate(object)}}
         </label>
     </div>
 </div>

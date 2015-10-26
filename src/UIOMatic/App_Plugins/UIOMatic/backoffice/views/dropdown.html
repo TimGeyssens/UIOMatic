@@ -4,7 +4,7 @@
         <option ng-selected="{{object[property.Config.valueColumn] == property.Value}}"
                 ng-repeat="object in objects"
                 value="{{object[property.Config.valueColumn]}}">
-            {{object[property.Config.textColumn]}}
+            {{parseTemplate(object)}}
         </option>
     </select><br>
 </div>

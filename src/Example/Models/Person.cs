@@ -8,7 +8,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 namespace Example.Models
 {
 
-    [UIOMatic("People", "icon-users", "icon-user")]
+    [UIOMatic("People", "icon-users", "icon-user",SortColumn="FirstName")]
     [TableName("People")]
     public class Person : IUIOMaticModel
     {

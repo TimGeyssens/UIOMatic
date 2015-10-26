@@ -6,7 +6,7 @@
             <input type="checkbox"
                    ng-model="object.selected"
                    ng-change="setValue()"
-                   value="{{object[property.Config.valueColumn]}}"> {{object[property.Config.textColumn]}}
+                   value="{{object[property.Config.valueColumn]}}"> {{parseTemplate(object)}}
         </label>
     </div>
 </div>

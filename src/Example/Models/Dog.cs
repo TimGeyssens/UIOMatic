@@ -26,7 +26,7 @@ namespace Example.Models
 
 
         [UIOMaticField("Owner", "Select the owner of the dog", View = "dropdown",
-            Config = "{'typeName': 'Example.Models.Person, Example', 'valueColumn': 'Id', 'textColumn' : 'FirstName'}")]
+            Config = "{'typeName': 'Example.Models.Person, Example', 'valueColumn': 'Id', 'sortColumn': 'FirstName', 'textTemplate' : 'FirstName + \" \"+ LastName '}")]
         [UIOMaticIgnoreFromListView]
         public int OwnerId { get; set; }
 
