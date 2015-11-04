@@ -9,5 +9,7 @@ namespace UIOMatic.Models
         public string PrimaryKeyColumnName { get; set; }
 
         public string[] IgnoreColumnsFromListView { get; set; }
+
+        public string NameField { get; set; }
     }
 }

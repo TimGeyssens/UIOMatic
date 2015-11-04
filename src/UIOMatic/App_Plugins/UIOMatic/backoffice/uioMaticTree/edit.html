@@ -7,8 +7,13 @@
         <umb-header tabs="content.tabs">
 
             <div class="span7">
-                <h1 ng-show="editing">Object Editor</h1>
-                <h1 ng-hide="editing">Object Creator</h1>
+                <div ng-if="type.NameFieldIndex > -1">
+                    <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.NameFieldIndex].Value" />
+                </div>
+                <div ng-if="type.NameFieldIndex == -1">
+                    <h1 ng-show="isNumber(id)">Object Editor</h1>
+                    <h1 ng-hide="isNumber(id)">Object Creator</h1>
+                </div>
             </div>
 
             <div class="span5">
@@ -29,13 +34,13 @@
                 {{ object | json }}-->
                 <umb-tab ng-repeat="tab in content.tabs | filter:content.Tabs != null" id="tab{{tab.id}}" rel="{{tab.label}}">
                     <div class="umb-pane">
-                        <umb-control-group ng-repeat="property in properties | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
+                        <umb-control-group ng-repeat="property in properties | removeProperty:type.NameField | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
                             <div ng-include="property.View"></div>
                         </umb-control-group>
                     </div>
                 </umb-tab>
                 <div class="umb-pane" ng-if="content.tabs == null">
-                    <umb-control-group ng-repeat="property in properties | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
+                    <umb-control-group ng-repeat="property in properties | removeProperty:type.NameField | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
                         <div ng-include="property.View"></div>
                     </umb-control-group>
                 </div>

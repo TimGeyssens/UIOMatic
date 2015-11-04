@@ -260,6 +260,7 @@
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFromListViewAttribute.cs" />
+    <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />

@@ -32,6 +32,7 @@
             $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
+            $scope.nameField = response.data.NameField.replace(' ', '_');
 
             fetchData();
 
@@ -110,4 +111,13 @@
             $scope.currentPage = 1;
             fetchData();
         };
+
+        $scope.isColumnLinkable = function (column, index) {
+            if ($scope.nameField.length > 0) {
+                return column == $scope.nameField;
+            } else {
+                return index == 0
+                || (index == 1 && cols[0] == $scope.primaryKeyColumnName)
+            }
+        }
     });
