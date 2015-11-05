@@ -18,7 +18,7 @@ namespace Example.Models
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
 
-
+        [UIOMaticNameField]
         public string Name { get; set; }
 
         [UIOMaticField("Is castrated", "Has the dog been castrated")]

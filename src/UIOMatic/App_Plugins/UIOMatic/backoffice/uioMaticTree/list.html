@@ -61,7 +61,7 @@
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
                                 </td>
                                 <td ng-repeat="column in cols ">
-                                    <div ng-switch="$index == 0 || ($index == 1 && cols[0] == primaryKeyColumnName)">
+                                    <div ng-switch="isColumnLinkable(column)">
                                         <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
                                         <span ng-switch-when="false">{{row[column]}}</span>
                                     </div>
