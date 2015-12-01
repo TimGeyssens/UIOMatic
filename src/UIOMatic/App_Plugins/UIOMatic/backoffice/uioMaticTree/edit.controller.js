@@ -9,10 +9,12 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.loaded = false;
 	    $scope.editing = false;
 
+	    $isId = $routeParams.id.indexOf("?");
+
 	    $scope.id = $routeParams.id.split("?")[0];
 
 	    $scope.typeName = "";
-	    if (isNaN($routeParams.id.split("?")[0])) {
+	    if ($isId <= 0) {
 	        $scope.typeName = $routeParams.id;
 	    } else {
 	        $scope.typeName = $routeParams.id.split("=").slice(1).join('=');
@@ -41,7 +43,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            }
 
 
-	            if (isNaN($routeParams.id.split("?")[0])) {
+	            if ($isId <= 0) {
 	                $scope.object = {};
 	                $scope.loaded = true;
 	            }
@@ -63,7 +65,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    $scope.save = function (object) {
 
-	        if (isNaN($routeParams.id.split("?")[0])) {
+	        if ($isId <= 0) {
 
 	            angular.forEach($scope.properties, function (property) {
 	                var key = property.Key;
@@ -125,8 +127,23 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        
 	    };
 
+	    $scope.delete = function (object) {
+
+	        if ($isId > 0) {
+
+	            var arr = [];
+	            arr.push($scope.id);
+	            uioMaticObjectResource.deleteByIds(type, arr).then(function () {
+	                treeService.removeNode($scope.currentNode);
+	                navigationService.hideNavigation();
+
+	            });
+	        }
+
+	    };
+
 	    $scope.isNumber = function (n) {
-	        return !isNaN(parseFloat(n)) && isFinite(n);
+	        return true;
 	    }
 
 	    var setValues = function () {
