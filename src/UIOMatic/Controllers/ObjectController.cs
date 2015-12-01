@@ -37,7 +37,7 @@ namespace UIOMatic.Controllers
 
         }
 
-        public object GetById(string typeName, int id)
+        public object GetById(string typeName, string id)
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetById(typeName, id);
@@ -55,7 +55,7 @@ namespace UIOMatic.Controllers
             return ((IUIOMaticObjectController)ctrl).PostUpdate(objectToUpdate);
         }
 
-        public int[] DeleteByIds(string typeOfObject, string ids)
+        public string[] DeleteByIds(string typeOfObject, string ids)
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).DeleteByIds(typeOfObject,ids);
