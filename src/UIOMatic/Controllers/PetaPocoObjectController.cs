@@ -21,7 +21,9 @@ namespace UIOMatic.Controllers
     
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
-        public static event EventHandler<QueryEventArgs> BuildQuery;
+        public static event EventHandler<QueryEventArgs> BuildingQuery;
+        public static event EventHandler<QueryEventArgs> BuildedQuery;
+
         public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
             var currentType = Type.GetType(typeName);
@@ -80,6 +82,10 @@ namespace UIOMatic.Controllers
 
             var query = new Sql().Select("*").From(tableName.Value);
 
+            EventHandler<QueryEventArgs> tmp = BuildingQuery;
+            if (tmp != null)
+                tmp(this, new QueryEventArgs(tableName.Value, query));
+
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 int c = 0;
@@ -124,7 +130,7 @@ namespace UIOMatic.Controllers
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
-            EventHandler<QueryEventArgs> temp = BuildQuery;
+            EventHandler<QueryEventArgs> temp = BuildedQuery;
             if (temp != null)
                 temp(this, new QueryEventArgs(tableName.Value,query));
 
