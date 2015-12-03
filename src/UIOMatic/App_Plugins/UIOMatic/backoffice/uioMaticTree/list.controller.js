@@ -113,11 +113,13 @@
         };
 
         $scope.isColumnLinkable = function (column, index) {
+           
             if ($scope.nameField.length > 0) {
                 return column == $scope.nameField;
             } else {
+               
                 return index == 0
-                || (index == 1 && cols[0] == $scope.primaryKeyColumnName)
+                || (index == 1 && $scope.cols[0] == $scope.primaryKeyColumnName)
             }
         }
     });

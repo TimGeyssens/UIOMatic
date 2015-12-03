@@ -11,8 +11,8 @@
                     <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.NameFieldIndex].Value" />
                 </div>
                 <div ng-if="type.NameFieldIndex == -1">
-                    <h1 ng-show="isNumber(id)">Object Editor</h1>
-                    <h1 ng-hide="isNumber(id)">Object Creator</h1>
+                    <h1 ng-show="editing">Object Editor</h1>
+                    <h1 ng-hide="editing">Object Creator</h1>
                 </div>
             </div>
 

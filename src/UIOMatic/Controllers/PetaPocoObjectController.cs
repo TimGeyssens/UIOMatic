@@ -289,7 +289,7 @@ namespace UIOMatic.Controllers
             };
         }
 
-        public object GetById(string typeName, int id)
+        public object GetById(string typeName, string id)
         {
 
 
@@ -455,7 +455,7 @@ namespace UIOMatic.Controllers
             return ob;
         }
 
-        public int[] DeleteByIds(string typeOfObject, string ids)
+        public string[] DeleteByIds(string typeOfObject, string ids)
         {
             var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
@@ -484,17 +484,24 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            // TODO: Delete with one SQL statement?
-            var deletedIds = new List<int>();
-            foreach (var idStr in ids.Split(','))
-            {
-                var id = 0;
-                if (int.TryParse(idStr, out id))
-                {
-                    deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
-                }
-            }
-            return deletedIds.ToArray();
+            //// TODO: Delete with one SQL statement?
+            //var deletedIds = new List<string>();
+            //foreach (var idStr in ids.Split(','))
+            //{
+            //    var id = 0;
+            //    if (int.TryParse(idStr, out id))
+            //    {
+            //        deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
+            //    }
+            //}
+            //return deletedIds.ToArray();
+
+            string ids2var = "'" + ids.Replace(",", "','") + "'";
+            string DEL_SQL = @"Delete from {0} where {1} in ({2})";
+            DEL_SQL = string.Format(DEL_SQL, tableName, primaryKeyColum, ids2var);
+            db.Execute(DEL_SQL);
+
+           return ids.Split(',');
         }
 
         [HttpPost]

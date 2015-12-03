@@ -23,13 +23,13 @@ namespace UIOMatic.Interfaces
 
         UIOMaticTypeInfo GetType(string typeName);
 
-        Object GetById(string typeName, int id);
+        Object GetById(string typeName, string id);
 
         Object PostCreate(ExpandoObject objectToCreate);
 
         Object PostUpdate(ExpandoObject objectToUpdate);
 
-        int[] DeleteByIds(string typeOfObject, string ids);
+        string[] DeleteByIds(string typeOfObject, string ids);
 
         IEnumerable<Exception> Validate(ExpandoObject objectToValidate);
     }

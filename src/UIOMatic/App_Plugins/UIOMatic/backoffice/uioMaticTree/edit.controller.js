@@ -9,10 +9,12 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.loaded = false;
 	    $scope.editing = false;
 
+	    $isId = $routeParams.id.indexOf("?");
+
 	    $scope.id = $routeParams.id.split("?")[0];
 
 	    $scope.typeName = "";
-	    if (isNaN($routeParams.id.split("?")[0])) {
+	    if ($isId <= 0) {
 	        $scope.typeName = $routeParams.id;
 	    } else {
 	        $scope.typeName = $routeParams.id.split("=").slice(1).join('=');
@@ -41,7 +43,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            }
 
 
-	            if (isNaN($routeParams.id.split("?")[0])) {
+	            if ($isId <= 0) {
 	                $scope.object = {};
 	                $scope.loaded = true;
 	            }
@@ -59,11 +61,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            }
 	        });
 	    });
-	    
+
 
 	    $scope.save = function (object) {
 
-	        if (isNaN($routeParams.id.split("?")[0])) {
+	        if ($isId <= 0) {
 
 	            angular.forEach($scope.properties, function (property) {
 	                var key = property.Key;
@@ -72,11 +74,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	            });
 
-	            uioMaticObjectResource.validate($routeParams.id.split("?")[0], object).then(function(resp) {
+	            uioMaticObjectResource.validate($routeParams.id.split("?")[0], object).then(function (resp) {
 
 	                if (resp.data.length > 0) {
 	                    angular.forEach(resp.data, function (error) {
-	                        
+
 	                        notificationsService.error("Failed to create object", error.Message);
 	                    });
 	                } else {
@@ -89,7 +91,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    });
 	                }
 
-	                
+
 	            });
 	        } else {
 
@@ -109,8 +111,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                        notificationsService.error("Failed to update object", error.Message);
 	                    });
 
-	                }else
-	                {
+	                } else {
 	                    uioMaticObjectResource.update($routeParams.id.split("=")[1], object).then(function (response) {
 	                        //$scope.object = response.data;
 	                        $scope.objectForm.$dirty = false;
@@ -118,53 +119,64 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                        notificationsService.success("Success", "Object has been saved");
 	                    });
 	                }
-	                
+
 
 	            });
 	        }
-	        
+
 	    };
 
-	    $scope.isNumber = function (n) {
-	        return !isNaN(parseFloat(n)) && isFinite(n);
-	    }
+	    $scope.delete = function (object) {
+
+	        if ($isId > 0) {
+
+	            var arr = [];
+	            arr.push($scope.id);
+	            uioMaticObjectResource.deleteByIds(type, arr).then(function () {
+	                treeService.removeNode($scope.currentNode);
+	                navigationService.hideNavigation();
+
+	            });
+	        }
+
+	    };
 
 	    var setValues = function () {
-            
-	           
-	            for (var theKey in $scope.object) {
-	                
-	                if ($scope.object.hasOwnProperty(theKey)) {
 
-	                    if (_.where($scope.properties, { Key: theKey }).length > 0) {
-	                     
-	                        //_.where($scope.properties, { Key: theKey }).Value = "test";
-	                        //_.where($scope.properties, { Key: theKey }).Value = $scope.object[theKey];
 
-	                        for (var prop in $scope.properties) {
-	                            if ($scope.properties[prop].Key == theKey) {
-	                                if ($scope.properties[prop].Type == "System.DateTime") {
-	                                    var date = moment($scope.object[theKey]).format("YYYY-MM-DD HH:mm:ss");
-	                                    $scope.properties[prop].Value = date;
-	                                } else {
-	                                    $scope.properties[prop].Value = $scope.object[theKey];
-	                                }
+	        for (var theKey in $scope.object) {
+
+	            if ($scope.object.hasOwnProperty(theKey)) {
+
+	                if (_.where($scope.properties, { Key: theKey }).length > 0) {
+
+	                    //_.where($scope.properties, { Key: theKey }).Value = "test";
+	                    //_.where($scope.properties, { Key: theKey }).Value = $scope.object[theKey];
+
+	                    for (var prop in $scope.properties) {
+	                        if ($scope.properties[prop].Key == theKey) {
+	                            if ($scope.properties[prop].Type == "System.DateTime") {
+	                                var date = moment($scope.object[theKey]).format("YYYY-MM-DD HH:mm:ss");
+	                                $scope.properties[prop].Value = date;
+	                            } else {
+	                                $scope.properties[prop].Value = $scope.object[theKey];
 	                            }
 	                        }
 	                    }
-
 	                }
+
 	            }
+	        }
 
 	    };
 
-	    
+
 	}).filter("removeProperty", function () {
 	    return function (input, propertyKey) {
 	        if (propertyKey == null || propertyKey == "")
 	            return input;
 
-	        return input.filter(function(property) {
+	        return input.filter(function (property) {
 	            return property.Key != propertyKey;
 	        });
 	    }

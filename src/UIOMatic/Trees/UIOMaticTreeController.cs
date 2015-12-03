@@ -54,7 +54,7 @@ namespace UIOMatic.Trees
                             attri.Name,
                             attri.FolderIcon,
                             false,
-                            "uiomatic/uioMaticTree/list/"+type.AssemblyQualifiedName);
+                            "uiomatic/uioMaticTree/list/" + type.AssemblyQualifiedName);
 
                         nodes.Add(node);
                     }
@@ -74,21 +74,29 @@ namespace UIOMatic.Trees
                 var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
                 var itemIdPropName = "Id";
-                foreach (var property in currentType.GetProperties())
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                if (string.IsNullOrWhiteSpace(itemIdPropName))
                 {
-                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
-                    if (keyAttri.Any())
+                    foreach (var property in currentType.GetProperties())
                     {
-                        var columnAttri =
-                            property.GetCustomAttributes().Where(x => x.GetType() == typeof (ColumnAttribute));
-                        itemIdPropName =property.Name;
+                        var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                        if (keyAttri.Any())
+                        {
+                            var columnAttri =
+                                property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+                            itemIdPropName = property.Name;
+                        }
                     }
                 }
 
-                foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn,attri.SortOrder))
+
+                foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn, attri.SortOrder))
                 {
 
-                   
+
                     var node = CreateTreeNode(
                         item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
                         id,
@@ -115,21 +123,22 @@ namespace UIOMatic.Trees
             if (id == "-1")
             {
                 // root actions              
-               
+
                 menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
                 return menu;
             }
             else
             {
-                var idInt = 0;
-                if (int.TryParse(id.Split('?')[0], out idInt))
+                //var idInt = 0;
+
+                if (id.IndexOf("?") > 0)
                     menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
                 else
                 {
                     menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
-                    menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias),true);
+                    menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
                 }
-                    
+
 
             }
             return menu;

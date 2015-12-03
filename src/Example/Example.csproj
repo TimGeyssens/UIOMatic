@@ -260,6 +260,7 @@
     <Compile Include="Controllers\ExampleApiController.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Test.cs" />
     <Compile Include="Models\umbracoLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
