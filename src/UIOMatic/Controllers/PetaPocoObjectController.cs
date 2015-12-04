@@ -38,13 +38,16 @@ namespace UIOMatic.Controllers
             var query = new Sql().Select("*").From(strTableName);
 
             string strSortColumn = sortColumn;
-            if (strSortColumn.IndexOf("[") < 0)
-            {
-                strSortColumn = "[" + strSortColumn + "]";
-            }
 
             if (!string.IsNullOrEmpty(strSortColumn) && !string.IsNullOrEmpty(sortOrder))
+            {
                 query.OrderBy(strSortColumn + " " + sortOrder);
+
+                if (strSortColumn.IndexOf("[") < 0)
+                {
+                    strSortColumn = "[" + strSortColumn + "]";
+                }
+            }
 
             foreach (dynamic item in db.Fetch<dynamic>(query))
             {
@@ -542,7 +545,7 @@ namespace UIOMatic.Controllers
 
 
             }
-
+            ((IUIOMaticModel)ob).SetDefaultValue();
             db.Save(tableName, primaryKeyColum, ob);
             //db.Save(ob);
             //db.Update(ob);
