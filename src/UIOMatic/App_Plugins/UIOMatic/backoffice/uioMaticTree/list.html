@@ -70,7 +70,7 @@
                             </tbody>
                             <tfoot ng-show="totalPages > 1">
                                 <tr>
-                                    <th colspan="5">
+                                    <th colspan="{{cols.length + 1}}">
                                         <div class="pagination pagination-right">
                                             <ul>
                                                 <li ng-class="{disabled: currentPage == 1}">
