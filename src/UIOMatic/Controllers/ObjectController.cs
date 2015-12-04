@@ -15,7 +15,7 @@ namespace UIOMatic.Controllers
         public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController) ctrl).GetAll(typeName, sortColumn, sortOrder);
+            return ((IUIOMaticObjectController)ctrl).GetAll(typeName, sortColumn, sortOrder);
         }
 
         public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
@@ -24,10 +24,10 @@ namespace UIOMatic.Controllers
             return ((IUIOMaticObjectController)ctrl).GetPaged(typeName, itemsPerPage, pageNumber, sortColumn, sortOrder, searchTerm);
         }
 
-        public IEnumerable<Models.UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        public IEnumerable<Models.UIOMaticPropertyInfo> GetAllProperties(string typeName, bool isEdit)
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController) ctrl).GetAllProperties(typeName);
+            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName, isEdit);
         }
 
         public UIOMaticTypeInfo GetType(string typeName)
@@ -58,7 +58,7 @@ namespace UIOMatic.Controllers
         public string[] DeleteByIds(string typeOfObject, string ids)
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).DeleteByIds(typeOfObject,ids);
+            return ((IUIOMaticObjectController)ctrl).DeleteByIds(typeOfObject, ids);
         }
 
         public IEnumerable<Exception> Validate(System.Dynamic.ExpandoObject objectToValidate)

@@ -19,11 +19,13 @@ namespace UIOMatic.Attributes
 
         public string Config { get; set; }
 
+        public bool IsCanEdit { get; set; }
+
         public UIOMaticFieldAttribute(string name, string description)
         {
             this.Name = name;
             this.Description = description;
-
+            IsCanEdit = true;
             this.View = "textfield";
         }
 

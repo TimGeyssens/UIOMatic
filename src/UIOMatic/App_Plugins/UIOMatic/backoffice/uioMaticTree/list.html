@@ -4,7 +4,7 @@
     <umb-header>
 
         <div class="span7">
-            <h1>Object List</h1>
+            <h1>{{displayname}}</h1>
         </div>
 
         <div class="span5">
@@ -24,7 +24,7 @@
                    
                     <div class="umb-sub-header">
                         <div class="btn-group">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
+                            <a class="btn btn-default" role="button" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
                                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
                             </a>
                         </div>
@@ -74,11 +74,11 @@
                                         <div class="pagination pagination-right">
                                             <ul>
                                                 <li ng-class="{disabled: currentPage == 1}">
-                                                    <a href ng-click="prevPage()">Prev</a>
+                                                    <a href="" ng-click="prevPage()">Prev</a>
                                                 </li>
                                                 <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)"><span>{{$index+1}}</span></li>
                                                 <li ng-class="{disabled: currentPage == totalPages}">
-                                                    <a href ng-click="nextPage()">Next</a>
+                                                    <a href="" ng-click="nextPage()">Next</a>
                                                 </li>
                                             </ul>
                                         </div>

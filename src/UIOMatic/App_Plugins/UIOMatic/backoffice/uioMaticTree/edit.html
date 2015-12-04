@@ -11,16 +11,16 @@
                     <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.NameFieldIndex].Value" />
                 </div>
                 <div ng-if="type.NameFieldIndex == -1">
-                    <h1 ng-show="isNumber(id)">Object Editor</h1>
-                    <h1 ng-hide="isNumber(id)">Object Creator</h1>
+                    <h1 ng-show="isNumber(id)">Edit {{displayname}} </h1>
+                    <h1 ng-hide="isNumber(id)">Create {{displayname}}</h1>
                 </div>
             </div>
-
             <div class="span5">
                 <div class="btn-toolbar pull-right umb-btn-toolbar">
                     <umb-options-menu ng-show="currentNode"
                                       current-node="currentNode"
-                                      current-section="{{currentSection}}">
+                                      current-section="{{currentSection
+}}">
                     </umb-options-menu>
                 </div>
             </div>

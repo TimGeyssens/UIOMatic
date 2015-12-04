@@ -8,5 +8,6 @@ namespace UIOMatic.Interfaces
     public interface IUIOMaticModel
     {
         IEnumerable<Exception> Validate();
+        void SetDefaultValue();
     }
 }

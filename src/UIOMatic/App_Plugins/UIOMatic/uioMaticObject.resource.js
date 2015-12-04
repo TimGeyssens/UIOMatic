@@ -16,8 +16,8 @@
 	                sortOrder = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeName=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&searchTerm=" + searchTerm);
 	        },
-	        getAllProperties: function (type) {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type);
+	        getAllProperties: function (type,isedit) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type + "&isEdit=" + isedit);
 	        },
 	        getById: function (type, id) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetById?typeName=" + type + "&id=" + id);

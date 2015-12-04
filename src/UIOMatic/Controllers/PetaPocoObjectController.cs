@@ -103,6 +103,11 @@ namespace UIOMatic.Controllers
                     if (columnAttri.Any())
                         columnName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
 
+                    if (string.IsNullOrWhiteSpace(columnName))
+                    {
+                        columnName = property.Name;
+                    }
+
                     query.Append(before + " [" + columnName + "] like @0", "%" + searchTerm + "%");
                     c++;
 
@@ -159,6 +164,10 @@ namespace UIOMatic.Controllers
                     var propName = prop.Name;
                     if (columnAttri.Any())
                         propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                    if (string.IsNullOrWhiteSpace(propName))
+                    {
+                        propName = prop.Name;
+                    }
                     prop.SetValue(obj, values[propName]);
                 }
 
@@ -167,7 +176,7 @@ namespace UIOMatic.Controllers
             result.Items = items;
             return result;
         }
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool includeIgnored = false)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool isEdit, bool includeIgnored = false)
         {
             var ar = typeName.Split(',');
             var currentType = Type.GetType(ar[0] + ", " + ar[1]);
@@ -194,6 +203,10 @@ namespace UIOMatic.Controllers
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/datetime.html";
                         if ((prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) && attri.View == "textfield")
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
+                        if (!attri.IsCanEdit && isEdit)
+                        {
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/label.html";
+                        }
                         var pi = new UIOMaticPropertyInfo
                         {
                             Key = key,
@@ -290,7 +303,8 @@ namespace UIOMatic.Controllers
                 RenderType = uioMaticAttri.RenderType,
                 PrimaryKeyColumnName = primaryKey,
                 IgnoreColumnsFromListView = ignoreColumnsFromListView.ToArray(),
-                NameField = nameField
+                NameField = nameField,
+                DisplayName = uioMaticAttri.Name
             };
         }
 
@@ -448,6 +462,7 @@ namespace UIOMatic.Controllers
 
                 }
             }
+            ((IUIOMaticModel)ob).SetDefaultValue();
             db.Insert(ob);
             //db.Save(tableName, primaryKeyColum, ob);
 
