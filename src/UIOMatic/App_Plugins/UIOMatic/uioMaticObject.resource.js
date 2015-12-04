@@ -9,6 +9,14 @@
 	                sortOrder = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeName=" + type + "&sortColumn=" + sortColumn + "&sortOrder="+sortOrder);
 	        },
+	        getFiltered: function (type,filterColumn, filterValue, sortColumn, sortOrder) {
+
+	            if (sortColumn == undefined)
+	                sortColumn = "";
+	            if (sortOrder == undefined)
+	                sortOrder = "";
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFiltered?typeName=" + type + "&filterColumn=" + filterColumn + "&filterValue=" + filterValue + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder);
+	        },
 	        getPaged: function(type, itemsPerPage, pageNumber, sortColumn, sortOrder,searchTerm) {
 	            if (sortColumn == undefined)
 	                sortColumn = "";

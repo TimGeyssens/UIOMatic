@@ -70,6 +70,7 @@ namespace UIOMatic
 
         public static object ChangeType(object value, Type type)
         {
+            if (value == null && type.IsInterface) return null;
             if (value == null && type.IsGenericType) return Activator.CreateInstance(type);
             if (value == null) return null;
             if (type == value.GetType()) return value;

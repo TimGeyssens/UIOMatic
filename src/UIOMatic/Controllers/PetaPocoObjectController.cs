@@ -59,7 +59,8 @@ namespace UIOMatic.Controllers
                     var propName = prop.Name;
                     if (columnAttri.Any())
                         propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
-                    prop.SetValue(obj, values[propName]);
+                    if(values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
                 }
 
                 yield return obj;
@@ -348,7 +349,8 @@ namespace UIOMatic.Controllers
                 var propName = prop.Name;
                 if (columnAttri.Any())
                     propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
-                prop.SetValue(obj, values[propName]);
+                if(values.ContainsKey(propName))
+                    prop.SetValue(obj, values[propName]);
             }
 
             return obj;
@@ -468,7 +470,7 @@ namespace UIOMatic.Controllers
 
         public string[] DeleteByIds(string typeOfObject, string ids)
         {
-            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
+            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName.Contains(typeOfObject));
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
             
             var primaryKeyColum = string.Empty;
@@ -541,6 +543,51 @@ namespace UIOMatic.Controllers
                 
 
             return ((IUIOMaticModel) ob).Validate();
+        }
+
+        public IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            var currentType = Type.GetType(typeName);
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            var query = new Sql().Select("*").From(tableName.Value);
+
+            query.Append("where" + "[" + filterColumn + "] = @0", filterValue);
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+                query.OrderBy(sortColumn + " " + sortOrder);
+
+            foreach (dynamic item in db.Fetch<dynamic>(query))
+            {
+                // get settable public properties of the type
+                var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(x => x.GetSetMethod() != null);
+
+                // create an instance of the type
+                var obj = Activator.CreateInstance(currentType);
+
+
+                // set property values using reflection
+                var values = (IDictionary<string, object>)item;
+                foreach (var prop in props)
+                {
+                    var columnAttri =
+                           prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                    var propName = prop.Name;
+                    if (columnAttri.Any())
+                        propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                    if (values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
+                }
+
+                yield return obj;
+            }
         }
     }
 }

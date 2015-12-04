@@ -63,6 +63,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.member.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/checkboxlist.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/radiobuttonlist.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/list.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.controller.js',
