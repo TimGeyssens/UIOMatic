@@ -24,6 +24,12 @@ namespace UIOMatic.Controllers
         public static event EventHandler<QueryEventArgs> BuildingQuery;
         public static event EventHandler<QueryEventArgs> BuildedQuery;
 
+        public static event EventHandler<ObjectEventArgs> UpdatingObject;
+        public static event EventHandler<ObjectEventArgs> UpdatedObject;
+
+        public static event EventHandler<ObjectEventArgs> CreatingObject;
+        public static event EventHandler<ObjectEventArgs> CreatedObject;
+
         public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
             var currentType = Type.GetType(typeName);
@@ -408,7 +414,15 @@ namespace UIOMatic.Controllers
 
             }
 
+            EventHandler<ObjectEventArgs> temp = CreatingObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(ob));
+
             db.Save(tableName,primaryKeyColum,ob);
+
+            EventHandler<ObjectEventArgs> tmp = CreatedObject;
+            if (tmp != null)
+                tmp(this, new ObjectEventArgs(ob));
 
             return ob;
 
@@ -463,7 +477,17 @@ namespace UIOMatic.Controllers
 
             }
 
+            EventHandler<ObjectEventArgs> tmp = UpdatingObject;
+            if (tmp != null)
+                tmp(this, new ObjectEventArgs(ob));
+
+
             db.Save(tableName, primaryKeyColum, ob);
+
+            EventHandler<ObjectEventArgs> temp = UpdatedObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(ob));
+
 
             return ob;
         }
