@@ -40,7 +40,7 @@
 	<PropertyGroup>
 		<VersionMajor>1</VersionMajor>
 		<VersionMinor>4</VersionMinor>
-		<VersionPatch>1</VersionPatch>
+		<VersionPatch>2</VersionPatch>
 		<VersionSuffix></VersionSuffix>
 		<UmbracoVersion>7.0.0</UmbracoVersion>
 	</PropertyGroup>
