@@ -14,15 +14,20 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.id = $routeParams.id.split("?")[0];
 
 	    $scope.typeName = "";
+	    $scope.displayname = "";
+
 	    if ($isId <= 0) {
 	        $scope.typeName = $routeParams.id;
+	        $scope.editing = false;
 	    } else {
 	        $scope.typeName = $routeParams.id.split("=").slice(1).join('=');
+	        $scope.editing = true;
 	    }
 	    uioMaticObjectResource.getType($scope.typeName).then(function (response) {
 	        $scope.type = response.data;
+	        $scope.displayname = response.data.DisplayName;
 
-	        uioMaticObjectResource.getAllProperties($scope.typeName).then(function (response) {
+	        uioMaticObjectResource.getAllProperties($scope.typeName, $scope.editing).then(function (response) {
 	            $scope.properties = response.data;
 	            $scope.type.NameFieldIndex = $scope.type.NameField.length > 0
                     ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameField)
@@ -141,6 +146,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    };
 
+	    $scope.isNumber = function (n) {
+	        return $isId > 0;
+	    }
+
 	    var setValues = function () {
 
 
@@ -175,6 +184,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    return function (input, propertyKey) {
 	        if (propertyKey == null || propertyKey == "")
 	            return input;
+
+	        if (input == undefined)
+	            return;
 
 	        return input.filter(function (property) {
 	            return property.Key != propertyKey;

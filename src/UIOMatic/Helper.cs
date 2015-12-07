@@ -67,7 +67,6 @@ namespace UIOMatic
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
 
-
         public static object ChangeType(object value, Type type)
         {
             if (value == null && type.IsInterface) return null;

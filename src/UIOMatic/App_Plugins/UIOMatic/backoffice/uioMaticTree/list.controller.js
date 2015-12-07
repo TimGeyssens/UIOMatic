@@ -1,7 +1,7 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
     function($scope, $routeParams, uioMaticObjectResource) {
 
-        $scope.typeName = $routeParams.id;
+        $scope.typeName = encodeURI($routeParams.id);
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
@@ -12,6 +12,8 @@
         $scope.reverse = false;
 
         $scope.searchTerm = "";
+
+        $scope.displayname = "";
 
         function fetchData() {
             
@@ -33,7 +35,7 @@
             $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
             $scope.nameField = response.data.NameField.replace(' ', '_');
-
+            $scope.displayname = response.data.DisplayName;
             fetchData();
 
         });

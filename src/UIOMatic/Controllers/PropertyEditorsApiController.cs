@@ -26,10 +26,10 @@ namespace UIOMatic.Controllers
 
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName,bool isEdit)
         {
             object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName,true);
+            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName, isEdit, true);
         }
 
         public IEnumerable<string> GetAllColumns(string typeName)
