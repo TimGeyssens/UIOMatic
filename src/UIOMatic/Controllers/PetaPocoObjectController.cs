@@ -186,7 +186,9 @@ namespace UIOMatic.Controllers
                     var propName = prop.Name;
                     if (columnAttri.Any())
                         propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
-                    prop.SetValue(obj, values[propName]);
+
+                    if(values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
                 }
 
                 items.Add(obj);
