@@ -49,12 +49,14 @@ namespace UIOMatic.Controllers
 
             if (!string.IsNullOrEmpty(strSortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
-                query.OrderBy(strSortColumn + " " + sortOrder);
-
                 if (strSortColumn.IndexOf("[") < 0)
                 {
                     strSortColumn = "[" + strSortColumn + "]";
                 }
+
+                query.OrderBy(strSortColumn + " " + sortOrder);
+
+                
             }
 
             foreach (dynamic item in db.Fetch<dynamic>(query))
