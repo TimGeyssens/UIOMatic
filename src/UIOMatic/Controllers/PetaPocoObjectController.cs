@@ -320,7 +320,8 @@ namespace UIOMatic.Controllers
                 RenderType = uioMaticAttri.RenderType,
                 PrimaryKeyColumnName = primaryKey,
                 IgnoreColumnsFromListView = ignoreColumnsFromListView.ToArray(),
-                NameField = nameField
+                NameField = nameField,
+                ReadOnly = uioMaticAttri.ReadOnly
             };
         }
 

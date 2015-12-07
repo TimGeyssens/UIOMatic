@@ -11,5 +11,7 @@ namespace UIOMatic.Models
         public string[] IgnoreColumnsFromListView { get; set; }
 
         public string NameField { get; set; }
+
+        public bool ReadOnly { get; set; }
     }
 }

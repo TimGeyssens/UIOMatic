@@ -10,7 +10,7 @@ namespace UIOMatic.Attributes
     public class UIOMaticAttribute : Attribute
     {
         public string Name { get; set; }
-        public string   FolderIcon { get; set; }
+        public string FolderIcon { get; set; }
 
         public string ItemIcon { get; set; }
 
@@ -21,6 +21,8 @@ namespace UIOMatic.Attributes
 
         public string ConnectionStringName { get; set; }
 
+        public bool ReadOnly { get; set; }
+
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
             this.Name = name;
@@ -29,6 +31,8 @@ namespace UIOMatic.Attributes
 
             this.RenderType = UIOMaticRenderType.Tree;
             this.SortOrder = "asc";
+
+            this.ReadOnly = false;
         }
     }
 }

@@ -131,11 +131,23 @@ namespace UIOMatic.Trees
             {
                 //var idInt = 0;
 
+
+
                 if (id.IndexOf("?") > 0)
-                    menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+                {
+                    var currentType = Type.GetType(id.Split('?')[1].Replace("type=",""));
+                    var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+                    if (!attri.ReadOnly)
+                        menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+                }
                 else
                 {
-                    menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                    var currentType = Type.GetType(id);
+                    var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+                    if(!attri.ReadOnly)
+                        menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
                     menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
                 }
 

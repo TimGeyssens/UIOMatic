@@ -21,6 +21,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    }
 	    uioMaticObjectResource.getType($scope.typeName).then(function (response) {
 	        $scope.type = response.data;
+	        $scope.readOnly = response.data.ReadOnly;
 
 	        uioMaticObjectResource.getAllProperties($scope.typeName).then(function (response) {
 	            $scope.properties = response.data;

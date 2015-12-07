@@ -21,15 +21,15 @@
                 <div class="umb-pane">
 
 
-                   
+                 
                     <div class="umb-sub-header">
-                        <div class="btn-group">
+                        <div class="btn-group" ng-hide="readOnly">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
                                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
                             </a>
                         </div>
 
-                        <div class="btn-group" ng-show="isAnythingSelected()" >
+                        <div class="btn-group" ng-show="!readonly && isAnythingSelected()" >
                             <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
                                 <localize key="actions_delete">Delete</localize>
                             </a>
@@ -47,7 +47,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td style="width:35px"></td>
+                                <td style="width:35px" ng-hide="readOnly"></td>
                                 <td ng-repeat="col in cols">
                                     <a href="" class="sortable" ng-click="order(col)">{{col}}</a>
                                     <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
@@ -56,7 +56,7 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
-                                <td style="width: 35px">
+                                <td style="width: 35px" ng-hide="readOnly">
                                     <i class="icon icon-edit"></i>
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
                                 </td>

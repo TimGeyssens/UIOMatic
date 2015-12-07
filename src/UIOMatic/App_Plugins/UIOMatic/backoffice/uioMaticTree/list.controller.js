@@ -33,7 +33,7 @@
             $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
             $scope.nameField = response.data.NameField.replace(' ', '_');
-
+            $scope.readOnly = response.data.ReadOnly
             fetchData();
 
         });
