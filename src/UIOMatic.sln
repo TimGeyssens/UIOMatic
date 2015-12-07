@@ -1,8 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIOMatic", "UIOMatic\UIOMatic.csproj", "{729A028F-4CD9-4BC3-8C89-96A0C92F0F91}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6816AC31-9425-4DFF-A25A-1069C647EAD6}"

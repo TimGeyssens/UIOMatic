@@ -21,6 +21,14 @@ namespace UIOMatic.Controllers
 
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
+        public static event EventHandler<QueryEventArgs> BuildingQuery;
+        public static event EventHandler<QueryEventArgs> BuildedQuery;
+
+        public static event EventHandler<ObjectEventArgs> UpdatingObject;
+        public static event EventHandler<ObjectEventArgs> UpdatedObject;
+
+        public static event EventHandler<ObjectEventArgs> CreatingObject;
+        public static event EventHandler<ObjectEventArgs> CreatedObject;
 
         public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
@@ -75,6 +83,8 @@ namespace UIOMatic.Controllers
                     }
 
                     prop.SetValue(obj, values[propName]);
+                    if(values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
                 }
 
                 yield return obj;
@@ -96,6 +106,10 @@ namespace UIOMatic.Controllers
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
             var query = new Sql().Select("*").From(tableName.Value);
+
+            EventHandler<QueryEventArgs> tmp = BuildingQuery;
+            if (tmp != null)
+                tmp(this, new QueryEventArgs(tableName.Value, query));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -146,6 +160,10 @@ namespace UIOMatic.Controllers
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
+            EventHandler<QueryEventArgs> temp = BuildedQuery;
+            if (temp != null)
+                temp(this, new QueryEventArgs(tableName.Value,query));
+
             var p = db.Page<dynamic>(pageNumber, itemsPerPage, query);
             var result = new UIOMaticPagedResult
             {
@@ -188,7 +206,8 @@ namespace UIOMatic.Controllers
             result.Items = items;
             return result;
         }
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool isEdit, bool includeIgnored = false)
+
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool includeIgnored = false)
         {
             var ar = typeName.Split(',');
             var currentType = Type.GetType(ar[0] + ", " + ar[1]);
@@ -373,6 +392,8 @@ namespace UIOMatic.Controllers
                     propName = prop.Name;
                 }
                 prop.SetValue(obj, values[propName]);
+                if(values.ContainsKey(propName))
+                    prop.SetValue(obj, values[propName]);
             }
 
             return obj;
@@ -478,6 +499,16 @@ namespace UIOMatic.Controllers
             db.Insert(ob);
             //db.Save(tableName, primaryKeyColum, ob);
 
+            EventHandler<ObjectEventArgs> temp = CreatingObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(ob));
+
+            db.Save(tableName,primaryKeyColum,ob);
+
+            EventHandler<ObjectEventArgs> tmp = CreatedObject;
+            if (tmp != null)
+                tmp(this, new ObjectEventArgs(ob));
+
             return ob;
 
         }
@@ -546,15 +577,25 @@ namespace UIOMatic.Controllers
 
             }
             ((IUIOMaticModel)ob).SetDefaultValue();
+            EventHandler<ObjectEventArgs> tmp = UpdatingObject;
+            if (tmp != null)
+                tmp(this, new ObjectEventArgs(ob));
+
+
             db.Save(tableName, primaryKeyColum, ob);
             //db.Save(ob);
             //db.Update(ob);
+            EventHandler<ObjectEventArgs> temp = UpdatedObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(ob));
+
+
             return ob;
         }
 
         public string[] DeleteByIds(string typeOfObject, string ids)
         {
-            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
+            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName.Contains(typeOfObject));
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
 
             var primaryKeyColum = string.Empty;
@@ -581,22 +622,24 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            // TODO: Delete with one SQL statement?
+            //// TODO: Delete with one SQL statement?
+            //var deletedIds = new List<string>();
+            //foreach (var idStr in ids.Split(','))
+            //{
+            //    var id = 0;
+            //    if (int.TryParse(idStr, out id))
+            //    {
+            //        deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
+            //    }
+            //}
+            //return deletedIds.ToArray();
+
             string ids2var = "'" + ids.Replace(",", "','") + "'";
             string DEL_SQL = @"Delete from {0} where {1} in ({2})";
             DEL_SQL = string.Format(DEL_SQL, tableName, primaryKeyColum, ids2var);
             db.Execute(DEL_SQL);
-            ////db.Delete()
-            //var deletedIds = new List<string>();
-            //foreach (var idStr in ids.Split(','))
-            //{
-            //    var id = "0";
-            //    //if (int.TryParse(idStr, out id))
-            //    //{
-            //        deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
-            //    //}
-            //}
-            return ids.Split(',');
+
+           return ids.Split(',');
         }
 
         [HttpPost]
@@ -630,6 +673,51 @@ namespace UIOMatic.Controllers
         {
             var userService = ApplicationContext.Current.Services.UserService;
             return userService.GetByUsername(HttpContext.Current.User.Identity.Name).Id;
+        }
+
+        public IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            var currentType = Type.GetType(typeName);
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            var query = new Sql().Select("*").From(tableName.Value);
+
+            query.Append("where" + "[" + filterColumn + "] = @0", filterValue);
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+                query.OrderBy(sortColumn + " " + sortOrder);
+
+            foreach (dynamic item in db.Fetch<dynamic>(query))
+            {
+                // get settable public properties of the type
+                var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(x => x.GetSetMethod() != null);
+
+                // create an instance of the type
+                var obj = Activator.CreateInstance(currentType);
+
+
+                // set property values using reflection
+                var values = (IDictionary<string, object>)item;
+                foreach (var prop in props)
+                {
+                    var columnAttri =
+                           prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                    var propName = prop.Name;
+                    if (columnAttri.Any())
+                        propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                    if (values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
+                }
+
+                yield return obj;
+            }
         }
     }
 }
