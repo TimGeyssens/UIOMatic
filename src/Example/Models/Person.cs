@@ -8,7 +8,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 namespace Example.Models
 {
 
-    [UIOMatic("People", "icon-users", "icon-user",SortColumn="FirstName", RenderType =UIOMatic.Enums.UIOMaticRenderType.List)]
+    [UIOMatic("People", "icon-users", "icon-user",SortColumn="FirstName")]
     [TableName("People")]
     public class Person : IUIOMaticModel
     {
@@ -28,8 +28,8 @@ namespace Example.Models
         public string Picture { get; set; }
 
         [Ignore]
-        [UIOMaticField("Dogs", "Manage your pets", View ="list",
-            Config = "{'typeName': 'Example.Models.Dog, Example', 'foreignKeyColumn' : 'OwnerId'}")]
+        [UIOMaticField("Dogs", "", View ="list",
+            Config = "{'typeName': 'Example.Models.Dog, Example', 'foreignKeyColumn' : 'OwnerId', 'canEdit' : false}")]
         public IEnumerable<Dog> Dogs { get; set; } 
 
         public override string ToString()

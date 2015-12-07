@@ -5,6 +5,9 @@
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
+        $scope.canEdit = $scope.property.Config.canEdit != undefined ? $scope.property.Config.canEdit : true;
+
+
         function fetchData() {
             uioMaticObjectResource.getFiltered($scope.property.Config.typeName, $scope.property.Config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
                 $scope.rows = response.data;
