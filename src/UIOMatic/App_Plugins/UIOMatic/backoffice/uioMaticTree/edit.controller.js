@@ -14,11 +14,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.id = $routeParams.id.split("?")[0];
 
 	    $scope.typeName = "";
-<<<<<<< HEAD
 	    $scope.displayname = "";
 
-=======
->>>>>>> refs/remotes/TimGeyssens/master
 	    if ($isId <= 0) {
 	        $scope.typeName = $routeParams.id;
 	        $scope.editing = false;
@@ -148,13 +145,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        }
 
 	    };
-<<<<<<< HEAD
 
 	    $scope.isNumber = function (n) {
 	        return $isId > 0;
 	    }
-=======
->>>>>>> refs/remotes/TimGeyssens/master
 
 	    var setValues = function () {
 
@@ -191,14 +185,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        if (propertyKey == null || propertyKey == "")
 	            return input;
 
-<<<<<<< HEAD
 	        if (input == undefined)
 	            return;
 
-	        return input.filter(function(property) {
-=======
 	        return input.filter(function (property) {
->>>>>>> refs/remotes/TimGeyssens/master
 	            return property.Key != propertyKey;
 	        });
 	    }

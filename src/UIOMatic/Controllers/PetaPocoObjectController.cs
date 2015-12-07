@@ -82,7 +82,7 @@ namespace UIOMatic.Controllers
                         propName = prop.Name;
                     }
 
-                    prop.SetValue(obj, values[propName]);
+                    //prop.SetValue(obj, values[propName]);
                     if(values.ContainsKey(propName))
                         prop.SetValue(obj, values[propName]);
                 }
@@ -391,7 +391,7 @@ namespace UIOMatic.Controllers
                 {
                     propName = prop.Name;
                 }
-                prop.SetValue(obj, values[propName]);
+                //prop.SetValue(obj, values[propName]);
                 if(values.ContainsKey(propName))
                     prop.SetValue(obj, values[propName]);
             }
@@ -415,31 +415,6 @@ namespace UIOMatic.Controllers
             {
                 var propKey = prop.Key;
                 PropertyInfo propI = currentType.GetProperty(propKey);
-                //object value
-                if (propI.GetCustomAttributes().Any(x => x.GetType() == typeof(UIOMaticIgnoreFieldAttribute)))
-                {
-                    switch (propI.Name.ToLower())
-                    {
-                        case "status":
-                            Helper.SetValue(ob, propI.Name, "1");
-                            continue;
-                        case "createddatetime":
-                            Helper.SetValue(ob, propI.Name, DateTime.Now);
-                            continue;
-                        case "createdby":
-                            Helper.SetValue(ob, propI.Name, GetCurrentUserId());
-                            continue;
-                        case "updateddatetime":
-                            Helper.SetValue(ob, propI.Name, DateTime.Now);
-                            continue;
-                        case "updatedby":
-                            Helper.SetValue(ob, propI.Name, GetCurrentUserId());
-                            continue;
-                        //break;
-                        default:
-                            break;
-                    }
-                }
                 if (prop.Value != null)
                 {
                     Helper.SetValue(ob, propI.Name, prop.Value);
@@ -495,15 +470,16 @@ namespace UIOMatic.Controllers
 
                 }
             }
-            ((IUIOMaticModel)ob).SetDefaultValue();
-            db.Insert(ob);
+            
+            
             //db.Save(tableName, primaryKeyColum, ob);
 
             EventHandler<ObjectEventArgs> temp = CreatingObject;
             if (temp != null)
                 temp(this, new ObjectEventArgs(ob));
 
-            db.Save(tableName,primaryKeyColum,ob);
+            ((IUIOMaticModel)ob).SetDefaultValue();
+            db.Insert(ob);
 
             EventHandler<ObjectEventArgs> tmp = CreatedObject;
             if (tmp != null)
@@ -528,21 +504,6 @@ namespace UIOMatic.Controllers
                 var propKey = prop.Key;
                 PropertyInfo propI = currentType.GetProperty(propKey);
                 //object value
-                if (propI.GetCustomAttributes().Any(x => x.GetType() == typeof(UIOMaticIgnoreFieldAttribute)))
-                {
-                    switch (propI.Name.ToLower())
-                    {
-                        case "updateddatetime":
-                            Helper.SetValue(ob, propI.Name, DateTime.Now);
-                            continue;
-                        case "updatedby":
-                            Helper.SetValue(ob, propI.Name, GetCurrentUserId());
-                            continue;
-                        //break;
-                        default:
-                            break;
-                    }
-                }
                 if (prop.Value != null)
                 {
                     Helper.SetValue(ob, propI.Name, prop.Value);
@@ -576,7 +537,7 @@ namespace UIOMatic.Controllers
 
 
             }
-            ((IUIOMaticModel)ob).SetDefaultValue();
+
             EventHandler<ObjectEventArgs> tmp = UpdatingObject;
             if (tmp != null)
                 tmp(this, new ObjectEventArgs(ob));
