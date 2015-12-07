@@ -207,7 +207,7 @@ namespace UIOMatic.Controllers
             return result;
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool includeIgnored = false)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool isEdit, bool includeIgnored = false)
         {
             var ar = typeName.Split(',');
             var currentType = Type.GetType(ar[0] + ", " + ar[1]);
