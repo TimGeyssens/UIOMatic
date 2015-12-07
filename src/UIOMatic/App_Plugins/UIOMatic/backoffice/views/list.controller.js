@@ -27,7 +27,8 @@
                 $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
                 $scope.nameField = response.data.NameField.replace(' ', '_');
 
-                fetchData();
+                if ($routeParams.id.split("?").length == 2)
+                    fetchData();
 
             });
 

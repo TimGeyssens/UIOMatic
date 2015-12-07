@@ -23,7 +23,7 @@ namespace UIOMatic.Trees
     {
         protected override Umbraco.Web.Models.Trees.TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
-            var types = Helper.GetTypesWithUIOMaticAttribute();
+            var types = Helper.GetTypesWithUIOMaticAttribute().OrderBy(x=> x.Name);
 
             //check if we're rendering the root node's children
             if (id == "-1")

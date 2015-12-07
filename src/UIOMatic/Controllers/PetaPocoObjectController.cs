@@ -35,7 +35,12 @@ namespace UIOMatic.Controllers
             var currentType = Type.GetType(typeName);
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
             var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+<<<<<<< HEAD
             string strTableName = tableName.Value;
+=======
+            var strTableName = tableName.Value;
+
+>>>>>>> refs/remotes/TimGeyssens/master
             var db = (Database)DatabaseContext.Database;
             if (uioMaticAttri != null && !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
@@ -45,18 +50,35 @@ namespace UIOMatic.Controllers
             }
             var query = new Sql().Select("*").From(strTableName);
 
+<<<<<<< HEAD
             string strSortColumn = sortColumn;
 
             if (!string.IsNullOrEmpty(strSortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
+=======
+            if (strTableName.IndexOf("[") < 0)
+            {
+                strTableName = "[" + strTableName + "]";
+            }
+
+            var query = new Sql().Select("*").From(strTableName);
+
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+            {
+                var strSortColumn = sortColumn;
+>>>>>>> refs/remotes/TimGeyssens/master
                 if (strSortColumn.IndexOf("[") < 0)
                 {
                     strSortColumn = "[" + strSortColumn + "]";
                 }
 
                 query.OrderBy(strSortColumn + " " + sortOrder);
+<<<<<<< HEAD
 
                 
+=======
+>>>>>>> refs/remotes/TimGeyssens/master
             }
 
             foreach (dynamic item in db.Fetch<dynamic>(query))
@@ -196,11 +218,17 @@ namespace UIOMatic.Controllers
                     var propName = prop.Name;
                     if (columnAttri.Any())
                         propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+<<<<<<< HEAD
                     if (string.IsNullOrWhiteSpace(propName))
                     {
                         propName = prop.Name;
                     }
                     prop.SetValue(obj, values[propName]);
+=======
+
+                    if(values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
+>>>>>>> refs/remotes/TimGeyssens/master
                 }
 
                 items.Add(obj);
