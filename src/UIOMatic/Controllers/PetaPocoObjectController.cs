@@ -35,15 +35,30 @@ namespace UIOMatic.Controllers
             var currentType = Type.GetType(typeName);
             var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
             var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var strTableName = tableName.Value;
 
             var db = (Database)DatabaseContext.Database;
             if(!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            var query = new Sql().Select("*").From(tableName.Value);
+            if (strTableName.IndexOf("[") < 0)
+            {
+                strTableName = "[" + strTableName + "]";
+            }
 
-            if(!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-                query.OrderBy(sortColumn + " " + sortOrder);
+            var query = new Sql().Select("*").From(strTableName);
+
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+            {
+                var strSortColumn = sortColumn;
+                if (strSortColumn.IndexOf("[") < 0)
+                {
+                    strSortColumn = "[" + strSortColumn + "]";
+                }
+
+                query.OrderBy(strSortColumn + " " + sortOrder);
+            }
 
             foreach (dynamic item in db.Fetch<dynamic>(query))
             {
