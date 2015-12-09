@@ -174,7 +174,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	}).filter("removeProperty", function () {
 	    return function (input, propertyKey) {
-	        if (propertyKey == null || propertyKey == "")
+	        if (propertyKey == null || propertyKey == "" || input == null)
 	            return input;
 
 	        return input.filter(function (property) {
