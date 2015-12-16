@@ -19,18 +19,19 @@ namespace UIOMatic
 
         private static IEnumerable<Type> EnsureTypes()
         {
-            var t = new List<Type>();
+            var t = Umbraco.Core.TypeFinder.FindClassesWithAttribute<UIOMaticAttribute>();
+            //var t = new List<Type>();
 
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (type.GetCustomAttributes(typeof (UIOMaticAttribute), true).Length > 0)
-                    {
-                        t.Add(type);
-                    }
-                }
-            }
+            //foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            //{
+            //    foreach (Type type in assembly.GetTypes())
+            //    {
+            //        if (type.GetCustomAttributes(typeof (UIOMaticAttribute), true).Length > 0)
+            //        {
+            //            t.Add(type);
+            //        }
+            //    }
+            //}
 
             HttpRuntime.Cache.Insert("UIOMaticTypes", t);
             
