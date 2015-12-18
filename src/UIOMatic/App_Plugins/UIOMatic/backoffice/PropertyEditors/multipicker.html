@@ -1,0 +1,6 @@
+﻿<div ng-controller="UIOMatic.PropertyEditors.MultiPicker">
+    <ul ng-repeat="object in objects">
+        <li>{{parseTemplate(object)}}</li>
+    </ul>
+    <a ng-click="openDialog()" class="btn">Select</a>
+</div>
