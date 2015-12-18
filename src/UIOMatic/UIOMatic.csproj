@@ -286,6 +286,10 @@
     <Content Include="App_Plugins\UIOMatic\assets\moment.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\multipicker.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\multipicker.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\objectsearcher.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\objectsearcher.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.column.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.column.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.property.html" />
