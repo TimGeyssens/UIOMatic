@@ -34,5 +34,9 @@ namespace UIOMatic.Interfaces
         string[] DeleteByIds(string typeOfObject, string ids);
 
         IEnumerable<Exception> Validate(ExpandoObject objectToValidate);
+        
+        IEnumerable<UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName);
+
+        UIOMaticPagedResult GetQuery(UIOMaticQueryInfo queryinfo);
     }
 }

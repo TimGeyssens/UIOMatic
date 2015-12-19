@@ -19,9 +19,25 @@
         <div class="umb-panel-body umb-scrollable row-fluid">
             <div class="tab-content form-horizontal" style="padding-bottom: 90px">
                 <div class="umb-pane">
+                    <umb-control-group ng-repeat="property in filterproperties" label="{{property.Name}}" description="{{property.Description}}">
+                        <div>
+                            <select ng-model="property.OperatorID"
+                                    data-ng-options="operator.id as operator.name for operator in Operators"></select>
+                            <div ng-include="property.View"></div>
+                        </div>
+                        <!--div ng-include="property.View"></div-->
+                    </umb-control-group>
+
+                    <div class="btn-group" ng-show="isFilterForm">
+                        <a class="btn btn-info" ng-click="filter()" prevent-default="">
+                            <localize key="actions_filter">Query</localize>
+                        </a>
+                    </div>
+                </div>
+                <div class="umb-pane">
 
 
-                 
+                   
                     <div class="umb-sub-header">
                         <div class="btn-group" ng-hide="readOnly">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">

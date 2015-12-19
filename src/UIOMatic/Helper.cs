@@ -92,6 +92,26 @@ namespace UIOMatic
             if (value is string && type == typeof(Version)) return new Version(value as string);
             if (!(value is IConvertible)) return value;
             return Convert.ChangeType(value, type);
-        } 
+        }
+
+        public static string GetOperators(string Operator)
+        {
+            switch (Operator)
+            {
+                case "2":
+                    return "<>";
+                case "3":
+                    return ">";
+                case "4":
+                    return "<";
+                case "5":
+                    return ">=";
+                case "6":
+                    return "<=";
+                case "1":
+                default:
+                    return "=";
+            }
+        }
     }
 }

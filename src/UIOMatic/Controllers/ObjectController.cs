@@ -72,5 +72,18 @@ namespace UIOMatic.Controllers
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).Validate(objectToValidate);
         }
+
+        public UIOMaticPagedResult PostQuery(UIOMaticQueryInfo queryinfo)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetQuery(queryinfo);
+            //return null;
+        }
+
+        public IEnumerable<Models.UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetFilterProperties(typeName);
+        }
     }
 }

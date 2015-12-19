@@ -258,6 +258,7 @@
   <ItemGroup>
     <Compile Include="Attributes\UIOMaticAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
+    <Compile Include="Attributes\UIOMaticFilterFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFromListViewAttribute.cs" />
     <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
@@ -269,8 +270,10 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectController.cs" />
+    <Compile Include="Models\UIOMaticFilterPropertyInfo.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />
+    <Compile Include="Models\UIOMaticQueryInfo.cs" />
     <Compile Include="Models\UIOMaticTypeInfo.cs" />
     <Compile Include="ObjectEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

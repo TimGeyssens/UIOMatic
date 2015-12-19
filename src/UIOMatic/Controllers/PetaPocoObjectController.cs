@@ -631,5 +631,225 @@ namespace UIOMatic.Controllers
                 yield return obj;
             }
         }
+
+        public IEnumerable<UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName)
+        {
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+            foreach (var prop in currentType.GetProperties())
+            {
+
+                var attris = prop.GetCustomAttributes();
+
+                if (attris.Any(x => x.GetType() == typeof(UIOMaticFilterFieldAttribute)))
+                {
+
+                    if (attris.Any(x => x.GetType() == typeof(UIOMaticFieldAttribute)))
+                    {
+                        var attri =
+                            (UIOMaticFieldAttribute)
+                                attris.SingleOrDefault(x => x.GetType() == typeof(UIOMaticFieldAttribute));
+
+                        var key = prop.Name;
+
+                        string view = attri.GetView();
+                        if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                        if (prop.PropertyType == typeof(DateTime) && attri.View == "textfield")
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/datetime.html";
+                        if ((prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) && attri.View == "textfield")
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
+                        var pi = new UIOMaticFilterPropertyInfo
+                        {
+                            Key = key,
+                            Name = attri.Name,
+                            Tab = string.IsNullOrEmpty(attri.Tab) ? "Misc" : attri.Tab,
+                            Description = attri.Description,
+                            View = IOHelper.ResolveUrl(view),
+                            Type = prop.PropertyType.ToString(),
+                            Config = string.IsNullOrEmpty(attri.Config) ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri.Config),
+                            OperatorID = "1"
+                        };
+                        yield return pi;
+                    }
+                    else
+                    {
+                        var key = prop.Name;
+
+                        string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
+                        if (prop.PropertyType == typeof(bool))
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                        if (prop.PropertyType == typeof(DateTime))
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/datetime.html";
+                        if (prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long))
+                            view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
+                        var pi = new UIOMaticFilterPropertyInfo
+                        {
+                            Key = key,
+                            Name = prop.Name,
+                            Tab = "Misc",
+                            Description = string.Empty,
+                            View = IOHelper.ResolveUrl(view),
+                            Type = prop.PropertyType.ToString(),
+                            OperatorID = "1"
+
+                        };
+                        yield return pi;
+                    }
+                }
+
+
+            }
+
+        }
+
+        public UIOMaticPagedResult GetQuery(UIOMaticQueryInfo queryinfo)
+        {
+            var currentType = Type.GetType(queryinfo.TypeName);
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            string strTableName = tableName.Value;
+            if (strTableName.IndexOf("[") < 0)
+            {
+                strTableName = "[" + strTableName + "]";
+            }
+            var query = new Sql().Select("*").From(strTableName);
+
+            EventHandler<QueryEventArgs> tmp = BuildingQuery;
+            if (tmp != null)
+                tmp(this, new QueryEventArgs(tableName.Value, query));
+
+
+            if (queryinfo.FilterProperty != null)
+            {
+                foreach (var item in queryinfo.FilterProperty)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Value))
+                    {
+                        query.Where("[" + item.Key + "] " + Helper.GetOperators(item.OperatorID) + " @0", item.Value);
+
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(queryinfo.SearchTerm))
+            {
+                int c = 0;
+                string search = "";
+                foreach (var property in currentType.GetProperties())
+                {
+                    //if (property.PropertyType == typeof (string))
+                    //{
+                    string before = "";
+                    if (c > 0)
+                        before = " OR ";
+
+                    var columnAttri =
+                       property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                    var columnName = property.Name;
+                    if (columnAttri.Any())
+                        columnName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+
+                    if (string.IsNullOrWhiteSpace(columnName))
+                    {
+                        columnName = property.Name;
+                    }
+
+                    search += before + " [" + columnName + "] like '%" + queryinfo.SearchTerm + "%' ";
+                    c++;
+
+                    //}
+                }
+                query.Where(search);
+            }
+
+            if (!string.IsNullOrEmpty(queryinfo.SortColumn) && !string.IsNullOrEmpty(queryinfo.SortOrder))
+            {
+                var sortcolumn = queryinfo.SortColumn;
+                if (sortcolumn.IndexOf("[") < 0)
+                {
+                    sortcolumn = "([" + sortcolumn + "])";
+                }
+                query.OrderBy(sortcolumn + " " + queryinfo.SortOrder);
+            }
+            else
+            {
+                var primaryKeyColum = "id";
+
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                foreach (var property in currentType.GetProperties())
+                {
+                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                    if (keyAttri.Any())
+                        primaryKeyColum = property.Name;
+                }
+
+                query.OrderBy(primaryKeyColum + " asc");
+            }
+
+            EventHandler<QueryEventArgs> temp = BuildedQuery;
+            if (temp != null)
+                temp(this, new QueryEventArgs(tableName.Value, query));
+            var sql = query.ToString();
+            try
+            {
+                var p = db.Page<dynamic>(queryinfo.PageNumber, queryinfo.ItemsPerPage, query);
+                var result = new UIOMaticPagedResult
+                {
+                    CurrentPage = p.CurrentPage,
+                    ItemsPerPage = p.ItemsPerPage,
+                    TotalItems = p.TotalItems,
+                    TotalPages = p.TotalPages
+                };
+                var items = new List<object>();
+
+                foreach (dynamic item in p.Items)
+                {
+                    // get settable public properties of the type
+                    var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(x => x.GetSetMethod() != null);
+
+                    // create an instance of the type
+                    var obj = Activator.CreateInstance(currentType);
+
+
+                    // set property values using reflection
+                    var values = (IDictionary<string, object>)item;
+                    foreach (var prop in props)
+                    {
+                        var columnAttri =
+                               prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                        var propName = prop.Name;
+                        if (columnAttri.Any())
+                            propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                        if (string.IsNullOrWhiteSpace(propName))
+                        {
+                            propName = prop.Name;
+                        }
+                        prop.SetValue(obj, values[propName]);
+                    }
+
+                    items.Add(obj);
+                }
+                result.Items = items;
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+
+
+        }
     }
 }
