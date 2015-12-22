@@ -327,6 +327,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.media.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.member.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.member.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\query.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\query.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\radiobuttonlist.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\radiobuttonlist.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\textarea.html" />
