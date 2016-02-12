@@ -73,6 +73,7 @@ namespace UIOMatic.Trees
                 var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
                 var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
+                
                 var itemIdPropName = "Id";
                 var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
                 if (primKeyAttri.Any())
@@ -148,6 +149,7 @@ namespace UIOMatic.Trees
 
                     if(!attri.ReadOnly)
                         menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                    if(attri.RenderType == Enums.UIOMaticRenderType.Tree)
                     menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
                 }
 

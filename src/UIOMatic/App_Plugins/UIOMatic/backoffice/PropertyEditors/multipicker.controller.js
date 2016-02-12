@@ -20,7 +20,10 @@
 	            }
 	        });
 	    }
-
+	    $scope.remove = function (index) {
+	        $scope.objects.splice(index, 1);
+	        $scope.model.value.splice(index, 1)
+	    }
 	    $scope.parseTemplate = function (object) {
 	        var template = $parse($scope.model.config.objectTemplate);
 	        return template(object);
