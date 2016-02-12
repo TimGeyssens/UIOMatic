@@ -12,12 +12,18 @@ namespace UIOMatic.Interfaces
 {
     public interface IUIOMaticObjectController
     {
-        IEnumerable<Object> GetAll(string typeName,string sortColumn, string sortOrder);
+        IEnumerable<Object> GetAll(string typeName, string sortColumn, string sortOrder);
+
+        IEnumerable<Object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder);
 
         UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
             string sortOrder, string searchTerm);
 
-        IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName,bool isEdit, bool includeIgnored = false);
+        IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool isEdit = false, bool includeIgnored = false);
+
+        IEnumerable<UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName);
+
+        UIOMaticPagedResult GetQuery(UIOMaticQueryInfo queryinfo);
 
         IEnumerable<string> GetAllColumns(string typeName);
 

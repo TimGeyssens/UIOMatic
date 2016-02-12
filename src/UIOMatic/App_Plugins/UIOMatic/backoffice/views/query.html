@@ -1,0 +1,24 @@
+﻿<div ng-controller="UIOMatic.Views.Query.DialogController">
+    <form name="dialogForm" ng-submit="submit(filterproperties)">
+        <umb-panel>
+            <div class="umb-pane">
+                <umb-control-group ng-repeat="property in filterproperties" label="{{property.Name}}" description="{{property.Description}}">
+                    <div>
+                        <select ng-model="property.OperatorID" ng-show="isInteger(property.Type)"
+                                data-ng-options="operator.id as operator.name for operator in Operators"></select>
+                        <div ng-include="property.View"></div>
+                    </div>
+                    <!--div ng-include="property.View"></div-->
+                </umb-control-group>
+            </div>
+            <div class="umb-panel-footer">
+                <div class="btn-toolbar umb-btn-toolbar pull-right">
+                    <button type="submit" class="btn btn-primary" ng-disabled="!dialogForm.$valid">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </umb-panel>
+    </form>
+
+</div>

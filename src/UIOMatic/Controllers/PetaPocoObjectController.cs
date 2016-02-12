@@ -21,6 +21,14 @@ namespace UIOMatic.Controllers
 
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
+        public static event EventHandler<QueryEventArgs> BuildingQuery;
+        public static event EventHandler<QueryEventArgs> BuildedQuery;
+
+        public static event EventHandler<ObjectEventArgs> UpdatingObject;
+        public static event EventHandler<ObjectEventArgs> UpdatedObject;
+
+        public static event EventHandler<ObjectEventArgs> CreatingObject;
+        public static event EventHandler<ObjectEventArgs> CreatedObject;
 
         public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
         {
@@ -41,12 +49,14 @@ namespace UIOMatic.Controllers
 
             if (!string.IsNullOrEmpty(strSortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
-                query.OrderBy(strSortColumn + " " + sortOrder);
-
                 if (strSortColumn.IndexOf("[") < 0)
                 {
                     strSortColumn = "[" + strSortColumn + "]";
                 }
+
+                query.OrderBy(strSortColumn + " " + sortOrder);
+
+
             }
 
             foreach (dynamic item in db.Fetch<dynamic>(query))
@@ -74,7 +84,9 @@ namespace UIOMatic.Controllers
                         propName = prop.Name;
                     }
 
-                    prop.SetValue(obj, values[propName]);
+                    //prop.SetValue(obj, values[propName]);
+                    if (values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
                 }
 
                 yield return obj;
@@ -96,6 +108,10 @@ namespace UIOMatic.Controllers
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
             var query = new Sql().Select("*").From(tableName.Value);
+
+            EventHandler<QueryEventArgs> tmp = BuildingQuery;
+            if (tmp != null)
+                tmp(this, new QueryEventArgs(tableName.Value, query));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -146,6 +162,10 @@ namespace UIOMatic.Controllers
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
+            EventHandler<QueryEventArgs> temp = BuildedQuery;
+            if (temp != null)
+                temp(this, new QueryEventArgs(tableName.Value, query));
+
             var p = db.Page<dynamic>(pageNumber, itemsPerPage, query);
             var result = new UIOMaticPagedResult
             {
@@ -188,6 +208,7 @@ namespace UIOMatic.Controllers
             result.Items = items;
             return result;
         }
+
         public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool isEdit, bool includeIgnored = false)
         {
             var ar = typeName.Split(',');
@@ -211,11 +232,11 @@ namespace UIOMatic.Controllers
                         string view = attri.GetView();
                         if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
-                        if (prop.PropertyType == typeof(DateTime) && attri.View == "textfield")
+                        if ((prop.PropertyType == typeof(DateTime) | prop.PropertyType == typeof(DateTime?)) && attri.View == "textfield")
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/datetime.html";
                         if ((prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) && attri.View == "textfield")
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
-                        if (!attri.IsCanEdit && isEdit)
+                        if (!attri.IsCanEdit && isEdit && attri.View != "file")
                         {
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/label.html";
                         }
@@ -227,7 +248,8 @@ namespace UIOMatic.Controllers
                             Description = attri.Description,
                             View = IOHelper.ResolveUrl(view),
                             Type = prop.PropertyType.ToString(),
-                            Config = string.IsNullOrEmpty(attri.Config) ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri.Config)
+                            Config = string.IsNullOrEmpty(attri.Config) ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri.Config),
+                            IsReadOnly = (!attri.IsCanEdit && isEdit)
                         };
                         yield return pi;
                     }
@@ -238,7 +260,7 @@ namespace UIOMatic.Controllers
                         string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
                         if (prop.PropertyType == typeof(bool))
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
-                        if (prop.PropertyType == typeof(DateTime))
+                        if (prop.PropertyType == typeof(DateTime) | prop.PropertyType == typeof(DateTime?))
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/datetime.html";
                         if (prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long))
                             view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
@@ -261,6 +283,123 @@ namespace UIOMatic.Controllers
 
         }
 
+        public IEnumerable<UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName)
+        {
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+            foreach (var prop in currentType.GetProperties())
+            {
+
+                var attris = prop.GetCustomAttributes();
+
+                if (attris.Any(x => x.GetType() == typeof(UIOMaticFilterFieldAttribute)))
+                {
+                    var filter =
+                            (UIOMaticFilterFieldAttribute)
+                                attris.SingleOrDefault(x => x.GetType() == typeof(UIOMaticFilterFieldAttribute));
+                    filter.DefaultValue = Helper.HandleDefaultValue(filter.DefaultValue);
+                    if (filter.DefaultToValue == "today")
+                    {
+                        filter.DefaultToValue = Helper.HandleDefaultValue(filter.DefaultToValue, 1);
+                    }
+                    else
+                    {
+                        filter.DefaultToValue = Helper.HandleDefaultValue(filter.DefaultToValue);
+                    }
+
+
+                    if (filter.ShowNumbers == 0)
+                    {
+                        filter.ShowNumbers = 1;
+                    }
+                    for (int i = 0; i < filter.ShowNumbers; i++)
+                    {
+                        if (attris.Any(x => x.GetType() == typeof(UIOMaticFieldAttribute)))
+                        {
+                            var attri =
+                                (UIOMaticFieldAttribute)
+                                    attris.SingleOrDefault(x => x.GetType() == typeof(UIOMaticFieldAttribute));
+
+                            var key = prop.Name;
+
+                            string view = attri.GetView();
+                            if (prop.PropertyType == typeof(bool) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                            if (prop.PropertyType == typeof(DateTime) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/daterange.html";
+                            if ((prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) && attri.View == "textfield")
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
+                            var pi = new UIOMaticFilterPropertyInfo
+                            {
+                                Key = key,
+                                Name = attri.Name,
+                                Tab = string.IsNullOrEmpty(attri.Tab) ? "Misc" : attri.Tab,
+                                Description = attri.Description,
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString(),
+                                Config = string.IsNullOrEmpty(attri.Config) ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri.Config),
+                                OperatorID = "1"
+                            };
+                            if (!string.IsNullOrWhiteSpace(filter.OperatorCode))
+                            {
+                                pi.OperatorID = filter.OperatorCode;
+                            }
+                            if (!string.IsNullOrWhiteSpace(filter.DefaultValue))
+                            {
+                                pi.Value = filter.DefaultValue;
+                            }
+                            if (!string.IsNullOrWhiteSpace(filter.DefaultToValue))
+                            {
+                                pi.ToValue = filter.DefaultToValue;
+                            }
+                            yield return pi;
+                        }
+                        else
+                        {
+                            var key = prop.Name;
+
+                            string view = "~/App_Plugins/UIOMatic/Backoffice/Views/textfield.html";
+                            if (prop.PropertyType == typeof(bool))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html";
+                            if (prop.PropertyType == typeof(DateTime))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/daterange.html";
+                            if (prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long))
+                                view = "~/App_Plugins/UIOMatic/Backoffice/Views/number.html";
+                            var pi = new UIOMaticFilterPropertyInfo
+                            {
+                                Key = key,
+                                Name = prop.Name,
+                                Tab = "Misc",
+                                Description = string.Empty,
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString(),
+                                OperatorID = "1"
+
+                            };
+                            if (!string.IsNullOrWhiteSpace(filter.OperatorCode))
+                            {
+                                pi.OperatorID = filter.OperatorCode;
+                            }
+                            if (!string.IsNullOrWhiteSpace(filter.DefaultValue))
+                            {
+
+                                pi.Value = filter.DefaultValue;
+                            }
+                            if (!string.IsNullOrWhiteSpace(filter.DefaultToValue))
+                            {
+                                pi.ToValue = filter.DefaultToValue;
+                            }
+                            yield return pi;
+                        }
+                    }
+
+                }
+
+
+            }
+
+        }
+
         public IEnumerable<string> GetAllColumns(string typeName)
         {
             var ar = typeName.Split(',');
@@ -275,7 +414,10 @@ namespace UIOMatic.Controllers
 
                     if (attris.Any(x => x.GetType() == typeof(ColumnAttribute)))
                         colName = ((ColumnAttribute)attris.First(x => x.GetType() == typeof(ColumnAttribute))).Name;
-
+                    if (string.IsNullOrWhiteSpace(colName))
+                    {
+                        colName = prop.Name;
+                    }
                     yield return colName;
                 }
             }
@@ -288,6 +430,7 @@ namespace UIOMatic.Controllers
             var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
             var ignoreColumnsFromListView = new List<string>();
+            //var filterColumnsFromListView = new List<string>();
             var nameField = "";
 
             var primaryKey = "id";
@@ -308,6 +451,11 @@ namespace UIOMatic.Controllers
                 var nameAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(UIOMaticNameFieldAttribute));
                 if (nameAttri.Any())
                     nameField = property.Name;
+
+                //var filterAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(UIOMaticFilterFieldAttribute));
+                //if (filterAttri.Any())
+                //    filterColumnsFromListView.Add(property.Name);
+
             }
 
             return new UIOMaticTypeInfo()
@@ -316,7 +464,11 @@ namespace UIOMatic.Controllers
                 PrimaryKeyColumnName = primaryKey,
                 IgnoreColumnsFromListView = ignoreColumnsFromListView.ToArray(),
                 NameField = nameField,
-                DisplayName = uioMaticAttri.Name
+                DisplayName = uioMaticAttri.Name,
+                QueryTemplate = IOHelper.ResolveUrl("~/App_Plugins/UIOMatic/backoffice/views/query.html"),
+                IsCanExport = uioMaticAttri.IsCanExport,
+                IsReadOnly = uioMaticAttri.ReadOnly,
+                ShowInTree = uioMaticAttri.ShowInTree
             };
         }
 
@@ -372,7 +524,9 @@ namespace UIOMatic.Controllers
                 {
                     propName = prop.Name;
                 }
-                prop.SetValue(obj, values[propName]);
+                //prop.SetValue(obj, values[propName]);
+                if (values.ContainsKey(propName))
+                    prop.SetValue(obj, values[propName]);
             }
 
             return obj;
@@ -394,31 +548,6 @@ namespace UIOMatic.Controllers
             {
                 var propKey = prop.Key;
                 PropertyInfo propI = currentType.GetProperty(propKey);
-                //object value
-                if (propI.GetCustomAttributes().Any(x => x.GetType() == typeof(UIOMaticIgnoreFieldAttribute)))
-                {
-                    switch (propI.Name.ToLower())
-                    {
-                        case "status":
-                            Helper.SetValue(ob, propI.Name, "1");
-                            continue;
-                        case "createddatetime":
-                            Helper.SetValue(ob, propI.Name, DateTime.Now);
-                            continue;
-                        case "createdby":
-                            Helper.SetValue(ob, propI.Name, GetCurrentUserId());
-                            continue;
-                        case "updateddatetime":
-                            Helper.SetValue(ob, propI.Name, DateTime.Now);
-                            continue;
-                        case "updatedby":
-                            Helper.SetValue(ob, propI.Name, GetCurrentUserId());
-                            continue;
-                        //break;
-                        default:
-                            break;
-                    }
-                }
                 if (prop.Value != null)
                 {
                     Helper.SetValue(ob, propI.Name, prop.Value);
@@ -474,9 +603,20 @@ namespace UIOMatic.Controllers
 
                 }
             }
+
+
+            //db.Save(tableName, primaryKeyColum, ob);
+
+            EventHandler<ObjectEventArgs> temp = CreatingObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(ob));
+
             ((IUIOMaticModel)ob).SetDefaultValue();
             db.Insert(ob);
-            //db.Save(tableName, primaryKeyColum, ob);
+
+            EventHandler<ObjectEventArgs> tmp = CreatedObject;
+            if (tmp != null)
+                tmp(this, new ObjectEventArgs(ob));
 
             return ob;
 
@@ -497,21 +637,6 @@ namespace UIOMatic.Controllers
                 var propKey = prop.Key;
                 PropertyInfo propI = currentType.GetProperty(propKey);
                 //object value
-                if (propI.GetCustomAttributes().Any(x => x.GetType() == typeof(UIOMaticIgnoreFieldAttribute)))
-                {
-                    switch (propI.Name.ToLower())
-                    {
-                        case "updateddatetime":
-                            Helper.SetValue(ob, propI.Name, DateTime.Now);
-                            continue;
-                        case "updatedby":
-                            Helper.SetValue(ob, propI.Name, GetCurrentUserId());
-                            continue;
-                        //break;
-                        default:
-                            break;
-                    }
-                }
                 if (prop.Value != null)
                 {
                     Helper.SetValue(ob, propI.Name, prop.Value);
@@ -545,16 +670,26 @@ namespace UIOMatic.Controllers
 
 
             }
+
+            EventHandler<ObjectEventArgs> tmp = UpdatingObject;
+            if (tmp != null)
+                tmp(this, new ObjectEventArgs(ob));
+
             ((IUIOMaticModel)ob).SetDefaultValue();
             db.Save(tableName, primaryKeyColum, ob);
             //db.Save(ob);
             //db.Update(ob);
+            EventHandler<ObjectEventArgs> temp = UpdatedObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(ob));
+
+
             return ob;
         }
 
         public string[] DeleteByIds(string typeOfObject, string ids)
         {
-            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName == typeOfObject);
+            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName.Contains(typeOfObject));
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
 
             var primaryKeyColum = string.Empty;
@@ -581,21 +716,23 @@ namespace UIOMatic.Controllers
             if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
                 db = new Database(uioMaticAttri.ConnectionStringName);
 
-            // TODO: Delete with one SQL statement?
+            //// TODO: Delete with one SQL statement?
+            //var deletedIds = new List<string>();
+            //foreach (var idStr in ids.Split(','))
+            //{
+            //    var id = 0;
+            //    if (int.TryParse(idStr, out id))
+            //    {
+            //        deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
+            //    }
+            //}
+            //return deletedIds.ToArray();
+
             string ids2var = "'" + ids.Replace(",", "','") + "'";
             string DEL_SQL = @"Delete from {0} where {1} in ({2})";
             DEL_SQL = string.Format(DEL_SQL, tableName, primaryKeyColum, ids2var);
             db.Execute(DEL_SQL);
-            ////db.Delete()
-            //var deletedIds = new List<string>();
-            //foreach (var idStr in ids.Split(','))
-            //{
-            //    var id = "0";
-            //    //if (int.TryParse(idStr, out id))
-            //    //{
-            //        deletedIds.Add(db.Delete(tableName, primaryKeyColum, null, id));
-            //    //}
-            //}
+
             return ids.Split(',');
         }
 
@@ -630,6 +767,344 @@ namespace UIOMatic.Controllers
         {
             var userService = ApplicationContext.Current.Services.UserService;
             return userService.GetByUsername(HttpContext.Current.User.Identity.Name).Id;
+        }
+
+        public IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            var currentType = Type.GetType(typeName);
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            var query = new Sql().Select("*").From(tableName.Value);
+
+            query.Append("where" + "[" + filterColumn + "] = @0", filterValue);
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+                query.OrderBy(sortColumn + " " + sortOrder);
+
+            foreach (dynamic item in db.Fetch<dynamic>(query))
+            {
+                // get settable public properties of the type
+                var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(x => x.GetSetMethod() != null);
+
+                // create an instance of the type
+                var obj = Activator.CreateInstance(currentType);
+
+
+                // set property values using reflection
+                var values = (IDictionary<string, object>)item;
+                foreach (var prop in props)
+                {
+                    var columnAttri =
+                           prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                    var propName = prop.Name;
+                    if (columnAttri.Any())
+                        propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                    if (string.IsNullOrWhiteSpace(propName))
+                    {
+                        propName = prop.Name;
+                    }
+                    if (values.ContainsKey(propName))
+                        prop.SetValue(obj, values[propName]);
+
+                }
+
+                yield return obj;
+            }
+        }
+
+        public UIOMaticPagedResult GetQuery(UIOMaticQueryInfo queryinfo)
+        {
+            var currentType = Type.GetType(queryinfo.TypeName);
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+            var db = (Database)DatabaseContext.Database;
+            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
+                db = new Database(uioMaticAttri.ConnectionStringName);
+
+            string strTableName = tableName.Value;
+            if (strTableName.IndexOf("[") < 0)
+            {
+                strTableName = "[" + strTableName + "]";
+            }
+            var query = new Sql().Select("*").From(strTableName);
+
+            EventHandler<QueryEventArgs> tmp = BuildingQuery;
+            if (tmp != null)
+                tmp(this, new QueryEventArgs(tableName.Value, query));
+
+
+            if (queryinfo.FilterProperty != null)
+            {
+                foreach (var item in queryinfo.FilterProperty)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(item.Value) || !string.IsNullOrWhiteSpace(item.ToValue))
+                    {
+                        string columnName = item.Key;
+                        var prop = currentType.GetProperties().FirstOrDefault(x => x.Name == item.Key);
+                        if (prop != null)
+                        {
+                            var columnAttri = prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                            if (columnAttri.Any())
+                                columnName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+
+                            if (string.IsNullOrWhiteSpace(columnName))
+                            {
+                                columnName = item.Key;
+                            }
+                        }
+
+                        if (item.Type.ToLower().Contains("datetime"))
+                        {
+                            if (string.IsNullOrWhiteSpace(item.Value))
+                            {
+                                item.Value = DateTime.MinValue.ToString("yyy-MM-dd");
+                            }
+
+                            if (string.IsNullOrWhiteSpace(item.ToValue))
+                            {
+                                item.ToValue = DateTime.MaxValue.ToString("yyy-MM-dd");
+                            }
+                            query.Where("[" + columnName + "] Between @0 AND @1", item.Value, item.ToValue);
+                        }
+                        else if (item.Type.ToLower().Contains("bool"))
+                        {
+                            query.Where("[" + columnName + "] = @0", item.Value);
+                        }
+                        else if (item.Type.ToLower().Contains("string"))
+                        {
+                            query.Where("[" + columnName + "] like '%" + item.Value + "%'");
+                        }
+                        else
+                        {
+                            query.Where("[" + columnName + "] " + Helper.GetOperators(item.OperatorID) + " @0", item.Value);
+                        }
+
+
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(queryinfo.SearchTerm))
+            {
+                int c = 0;
+                string search = "";
+                foreach (var property in currentType.GetProperties())
+                {
+                    //if (property.PropertyType == typeof (string))
+                    //{
+                    var ig =
+                       property.GetCustomAttributes().Where(x => x.GetType() == typeof(IgnoreAttribute));
+                    if (ig.Any())
+                    {
+                        continue;
+                    }
+                    string before = "";
+                    if (c > 0)
+                        before = " OR ";
+
+                    var columnAttri =
+                       property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                    var columnName = property.Name;
+                    if (columnAttri.Any())
+                        columnName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+
+                    if (string.IsNullOrWhiteSpace(columnName))
+                    {
+                        columnName = property.Name;
+                    }
+
+                    search += before + " [" + columnName + "] like '%" + queryinfo.SearchTerm + "%' ";
+                    c++;
+
+                    //}
+                }
+                query.Where(search);
+            }
+
+            if (!string.IsNullOrEmpty(queryinfo.SortColumn) && !string.IsNullOrEmpty(queryinfo.SortOrder))
+            {
+                var sortcolumn = queryinfo.SortColumn;
+
+
+                Dictionary<int, string> order = new Dictionary<int, string>();
+                foreach (var property in currentType.GetProperties())
+                {
+                    var orderAttri = (UIOMaticSortOrderAttribute)property.GetCustomAttributes().FirstOrDefault(x => x.GetType() == typeof(UIOMaticSortOrderAttribute));
+                    if (orderAttri != null)
+                    {
+                        var columnAttri =
+                               property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                        var propName = property.Name;
+                        if (columnAttri.Any())
+                            propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                        if (string.IsNullOrWhiteSpace(propName))
+                        {
+                            propName = property.Name;
+                        }
+
+                        if (propName.IndexOf("[") < 0)
+                        {
+                            propName = "([" + propName + "])";
+                        }
+                        if (orderAttri.IsDescending)
+                        {
+                            propName += " desc";
+                        }
+                        order.Add(orderAttri.Sequence, propName);
+                    }
+                    if (sortcolumn == property.Name)
+                    {
+                        var columnAttri =
+                               property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                        //var propName = property.Name;
+                        if (columnAttri.Any())
+                            sortcolumn = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                        if (string.IsNullOrWhiteSpace(sortcolumn))
+                        {
+                            sortcolumn = property.Name;
+                        }
+                    }
+                }
+                if (sortcolumn.IndexOf("[") < 0)
+                {
+                    sortcolumn = "([" + sortcolumn + "])";
+                }
+                query.OrderBy(sortcolumn + " " + queryinfo.SortOrder);
+                var list = order.Keys.ToList();
+                list.Sort();
+                foreach (var item in list)
+                {
+                    query.OrderBy(order[item]);
+                }
+            }
+            else
+            {
+                var primaryKeyColum = "id";
+                Dictionary<int, string> order = new Dictionary<int, string>();
+
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                foreach (var property in currentType.GetProperties())
+                {
+                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                    if (keyAttri.Any())
+                        primaryKeyColum = property.Name;
+
+                    var orderAttri = (UIOMaticSortOrderAttribute)property.GetCustomAttributes().FirstOrDefault(x => x.GetType() == typeof(UIOMaticSortOrderAttribute));
+                    if (orderAttri != null)
+                    {
+                        var columnAttri =
+                               property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                        var propName = property.Name;
+                        if (columnAttri.Any())
+                            propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                        if (string.IsNullOrWhiteSpace(propName))
+                        {
+                            propName = property.Name;
+                        }
+                        if (propName.IndexOf("[") < 0)
+                        {
+                            propName = "([" + propName + "])";
+                        }
+                        if (orderAttri.IsDescending)
+                        {
+                            propName += " desc";
+                        }
+                        order.Add(orderAttri.Sequence, propName);
+                    }
+                }
+                if (order.Count > 0)
+                {
+                    var list = order.Keys.ToList();
+                    list.Sort();
+                    foreach (var item in list)
+                    {
+                        query.OrderBy(order[item]);
+                    }
+                }
+                else
+                {
+                    query.OrderBy(primaryKeyColum + " asc");
+                }
+
+            }
+
+            EventHandler<QueryEventArgs> temp = BuildedQuery;
+            if (temp != null)
+                temp(this, new QueryEventArgs(tableName.Value, query));
+            var sql = query.ToString();
+            try
+            {
+                var p = db.Page<dynamic>(queryinfo.PageNumber, queryinfo.ItemsPerPage, query);
+                var result = new UIOMaticPagedResult
+                {
+                    CurrentPage = p.CurrentPage,
+                    ItemsPerPage = p.ItemsPerPage,
+                    TotalItems = p.TotalItems,
+                    TotalPages = p.TotalPages
+                };
+                var items = new List<object>();
+
+                foreach (dynamic item in p.Items)
+                {
+                    // get settable public properties of the type
+                    var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(x => x.GetSetMethod() != null);
+
+                    // create an instance of the type
+                    var obj = Activator.CreateInstance(currentType);
+
+
+                    // set property values using reflection
+                    var values = (IDictionary<string, object>)item;
+                    foreach (var prop in props)
+                    {
+                        //UIOMaticIgnoreFromListViewAttribute
+                        var IsIgnoreFromListView = prop.GetCustomAttributes().Where(x => x.GetType() == typeof(IgnoreAttribute));
+                        if (IsIgnoreFromListView.Any())
+                        {
+                            continue;
+                        }
+                        var columnAttri =
+                               prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+
+                        var propName = prop.Name;
+                        if (columnAttri.Any())
+                            propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
+                        if (string.IsNullOrWhiteSpace(propName))
+                        {
+                            propName = prop.Name;
+                        }
+                        prop.SetValue(obj, values[propName]);
+                    }
+
+                    items.Add(obj);
+                }
+                result.Items = items;
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+
+
         }
     }
 }

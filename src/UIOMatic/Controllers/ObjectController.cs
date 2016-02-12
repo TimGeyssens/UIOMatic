@@ -2,13 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
+using Umbraco.Web.WebApi;
 
 namespace UIOMatic.Controllers
 {
+    [PluginController("UIOMatic")]
+    public class QueryController : UmbracoApiController
+    {
+        public UIOMaticPagedResult PostQuery(UIOMaticQueryInfo queryinfo)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetQuery(queryinfo);
+        }
+    }
     [PluginController("UIOMatic")]
     public class ObjectController : UmbracoAuthorizedJsonController
     {
@@ -16,6 +27,19 @@ namespace UIOMatic.Controllers
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetAll(typeName, sortColumn, sortOrder);
+        }
+
+        public IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetFiltered(typeName,filterColumn,filterValue, sortColumn, sortOrder);
+        }
+
+        public UIOMaticPagedResult PostQuery(UIOMaticQueryInfo queryinfo)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetQuery(queryinfo);
+            //return null;
         }
 
         public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
@@ -28,6 +52,12 @@ namespace UIOMatic.Controllers
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName, isEdit);
+        }
+
+        public IEnumerable<Models.UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetFilterProperties(typeName);
         }
 
         public UIOMaticTypeInfo GetType(string typeName)
@@ -67,4 +97,5 @@ namespace UIOMatic.Controllers
             return ((IUIOMaticObjectController)ctrl).Validate(objectToValidate);
         }
     }
+
 }

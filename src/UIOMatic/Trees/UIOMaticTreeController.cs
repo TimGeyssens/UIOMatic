@@ -145,4 +145,408 @@ namespace UIOMatic.Trees
         }
 
     }
+
+    [Tree("ecospot", "ecospotTree", "Eco Spot")]
+    [PluginController("ecospot")]
+    public class ecospotTreeController : TreeController
+    {
+        protected override Umbraco.Web.Models.Trees.TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
+        {
+            var types = Helper.GetTypesWithUIOMaticAttribute();
+
+            //check if we're rendering the root node's children
+            if (id == "-1")
+            {
+                var nodes = new TreeNodeCollection();
+                foreach (var type in types)
+                {
+                    var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
+
+                    if (attri.ShowInTree)
+                    {
+                        if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                        {
+                            var node = CreateTreeNode(
+                                type.AssemblyQualifiedName,
+                                "-1",
+                                queryStrings,
+                                attri.Name,
+                                attri.FolderIcon,
+                                true);
+
+                            nodes.Add(node);
+                        }
+                        else
+                        {
+                            var node = CreateTreeNode(
+                                type.AssemblyQualifiedName,
+                                "-1",
+                                queryStrings,
+                                attri.Name,
+                                attri.FolderIcon,
+                                false,
+                                "ecospot/uioMaticTree/list/" + type.AssemblyQualifiedName);
+
+                            nodes.Add(node);
+                        }
+                    }
+                    
+                }
+                return nodes;
+
+            }
+
+
+
+            if (types.Any(x => x.AssemblyQualifiedName == id))
+            {
+                var ctrl = new PetaPocoObjectController();
+                var nodes = new TreeNodeCollection();
+
+                var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
+                var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+                var itemIdPropName = "Id";
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                if (string.IsNullOrWhiteSpace(itemIdPropName))
+                {
+                    foreach (var property in currentType.GetProperties())
+                    {
+                        var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                        if (keyAttri.Any())
+                        {
+                            var columnAttri =
+                                property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+                            itemIdPropName = property.Name;
+                        }
+                    }
+                }
+
+
+                foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn, attri.SortOrder))
+                {
+
+
+                    var node = CreateTreeNode(
+                        item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
+                        id,
+                        queryStrings,
+                        item.ToString(),
+                        attri.ItemIcon,
+                        false);
+
+                    nodes.Add(node);
+
+                }
+                return nodes;
+
+            }
+
+            //this tree doesn't suport rendering more than 2 levels
+            throw new NotSupportedException();
+        }
+
+        protected override Umbraco.Web.Models.Trees.MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
+        {
+            var menu = new MenuItemCollection();
+
+            if (id == "-1")
+            {
+                // root actions              
+
+                menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                return menu;
+            }
+            else
+            {
+                //var idInt = 0;
+
+                if (id.IndexOf("?") > 0)
+                    menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+                else
+                {
+                    menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                    menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                }
+
+
+            }
+            return menu;
+        }
+
+    }
+
+    [Tree("Approve", "ApproveTree", "Feedback Approve")]
+    [PluginController("Approve")]
+    public class ApproveTreeController : TreeController
+    {
+        protected override Umbraco.Web.Models.Trees.TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
+        {
+            var types = Helper.GetTypesWithUIOMaticAttribute();
+
+            //check if we're rendering the root node's children
+            if (id == "-1")
+            {
+                var nodes = new TreeNodeCollection();
+                foreach (var type in types)
+                {
+                    var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
+
+                    if (attri.Name != "Product Feedback")
+                    {
+                        continue;
+                    }
+
+                    if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                    {
+                        var node = CreateTreeNode(
+                            type.AssemblyQualifiedName,
+                            "-1",
+                            queryStrings,
+                            attri.Name,
+                            attri.FolderIcon,
+                            true);
+
+                        nodes.Add(node);
+                    }
+                    else
+                    {
+                        var node = CreateTreeNode(
+                            type.AssemblyQualifiedName,
+                            "-1",
+                            queryStrings,
+                            attri.Name,
+                            attri.FolderIcon,
+                            false,
+                            "Approve/uioMaticTree/list/" + type.AssemblyQualifiedName);
+
+                        nodes.Add(node);
+                    }
+                }
+                return nodes;
+
+            }
+
+
+
+            if (types.Any(x => x.AssemblyQualifiedName == id))
+            {
+                var ctrl = new PetaPocoObjectController();
+                var nodes = new TreeNodeCollection();
+
+                var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
+                var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+                var itemIdPropName = "Id";
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                if (string.IsNullOrWhiteSpace(itemIdPropName))
+                {
+                    foreach (var property in currentType.GetProperties())
+                    {
+                        var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                        if (keyAttri.Any())
+                        {
+                            var columnAttri =
+                                property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+                            itemIdPropName = property.Name;
+                        }
+                    }
+                }
+
+
+                foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn, attri.SortOrder))
+                {
+
+
+                    var node = CreateTreeNode(
+                        item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
+                        id,
+                        queryStrings,
+                        item.ToString(),
+                        attri.ItemIcon,
+                        false);
+
+                    nodes.Add(node);
+
+                }
+                return nodes;
+
+            }
+
+            //this tree doesn't suport rendering more than 2 levels
+            throw new NotSupportedException();
+        }
+
+        protected override Umbraco.Web.Models.Trees.MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
+        {
+            var menu = new MenuItemCollection();
+
+            if (id == "-1")
+            {
+                // root actions              
+
+                menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                return menu;
+            }
+            else
+            {
+                //var idInt = 0;
+
+                if (id.IndexOf("?") > 0)
+                    menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+                else
+                {
+                    menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                    menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                }
+
+
+            }
+            return menu;
+        }
+
+    }
+
+    [Tree("Reports", "ReportsTree", "Reports")]
+    [PluginController("Reports")]
+    public class ReportsTreeController : TreeController
+    {
+        protected override Umbraco.Web.Models.Trees.TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
+        {
+            var types = Helper.GetTypesWithUIOMaticAttribute();
+
+            //check if we're rendering the root node's children
+            if (id == "-1")
+            {
+                string[] reports = { "Product Status/progress", "Product Bidding", "Product Redemption", 
+                                       "Email and Reminder summary", "Wish List Report","Inactive Members",
+                                   "Social Media Linkage","Blacklist report","Product \"Likes\"","Membership report"};
+                var nodes = new TreeNodeCollection();
+                foreach (var type in types)
+                {
+                    var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
+
+                    if (!reports.Contains(attri.Name))
+                    {
+                        continue;
+                    }
+
+                    if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                    {
+                        var node = CreateTreeNode(
+                            type.AssemblyQualifiedName,
+                            "-1",
+                            queryStrings,
+                            attri.Name,
+                            attri.FolderIcon,
+                            true);
+
+                        nodes.Add(node);
+                    }
+                    else
+                    {
+                        var node = CreateTreeNode(
+                            type.AssemblyQualifiedName,
+                            "-1",
+                            queryStrings,
+                            attri.Name,
+                            attri.FolderIcon,
+                            false,
+                            "Reports/uioMaticTree/list/" + type.AssemblyQualifiedName);
+
+                        nodes.Add(node);
+                    }
+                }
+                return nodes;
+
+            }
+
+
+
+            if (types.Any(x => x.AssemblyQualifiedName == id))
+            {
+                var ctrl = new PetaPocoObjectController();
+                var nodes = new TreeNodeCollection();
+
+                var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
+                var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+
+                var itemIdPropName = "Id";
+                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                if (primKeyAttri.Any())
+                    itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                if (string.IsNullOrWhiteSpace(itemIdPropName))
+                {
+                    foreach (var property in currentType.GetProperties())
+                    {
+                        var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                        if (keyAttri.Any())
+                        {
+                            var columnAttri =
+                                property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+                            itemIdPropName = property.Name;
+                        }
+                    }
+                }
+
+
+                foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn, attri.SortOrder))
+                {
+
+
+                    var node = CreateTreeNode(
+                        item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
+                        id,
+                        queryStrings,
+                        item.ToString(),
+                        attri.ItemIcon,
+                        false);
+
+                    nodes.Add(node);
+
+                }
+                return nodes;
+
+            }
+
+            //this tree doesn't suport rendering more than 2 levels
+            throw new NotSupportedException();
+        }
+
+        protected override Umbraco.Web.Models.Trees.MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
+        {
+            var menu = new MenuItemCollection();
+
+            if (id == "-1")
+            {
+                // root actions              
+
+                menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                return menu;
+            }
+            else
+            {
+                //var idInt = 0;
+
+                if (id.IndexOf("?") > 0)
+                    menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+                else
+                {
+                    menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                    menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                }
+
+
+            }
+            return menu;
+        }
+
+    }
 }

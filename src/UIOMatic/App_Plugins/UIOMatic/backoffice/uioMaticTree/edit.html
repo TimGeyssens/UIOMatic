@@ -19,8 +19,7 @@
                 <div class="btn-toolbar pull-right umb-btn-toolbar">
                     <umb-options-menu ng-show="currentNode"
                                       current-node="currentNode"
-                                      current-section="{{currentSection
-}}">
+                                      current-section="{{currentSection}}">
                     </umb-options-menu>
                 </div>
             </div>
@@ -46,7 +45,7 @@
                 </div>
                 <div class="umb-tab-buttons" detect-fold>
                     <div class="btn-group" ng-show="type.RenderType == 1">
-                        <a class="btn" href="#/uiomatic/uioMaticTree/list/{{typeName}}">
+                        <a class="btn" href="#/{{currentSection}}/uioMaticTree/list/{{typeName}}">
                             <localize key="buttons_returnToList">Return to list</localize>
                         </a>
                     </div>

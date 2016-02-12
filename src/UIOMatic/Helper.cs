@@ -25,7 +25,7 @@ namespace UIOMatic
             {
                 foreach (Type type in assembly.GetTypes())
                 {
-                    if (type.GetCustomAttributes(typeof (UIOMaticAttribute), true).Length > 0)
+                    if (type.GetCustomAttributes(typeof(UIOMaticAttribute), true).Length > 0)
                     {
                         t.Add(type);
                     }
@@ -33,7 +33,7 @@ namespace UIOMatic
             }
 
             HttpRuntime.Cache.Insert("UIOMaticTypes", t);
-            
+
 
             return t;
         }
@@ -69,6 +69,7 @@ namespace UIOMatic
 
         public static object ChangeType(object value, Type type)
         {
+            if (value == null && type.IsInterface) return null;
             if (value == null && type.IsGenericType) return Activator.CreateInstance(type);
             if (value == null) return null;
             if (type == value.GetType()) return value;
@@ -89,8 +90,45 @@ namespace UIOMatic
             if (value is string && type == typeof(Version)) return new Version(value as string);
             if (!(value is IConvertible)) return value;
             return Convert.ChangeType(value, type);
-        } 
+        }
 
+        public static string GetOperators(string Operator)
+        {
+            switch (Operator)
+            {
+                case "2":
+                    return "<>";
+                case "3":
+                    return ">";
+                case "4":
+                    return "<";
+                case "5":
+                    return ">=";
+                case "6":
+                    return "<=";
+                case "1":
+                default:
+                    return "=";
+            }
+        }
 
+        public static string HandleDefaultValue(string defaultvalue, int adddays = 0)
+        {
+            string sResult = defaultvalue;
+            if (defaultvalue == "monthlyfirstday")
+            {
+                sResult = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd");
+            }
+            if (defaultvalue == "monthlylastday")
+            {
+                sResult = new DateTime(DateTime.Now.AddMonths(1).Year, DateTime.Now.AddMonths(1).Month, 1).AddDays(-1).ToString("yyyy-MM-dd");
+            }
+
+            if (defaultvalue == "today")
+            {
+                sResult = DateTime.Now.AddDays(adddays).ToString("yyyy-MM-dd");
+            }
+            return sResult;
+        }
     }
 }
