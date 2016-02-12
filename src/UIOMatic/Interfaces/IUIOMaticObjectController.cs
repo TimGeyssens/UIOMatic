@@ -16,6 +16,8 @@ namespace UIOMatic.Interfaces
 
         IEnumerable<Object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder);
 
+        IEnumerable<Object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder);
+
         UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
             string sortOrder, string searchTerm);
 
@@ -38,5 +40,9 @@ namespace UIOMatic.Interfaces
         string[] DeleteByIds(string typeOfObject, string ids);
 
         IEnumerable<Exception> Validate(ExpandoObject objectToValidate);
+        
+        IEnumerable<UIOMaticFilterPropertyInfo> GetFilterProperties(string typeName);
+
+        UIOMaticPagedResult GetQuery(UIOMaticQueryInfo queryinfo);
     }
 }

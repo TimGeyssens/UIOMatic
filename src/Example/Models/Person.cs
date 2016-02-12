@@ -27,6 +27,11 @@ namespace Example.Models
         [UIOMaticField("Picture", "Please select a picture",View ="file")]
         public string Picture { get; set; }
 
+        [Ignore]
+        [UIOMaticField("Dogs", "", View ="list",
+            Config = "{'typeName': 'Example.Models.Dog, Example', 'foreignKeyColumn' : 'OwnerId', 'canEdit' : false}")]
+        public IEnumerable<Dog> Dogs { get; set; } 
+
         public override string ToString()
         {
             return FirstName + " " + LastName;

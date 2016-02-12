@@ -1,5 +1,34 @@
 ﻿{
     propertyEditors: [
+		{
+			alias: "UIOMatic.MultiPicker",
+			name: "UIOMatic Multi Picker",
+			editor: {
+			view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/multipicker.html"
+			},
+			prevalues: {
+				fields: [
+					{
+						label: "Type of object",
+						description: "Select the type of object",
+						key: "typeName",
+						view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
+					},
+					{
+						label: "Object text template",
+						description: "Enter the text template aka FirstName + ' ' + LastName ",
+						key: "objectTemplate",
+						view: "requiredfield",
+						validation: [
+							{
+								type: "Required" 
+							}                        
+						]
+					}
+				]
+			}
+
+		},
         {
         alias: "UIOMatic.Dropdown",
         name: "UIOMatic Dropdown",
@@ -65,11 +94,13 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/radiobuttonlist.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/list.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/multipicker.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js'
-		
+		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/objectsearcher.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/query.controller.js'
     ]
 	
 }

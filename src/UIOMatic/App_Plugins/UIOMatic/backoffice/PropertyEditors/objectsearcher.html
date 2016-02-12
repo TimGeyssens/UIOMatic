@@ -1,0 +1,69 @@
+﻿<div ng-controller="UIOMatic.PropertyEditors.Dialogs.Searcher">
+
+
+    <div class="umb-panel-header">
+
+        <div class="umb-el-wrap umb-panel-buttons">
+            <div class="span5">
+                <form class="form-search ng-pristine ng-valid" novalidate="">
+                    <div class="inner-addon left-addon">
+                        <i class="icon icon-search"></i>
+                        <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
+                    </div>
+                </form>
+            </div>
+
+            
+
+        </div>
+
+      
+    </div>
+
+    <div class="umb-panel-body with-footer">
+        <ul style="list-style-type:none;">
+            <li ng-repeat="row in rows">
+               
+                <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
+                {{parseTemplate(row)}}
+            </li>
+
+
+        </ul>
+        
+        <div class="pagination pagination-right" style="display:block;">
+            <ul style="display:block;">
+                <li ng-class="{disabled: currentPage == 1}">
+                    <a href ng-click="prevPage()">Prev</a>
+                </li>
+                <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)" class="active"><span>{{$index+1}}</span></li>
+                <li ng-class="{disabled: currentPage == totalPages}">
+                    <a href ng-click="nextPage()">Next</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+            <div class="btn-toolbar umb-btn-toolbar pull-right">
+                <a href="" ng-click="close()" class="btn btn-link">
+                    Cancel
+                </a>
+
+                <button class="btn btn-primary" ng-click="returnSelection()">
+                    Select
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+   
+
+
