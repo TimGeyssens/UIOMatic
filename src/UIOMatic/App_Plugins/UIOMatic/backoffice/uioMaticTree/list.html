@@ -4,7 +4,7 @@
     <umb-header>
 
         <div class="span7">
-            <h1>Object List</h1>
+            <h1>{{displayname}}</h1>
         </div>
 
         <div class="span5">
@@ -18,18 +18,30 @@
     </umb-header>
         <div class="umb-panel-body umb-scrollable row-fluid">
             <div class="tab-content form-horizontal" style="padding-bottom: 90px">
+                
                 <div class="umb-pane">
 
 
-                 
+                   
                     <div class="umb-sub-header">
-                        <div class="btn-group" ng-hide="readOnly">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
+                        <div class="btn-group" ng-hide="IsReadOnly">
+                            <a class="btn btn-default" role="button" href="#/{{currentSection}}/uioMaticTree/edit/{{typeName}}">
                                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
                             </a>
                         </div>
+                        <div class="btn-group" ng-show="isFilterForm">
+                            <a class="btn btn-info" ng-click="openQueryDialog()" prevent-default="">
+                                Query
+                            </a>
+                        </div>
+                        <div class="btn-group" ng-show="IsCanExport">
+                            <button class="btn btn-info"
+                                    ng-csv="rows" csv-header="csvheader" filename="Export.csv" field-separator="," decimal-separator=".">
+                                Export to CSV
+                            </button>
+                        </div>
 
-                        <div class="btn-group" ng-show="!readonly && isAnythingSelected()" >
+                        <div class="btn-group" ng-show="isAnythingSelected()" >
                             <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
                                 <localize key="actions_delete">Delete</localize>
                             </a>
@@ -47,23 +59,31 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td style="width:35px" ng-hide="readOnly"></td>
+                                <td style="width:35px" ng-hide="IsReadOnly"></td>
                                 <td ng-repeat="col in cols">
-                                    <a href="" class="sortable" ng-click="order(col)">{{col}}</a>
-                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
+                                    <a href="" class="sortable" ng-click="order(col)">{{col.Name}}</a>
+                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="IsOrder(col)"></i>
                                 </td>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
-                                <td style="width: 35px" ng-hide="readOnly">
+                                <td style="width: 35px" ng-hide="IsReadOnly">
                                     <i class="icon icon-edit"></i>
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
                                 </td>
                                 <td ng-repeat="column in cols ">
-                                    <div ng-switch="isColumnLinkable(column,$index)">
-                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
-                                        <span ng-switch-when="false">{{row[column]}}</span>
+                                    <div ng-switch ="isColumnLinkable(column,$index)">
+                                        <a href="#/{{currentSection}}/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column.Key]}}</a>
+                                        <Div ng-switch-when="false">
+                                            <div ng-switch on="isDateTime(column)">
+                                                <span ng-switch-when="true">{{row[column.Key]?(millisToUTCDate(row[column.Key]) | date:'yyyy-MM-dd HH:mm:ss'):" "}}</span>
+                                                <span ng-switch-default>
+                                                    {{row[column.Key]}}
+                                                </span>
+                                            </div>
+                                            
+                                            </Div>
                                     </div>
                                 </td>
                             </tr>
@@ -74,11 +94,11 @@
                                         <div class="pagination pagination-right">
                                             <ul>
                                                 <li ng-class="{disabled: currentPage == 1}">
-                                                    <a href ng-click="prevPage()">Prev</a>
+                                                    <a href="" ng-click="prevPage()">Prev</a>
                                                 </li>
                                                 <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)" class="active"><span>{{$index+1}}</span></li>
                                                 <li ng-class="{disabled: currentPage == totalPages}">
-                                                    <a href ng-click="nextPage()">Next</a>
+                                                    <a href="" ng-click="nextPage()">Next</a>
                                                 </li>
                                             </ul>
                                         </div>

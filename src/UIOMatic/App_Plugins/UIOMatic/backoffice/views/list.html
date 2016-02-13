@@ -1,11 +1,11 @@
 ﻿<div class="umb-listview" ng-controller="UIOMatic.Views.List">
 
-    <div class="umb-sub-header" ng-show="canEdit">
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
+    <div class="umb-sub-header">
+        <!--div class="btn-group">
+            <a class="btn btn-default" role="button" href="#/{{currentSection}}/uioMaticTree/edit/{{typeName}}">
                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
             </a>
-        </div>
+        </div-->
 
         <div class="btn-group" ng-show="isAnythingSelected()">
             <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
@@ -25,7 +25,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <td style="width:35px" ng-show="canEdit"></td>
+                <td style="width:35px"></td>
                 <td ng-repeat="col in cols">
                     {{col}}
                     <!--<a href="" class="sortable" ng-click="order(col)">{{col}}</a>
@@ -35,13 +35,13 @@
         </thead>
         <tbody>
             <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
-                <td style="width: 35px" ng-show="canEdit">
+                <td style="width: 35px">
                     <i class="icon icon-edit"></i>
                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
                 </td>
                 <td ng-repeat="column in cols ">
                     <div ng-switch="isColumnLinkable(column,$index)">
-                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
+                        <a href="#/{{currentSection}}/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
                         <span ng-switch-when="false">{{row[column]}}</span>
                     </div>
                 </td>

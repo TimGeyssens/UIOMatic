@@ -24,8 +24,22 @@
 	                sortOrder = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeName=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&searchTerm=" + searchTerm);
 	        },
-	        getAllProperties: function (type) {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type);
+	        getQuery: function (type, object, itemsPerPage, pageNumber, sortColumn, sortOrder, searchTerm) {
+	            var item = {};
+	            item.TypeName = type;
+	            item.ItemsPerPage = itemsPerPage;
+	            item.PageNumber = pageNumber;
+	            item.SortColumn = sortColumn;
+	            item.SortOrder = sortOrder;
+	            item.FilterProperty = object;
+	            item.SearchTerm = searchTerm;
+	            return $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "PostQuery", angular.toJson(item));
+	        },
+	        getAllProperties: function (type,isedit) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeName=" + type + "&isEdit=" + isedit);
+	        },
+	        getFilterProperties: function (type) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFilterProperties?typeName=" + type);
 	        },
 	        getById: function (type, id) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetById?typeName=" + type + "&id=" + id);
@@ -47,6 +61,9 @@
 	        },
 	        deleteByIds: function (type, idsArr) {
 	            return $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "DeleteByIds?typeOfObject=" + type + "&ids=" + idsArr.join(','));
+	        },
+	        exportcsv: function (type, idsArr, searchTerm) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "ExportCSV?typeOfObject=" + type + "&searchTerm=" + searchTerm);
 	        },
 	        validate: function (type, object) {
 	            var item = {};

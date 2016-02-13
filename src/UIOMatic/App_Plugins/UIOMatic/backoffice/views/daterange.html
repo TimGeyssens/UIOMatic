@@ -1,0 +1,25 @@
+﻿<div ng-controller="UIOMatic.Views.DateRange">
+
+
+
+    <div class="input-append date datepicker" style="position: relative;" id="datepicker{{property.Name}}">
+        <span class="add-on">
+            <label>From:</label>
+        </span>
+        <input name="datepicker" data-format="YYYY-MM-DD" type="text"
+               ng-model="property.Value" />
+        <span class="add-on">
+            <i class="icon-calendar"></i>
+        </span>
+    </div>
+    <div class="input-append date datepicker" style="position: relative;" id="todatepicker{{property.Name}}">
+        <span class="add-on">
+            <label>To:</label>
+        </span>
+        <input name="datepicker" data-format="YYYY-MM-DD" type="text"
+               ng-model="property.ToValue" />
+        <span class="add-on">
+            <i class="icon-calendar"></i>
+        </span>
+    </div>
+</div>

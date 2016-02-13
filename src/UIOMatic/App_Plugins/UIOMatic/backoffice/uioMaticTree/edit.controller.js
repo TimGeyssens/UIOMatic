@@ -14,16 +14,21 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.id = $routeParams.id.split("?")[0];
 
 	    $scope.typeName = "";
+	    $scope.displayname = "";
+
 	    if ($isId <= 0) {
 	        $scope.typeName = $routeParams.id;
+	        $scope.editing = false;
 	    } else {
 	        $scope.typeName = $routeParams.id.split("=").slice(1).join('=');
+	        $scope.editing = true;
 	    }
 	    uioMaticObjectResource.getType($scope.typeName).then(function (response) {
 	        $scope.type = response.data;
-	        $scope.readOnly = response.data.ReadOnly;
+	        $scope.displayname = response.data.DisplayName;
+	        $scope.ShowInTree = response.data.ShowInTree;
 
-	        uioMaticObjectResource.getAllProperties($scope.typeName).then(function (response) {
+	        uioMaticObjectResource.getAllProperties($scope.typeName, $scope.editing).then(function (response) {
 	            $scope.properties = response.data;
 	            $scope.type.NameFieldIndex = $scope.type.NameField.length > 0
                     ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameField)
@@ -63,6 +68,35 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        });
 	    });
 
+	    $scope.showReturnbtn = function()
+	    {
+	        if ($scope.type == undefined)
+	            return false;
+	        if ($scope.type.RenderType === 1) {
+	            if ($scope.ShowInTree) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	    //eventsService.on('appState.treeState.changed', function (event, args) {
+	    //    if (args.key === 'selectedNode') {
+
+	    //        function buildPath(node, path) {
+	    //            path.push(node.id);
+	    //            if (node.id === '-1') return path.reverse();
+	    //            var parent = node.parent();
+	    //            if (parent === undefined) return path;
+	    //            return buildPath(parent, path);
+	    //        }
+
+	    //        event.currentScope.nav.syncTree({
+	    //            tree: $routeParams.tree,
+	    //            path: buildPath(args.value, []),
+	    //            forceReload: true
+	    //        });
+	    //    }
+	    //});
 
 	    $scope.save = function (object) {
 
@@ -87,8 +121,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                        $scope.object = response.data;
 	                        $scope.editing = true;
 	                        $scope.objectForm.$dirty = false;
-	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
+	                        //navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been created");
+	                        navigationService.hideNavigation();
 	                    });
 	                }
 
@@ -116,8 +151,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    uioMaticObjectResource.update($routeParams.id.split("=")[1], object).then(function (response) {
 	                        //$scope.object = response.data;
 	                        $scope.objectForm.$dirty = false;
-	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
+	                        //navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been saved");
+	                        navigationService.hideNavigation();
 	                    });
 	                }
 
@@ -142,6 +178,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    };
 
+	    $scope.isNumber = function (n) {
+	        return $isId > 0;
+	    }
+
 	    var setValues = function () {
 
 
@@ -157,7 +197,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    for (var prop in $scope.properties) {
 	                        if ($scope.properties[prop].Key == theKey) {
 	                            if ($scope.properties[prop].Type == "System.DateTime") {
-	                                var date = moment($scope.object[theKey]).format("YYYY-MM-DD HH:mm:ss");
+	                                var date = moment(new Date((new Date($scope.object[theKey])).getTime() + ((new Date).getTimezoneOffset() * 60 * 1000))).format("YYYY-MM-DD HH:mm:ss");
 	                                $scope.properties[prop].Value = date;
 	                            } else {
 	                                $scope.properties[prop].Value = $scope.object[theKey];
@@ -174,8 +214,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	}).filter("removeProperty", function () {
 	    return function (input, propertyKey) {
-	        if (propertyKey == null || propertyKey == "" || input == null)
+	        if (propertyKey == null || propertyKey == "")
 	            return input;
+
+	        if (input == undefined)
+	            return;
 
 	        return input.filter(function (property) {
 	            return property.Key != propertyKey;

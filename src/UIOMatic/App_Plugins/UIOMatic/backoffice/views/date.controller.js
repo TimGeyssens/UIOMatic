@@ -31,7 +31,8 @@
 	        });
 	    };
 
-	    var filesToLoad = ["lib/datetimepicker/bootstrap-datetimepicker.js"];
+	    var filesToLoad = ["lib/moment/moment-with-locales.js",
+            "lib/datetimepicker/bootstrap-datetimepicker.js"];
 
 	    assetsService.load(filesToLoad).then(
 	        function() {

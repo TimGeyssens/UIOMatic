@@ -2,6 +2,11 @@
     <div ng-show="isPicture(property.Value)">
         <img src="{{property.Value}}?width=200" />
     </div>
+    <div ng-show="isVedio(property.Value)">
+        <video src="{{property.Value}}" autoplay="autoplay" width="200" loop="loop" controls="controls"/>
+    </div>
     <small>{{property.Value}}</small><br/>
-    <a href="" ng-click="openMediaPicker()" class="btn">Pick</a>
+    <div ng-hide="isReadonly()">
+        <a href="" ng-click="openMediaPicker()" class="btn">Pick</a>
+    </div>
 </div>

@@ -50,5 +50,11 @@ namespace Example.Models
 
             return exs;
         }
+
+
+        public void SetDefaultValue()
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
