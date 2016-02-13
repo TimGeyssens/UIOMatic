@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, uioMaticObjectResource, dialogService) {
+    function ($scope, $routeParams, uioMaticObjectResource) {
 
         $scope.typeName = $routeParams.id;
         $scope.selectedIds = [];
@@ -71,20 +71,6 @@
             return object[keyPropName];
 
         }
-
-        $scope.openQueryDialog = function () {
-            // open a custom dialog
-            dialogService.open({
-                // set the location of the view
-                template: "/App_Plugins/UIOMatic/backoffice/views/query.html",
-                // pass in data used in dialog
-                dialogData: $scope.filterproperties,
-                // function called when dialog is closed
-                callback: function (value) {
-                    fetchData();
-                }
-            });
-        };
 
         $scope.filter = function (object) {
             fetchData();
