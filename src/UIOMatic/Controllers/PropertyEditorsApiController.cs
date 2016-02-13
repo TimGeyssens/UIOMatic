@@ -12,7 +12,7 @@ using Umbraco.Web.Mvc;
 namespace UIOMatic.Controllers
 {
     [PluginController("UIOMatic")]
-    public class PropertyEditorsApiController: UmbracoAuthorizedJsonController
+    public class PropertyEditorsApiController : UmbracoAuthorizedJsonController
     {
         public IEnumerable<Type> GetAllTypes()
         {
@@ -29,7 +29,7 @@ namespace UIOMatic.Controllers
         public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
             object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName,true);
+            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName, false, true);
         }
 
         public IEnumerable<string> GetAllColumns(string typeName)
@@ -38,4 +38,5 @@ namespace UIOMatic.Controllers
             return ((IUIOMaticObjectController)ctrl).GetAllColumns(typeName);
         }
     }
+
 }

@@ -262,6 +262,7 @@
     <Compile Include="Attributes\UIOMaticIgnoreFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFromListViewAttribute.cs" />
     <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
+    <Compile Include="Attributes\UIOMaticSortOrderAttibute.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
@@ -287,6 +288,7 @@
     <Content Include="App_Plugins\Grid\Editors\Views\media_with_description.html" />
     <Content Include="App_Plugins\Grid\Editors\Views\quote_with_description.html" />
     <Content Include="App_Plugins\UIOMatic\assets\moment.js" />
+    <Content Include="App_Plugins\UIOMatic\assets\ng-csv.min.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\dropdown.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\multipicker.controller.js" />
@@ -310,6 +312,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\checkboxlist.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\daterange.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\daterange.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\datetime.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\datetime.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\dropdown.controller.js" />
@@ -327,6 +331,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.media.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.member.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.member.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\query.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\query.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\radiobuttonlist.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\radiobuttonlist.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\textarea.html" />

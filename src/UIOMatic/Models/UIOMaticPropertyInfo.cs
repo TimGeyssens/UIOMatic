@@ -21,5 +21,7 @@ namespace UIOMatic.Models
         public string Type { get; set; }
 
         public JObject Config { get; set; }
+
+        public bool IsReadOnly { get; set; }
     }
 }

@@ -62,6 +62,9 @@
 	        deleteByIds: function (type, idsArr) {
 	            return $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "DeleteByIds?typeOfObject=" + type + "&ids=" + idsArr.join(','));
 	        },
+	        exportcsv: function (type, idsArr, searchTerm) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "ExportCSV?typeOfObject=" + type + "&searchTerm=" + searchTerm);
+	        },
 	        validate: function (type, object) {
 	            var item = {};
 	            item.typeOfObject = type;

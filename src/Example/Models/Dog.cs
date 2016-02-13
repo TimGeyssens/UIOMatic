@@ -8,7 +8,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 
 namespace Example.Models
 {
-    [UIOMatic("Dogs", "icon-users", "icon-user", RenderType = UIOMaticRenderType.List)]
+    [UIOMatic("Dogs", "icon-users", "icon-user", RenderType = UIOMaticRenderType.List,IsCanExport = true)]
     [TableName("Dogs")]
     public class Dog : IUIOMaticModel
     {
@@ -19,9 +19,11 @@ namespace Example.Models
         public int Id { get; set; }
 
         [UIOMaticNameField]
+        [UIOMaticFilterField]
         public string Name { get; set; }
 
         [UIOMaticField("Is castrated", "Has the dog been castrated")]
+        [UIOMaticFilterField]
         public bool IsCastrated { get; set; }
 
 
@@ -47,6 +49,12 @@ namespace Example.Models
 
 
             return exs;
+        }
+
+
+        public void SetDefaultValue()
+        {
+            //throw new NotImplementedException();
         }
     }
 }

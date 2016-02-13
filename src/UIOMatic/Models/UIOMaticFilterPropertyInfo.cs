@@ -24,5 +24,7 @@ namespace UIOMatic.Models
         public string OperatorID { get; set; }
 
         public string Value { get; set; }
+
+        public string ToValue { get; set; }
     }
 }

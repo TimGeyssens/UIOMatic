@@ -12,6 +12,14 @@ namespace UIOMatic.Models
 
         public string NameField { get; set; }
 
-        public bool ReadOnly { get; set; }
+        public string DisplayName { get; set; }
+
+        public string QueryTemplate { get; set; }
+
+        public bool IsCanExport { get; set; }
+
+        public bool IsReadOnly { get; set; }
+
+        public bool ShowInTree { get; set; }
     }
 }

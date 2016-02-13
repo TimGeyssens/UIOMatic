@@ -5,9 +5,6 @@
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
-        $scope.canEdit = $scope.property.Config.canEdit != undefined ? $scope.property.Config.canEdit : true;
-
-
         function fetchData() {
             uioMaticObjectResource.getFiltered($scope.property.Config.typeName, $scope.property.Config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
                 $scope.rows = response.data;
@@ -30,8 +27,7 @@
                 $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
                 $scope.nameField = response.data.NameField.replace(' ', '_');
 
-                if ($routeParams.id.split("?").length == 2)
-                    fetchData();
+                fetchData();
 
             });
 

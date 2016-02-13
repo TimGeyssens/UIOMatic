@@ -14,14 +14,18 @@ namespace UIOMatic.Attributes
 
         public string ItemIcon { get; set; }
 
-        public string SortColumn{ get; set; }
+        public string SortColumn { get; set; }
 
         public string SortOrder { get; set; }
         public UIOMaticRenderType RenderType { get; set; }
 
         public string ConnectionStringName { get; set; }
 
+        public bool IsCanExport { get; set; }
+
         public bool ReadOnly { get; set; }
+
+        public bool ShowInTree { get; set; }
 
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
@@ -29,10 +33,10 @@ namespace UIOMatic.Attributes
             this.FolderIcon = folderIcon;
             this.ItemIcon = itemIcon;
 
+            ShowInTree = true;
+
             this.RenderType = UIOMaticRenderType.Tree;
             this.SortOrder = "asc";
-
-            this.ReadOnly = false;
         }
     }
 }

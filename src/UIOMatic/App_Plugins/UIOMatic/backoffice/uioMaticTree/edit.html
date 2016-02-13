@@ -11,11 +11,10 @@
                     <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.NameFieldIndex].Value" />
                 </div>
                 <div ng-if="type.NameFieldIndex == -1">
-                    <h1 ng-show="editing">Object Editor</h1>
-                    <h1 ng-hide="editing">Object Creator</h1>
+                    <h1 ng-show="isNumber(id)">Edit {{displayname}} </h1>
+                    <h1 ng-hide="isNumber(id)">Create {{displayname}}</h1>
                 </div>
             </div>
-
             <div class="span5">
                 <div class="btn-toolbar pull-right umb-btn-toolbar">
                     <umb-options-menu ng-show="currentNode"
@@ -45,13 +44,13 @@
                     </umb-control-group>
                 </div>
                 <div class="umb-tab-buttons" detect-fold>
-                    <div class="btn-group" ng-show="type.RenderType == 1">
-                        <a class="btn" href="#/uiomatic/uioMaticTree/list/{{typeName}}">
+                    <div class="btn-group" ng-show="showReturnbtn()">
+                        <a class="btn" href="#/{{currentSection}}/uioMaticTree/list/{{typeName}}">
                             <localize key="buttons_returnToList">Return to list</localize>
                         </a>
                     </div>
 
-                    <div class="btn-group" ng-hide="readOnly">
+                    <div class="btn-group">
                         <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="editing">
                             <localize key="buttons_save">Save</localize>
                         </button>

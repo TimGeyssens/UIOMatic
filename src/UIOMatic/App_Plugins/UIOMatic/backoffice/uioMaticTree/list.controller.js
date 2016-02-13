@@ -1,13 +1,17 @@
-﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, uioMaticObjectResource) {
+﻿var app = angular.module("umbraco");
+app.requires.push('ngSanitize');
+app.requires.push('ngCsv');
+app.controller("uioMatic.ObjectListController",
+    function ($scope, $routeParams, uioMaticObjectResource, dialogService) {
 
-        $scope.typeName = $routeParams.id;
+        $scope.typeName = encodeURI($routeParams.id);
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
         $scope.currentPage = 1;
         $scope.itemsPerPage = 10;
         $scope.totalPages = 1;
+        $scope.object = {};
 
         $scope.reverse = false;
 
@@ -16,6 +20,8 @@
         $scope.searchTerm = "";
 
         $scope.displayname = "";
+
+        $scope.IsCanExport = false;
 
         $scope.Operators =
         [
@@ -35,8 +41,11 @@
                 $scope.totalPages = resp.data.TotalPages;
 
                 if ($scope.rows.length > 0) {
-                    $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
+                    $scope.csvheader = Object.keys($scope.rows[0]).filter(function (c) {
                         return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
+                    });
+                    $scope.cols = $scope.properties.filter(function (c) {
+                        return $scope.ignoreColumnsFromListView.indexOf(c.Key) == -1;
                     });
                 }
             });
@@ -44,26 +53,41 @@
         uioMaticObjectResource.getType($scope.typeName).then(function (response) {
             //.replace(' ', '_') nasty hack to allow columns with a space
             $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
-            $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
+            //$scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
             $scope.nameField = response.data.NameField.replace(' ', '_');
-            $scope.readOnly = response.data.ReadOnly;
-            fetchData();
+            $scope.displayname = response.data.DisplayName;
+            $scope.QueryTemplate = response.data.QueryTemplate;
+            $scope.IsCanExport = response.data.IsCanExport;
+            $scope.IsReadOnly = response.data.IsReadOnly;
+            if ($scope.IsCanExport) {
+                $scope.itemsPerPage = 40000;
+            }
+
+            uioMaticObjectResource.getAllProperties($scope.typeName, true).then(function (response) {
+                $scope.properties = response.data;
+            });
             uioMaticObjectResource.getFilterProperties($scope.typeName).then(function (response) {
                 $scope.filterproperties = response.data;
                 if ($scope.filterproperties.length > 0) {
                     $scope.isFilterForm = true;
                 }
+                fetchData();
             });
+            
 
         });
 
 
         $scope.order = function (predicate) {
-            $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-            $scope.predicate = predicate;
+            $scope.reverse = ($scope.predicate === predicate.Key) ? !$scope.reverse : false;
+            $scope.predicate = predicate.Key;
             $scope.currentPage = 1;
             fetchData();
+        };
+
+        $scope.IsOrder = function (col) {
+            return $scope.predicate === col.Key
         };
 
         $scope.getObjectKey = function (object) {
@@ -87,6 +111,29 @@
 
             //    });
             //}
+        }
+        $scope.openQueryDialog = function () {
+            // open a custom dialog
+            dialogService.open({
+                // set the location of the view
+                template: $scope.QueryTemplate,
+                //"/App_Plugins/UIOMatic/backoffice/views/query.html",
+                // pass in data used in dialog
+                dialogData: $scope.filterproperties,
+                // function called when dialog is closed
+                callback: function (value) {
+                        fetchData();
+                }
+            });
+        };
+        $scope.export = function (object) {
+            if (confirm("Are you sure you want to export?")) {
+                var keyPropName = $scope.primaryKeyColumnName;
+                uioMaticObjectResource.exportcsv($routeParams.id, $scope.searchTerm).then(function () {
+                    $scope.rows = _.reject($scope.rows, function (el) { return $scope.selectedIds.indexOf(el[keyPropName]) > -1; });
+
+                });
+            }
         }
 
         $scope.delete = function (object) {
@@ -150,13 +197,32 @@
         };
 
         $scope.isColumnLinkable = function (column, index) {
-
+            if ($scope.IsReadOnly) {
+                return false;
+            }
             if ($scope.nameField.length > 0) {
-                return column == $scope.nameField;
+                return column.Key == $scope.nameField;
             } else {
 
                 return index == 0
-                || (index == 1 && $scope.cols[0] == $scope.primaryKeyColumnName)
+                || (index == 1 && $scope.cols[0].Key == $scope.primaryKeyColumnName)
             }
         }
-    });
+
+        $scope.isDateTime = function (column) {
+            
+                return column.Type.indexOf('DateTime') > 0;
+        }
+
+        var toUTCDate = function (date) {
+            var _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            return _utc;
+        };
+
+        var millisToUTCDate = function (millis) {
+            return toUTCDate(new Date(millis));
+        };
+
+        $scope.toUTCDate = toUTCDate;
+        $scope.millisToUTCDate = millisToUTCDate;
+    })

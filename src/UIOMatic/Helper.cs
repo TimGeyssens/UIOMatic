@@ -19,22 +19,21 @@ namespace UIOMatic
 
         private static IEnumerable<Type> EnsureTypes()
         {
-            var t = Umbraco.Core.TypeFinder.FindClassesWithAttribute<UIOMaticAttribute>();
-            //var t = new List<Type>();
+            var t = new List<Type>();
 
-            //foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            //{
-            //    foreach (Type type in assembly.GetTypes())
-            //    {
-            //        if (type.GetCustomAttributes(typeof (UIOMaticAttribute), true).Length > 0)
-            //        {
-            //            t.Add(type);
-            //        }
-            //    }
-            //}
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (type.GetCustomAttributes(typeof(UIOMaticAttribute), true).Length > 0)
+                    {
+                        t.Add(type);
+                    }
+                }
+            }
 
             HttpRuntime.Cache.Insert("UIOMaticTypes", t);
-            
+
 
             return t;
         }
@@ -67,7 +66,6 @@ namespace UIOMatic
         {
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
-
 
         public static object ChangeType(object value, Type type)
         {
@@ -112,6 +110,25 @@ namespace UIOMatic
                 default:
                     return "=";
             }
+        }
+
+        public static string HandleDefaultValue(string defaultvalue, int adddays = 0)
+        {
+            string sResult = defaultvalue;
+            if (defaultvalue == "monthlyfirstday")
+            {
+                sResult = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd");
+            }
+            if (defaultvalue == "monthlylastday")
+            {
+                sResult = new DateTime(DateTime.Now.AddMonths(1).Year, DateTime.Now.AddMonths(1).Month, 1).AddDays(-1).ToString("yyyy-MM-dd");
+            }
+
+            if (defaultvalue == "today")
+            {
+                sResult = DateTime.Now.AddDays(adddays).ToString("yyyy-MM-dd");
+            }
+            return sResult;
         }
     }
 }

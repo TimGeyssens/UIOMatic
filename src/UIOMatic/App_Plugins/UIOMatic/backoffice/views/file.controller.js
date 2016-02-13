@@ -17,4 +17,14 @@
             }
             return false;
         }
+        $scope.isVedio = function (path) {
+            if (/\.(mp4|avi)$/.test(path)) {
+                return true;
+            }
+            return false;
+        }
+
+        $scope.isReadonly = function (path) {
+            return $scope.property.IsReadOnly;
+        }
 	});
