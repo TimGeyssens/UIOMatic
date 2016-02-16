@@ -134,6 +134,10 @@ namespace UIOMatic.Controllers
             }
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
                 query.OrderBy(sortColumn + " " + sortOrder);
+            else if(!string.IsNullOrEmpty(uioMaticAttri.SortColumn) && !string.IsNullOrEmpty(uioMaticAttri.SortOrder))
+            {
+                query.OrderBy(uioMaticAttri.SortColumn + " " + uioMaticAttri.SortOrder);
+            }
             else
             {
                 var primaryKeyColum = "id";
@@ -153,10 +157,11 @@ namespace UIOMatic.Controllers
             }
 
             EventHandler<QueryEventArgs> temp = BuildedQuery;
+            var qea = new QueryEventArgs(tableName.Value, query);
             if (temp != null)
-                temp(this, new QueryEventArgs(tableName.Value,query));
+                temp(this, qea);
 
-            var p = db.Page<dynamic>(pageNumber, itemsPerPage, query);
+            var p = db.Page<dynamic>(pageNumber, itemsPerPage, qea.Query);
             var result = new UIOMaticPagedResult
             {
                 CurrentPage = p.CurrentPage,

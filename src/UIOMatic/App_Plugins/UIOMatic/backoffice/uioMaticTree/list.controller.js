@@ -6,16 +6,18 @@
         $scope.actionInProgress = false;
 
         $scope.currentPage = 1;
-        $scope.itemsPerPage = 10;
+        $scope.itemsPerPage = 1;
         $scope.totalPages = 1;
         
         $scope.reverse = false;
 
         $scope.searchTerm = "";
 
+        $scope.initialFetch = true;
+
         function fetchData() {
             
-            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", $scope.searchTerm).then(function (resp) {
+            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.initialFetch ? "" : $scope.predicate, $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"), $scope.searchTerm).then(function (resp) {
                
                 $scope.rows = resp.data.Items;
                 $scope.totalPages = resp.data.TotalPages;
@@ -25,6 +27,8 @@
                         return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
                     });
                 }
+
+                
             });
         }
         uioMaticObjectResource.getType($scope.typeName).then(function (response) {
@@ -43,6 +47,7 @@
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
             $scope.currentPage = 1;
+            $scope.initialFetch = false;
             fetchData();
         };
 
