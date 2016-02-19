@@ -74,7 +74,7 @@ namespace UIOMatic.Trees
                 var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
 
                 
-                var itemIdPropName = "Id";
+                var itemIdPropName = string.Empty;
                 var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
                 if (primKeyAttri.Any())
                     itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
@@ -92,6 +92,8 @@ namespace UIOMatic.Trees
                         }
                     }
                 }
+                else
+                    itemIdPropName = "Id";
 
 
                 foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn, attri.SortOrder))
