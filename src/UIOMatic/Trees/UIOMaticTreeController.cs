@@ -99,7 +99,7 @@ namespace UIOMatic.Trees
 
 
                     var node = CreateTreeNode(
-                        item.GetType().GetProperty(itemIdPropName).GetValue(item, null).ToString() + "?type=" + id,
+                        item.GetType().GetProperty(itemIdPropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).GetValue(item, null).ToString() + "?type=" + id,
                         id,
                         queryStrings,
                         item.ToString(),
