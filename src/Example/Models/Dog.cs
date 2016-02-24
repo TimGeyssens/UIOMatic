@@ -30,6 +30,10 @@ namespace Example.Models
         [UIOMaticIgnoreFromListView]
         public int OwnerId { get; set; }
 
+        [ResultColumn]
+        [UIOMaticIgnoreField]
+        public string OwnerName { get; set; }
+
         public override string ToString()
         {
             return Name;
