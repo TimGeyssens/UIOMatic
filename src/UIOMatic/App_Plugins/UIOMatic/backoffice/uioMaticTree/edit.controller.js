@@ -45,8 +45,18 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 
 	            if ($isId <= 0) {
-	                $scope.object = {};
-	                $scope.loaded = true;
+	                uioMaticObjectResource.getScaffold($scope.typeName).then(function (response) {
+	                    $scope.object = response.data;
+
+	                    $scope.loaded = true;
+	                   
+	                    setValues();
+
+	                    $scope.$broadcast('ValuesLoaded');
+	                });
+	                
+	                //$scope.object = {};
+	                //$scope.loaded = true;
 	            }
 	            else {
 

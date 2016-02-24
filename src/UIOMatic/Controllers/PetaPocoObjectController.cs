@@ -24,6 +24,8 @@ namespace UIOMatic.Controllers
         public static event EventHandler<QueryEventArgs> BuildingQuery;
         public static event EventHandler<QueryEventArgs> BuildedQuery;
 
+        public static event EventHandler<ObjectEventArgs> ScaffoldingObject;
+
         public static event EventHandler<ObjectEventArgs> UpdatingObject;
         public static event EventHandler<ObjectEventArgs> UpdatedObject;
 
@@ -330,6 +332,19 @@ namespace UIOMatic.Controllers
             };
         }
 
+        public object GetScaffold(string typeName)
+        {
+            var ar = typeName.Split(',');
+            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+
+            var obj = Activator.CreateInstance(currentType);
+
+            EventHandler<ObjectEventArgs> temp = ScaffoldingObject;
+            if (temp != null)
+                temp(this, new ObjectEventArgs(obj));
+
+            return obj;
+        }
         public object GetById(string typeName, string id)
         {
 

@@ -27,6 +27,8 @@ namespace UIOMatic.Interfaces
 
         Object GetById(string typeName, string id);
 
+        Object GetScaffold(string typeName);
+
         Object PostCreate(ExpandoObject objectToCreate);
 
         Object PostUpdate(ExpandoObject objectToUpdate);

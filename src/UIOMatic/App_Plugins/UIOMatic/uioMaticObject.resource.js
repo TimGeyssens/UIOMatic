@@ -30,6 +30,9 @@
 	        getById: function (type, id) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetById?typeName=" + type + "&id=" + id);
 	        },
+	        getScaffold: function (type) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetScaffold?typeName=" + type);
+	        },
 	        getType: function(type) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetType?typeName=" + type);
 	        },

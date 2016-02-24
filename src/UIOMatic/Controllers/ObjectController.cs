@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 using Umbraco.Web.Editors;
@@ -47,6 +48,13 @@ namespace UIOMatic.Controllers
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetById(typeName, id);
+        }
+
+        
+        public object GetScaffold(string typeName)
+        {
+            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
+            return ((IUIOMaticObjectController)ctrl).GetScaffold(typeName);
         }
 
         public object PostCreate(System.Dynamic.ExpandoObject objectToCreate)
