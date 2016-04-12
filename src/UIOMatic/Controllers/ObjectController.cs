@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using UIOMatic.Interfaces;
-using UIOMatic.Models;
+using UIOMatic.Core.Interfaces;
+using UIOMatic.Core.Models;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
@@ -31,7 +31,7 @@ namespace UIOMatic.Controllers
             return ((IUIOMaticObjectController)ctrl).GetPaged(typeName, itemsPerPage, pageNumber, sortColumn, sortOrder, searchTerm);
         }
 
-        public IEnumerable<Models.UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
         {
             var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController) ctrl).GetAllProperties(typeName);

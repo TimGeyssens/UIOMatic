@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using UIOMatic.Models;
+using UIOMatic.Core.Models;
 using Umbraco.Core;
 using Umbraco.Core.Persistence;
 using Umbraco.Web.UI.JavaScript;

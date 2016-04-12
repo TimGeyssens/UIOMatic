@@ -1,7 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIOMatic", "UIOMatic\UIOMatic.csproj", "{729A028F-4CD9-4BC3-8C89-96A0C92F0F91}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6816AC31-9425-4DFF-A25A-1069C647EAD6}"
@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6816AC
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{29BD059C-73A0-4A88-911C-3CB25E6269F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIOMatic.Core", "UIOMatic.Core\UIOMatic.Core.csproj", "{FD0A8FE4-E812-4D8B-AA38-D497D9A09677}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{29BD059C-73A0-4A88-911C-3CB25E6269F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29BD059C-73A0-4A88-911C-3CB25E6269F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29BD059C-73A0-4A88-911C-3CB25E6269F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD0A8FE4-E812-4D8B-AA38-D497D9A09677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD0A8FE4-E812-4D8B-AA38-D497D9A09677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD0A8FE4-E812-4D8B-AA38-D497D9A09677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD0A8FE4-E812-4D8B-AA38-D497D9A09677}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

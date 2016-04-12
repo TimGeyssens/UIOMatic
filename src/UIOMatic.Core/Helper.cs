@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using UIOMatic.Attributes;
+using UIOMatic.Core.Attributes;
 using Umbraco.Core.Persistence;
 
-namespace UIOMatic
+namespace UIOMatic.Core
 {
     public class Helper
     {

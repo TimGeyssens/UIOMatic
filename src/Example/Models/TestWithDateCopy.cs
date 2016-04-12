@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using UIOMatic.Attributes;
-using UIOMatic.Enums;
-using UIOMatic.Interfaces;
+using UIOMatic.Core.Attributes;
+using UIOMatic.Core.Enums;
+using UIOMatic.Core.Interfaces;
 using Umbraco.Core.Persistence;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
 

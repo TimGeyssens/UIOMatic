@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UIOMatic.Attributes
+namespace UIOMatic.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class UIOMaticIgnoreFromListViewAttribute : Attribute

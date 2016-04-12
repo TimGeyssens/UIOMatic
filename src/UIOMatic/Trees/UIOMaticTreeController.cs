@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Web;
 using umbraco;
 using umbraco.BusinessLogic.Actions;
-using UIOMatic.Attributes;
-using UIOMatic.Controllers;
-using UIOMatic.Interfaces;
+using UIOMatic.Core.Attributes;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
 using Umbraco.Core.Persistence;
+using UIOMatic.Core.Enums;
+using UIOMatic.Core;
+using UIOMatic.Core.Controllers;
 
 namespace UIOMatic.Trees
 {
@@ -33,7 +31,7 @@ namespace UIOMatic.Trees
                 {
                     var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-                    if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                    if (attri.RenderType == UIOMaticRenderType.Tree)
                     {
                         var node = CreateTreeNode(
                             type.AssemblyQualifiedName,
@@ -151,7 +149,7 @@ namespace UIOMatic.Trees
 
                     if(!attri.ReadOnly)
                         menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
-                    if(attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                    if(attri.RenderType == UIOMaticRenderType.Tree)
                     menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
                 }
 

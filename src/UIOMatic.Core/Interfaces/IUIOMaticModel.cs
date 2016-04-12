@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace UIOMatic.Interfaces
+namespace UIOMatic.Core.Interfaces
 {
     public interface IUIOMaticModel
     {

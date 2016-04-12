@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Lucene.Net.Util;
 using Umbraco.Core.Persistence;
 
-namespace UIOMatic
+namespace UIOMatic.Core
 {
     public class QueryEventArgs : EventArgs
     {

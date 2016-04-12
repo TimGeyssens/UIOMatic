@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
-using UIOMatic.Attributes;
-using UIOMatic.Interfaces;
-using UIOMatic.Models;
+using UIOMatic.Core.Attributes;
+using UIOMatic.Core.Interfaces;
+using UIOMatic.Core.Models;
 using Umbraco.Core.Persistence;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
 using Umbraco.Web.Editors;
-using Umbraco.Web.Mvc;
 using umbraco.IO;
 using Umbraco.Core;
 
-namespace UIOMatic.Controllers
+namespace UIOMatic.Core.Controllers
 {
-    
+
     public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
     {
         public static event EventHandler<QueryEventArgs> BuildingQuery;
