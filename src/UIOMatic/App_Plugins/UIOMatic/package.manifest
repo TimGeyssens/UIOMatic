@@ -99,7 +99,8 @@
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/objectsearcher.controller.js'
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/objectsearcher.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/rte.controller.js'
 		
     ]
 	
