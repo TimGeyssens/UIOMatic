@@ -6,9 +6,7 @@
 	    };
 
 	    function populateFile(item) {
-	        
-
-            $scope.property.Value = item.properties[0].value;
+	        $scope.property.Value = item.image;
 	    }
 
         $scope.isPicture = function(path) {

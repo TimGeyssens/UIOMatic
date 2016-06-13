@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UIOMatic.Attributes;
-using UIOMatic.Interfaces;
+using UIOMatic.Core.Attributes;
+using UIOMatic.Core.Interfaces;
 using Umbraco.Core.Persistence;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
 

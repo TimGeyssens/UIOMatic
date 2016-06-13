@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using UIOMatic.Models;
+using UIOMatic.Core.Models;
 
-namespace UIOMatic.Interfaces
+namespace UIOMatic.Core.Interfaces
 {
     public interface IUIOMaticObjectController
     {

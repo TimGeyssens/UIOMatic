@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using UIOMatic.Enums;
+using UIOMatic.Core.Enums;
 
-namespace UIOMatic.Attributes
+namespace UIOMatic.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class UIOMaticAttribute : Attribute

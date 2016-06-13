@@ -1,6 +1,6 @@
-﻿using UIOMatic.Enums;
+﻿using UIOMatic.Core.Enums;
 
-namespace UIOMatic.Models
+namespace UIOMatic.Core.Models
 {
     public class UIOMaticTypeInfo
     {

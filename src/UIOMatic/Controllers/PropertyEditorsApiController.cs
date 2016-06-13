@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using UIOMatic.Interfaces;
-using UIOMatic.Models;
-using Umbraco.Core.Persistence;
+using UIOMatic.Core;
+using UIOMatic.Core.Interfaces;
+using UIOMatic.Core.Models;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
@@ -23,7 +20,6 @@ namespace UIOMatic.Controllers
         {
             object ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
             return ((IUIOMaticObjectController)ctrl).GetAll(typeName, sortColumn, sortOrder);
-
         }
 
         public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
