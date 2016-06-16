@@ -12,15 +12,21 @@ namespace Example
     {
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            var db = applicationContext.DatabaseContext.Database;
-            if (!db.TableExist("TestWithDate"))
-                db.CreateTable<TestWithDate>(false);
+            //Some old code to create db tables that don't exist yet
+            //var db = applicationContext.DatabaseContext.Database;
+            //if (!db.TableExist("TestWithDate"))
+            //    db.CreateTable<TestWithDate>(false);
 
+
+            //Use scaffolding object event to set default values...http://www.nibble.be/?p=497
             UIOMatic.Controllers.PetaPocoObjectController.ScaffoldingObject += PetaPocoObjectController_ScaffoldingObject;
 
+            //Add additional where statements to the query in the building query event
             UIOMatic.Controllers.PetaPocoObjectController.BuildingQuery += PetaPocoObjectController_BuildingQuery1;
 
-            UIOMatic.Controllers.PetaPocoObjectController.BuildedQuery += PetaPocoObjectController_BuildingQuery;
+            //Full control over the query in the builder query event (so you can even overwrite), 
+            //but currently searching and sorting wont work then
+            UIOMatic.Controllers.PetaPocoObjectController.BuildedQuery += PetaPocoObjectController_BuildedQuery;
         }
 
         private void PetaPocoObjectController_ScaffoldingObject(object sender, UIOMatic.ObjectEventArgs e)
@@ -39,7 +45,7 @@ namespace Example
             }
         }
 
-        private void PetaPocoObjectController_BuildingQuery(object sender, UIOMatic.QueryEventArgs e)
+        private void PetaPocoObjectController_BuildedQuery(object sender, UIOMatic.QueryEventArgs e)
         {
             if (e.TableName == "Dogs")
             {
