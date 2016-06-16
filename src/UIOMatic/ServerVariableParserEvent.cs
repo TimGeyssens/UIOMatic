@@ -29,6 +29,7 @@ namespace UIOMatic
             var mainDictionary = new Dictionary<string, object>();
             mainDictionary.Add("ocBaseUrl", urlHelper.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.PostCreate(null)));
             mainDictionary.Add("pecBaseUrl", urlHelper.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller => controller.GetAllTypes()));
+            mainDictionary.Add("fcBaseUrl", urlHelper.GetUmbracoApiServiceBaseUrl<FieldApiController>(controller => controller.GetAllUsers()));
 
             if (!e.Keys.Contains("uioMatic"))
             {

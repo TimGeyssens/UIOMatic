@@ -262,6 +262,7 @@
     <Compile Include="Attributes\UIOMaticIgnoreFromListViewAttribute.cs" />
     <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Controllers\FieldApiController.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
     <Compile Include="Controllers\PetaPocoObjectController.cs" />
     <Compile Include="Controllers\PropertyEditorsApiController.cs" />
@@ -296,6 +297,7 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\picker.tablesortorder.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.property.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\PropertyEditors\pickers.type.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\resources\uioMaticField.resource.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\uioMaticTree\edit.controller.js" />
@@ -326,9 +328,15 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.member.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\radiobuttonlist.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\radiobuttonlist.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\rte.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\rte.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\textarea.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\textfield.html" />
-    <Content Include="App_Plugins\UIOMatic\uioMaticObject.resource.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.user.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.user.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.users.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\pickers.users.html" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\resources\uioMaticObject.resource.js" />
     <Content Include="Config\grid.editors.config.js" />
     <Content Include="Config\Lang\cs-CZ.user.xml" />
     <Content Include="Config\Lang\da-DK.user.xml" />
