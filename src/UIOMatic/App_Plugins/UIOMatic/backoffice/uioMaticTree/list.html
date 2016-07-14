@@ -49,7 +49,7 @@
                             <tr>
                                 <td style="width:35px" ng-hide="readOnly"></td>
                                 <td ng-repeat="col in cols">
-                                    <a href="" class="sortable" ng-click="order(col)">{{col}}</a>
+                                    <a href="" class="sortable" ng-click="order(col)">{{unCamelCase(col)}}</a>
                                     <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
                                 </td>
                             </tr>
