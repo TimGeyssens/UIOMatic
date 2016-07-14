@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.File",
+angular.module("umbraco").controller("UIOMatic.Views.File",
 	function ($scope, dialogService) {
 
 	    $scope.openMediaPicker = function() {
@@ -6,9 +6,9 @@
 	    };
 
 	    function populateFile(item) {
-	        
 
-            $scope.property.Value = item.properties[0].value;
+
+            $scope.property.Value = item.image;
 	    }
 
         $scope.isPicture = function(path) {
