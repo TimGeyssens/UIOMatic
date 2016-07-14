@@ -40,7 +40,7 @@
 	<PropertyGroup>
 		<VersionMajor>1</VersionMajor>
 		<VersionMinor>7</VersionMinor>
-		<VersionPatch>3</VersionPatch>
+		<VersionPatch>4</VersionPatch>
 		<VersionSuffix></VersionSuffix>
 		<UmbracoVersion>7.3.0</UmbracoVersion>
 	</PropertyGroup>
@@ -89,7 +89,7 @@
 	  <TreeFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\uioMaticTree\*.*" />
 	  <ViewFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\views\*.*" />
 	  <PropEditorFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\PropertyEditors\*.*" />
-	  
+	  <ResourceFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\backoffice\resources\*.*" />
 	  <AssetFiles Include="$(CoreProjectDir)\App_Plugins\UIOMatic\assets\*.*" />
       <BinFiles Include="$(CoreProjectDir)\bin\**\UIOMatic.dll" />
 	  <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
@@ -104,6 +104,7 @@
 	
 	<Copy SourceFiles="@(RootFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\" />
 	<Copy SourceFiles="@(TreeFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\uioMaticTree\" />
+	<Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\resources\" />
 	<Copy SourceFiles="@(ViewFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\views\" />
 	<Copy SourceFiles="@(PropEditorFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\backoffice\PropertyEditors\" />
 	<Copy SourceFiles="@(AssetFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\UIOMatic\assets\" />
