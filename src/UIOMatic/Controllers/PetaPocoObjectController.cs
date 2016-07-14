@@ -115,14 +115,16 @@ namespace UIOMatic.Controllers
                 int c = 0;
                 foreach (var property in currentType.GetProperties())
                 {
-                    //if (property.PropertyType == typeof (string))
-                    //{
+                    var attris = property.GetCustomAttributes();
+
+                    if (!attris.Any(x=>x.GetType() == typeof(IgnoreAttribute)))
+                    {
                         string before = "WHERE";
                         if (c > 0)
                             before = "OR";
 
                         var columnAttri =
-                           property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+                           attris.Where(x => x.GetType() == typeof(ColumnAttribute));
 
                         var columnName = property.Name;
                         if (columnAttri.Any())
@@ -131,7 +133,7 @@ namespace UIOMatic.Controllers
                         query.Append(before + " [" + columnName + "] like @0", "%" + searchTerm + "%");
                         c++;
 
-                    //}
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
