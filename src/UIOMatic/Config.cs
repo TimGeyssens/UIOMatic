@@ -34,29 +34,26 @@ namespace UIOMatic
             var settingsFile = HttpRuntime.Cache["UIOMaticConfigFile"];
             var fullPath = HostingEnvironment.MapPath(PluginFolder + "/" + ConfigFileName);
 
-            if (settingsFile == null)
+            if (settingsFile != null) return (XmlDocument) settingsFile;
+            var temp = new XmlDocument();
+            var settingsReader = new XmlTextReader(fullPath);
+            try
             {
-                var temp = new XmlDocument();
-                var settingsReader = new XmlTextReader(fullPath);
-                try
-                {
-                    temp.Load(settingsReader);
-                    HttpRuntime.Cache.Insert("UIOMaticConfigFile", temp, new CacheDependency(fullPath));
-                }
-                catch (XmlException e)
-                {
-                    throw new XmlException("Your UIOMatic.config file fails to pass as valid XML. Refer to the InnerException for more information", e);
-                }
-                catch (Exception e)
-                {
-
-                    UC.Logging.LogHelper.Error(typeof(Config), e.Message, e);
-
-                }
-                settingsReader.Close();
-                return temp;
+                temp.Load(settingsReader);
+                HttpRuntime.Cache.Insert("UIOMaticConfigFile", temp, new CacheDependency(fullPath));
             }
-            return (XmlDocument)settingsFile;
+            catch (XmlException e)
+            {
+                throw new XmlException("Your UIOMatic.config file fails to pass as valid XML. Refer to the InnerException for more information", e);
+            }
+            catch (Exception e)
+            {
+
+                UC.Logging.LogHelper.Error(typeof(Config), e.Message, e);
+
+            }
+            settingsReader.Close();
+            return temp;
         }
     }
 }

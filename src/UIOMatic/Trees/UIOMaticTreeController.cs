@@ -84,12 +84,10 @@ namespace UIOMatic.Trees
                     foreach (var property in currentType.GetProperties())
                     {
                         var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
-                        if (keyAttri.Any())
-                        {
-                            var columnAttri =
-                                property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
-                            itemIdPropName = property.Name;
-                        }
+                        if (!keyAttri.Any()) continue;
+                        var columnAttri =
+                            property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
+                        itemIdPropName = property.Name;
                     }
                 }
                 else

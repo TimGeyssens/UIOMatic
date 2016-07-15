@@ -20,21 +20,8 @@ namespace UIOMatic
         private static IEnumerable<Type> EnsureTypes()
         {
             var t = Umbraco.Core.TypeFinder.FindClassesWithAttribute<UIOMaticAttribute>();
-            //var t = new List<Type>();
-
-            //foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            //{
-            //    foreach (Type type in assembly.GetTypes())
-            //    {
-            //        if (type.GetCustomAttributes(typeof (UIOMaticAttribute), true).Length > 0)
-            //        {
-            //            t.Add(type);
-            //        }
-            //    }
-            //}
 
             HttpRuntime.Cache.Insert("UIOMaticTypes", t);
-            
 
             return t;
         }
@@ -43,13 +30,13 @@ namespace UIOMatic
         public static void SetValue(object inputObject, string propertyName, object propertyVal)
         {
             //find out the type
-            Type type = inputObject.GetType();
+            var type = inputObject.GetType();
 
             //get the property information based on the type
-            System.Reflection.PropertyInfo propertyInfo = type.GetProperty(propertyName);
+            var propertyInfo = type.GetProperty(propertyName);
 
             //find the property type
-            Type propertyType = propertyInfo.PropertyType;
+            var propertyType = propertyInfo.PropertyType;
 
             //Convert.ChangeType does not handle conversion to nullable types
             //if the property type is nullable, we need to get the underlying type of the property
