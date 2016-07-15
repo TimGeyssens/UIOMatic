@@ -13,7 +13,7 @@ namespace UIOMatic.Controllers
     {
         public IEnumerable<IUser> GetAllUsers()
         {
-            int total = 0;
+            var total = 0;
             var us = Services.UserService;
             return us.GetAll(0, 1000, out total);
         }

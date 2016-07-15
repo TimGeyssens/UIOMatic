@@ -160,7 +160,7 @@ namespace UIOMatic.Controllers
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
-            EventHandler<QueryEventArgs> temp = BuildedQuery;
+            var temp = BuildedQuery;
             var qea = new QueryEventArgs(currentType, tableName.Value, query,sortColumn,sortOrder,searchTerm);
             if (temp != null)
                 temp(this, qea);
@@ -341,7 +341,7 @@ namespace UIOMatic.Controllers
 
             var obj = Activator.CreateInstance(currentType);
 
-            EventHandler<ObjectEventArgs> temp = ScaffoldingObject;
+            var temp = ScaffoldingObject;
             if (temp != null)
                 temp(this, new ObjectEventArgs(obj));
 
@@ -454,13 +454,13 @@ namespace UIOMatic.Controllers
 
             }
 
-            EventHandler<ObjectEventArgs> temp = CreatingObject;
+            var temp = CreatingObject;
             if (temp != null)
                 temp(this, new ObjectEventArgs(ob));
 
             db.Save(tableName,primaryKeyColum,ob);
 
-            EventHandler<ObjectEventArgs> tmp = CreatedObject;
+            var tmp = CreatedObject;
             if (tmp != null)
                 tmp(this, new ObjectEventArgs(ob));
 
@@ -476,13 +476,13 @@ namespace UIOMatic.Controllers
             var ar = typeOfObject.Split(',');
             var currentType = Type.GetType(ar[0] + ", " + ar[1]);
         
-            object ob = Activator.CreateInstance(currentType,null);
+            var ob = Activator.CreateInstance(currentType,null);
 
             foreach (var prop in objectToUpdate)
             {
                 var propKey = prop.Key;
                
-                PropertyInfo propI = currentType.GetProperty(propKey);
+                var propI = currentType.GetProperty(propKey);
                 if (propI != null)
                 {
                     
@@ -517,14 +517,14 @@ namespace UIOMatic.Controllers
 
             }
 
-            EventHandler<ObjectEventArgs> tmp = UpdatingObject;
+            var tmp = UpdatingObject;
             if (tmp != null)
                 tmp(this, new ObjectEventArgs(ob));
 
 
             db.Save(tableName, primaryKeyColum, ob);
 
-            EventHandler<ObjectEventArgs> temp = UpdatedObject;
+            var temp = UpdatedObject;
             if (temp != null)
                 temp(this, new ObjectEventArgs(ob));
 
