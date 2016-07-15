@@ -9,11 +9,15 @@ namespace UIOMatic
 {
     public class QueryEventArgs : EventArgs
     {
-        public QueryEventArgs(Type currentType, string tableName, Sql query)
+        public QueryEventArgs(Type currentType, string tableName, Sql query, string sortColumn,
+            string sortOrder, string searchTerm)
         {
             this.CurrentType = currentType;
             this.TableName = tableName;
             this.Query = query;
+            this.SortColumn = sortColumn;
+            this.SortOrder = sortOrder;
+            this.SearhTerm = searchTerm;
         }
 
         public Type CurrentType { get; set; }
@@ -21,5 +25,11 @@ namespace UIOMatic
         public string TableName { get; set; }
 
         public Sql Query { get; set; }
+
+        public string SortColumn { get; set; }
+
+        public string SortOrder { get; set; }
+
+        public string SearhTerm { get; set; }
     }
 }

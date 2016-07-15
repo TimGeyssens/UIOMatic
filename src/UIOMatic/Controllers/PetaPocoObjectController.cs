@@ -108,7 +108,7 @@ namespace UIOMatic.Controllers
 
             EventHandler<QueryEventArgs> tmp = BuildingQuery;
             if (tmp != null)
-                tmp(this, new QueryEventArgs(currentType,tableName.Value, query));
+                tmp(this, new QueryEventArgs(currentType,tableName.Value, query,sortColumn,sortOrder,searchTerm));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -161,7 +161,7 @@ namespace UIOMatic.Controllers
             }
 
             EventHandler<QueryEventArgs> temp = BuildedQuery;
-            var qea = new QueryEventArgs(currentType, tableName.Value, query);
+            var qea = new QueryEventArgs(currentType, tableName.Value, query,sortColumn,sortOrder,searchTerm);
             if (temp != null)
                 temp(this, qea);
 

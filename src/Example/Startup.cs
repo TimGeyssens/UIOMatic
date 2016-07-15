@@ -25,7 +25,6 @@ namespace Example
             UIOMatic.Controllers.PetaPocoObjectController.BuildingQuery += PetaPocoObjectController_BuildingQuery1;
 
             //Full control over the query in the builder query event (so you can even overwrite), 
-            //but currently searching and sorting wont work then
             UIOMatic.Controllers.PetaPocoObjectController.BuildedQuery += PetaPocoObjectController_BuildedQuery;
         }
 
@@ -54,7 +53,11 @@ namespace Example
                     .Append("SELECT Dogs.Id, Dogs.Name, Dogs.IsCastrated, Dogs.OwnerId, People.Firstname + ' ' + People.Lastname as OwnerName")
                     .Append("FROM Dogs")
                     .Append("INNER JOIN People ON Dogs.OwnerId = People.Id")
-                    .Append("ORDER BY Dogs.Id desc");
+                    .Append(string.IsNullOrEmpty(e.SearhTerm) ? "" : string.Format(
+                        @"WHERE Dogs.Name like '%{0}%' 
+                            or People.Firstname like '%{0}%' 
+                            or People.Lastname like '%{0}%'", e.SearhTerm))
+                    .Append("ORDER BY " + (string.IsNullOrEmpty(e.SortColumn) ? " Id desc" :  e.SortColumn + " " + e.SortOrder));
 
 
             }
