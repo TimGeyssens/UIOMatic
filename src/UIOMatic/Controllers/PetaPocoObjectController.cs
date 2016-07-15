@@ -437,18 +437,24 @@ namespace UIOMatic.Controllers
             var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
 
             var primaryKeyColum = string.Empty;
+            var autoIncrement = true;
 
             var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
+            {
                 primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+                autoIncrement = ((PrimaryKeyAttribute)primKeyAttri.First()).autoIncrement;
+            }
 
             foreach (var prop in currentType.GetProperties())
             {
                 foreach (var attri in prop.GetCustomAttributes(true))
                 {
                     if (attri.GetType() == typeof(PrimaryKeyColumnAttribute))
+                    {
                         primaryKeyColum = ((PrimaryKeyColumnAttribute)attri).Name ?? prop.Name;
-
+                        autoIncrement = ((PrimaryKeyColumnAttribute)attri).AutoIncrement;
+                    }
                 }
 
 
@@ -458,8 +464,10 @@ namespace UIOMatic.Controllers
             if (temp != null)
                 temp(this, new ObjectEventArgs(ob));
 
-            db.Save(tableName,primaryKeyColum,ob);
-
+            if (autoIncrement)
+                db.Insert(tableName,primaryKeyColum,ob);
+            else
+                db.Insert(ob);
             var tmp = CreatedObject;
             if (tmp != null)
                 tmp(this, new ObjectEventArgs(ob));
@@ -522,7 +530,7 @@ namespace UIOMatic.Controllers
                 tmp(this, new ObjectEventArgs(ob));
 
 
-            db.Save(tableName, primaryKeyColum, ob);
+            db.Update(ob);
 
             var temp = UpdatedObject;
             if (temp != null)
