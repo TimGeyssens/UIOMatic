@@ -1,0 +1,12 @@
+﻿<div ng-controller="UIOMatic.PropertyEditors.Dropdown">
+
+    <select ng-model="model.value">
+        <option value="0">---Please select---</option>
+        <option ng-selected="{{object[model.config.valueColumn]}}"
+                ng-repeat="object in objects"
+                value="{{object[model.config.valueColumn]}}">
+
+            {{parseTemplate(object)}}
+        </option>
+    </select>
+</div>

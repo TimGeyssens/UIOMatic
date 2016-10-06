@@ -1,0 +1,71 @@
+﻿<form name="objectForm"
+      ng-controller="uioMatic.ObjectEditController"
+      ng-show="loaded"
+      ng-submit="save(object)"
+      val-form-manager>
+    <umb-panel>
+        <umb-header tabs="content.tabs">
+
+            <div class="span7">
+                <div ng-if="type.NameFieldIndex > -1">
+                    <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.NameFieldIndex].Value" />
+                </div>
+                <div ng-if="type.NameFieldIndex == -1">
+                    <h1 ng-show="editing">Object Editor</h1>
+                    <h1 ng-hide="editing">Object Creator</h1>
+                </div>
+            </div>
+
+            <div class="span5">
+                <div class="btn-toolbar pull-right umb-btn-toolbar">
+                    <umb-options-menu ng-show="currentNode"
+                                      current-node="currentNode"
+                                      current-section="{{currentSection}}">
+                    </umb-options-menu>
+                </div>
+            </div>
+        </umb-header>
+
+        <div class="umb-panel-body umb-scrollable row-fluid">
+            <div class="tab-content form-horizontal" style="padding-bottom: 90px">
+                <!--<h1>Properties</h1>
+                {{properties | json}}
+                <h1>Object</h1>
+                {{ object | json }}-->
+                <umb-tab ng-repeat="tab in content.tabs | filter:content.Tabs != null" id="tab{{tab.id}}" rel="{{tab.label}}">
+                    <div class="umb-pane">
+                        <umb-control-group ng-repeat="property in properties | removeProperty:type.NameField | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
+                            <div ng-include="property.View"></div>
+                        </umb-control-group>
+                    </div>
+                </umb-tab>
+                <div class="umb-pane" ng-if="content.tabs == null">
+                    <umb-control-group ng-repeat="property in properties | removeProperty:type.NameField | filter:{Tab: tab.label}" label="{{property.Name}}" description="{{property.Description}}">
+                        <div ng-include="property.View"></div>
+                    </umb-control-group>
+                </div>
+                <div class="umb-tab-buttons" detect-fold>
+                    <div class="btn-group" ng-show="type.RenderType == 1">
+                        <a class="btn" href="#/uiomatic/uioMaticTree/list/{{typeName}}">
+                            <localize key="buttons_returnToList">Return to list</localize>
+                        </a>
+                    </div>
+
+                    <div class="btn-group" ng-hide="readOnly">
+                        <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="editing">
+                            <localize key="buttons_save">Save</localize>
+                        </button>
+                        <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="editing">
+                            Create
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </umb-panel>
+</form>
+
+
+
+
