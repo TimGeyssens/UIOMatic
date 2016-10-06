@@ -10,7 +10,7 @@
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco ](http://www.toptensoftware.com/petapoco/)poco**
 
-![](logo.png)
+![](docs/img/logo.png?raw=true)
 
 Implement an interface and decorate your class and properties with some additional attributes.
 
@@ -67,7 +67,7 @@ This class
 
 Will generate the following UI
 
-![](example.png)
+![](docs/img/example.png?raw=true)
 
 ## Documentation ##
 
