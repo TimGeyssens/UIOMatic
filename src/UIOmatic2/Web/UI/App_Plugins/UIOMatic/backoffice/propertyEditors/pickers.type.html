@@ -1,0 +1,10 @@
+﻿ <div ng-controller="UIOMatic.PropertyEditors.Pickers.Type">
+    <select ng-model="model.value">
+        <option value="">---Please select---</option>
+        <option ng-selected="{{type == model.value}}"
+                ng-repeat="type in types"
+                value="{{type}}">
+            {{type}}
+        </option>
+    </select>
+</div>

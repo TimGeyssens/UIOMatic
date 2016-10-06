@@ -1,0 +1,95 @@
+﻿<div ng-controller="uioMatic.ObjectListController">
+
+    <umb-panel>
+    <umb-header>
+
+        <div class="span7">
+            <h1>Object List</h1>
+        </div>
+
+        <div class="span5">
+            <div class="btn-toolbar pull-right umb-btn-toolbar">
+                <umb-options-menu ng-show="currentNode"
+                                  current-node="currentNode"
+                                  current-section="{{currentSection}}">
+                </umb-options-menu>
+            </div>
+        </div>
+    </umb-header>
+        <div class="umb-panel-body umb-scrollable row-fluid">
+            <div class="tab-content form-horizontal" style="padding-bottom: 90px">
+                <div class="umb-pane">
+
+
+                 
+                    <div class="umb-sub-header">
+                        <div class="btn-group" ng-hide="readOnly">
+                            <a class="btn" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
+                                <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
+                            </a>
+                        </div>
+
+                        <div class="btn-group" ng-show="!readonly && isAnythingSelected()" >
+                            <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
+                                <localize key="actions_delete">Delete</localize>
+                            </a>
+                        </div>
+
+                        <form class="form-search pull-right ng-pristine ng-valid" novalidate="">
+                            <div class="inner-addon left-addon">
+                                <i class="icon icon-search"></i>
+                                <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="umb-listview">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <td style="width:35px" ng-hide="readOnly"></td>
+                                <td ng-repeat="col in cols">
+                                    <a href="" class="sortable" ng-click="order(col)">{{unCamelCase(col)}}</a>
+                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
+                                <td style="width: 35px" ng-hide="readOnly">
+                                    <i class="icon icon-edit"></i>
+                                    <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
+                                </td>
+                                <td ng-repeat="column in cols ">
+                                    <div ng-switch="isColumnLinkable(column,$index)">
+                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
+                                        <span ng-switch-when="false">{{row[column]}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot ng-show="totalPages > 1">
+                                <tr>
+                                    <th colspan="{{cols.length + 1}}">
+                                        <div class="pagination pagination-right">
+                                            <ul>
+                                                <li ng-class="{disabled: currentPage == 1}">
+                                                    <a href ng-click="prevPage()">Prev</a>
+                                                </li>
+                                                <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)" class="active"><span>{{$index+1}}</span></li>
+                                                <li ng-class="{disabled: currentPage == totalPages}">
+                                                    <a href ng-click="nextPage()">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        
+     </umb-panel>
+</div>

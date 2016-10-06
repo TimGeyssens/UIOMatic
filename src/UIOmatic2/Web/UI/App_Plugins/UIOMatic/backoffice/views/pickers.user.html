@@ -1,0 +1,13 @@
+﻿<div ng-controller="UIOMatic.Views.Pickers.UserController">
+    <select ng-model="property.Value" >
+
+        <option value="">---Please select---</option>
+        <option ng-selected="{{u.Id == property.Value}}"
+                ng-repeat="u in users"
+                value="{{u.Id}}">
+            {{u.Name}}
+        </option>
+
+    </select>
+   
+</div>
