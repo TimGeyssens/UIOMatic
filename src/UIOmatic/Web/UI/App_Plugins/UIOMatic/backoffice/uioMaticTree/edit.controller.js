@@ -1,8 +1,5 @@
 ﻿var app = angular.module("umbraco");
 
-
-
-
 angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	function ($scope, $routeParams, uioMaticObjectResource, notificationsService, navigationService) {
 

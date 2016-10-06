@@ -8,6 +8,20 @@ namespace UIOmatic.Extensions
 {
     internal static class TypeExtensions
     {
+        public static string GetTableName(this Type type, bool wrapInSquareBrackets = false)
+        {
+            var attr = type.GetCustomAttribute<TableNameAttribute>(false);
+            var name = attr != null ? attr.Value.Trim('[',']') : type.Name;
+            return wrapInSquareBrackets ? "[" + name + "]" : name;
+        }
+
+        public static string GetPrimaryKeyName(this Type type, bool wrapInSquareBrackets = false)
+        {
+            var attr = type.GetCustomAttribute<PrimaryKeyAttribute>(true);
+            var name = attr != null ? attr.Value.Trim('[', ']') : "Id";
+            return wrapInSquareBrackets ? "[" + name + "]" : name;
+        }
+
         public static string GetPrimaryKeyPropertyName(this Type type, string defaultName = "Id")
         {
             var primaryKeyPropertyName = "";
@@ -59,6 +73,22 @@ namespace UIOmatic.Extensions
         public static bool IsNullable(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        public static MethodInfo GetGenericMethod(this Type type, string name, Type[] genericArgTypes, Type[] paramTypes)
+        {
+            return type
+                .GetMethods()
+                .Where(m => m.Name == name)
+                .Select(m => new {
+                    Method = m,
+                    ParamTypes = m.GetParameters().Select(x => x.ParameterType).ToArray(),
+                    GenericArgTypes = m.GetGenericArguments()
+                })
+                .Where(x => x.ParamTypes.Length == paramTypes.Length && x.ParamTypes.SequenceEqual(paramTypes)
+                    && x.GenericArgTypes.Length == genericArgTypes.Length)
+                .Select(x => x.Method)
+                .FirstOrDefault();
         }
     }
 }

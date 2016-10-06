@@ -20,65 +20,29 @@ namespace UIOmatic.Services
     
     public class PetaPocoObjectService : IUIOMaticObjectService
     {
+        private Database GetDb(string connStr)
+        {
+            return !string.IsNullOrEmpty(connStr)
+                ? new Database(connStr)
+                : ApplicationContext.Current.DatabaseContext.Database;
+        }
+
         public IEnumerable<object> GetAll(Type type, string sortColumn, string sortOrder)
         {
-            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute));
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
-            var strTableName = tableName.Value;
+            // Get needed resource
+            var tableName = type.GetTableName(true);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var db = GetDb(attri.ConnectionStringName);
 
-            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
-                ? new Database(uioMaticAttri.ConnectionStringName)
-                : ApplicationContext.Current.DatabaseContext.Database;
-
-            if (strTableName.IndexOf("[") < 0)
-            {
-                strTableName = "[" + strTableName + "]";
-            }
-
-            var query = new Sql().Select("*").From(strTableName);
-
-
+            // Build up query
+            var query = new Sql().Select("*").From(tableName);
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
-                var strSortColumn = sortColumn;
-                if (strSortColumn.IndexOf("[") < 0)
-                {
-                    strSortColumn = "[" + strSortColumn + "]";
-                }
-
-                query.OrderBy(strSortColumn + " " + sortOrder);
+                query.OrderBy(sortColumn.MakeSqlSafeName() + " " + sortOrder);
             }
 
-            foreach (var item in db.Fetch<dynamic>(query))
-            {
-                // get settable public properties of the type
-                var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(x => x.GetSetMethod() != null);
-
-                // create an instance of the type
-                var obj = Activator.CreateInstance(type);
-                
-
-                // set property values using reflection
-                var values = (IDictionary<string, object>)item;
-                foreach (var prop in props)
-                {
-                    var columnAttri =
-                           prop.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
-
-                    var propName = prop.Name;
-                    if (columnAttri.Any())
-                        propName = ((ColumnAttribute)columnAttri.FirstOrDefault()).Name;
-
-                    if(values.ContainsKey(propName))
-                        prop.SetValue(obj, values[propName]);
-                }
-
-                yield return obj;
-            }
-            
-
-            
+            // Perform lookup
+            return db.Fetch(type, query);
         }
 
         public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn,
@@ -261,14 +225,14 @@ namespace UIOmatic.Services
         {
             foreach (var prop in type.GetProperties())
             {
-                var attris = prop.GetCustomAttributes();
-
-                if (attris.All(x => x.GetType() != typeof (IgnoreAttribute)))
+                var attris = prop.GetCustomAttributes().ToArray();
+                if (attris.All(x => !(x is IgnoreAttribute)))
                 {
-                    string colName = prop.Name;
+                    var colName = prop.Name;
 
-                    if(attris.Any(x => x.GetType() == typeof (ColumnAttribute)))
-                        colName = ((ColumnAttribute) attris.First(x => x.GetType() == typeof (ColumnAttribute))).Name;
+                    var colAttri = attris.First(x => x is ColumnAttribute) as ColumnAttribute;
+                    if (colAttri != null)
+                        colName = colAttri.Name;
 
                     yield return colName;
                 }

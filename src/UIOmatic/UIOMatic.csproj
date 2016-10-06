@@ -278,7 +278,9 @@
     <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\DatabaseExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
