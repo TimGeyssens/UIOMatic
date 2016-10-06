@@ -19,7 +19,6 @@ namespace UIOMatic.Attributes
         {
             Name = name;
             Description = description;
-
             View = "textfield";
         }
 

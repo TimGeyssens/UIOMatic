@@ -4,12 +4,8 @@ using UIOMatic.Enums;
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticAttribute : Attribute
+    public class UIOMaticAttribute : UIOMaticFolderAttribute
     {
-        public string Name { get; set; }
-
-        public string FolderIcon { get; set; }
-
         public string ItemIcon { get; set; }
 
         public string SortColumn { get; set; }
@@ -21,19 +17,13 @@ namespace UIOMatic.Attributes
         public string ConnectionStringName { get; set; }
 
         public bool ReadOnly { get; set; }
-
+        
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
+            : base(name, Guid.NewGuid().ToString(), folderIcon) // Alias isn't important as we'll use the assembly qualified name anyways in the tree
         {
-            Name = name;
-
-            FolderIcon = folderIcon;
-
             ItemIcon = itemIcon;
-
             RenderType = UIOMaticRenderType.Tree;
-
             SortOrder = "asc";
-
             ReadOnly = false;
         }
     }

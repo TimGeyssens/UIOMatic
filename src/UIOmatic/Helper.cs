@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using UIOMatic.Attributes;
 
@@ -7,18 +8,21 @@ namespace UIOMatic
 {
     public class Helper
     {
-
         public static IEnumerable<Type> GetTypesWithUIOMaticAttribute()
         {
-            return (IEnumerable<Type>)HttpRuntime.Cache["UIOMaticTypes"] ?? EnsureTypes();
+            return GetTypesWithUIOMaticAttribute().Where(x => typeof(UIOMaticAttribute).IsAssignableFrom(x));
+        }
+
+        public static IEnumerable<Type> GetTypesWithUIOMaticFolderAttribute()
+        {
+            return (IEnumerable<Type>)HttpRuntime.Cache["UIOMaticFolderTypes"] ?? EnsureTypes();
         }
 
         private static IEnumerable<Type> EnsureTypes()
         {
-            var t = Umbraco.Core.TypeFinder.FindClassesWithAttribute<UIOMaticAttribute>();
-
-            HttpRuntime.Cache.Insert("UIOMaticTypes", t);
-
+            // UIOMaticFolderAttribute is the base type for UIOmatic entities
+            var t = Umbraco.Core.TypeFinder.FindClassesWithAttribute<UIOMaticFolderAttribute>();
+            HttpRuntime.Cache.Insert("UIOMaticFolderTypes", t);
             return t;
         }
 

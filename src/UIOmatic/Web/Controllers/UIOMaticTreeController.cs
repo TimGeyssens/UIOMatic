@@ -20,98 +20,107 @@ namespace UIOmatic.Web.Controllers
     {
         protected override Umbraco.Web.Models.Trees.TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
-            var types = Helper.GetTypesWithUIOMaticAttribute().OrderBy(x=> x.Name);
-
-            //check if we're rendering the root node's children
-            if (id == "-1")
+            var nodes = new TreeNodeCollection();
+            var types = Helper.GetTypesWithUIOMaticFolderAttribute().OrderBy(x=> x.Name);
+            
+            foreach (var type in types)
             {
-                var nodes = new TreeNodeCollection();
-                foreach (var type in types)
+                var attri = (UIOMaticFolderAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticFolderAttribute));
+                if (attri.ParentAlias == id)
                 {
-                    var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
-
-                    if (attri.RenderType == UIOMatic.Enums.UIOMaticRenderType.Tree)
+                    var attri2 = attri as UIOMaticAttribute;
+                    if (attri2 != null)
                     {
-                        var node = this.CreateTreeNode(
-                            type.AssemblyQualifiedName,
-                            "-1",
-                            queryStrings,
-                            attri.Name,
-                            attri.FolderIcon,
-                            true);
+                        if (id == type.AssemblyQualifiedName)
+                        {
+                            // List nodes
+                            var ctrl = new PetaPocoObjectController();
 
-                        nodes.Add(node);
+                            var itemIdPropName = string.Empty;
+                            var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                            if (primKeyAttri.Any())
+                                itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
+
+                            if (string.IsNullOrWhiteSpace(itemIdPropName))
+                            {
+                                foreach (var property in type.GetProperties())
+                                {
+                                    var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
+                                    if (!keyAttri.Any())
+                                        continue;
+
+                                    itemIdPropName = property.Name;
+                                }
+                            }
+                            else
+                            {
+                                itemIdPropName = "Id";
+                            }
+
+                            foreach (dynamic item in ctrl.GetAll(id, attri2.SortColumn, attri2.SortOrder))
+                            {
+                                var node = CreateTreeNode(
+                                    item.GetType().GetProperty(itemIdPropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).GetValue(item, null).ToString() + "?type=" + id,
+                                    id,
+                                    queryStrings,
+                                    item.ToString(),
+                                    attri2.ItemIcon,
+                                    false);
+
+                                nodes.Add(node);
+
+                            }
+                        }
+                        else
+                        {
+                            // UIOmatic node
+                            if (attri2.RenderType == UIOMatic.Enums.UIOMaticRenderType.Tree)
+                            {
+                                // Tree node
+                                var node = this.CreateTreeNode(
+                                    type.AssemblyQualifiedName,
+                                    id,
+                                    queryStrings,
+                                    attri.Name,
+                                    attri.FolderIcon,
+                                    true);
+
+                                nodes.Add(node);
+                            }
+                            else
+                            {
+                                // List view node
+                                var node = this.CreateTreeNode(
+                                    type.AssemblyQualifiedName,
+                                    id,
+                                    queryStrings,
+                                    attri.Name,
+                                    attri.FolderIcon,
+                                    false,
+                                    "uiomatic/uioMaticTree/list/" + type.AssemblyQualifiedName);
+
+                                nodes.Add(node);
+                            }
+                        }
                     }
                     else
                     {
+                        // Just a folder
                         var node = this.CreateTreeNode(
-                            type.AssemblyQualifiedName,
-                            "-1",
-                            queryStrings,
-                            attri.Name,
-                            attri.FolderIcon,
-                            false,
-                            "uiomatic/uioMaticTree/list/" + type.AssemblyQualifiedName);
+                               attri.Alias,
+                               id,
+                               queryStrings,
+                               attri.Name,
+                               attri.FolderIcon,
+                               true,
+                               "uiomatic");
 
                         nodes.Add(node);
                     }
                 }
-                return nodes;
-
-            }
-            
-            if (types.Any(x => x.AssemblyQualifiedName == id))
-            {
-                var ctrl = new PetaPocoObjectController();
-                var nodes = new TreeNodeCollection();
-
-                var currentType = types.SingleOrDefault(x => x.AssemblyQualifiedName == id);
-                var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
-
-                
-                var itemIdPropName = string.Empty;
-                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
-                if (primKeyAttri.Any())
-                    itemIdPropName = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
-
-                if (string.IsNullOrWhiteSpace(itemIdPropName))
-                {
-                    foreach (var property in currentType.GetProperties())
-                    {
-                        var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
-                        if (!keyAttri.Any()) continue;
-                        var columnAttri =
-                            property.GetCustomAttributes().Where(x => x.GetType() == typeof(ColumnAttribute));
-                        itemIdPropName = property.Name;
-                    }
-                }
-                else
-                {
-                    itemIdPropName = "Id";
-                }
-
-
-                foreach (dynamic item in ctrl.GetAll(id, attri.SortColumn, attri.SortOrder))
-                {
-
-
-                    var node = CreateTreeNode(
-                        item.GetType().GetProperty(itemIdPropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).GetValue(item, null).ToString() + "?type=" + id,
-                        id,
-                        queryStrings,
-                        item.ToString(),
-                        attri.ItemIcon,
-                        false);
-
-                    nodes.Add(node);
-
-                }
-                return nodes;
-
             }
 
-            //this tree doesn't suport rendering more than 2 levels
-            throw new NotSupportedException();
+            return nodes;
         }
 
         protected override Umbraco.Web.Models.Trees.MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)

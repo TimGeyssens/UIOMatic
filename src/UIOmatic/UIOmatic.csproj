@@ -270,6 +270,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\UIOMaticFolderAttribute.cs" />
     <Compile Include="Attributes\UIOMaticAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFieldAttribute.cs" />
@@ -365,6 +366,19 @@
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>REM #################################################
+REM # Copy files
+REM #################################################
+
+IF %25ComputerName%25 == MBP13-PC-BC (
+IF NOT "$(SolutionDir)" == "*Undefined*" (
+xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
+xcopy /s /y "$(TargetDir)Our.Umbraco.Vorto.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
+xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2"
+)
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
