@@ -17,9 +17,14 @@ namespace UIOMatic.Attributes
         public string ConnectionStringName { get; set; }
 
         public bool ReadOnly { get; set; }
-        
+
+        [Obsolete("Use the constructor where you provide an alias for this type", false)]
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
-            : base(name, Guid.NewGuid().ToString(), folderIcon) // Alias isn't important as we'll use the assembly qualified name anyways in the tree
+            : this(name, "", folderIcon, itemIcon)
+        { }
+
+        public UIOMaticAttribute(string name, string alias, string folderIcon, string itemIcon)
+            : base(name, alias, folderIcon)
         {
             ItemIcon = itemIcon;
             RenderType = UIOMaticRenderType.Tree;

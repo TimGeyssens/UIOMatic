@@ -278,9 +278,11 @@
     <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
-    <Compile Include="Interfaces\IUIOMaticObjectController.cs" />
+    <Compile Include="Interfaces\IUIOMaticObjectService.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />
     <Compile Include="Models\UIOMaticTypeInfo.cs" />
@@ -288,11 +290,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryEventArgs.cs" />
     <Compile Include="Sections\Section.cs" />
+    <Compile Include="Services\UIOMaticObjectService.cs" />
     <Compile Include="Web\Controllers\UIOMaticTreeController.cs" />
     <Compile Include="Web\Controllers\FieldApiController.cs" />
     <Compile Include="Web\Controllers\ObjectController.cs" />
-    <Compile Include="Web\Controllers\PetaPocoObjectController.cs" />
+    <Compile Include="Services\PetaPocoObjectService.cs" />
     <Compile Include="Web\Controllers\PropertyEditorsApiController.cs" />
+    <Compile Include="Web\PostModels\ObjectPostModel.cs" />
     <Compile Include="Web\ServerVariableParserEvent.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -355,7 +359,9 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\package.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web\UI\App_Plugins\UIOMatic\UIOMatic.config" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\UIOMatic.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -374,7 +380,7 @@ REM #################################################
 IF %25ComputerName%25 == MBP13-PC-BC (
 IF NOT "$(SolutionDir)" == "*Undefined*" (
 xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
-xcopy /s /y "$(TargetDir)Our.Umbraco.Vorto.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
+xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
 xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2"
 )
 )</PostBuildEvent>

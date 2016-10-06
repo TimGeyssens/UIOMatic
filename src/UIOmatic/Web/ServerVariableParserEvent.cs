@@ -4,7 +4,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using UIOmatic.Web.Controllers;
-using UIOMatic.Controllers;
 using Umbraco.Core;
 using Umbraco.Web;
 using Umbraco.Web.UI.JavaScript;
@@ -27,7 +26,7 @@ namespace UIOmatic.Web
             {
                 {
                     "ocBaseUrl",
-                    urlHelper.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.PostCreate(null))
+                    urlHelper.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.Create(null))
                 },
                 {
                     "pecBaseUrl",

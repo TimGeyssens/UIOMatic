@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
 using System.Xml;
+using UIOmatic.Services;
 using UC = Umbraco.Core;
 
 namespace UIOMatic
@@ -13,9 +14,13 @@ namespace UIOMatic
 
         public const string ConfigFileName = "UIOMatic.config";
 
-        public static Type DefaultObjectControllerType
+        public static Type DefaultObjectServiceType
         {
-            get { return Type.GetType(ConfigFile.DocumentElement.Attributes["defaultObjectControllerType"].Value); }
+            get
+            {
+                var attr = ConfigFile.DocumentElement.Attributes["defaultObjectServiceType"];
+                return attr != null ? Type.GetType(attr.Value) : typeof(PetaPocoObjectService);
+            }
         }
 
         public static XmlDocument ConfigFile

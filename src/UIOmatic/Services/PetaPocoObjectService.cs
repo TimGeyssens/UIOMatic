@@ -5,40 +5,30 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
+using UIOmatic.Extensions;
+using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
+using Umbraco.Core;
 using Umbraco.Core.IO;
 using Umbraco.Core.Persistence;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
-using Umbraco.Web.Editors;
 
-namespace UIOMatic.Controllers
+namespace UIOmatic.Services
 {
     
-    public class PetaPocoObjectController : UmbracoAuthorizedJsonController, IUIOMaticObjectController
+    public class PetaPocoObjectService : IUIOMaticObjectService
     {
-        public static event EventHandler<QueryEventArgs> BuildingQuery;
-        public static event EventHandler<QueryEventArgs> BuildedQuery;
-
-        public static event EventHandler<ObjectEventArgs> ScaffoldingObject;
-
-        public static event EventHandler<ObjectEventArgs> UpdatingObject;
-        public static event EventHandler<ObjectEventArgs> UpdatedObject;
-
-        public static event EventHandler<ObjectEventArgs> CreatingObject;
-        public static event EventHandler<ObjectEventArgs> CreatedObject;
-
-        public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
+        public IEnumerable<object> GetAll(Type type, string sortColumn, string sortOrder)
         {
-            var currentType = Type.GetType(typeName);
-            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
             var strTableName = tableName.Value;
 
-            var db = (Database)DatabaseContext.Database;
-            if(!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
             if (strTableName.IndexOf("[") < 0)
             {
@@ -62,11 +52,11 @@ namespace UIOMatic.Controllers
             foreach (var item in db.Fetch<dynamic>(query))
             {
                 // get settable public properties of the type
-                var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(x => x.GetSetMethod() != null);
 
                 // create an instance of the type
-                var obj = Activator.CreateInstance(currentType);
+                var obj = Activator.CreateInstance(type);
                 
 
                 // set property values using reflection
@@ -91,27 +81,25 @@ namespace UIOMatic.Controllers
             
         }
 
-        public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
+        public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn,
             string sortOrder, string searchTerm)
         {
-            var currentType = Type.GetType(typeName);
-            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-            var db = (Database)DatabaseContext.Database;
-            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
             var query = new Sql().Select("*").From(tableName.Value);
 
-            var tmp = BuildingQuery;
-            if (tmp != null)
-                tmp(this, new QueryEventArgs(currentType,tableName.Value, query,sortColumn,sortOrder,searchTerm));
+            var a1 = new QueryEventArgs(type, tableName.Value, query, sortColumn, sortOrder, searchTerm);
+            UIOMaticObjectService.OnBuildingQuery(this, a1);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 int c = 0;
-                foreach (var property in currentType.GetProperties())
+                foreach (var property in type.GetProperties())
                 {
                     var attris = property.GetCustomAttributes();
 
@@ -144,11 +132,11 @@ namespace UIOMatic.Controllers
             {
                 var primaryKeyColum = "id";
 
-                var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+                var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
                 if (primKeyAttri.Any())
                     primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
-                foreach (var property in currentType.GetProperties())
+                foreach (var property in type.GetProperties())
                 {
                     var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
                     if (keyAttri.Any())
@@ -157,13 +145,11 @@ namespace UIOMatic.Controllers
 
                 query.OrderBy(primaryKeyColum + " asc");
             }
+            
+            var a2 = new QueryEventArgs(type, tableName.Value, query,sortColumn,sortOrder,searchTerm);
+            UIOMaticObjectService.OnBuiltQuery(this, a2);
 
-            var temp = BuildedQuery;
-            var qea = new QueryEventArgs(currentType, tableName.Value, query,sortColumn,sortOrder,searchTerm);
-            if (temp != null)
-                temp(this, qea);
-
-            var p = db.Page<dynamic>(pageNumber, itemsPerPage, qea.Query);
+            var p = db.Page<dynamic>(pageNumber, itemsPerPage, a2.Query);
             var result = new UIOMaticPagedResult
             {
                 CurrentPage = p.CurrentPage,
@@ -176,11 +162,11 @@ namespace UIOMatic.Controllers
             foreach (dynamic item in p.Items)
             {
                 // get settable public properties of the type
-                var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(x => x.GetSetMethod() != null);
 
                 // create an instance of the type
-                var obj = Activator.CreateInstance(currentType);
+                var obj = Activator.CreateInstance(type);
 
 
                 // set property values using reflection
@@ -204,11 +190,9 @@ namespace UIOMatic.Controllers
             return result;
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName, bool includeIgnored = false)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(Type type, bool includeIgnored = false)
         {
-            var ar = typeName.Split(',');
-            var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
-            foreach (var prop in currentType.GetProperties())
+            foreach (var prop in type.GetProperties())
             {
                
                     var attris = prop.GetCustomAttributes();
@@ -273,11 +257,9 @@ namespace UIOMatic.Controllers
 
         }
 
-        public IEnumerable<string> GetAllColumns(string typeName)
+        public IEnumerable<string> GetAllColumns(Type type)
         {
-            var ar = typeName.Split(',');
-            var currentType = Type.GetType(ar[0] + ", "+ ar[1]);
-            foreach (var prop in currentType.GetProperties())
+            foreach (var prop in type.GetProperties())
             {
                 var attris = prop.GetCustomAttributes();
 
@@ -293,21 +275,21 @@ namespace UIOMatic.Controllers
             }
 
         }
-        public UIOMaticTypeInfo GetType(string typeName)
+
+        public UIOMaticTypeInfo GetType(Type type)
         {
-            var currentType = Type.GetType(typeName);
-            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
             var ignoreColumnsFromListView = new List<string>();
             var nameField = "";
 
             var primaryKey = "id";
-            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
                 primaryKey = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
-            foreach (var property in currentType.GetProperties())
+            foreach (var property in type.GetProperties())
             {
                 var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyColumnAttribute));
                 if (keyAttri.Any())
@@ -332,55 +314,48 @@ namespace UIOMatic.Controllers
             };
         }
 
-        public object GetScaffold(string typeName)
+        public object GetScaffold(Type type)
         {
-            var ar = typeName.Split(',');
-            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
+            var obj = Activator.CreateInstance(type);
 
-            var obj = Activator.CreateInstance(currentType);
-
-            var temp = ScaffoldingObject;
-            if (temp != null)
-                temp(this, new ObjectEventArgs(obj));
+            var a1 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnScaffoldingObject(this, a1);
 
             return obj;
         }
-        public object GetById(string typeName, string id)
+
+        public object GetById(Type type, string id)
         {
-
-
-            var ar = typeName.Split(',');
-            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
-            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute))).Value;
 
             var primaryKeyColum = "id";
 
-            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
                 primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
-            foreach (var property in currentType.GetProperties())
+            foreach (var property in type.GetProperties())
             {
                 var keyAttri = property.GetCustomAttributes().Where(x => x.GetType() == typeof (PrimaryKeyColumnAttribute));
                 if (keyAttri.Any())
                     primaryKeyColum = property.Name;
             }
 
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-            var db = (Database)DatabaseContext.Database;
-            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
             var dyn = db.Query<dynamic>(Sql.Builder
                 .Append("SELECT * FROM [" + tableName +"]")
                 .Append("WHERE ["+primaryKeyColum+"] =@0", id));
 
-            var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                    .Where(x => x.GetSetMethod() != null);
 
             // create an instance of the type
-            var obj = Activator.CreateInstance(currentType);
+            var obj = Activator.CreateInstance(type);
 
 
             // set property values using reflection
@@ -402,49 +377,45 @@ namespace UIOMatic.Controllers
            
         }
 
-        public object PostCreate(ExpandoObject objectToCreate)
+        public object Create(Type type, IDictionary<string, object> values)
         {
-            var typeOfObject = objectToCreate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
-            objectToCreate = (ExpandoObject)objectToCreate.FirstOrDefault(x => x.Key == "objectToCreate").Value;
+            var obj = Activator.CreateInstance(type, null);
 
-            var ar = typeOfObject.Split(',');
-            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
-
-            object ob = Activator.CreateInstance(currentType, null);
-
-            foreach (var prop in objectToCreate)
+            foreach (var prop in values)
             {
                 if (prop.Value != null)
                 {
-
                     var propKey = prop.Key;
                    
-                    PropertyInfo propI = currentType.GetProperty(propKey);
-                    Helper.SetValue(ob, propI.Name, prop.Value);
+                    var propI = type.GetProperty(propKey);
+                    if (propI != null)
+                    {
+                        obj.SetPropertyValue(propI.Name, prop.Value);
+                    }
 
                 }
             }
 
 
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-            var db = (Database)DatabaseContext.Database;
-            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
-            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute))).Value;
 
             var primaryKeyColum = string.Empty;
             var autoIncrement = true;
 
-            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
             {
                 primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
                 autoIncrement = ((PrimaryKeyAttribute)primKeyAttri.First()).autoIncrement;
             }
 
-            foreach (var prop in currentType.GetProperties())
+            foreach (var prop in type.GetProperties())
             {
                 foreach (var attri in prop.GetCustomAttributes(true))
                 {
@@ -458,60 +429,53 @@ namespace UIOMatic.Controllers
 
             }
 
-            var temp = CreatingObject;
-            if (temp != null)
-                temp(this, new ObjectEventArgs(ob));
+
+            var a1 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnCreatingObject(this, a1);
 
             if (autoIncrement)
-                db.Insert(tableName,primaryKeyColum,ob);
+                db.Insert(tableName,primaryKeyColum, obj);
             else
-                db.Insert(ob);
-            var tmp = CreatedObject;
-            if (tmp != null)
-                tmp(this, new ObjectEventArgs(ob));
+                db.Insert(obj);
 
-            return ob;
+            var a2 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnCreatingObject(this, a2);
+
+            return obj;
 
         }
 
-        public object PostUpdate(ExpandoObject objectToUpdate)
+        public object Update(Type type, IDictionary<string, object> values)
         {
-            var typeOfObject = objectToUpdate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
-            objectToUpdate = (ExpandoObject)objectToUpdate.FirstOrDefault(x => x.Key == "objectToUpdate").Value;
+            var obj = Activator.CreateInstance(type, null);
 
-            var ar = typeOfObject.Split(',');
-            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
-        
-            var ob = Activator.CreateInstance(currentType,null);
-
-            foreach (var prop in objectToUpdate)
+            foreach (var prop in values)
             {
                 var propKey = prop.Key;
                
-                var propI = currentType.GetProperty(propKey);
+                var propI = type.GetProperty(propKey);
                 if (propI != null)
                 {
-                    
-                    Helper.SetValue(ob, propI.Name, prop.Value);
+                    obj.SetPropertyValue(propI.Name, prop.Value);
                 }
             }
 
 
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-            var db = (Database)DatabaseContext.Database;
-            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
-            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute))).Value;
 
             var primaryKeyColum = string.Empty;
 
-            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
                 primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
-            foreach (var prop in currentType.GetProperties())
+            foreach (var prop in type.GetProperties())
             {
                 foreach (var attri in prop.GetCustomAttributes(true))
                 {
@@ -523,33 +487,28 @@ namespace UIOMatic.Controllers
 
             }
 
-            var tmp = UpdatingObject;
-            if (tmp != null)
-                tmp(this, new ObjectEventArgs(ob));
+            var a1 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnUpdatingObject(this, a1);
 
+            db.Update(obj);
 
-            db.Update(ob);
+            var a2 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnUpdatedObject(this, a2);
 
-            var temp = UpdatedObject;
-            if (temp != null)
-                temp(this, new ObjectEventArgs(ob));
-
-
-            return ob;
+            return obj;
         }
 
-        public string[] DeleteByIds(string typeOfObject, string ids)
+        public string[] DeleteByIds(Type type, string ids)
         {
-            var currentType = Helper.GetTypesWithUIOMaticAttribute().First(x => x.AssemblyQualifiedName.Contains(typeOfObject));
-            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute))).Value;
+            var tableName = ((TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute))).Value;
             
             var primaryKeyColum = string.Empty;
 
-            var primKeyAttri = currentType.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
+            var primKeyAttri = type.GetCustomAttributes().Where(x => x.GetType() == typeof(PrimaryKeyAttribute));
             if (primKeyAttri.Any())
                 primaryKeyColum = ((PrimaryKeyAttribute)primKeyAttri.First()).Value;
 
-            foreach (var prop in currentType.GetProperties())
+            foreach (var prop in type.GetProperties())
             {
                 foreach (var attri in prop.GetCustomAttributes(true))
                 {
@@ -561,11 +520,11 @@ namespace UIOMatic.Controllers
                 
             }
 
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-            var db = (Database)DatabaseContext.Database;
-            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
             //// TODO: Delete with one SQL statement?
             //var deletedIds = new List<string>();
@@ -587,43 +546,31 @@ namespace UIOMatic.Controllers
            return ids.Split(',');
         }
 
-        [HttpPost]
-        public IEnumerable<Exception> Validate(ExpandoObject objectToValidate)
+        public IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values)
         {
-            var typeOfObject = objectToValidate.FirstOrDefault(x => x.Key == "typeOfObject").Value.ToString();
-            objectToValidate = (ExpandoObject)objectToValidate.FirstOrDefault(x => x.Key == "objectToValidate").Value;
-
-            var ar = typeOfObject.Split(',');
-            var currentType = Type.GetType(ar[0] + ", " + ar[1]);
-          
-
-            object ob = Activator.CreateInstance(currentType, null);
-
-            var values = (IDictionary<string, object>)objectToValidate;
-            foreach (var prop in currentType.GetProperties())
+            var obj = Activator.CreateInstance(type, null);
+            
+            foreach (var prop in type.GetProperties())
             {
                 var propKey = prop.Name;
-                
 
                 if (values.ContainsKey(propKey))
                 {
-                    Helper.SetValue(ob, prop.Name, values[propKey]);
+                    obj.SetPropertyValue(prop.Name, values[propKey]);
                 }
             }
-                
 
-            return ((IUIOMaticModel) ob).Validate();
+            return ((IUIOMaticModel)obj).Validate();
         }
 
-        public IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        public IEnumerable<object> GetFiltered(Type type, string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
-            var currentType = Type.GetType(typeName);
-            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(currentType, typeof(TableNameAttribute));
-            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(currentType, typeof(UIOMaticAttribute));
+            var tableName = (TableNameAttribute)Attribute.GetCustomAttribute(type, typeof(TableNameAttribute));
+            var uioMaticAttri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-            var db = (Database)DatabaseContext.Database;
-            if (!string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName))
-                db = new Database(uioMaticAttri.ConnectionStringName);
+            var db = !string.IsNullOrEmpty(uioMaticAttri.ConnectionStringName)
+                ? new Database(uioMaticAttri.ConnectionStringName)
+                : ApplicationContext.Current.DatabaseContext.Database;
 
             var query = new Sql().Select("*").From(tableName.Value);
 
@@ -635,11 +582,11 @@ namespace UIOMatic.Controllers
             foreach (dynamic item in db.Fetch<dynamic>(query))
             {
                 // get settable public properties of the type
-                var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(x => x.GetSetMethod() != null);
 
                 // create an instance of the type
-                var obj = Activator.CreateInstance(currentType);
+                var obj = Activator.CreateInstance(type);
 
 
                 // set property values using reflection

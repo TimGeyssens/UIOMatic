@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UIOmatic.Services;
 using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
@@ -11,28 +12,35 @@ namespace UIOmatic.Web.Controllers
     [PluginController("UIOMatic")]
     public class PropertyEditorsApiController: UmbracoAuthorizedJsonController
     {
+        private IUIOMaticObjectService _service;
+
+        public PropertyEditorsApiController()
+        {
+            _service = UIOMaticObjectService.Instance;
+        }
+
         public IEnumerable<Type> GetAllTypes()
         {
-            return Helper.GetTypesWithUIOMaticAttribute();
+            return Helper.GetUIOMaticTypes();
         }
 
-        public IEnumerable<object> GetAllObjects(string typeName, string sortColumn, string sortOrder)
+        public IEnumerable<object> GetAllObjects(string typeAlias, string sortColumn, string sortOrder)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetAll(typeName, sortColumn, sortOrder);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetAll(t, sortColumn, sortOrder);
 
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeAlias)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetAllProperties(typeName,true);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetAllProperties(t, true);
         }
 
-        public IEnumerable<string> GetAllColumns(string typeName)
+        public IEnumerable<string> GetAllColumns(string typeAlias)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetAllColumns(typeName);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetAllColumns(t);
         }
     }
 }

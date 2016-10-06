@@ -1,7 +1,7 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
     function($scope, $routeParams, uioMaticObjectResource) {
 
-        $scope.typeName = $routeParams.id;
+        $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
@@ -16,8 +16,7 @@
         $scope.initialFetch = true;
 
         function fetchData() {
-            
-            uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.initialFetch ? "" : $scope.predicate, $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"), $scope.searchTerm).then(function (resp) {
+            uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.initialFetch ? "" : $scope.predicate, $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"), $scope.searchTerm).then(function (resp) {
                
                 $scope.rows = resp.data.Items;
                 $scope.totalPages = resp.data.TotalPages;
@@ -31,7 +30,8 @@
                 
             });
         }
-        uioMaticObjectResource.getType($scope.typeName).then(function (response) {
+
+        uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
             //.replace(' ', '_') nasty hack to allow columns with a space
             $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');

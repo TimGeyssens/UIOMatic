@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Web.Mvc;
+using UIOmatic.Services;
+using UIOmatic.Web.PostModels;
 using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
@@ -11,72 +16,88 @@ namespace UIOmatic.Web.Controllers
     [PluginController("UIOMatic")]
     public class ObjectController : UmbracoAuthorizedJsonController
     {
-        public IEnumerable<object> GetAll(string typeName, string sortColumn, string sortOrder)
+        private IUIOMaticObjectService _service;
+
+        public ObjectController()
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController) ctrl).GetAll(typeName, sortColumn, sortOrder);
+            _service = UIOMaticObjectService.Instance;
         }
 
-        public IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder)
+        [HttpGet]
+        public IEnumerable<object> GetAll(string typeAlias, string sortColumn, string sortOrder)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetFiltered(typeName,filterColumn,filterValue, sortColumn, sortOrder);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetAll(t, sortColumn, sortOrder);
         }
 
-        public UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
+        [HttpGet]
+        public IEnumerable<object> GetFiltered(string typeAlias, string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetPaged(typeName, itemsPerPage, pageNumber, sortColumn, sortOrder, searchTerm);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetFiltered(t,filterColumn,filterValue, sortColumn, sortOrder);
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeName)
+        [HttpGet]
+        public UIOMaticPagedResult GetPaged(string typeAlias, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController) ctrl).GetAllProperties(typeName);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, searchTerm);
         }
 
-        public UIOMaticTypeInfo GetType(string typeName)
+        [HttpGet]
+        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeAlias)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetType(typeName);
-
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetAllProperties(t);
         }
 
-        public object GetById(string typeName, string id)
+        [HttpGet]
+        public UIOMaticTypeInfo GetType(string typeAlias)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetById(typeName, id);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetType(t);
         }
 
-        
-        public object GetScaffold(string typeName)
+        [HttpGet]
+        public object GetById(string typeAlias, string id)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).GetScaffold(typeName);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetById(t, id);
         }
 
-        public object PostCreate(System.Dynamic.ExpandoObject objectToCreate)
+        [HttpGet]
+        public object GetScaffold(string typeAlias)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).PostCreate(objectToCreate);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetScaffold(t);
         }
 
-        public object PostUpdate(System.Dynamic.ExpandoObject objectToUpdate)
+        [HttpPost]
+        public object Create(ObjectPostModel model)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).PostUpdate(objectToUpdate);
+            var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+            return _service.Create(t, model.Value);
         }
 
-        public string[] DeleteByIds(string typeOfObject, string ids)
+        [HttpPost]
+        public object Update(ObjectPostModel model)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).DeleteByIds(typeOfObject,ids);
+            var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+            return _service.Update(t, model.Value);
         }
 
-        public IEnumerable<Exception> Validate(System.Dynamic.ExpandoObject objectToValidate)
+        [HttpDelete]
+        public string[] DeleteByIds(string typeAlias, string ids)
         {
-            var ctrl = Activator.CreateInstance(Config.DefaultObjectControllerType, null);
-            return ((IUIOMaticObjectController)ctrl).Validate(objectToValidate);
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.DeleteByIds(t, ids);
+        }
+
+        [HttpPost]
+        public IEnumerable<Exception> Validate(ObjectPostModel model) 
+        {
+            var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+            return _service.Validate(t, model.Value);
         }
     }
 }
