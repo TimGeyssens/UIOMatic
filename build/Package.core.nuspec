@@ -16,7 +16,6 @@
     <language></language>
     <tags></tags>
     <dependencies>
-      <dependency id="Nibble.Umbraco.UIOMatic.Core" version="1.0.0" />
       <dependency id="UmbracoCms.Core" version="7.3.0" />
     </dependencies>
   </metadata>
