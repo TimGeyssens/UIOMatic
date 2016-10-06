@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <info>
+    <package>
+      <name>UnVersion</name>
+      <version>0.0</version>
+      <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
+      <url>http://our.umbraco.org/projects/website-utilities/unversion</url>
+      <requirements>
+        <major>7</major>
+        <minor>1</minor>
+        <patch>4</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Matt Brailsford</name>
+      <website>http://twitter.com/mattbrailsford</website>
+    </author>
+    <readme><![CDATA[]]></readme>
+  </info>
+  
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+  <Actions />
+  
+  <control />
+  
+  <files />
+  
+</umbPackage>
