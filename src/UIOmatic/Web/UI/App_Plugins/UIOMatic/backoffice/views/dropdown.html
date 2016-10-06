@@ -1,0 +1,10 @@
+﻿<div ng-controller="UIOMatic.Views.Dropdown">
+    <select ng-model="property.Value">
+        <option value="0">---Please select---</option>
+        <option ng-selected="{{object[property.Config.valueColumn] == property.Value}}"
+                ng-repeat="object in objects"
+                value="{{object[property.Config.valueColumn]}}">
+            {{parseTemplate(object)}}
+        </option>
+    </select><br>
+</div>

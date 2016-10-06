@@ -1,0 +1,110 @@
+﻿{
+    propertyEditors: [
+		{
+			alias: "UIOMatic.MultiPicker",
+			name: "UIOMatic Multi Picker",
+			editor: {
+			view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/multipicker.html"
+			},
+			prevalues: {
+				fields: [
+					{
+						label: "Type of object",
+						description: "Select the type of object",
+						key: "typeName",
+						view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
+					},
+					{
+						label: "Object text template",
+						description: "Enter the text template aka FirstName + ' ' + LastName ",
+						key: "objectTemplate",
+						view: "requiredfield",
+						validation: [
+							{
+								type: "Required" 
+							}                        
+						]
+					}
+				]
+			}
+
+		},
+        {
+        alias: "UIOMatic.Dropdown",
+        name: "UIOMatic Dropdown",
+        editor: {
+        view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.html"
+        },
+        prevalues: {
+            fields: [
+                {
+                    label: "Type of object",
+                    description: "Select the type of object (reload the page after selecting to populate dropdowns)",
+                    key: "typeName",
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.html"
+                },
+				{
+					label: "Value property",
+					description: "Property that holds the value you wish to store",
+					key: "valueColumn",
+					view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.html"
+                    
+				},
+				{
+                    label: "Object text template",
+                    description: "Enter the text template aka FirstName + ' ' + LastName ",
+                    key: "objectTemplate",
+                    view: "requiredfield",
+                    validation: [
+                        {
+                            type: "Required" 
+                        }                        
+                    ]
+                },
+				{
+                    label: "Column to sort on",
+                    description: "Enter the column name to sort on",
+                    key: "sortColumn",
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.html"                      
+                },
+				{
+                    label: "Sort order",
+                    description: "Select the sortorder",
+                    key: "sortOrder",
+                    view: "~/App_Plugins/UIOMatic/backoffice/PropertyEditors/picker.tablesortorder.html"                       
+                }
+            ]
+        }
+        }
+    ]
+    ,
+    javascript: [
+	    '~/App_Plugins/UIOMatic/assets/moment.js',
+	    '~/App_Plugins/UIOMatic/backoffice/uioMatictree/edit.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/delete.controller.js',
+        '~/App_Plugins/UIOMatic/backoffice/resources/uioMaticObject.resource.js',
+		'~/App_Plugins/UIOMatic/backoffice/resources/uioMaticField.resource.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/date.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/datetime.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.media.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.member.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.user.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/pickers.users.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/checkboxlist.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/radiobuttonlist.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/list.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/multipicker.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.type.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.property.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/objectsearcher.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/rte.controller.js'
+		
+    ]
+	
+}
