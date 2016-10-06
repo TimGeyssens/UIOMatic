@@ -357,7 +357,6 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\UIOMatic.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
