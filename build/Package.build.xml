@@ -49,7 +49,7 @@
 		<BuildDir>$(MSBuildProjectDirectory)\_temp</BuildDir>
 		<BuildUmbDir>$(BuildDir)\_umbraco</BuildUmbDir>
 		<BuildNuGetDir>$(BuildDir)\_nuget</BuildNuGetDir>
-		<ArtifactsDir>$(RootDir)\..\Artifacts</ArtifactsDir>
+		<ArtifactsDir>$(RootDir)\..\artifacts</ArtifactsDir>
 		<ProjectDir>$(RootDir)\..\src\$(ProjectName)\</ProjectDir>
 	</PropertyGroup>
 
