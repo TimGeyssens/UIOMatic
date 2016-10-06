@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Newtonsoft.Json.Linq;
 
 namespace UIOMatic.Attributes
 {
@@ -21,19 +17,17 @@ namespace UIOMatic.Attributes
 
         public UIOMaticFieldAttribute(string name, string description)
         {
-            this.Name = name;
-            this.Description = description;
+            Name = name;
+            Description = description;
 
-            this.View = "textfield";
+            View = "textfield";
         }
 
         public string GetView()
         {
-            if (View.StartsWith("~"))
-                return View;
-            else
-                return string.Format("~/App_Plugins/UIOMatic/Backoffice/Views/{0}.html", View);
-
+            return this.View.StartsWith("~") 
+                ? this.View 
+                : string.Format("~/App_Plugins/UIOMatic/Backoffice/Views/{0}.html", View);
         }
     }
 }

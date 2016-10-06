@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using UIOMatic.Enums;
 
 namespace UIOMatic.Attributes
@@ -10,13 +7,15 @@ namespace UIOMatic.Attributes
     public class UIOMaticAttribute : Attribute
     {
         public string Name { get; set; }
+
         public string FolderIcon { get; set; }
 
         public string ItemIcon { get; set; }
 
-        public string SortColumn{ get; set; }
+        public string SortColumn { get; set; }
 
         public string SortOrder { get; set; }
+
         public UIOMaticRenderType RenderType { get; set; }
 
         public string ConnectionStringName { get; set; }
@@ -25,14 +24,17 @@ namespace UIOMatic.Attributes
 
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
-            this.Name = name;
-            this.FolderIcon = folderIcon;
-            this.ItemIcon = itemIcon;
+            Name = name;
 
-            this.RenderType = UIOMaticRenderType.Tree;
-            this.SortOrder = "asc";
+            FolderIcon = folderIcon;
 
-            this.ReadOnly = false;
+            ItemIcon = itemIcon;
+
+            RenderType = UIOMaticRenderType.Tree;
+
+            SortOrder = "asc";
+
+            ReadOnly = false;
         }
     }
 }

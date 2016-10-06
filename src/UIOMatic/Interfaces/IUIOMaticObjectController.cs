@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using UIOMatic.Models;
 
 namespace UIOMatic.Interfaces
 {
     public interface IUIOMaticObjectController
     {
-        IEnumerable<Object> GetAll(string typeName,string sortColumn, string sortOrder);
+        IEnumerable<object> GetAll(string typeName,string sortColumn, string sortOrder);
 
-        IEnumerable<Object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder);
+        IEnumerable<object> GetFiltered(string typeName, string filterColumn, string filterValue, string sortColumn, string sortOrder);
 
         UIOMaticPagedResult GetPaged(string typeName, int itemsPerPage, int pageNumber, string sortColumn,
             string sortOrder, string searchTerm);
@@ -25,13 +20,13 @@ namespace UIOMatic.Interfaces
 
         UIOMaticTypeInfo GetType(string typeName);
 
-        Object GetById(string typeName, string id);
+        object GetById(string typeName, string id);
 
-        Object GetScaffold(string typeName);
+        object GetScaffold(string typeName);
 
-        Object PostCreate(ExpandoObject objectToCreate);
+        object PostCreate(ExpandoObject objectToCreate);
 
-        Object PostUpdate(ExpandoObject objectToUpdate);
+        object PostUpdate(ExpandoObject objectToUpdate);
 
         string[] DeleteByIds(string typeOfObject, string ids);
 

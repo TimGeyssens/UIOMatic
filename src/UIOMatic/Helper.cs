@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using System.Web;
 using UIOMatic.Attributes;
-using Umbraco.Core.Persistence;
 
 namespace UIOMatic
 {
@@ -50,34 +46,52 @@ namespace UIOMatic
             propertyInfo.SetValue(inputObject, propertyVal, null);
 
         }
+
         private static bool IsNullableType(Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
 
         public static object ChangeType(object value, Type type)
         {
-            if (value == null && type.IsInterface) return null;
-            if (value == null && type.IsGenericType) return Activator.CreateInstance(type);
-            if (value == null) return null;
-            if (type == value.GetType()) return value;
+            if (value == null && type.IsInterface)
+                return null;
+
+            if (value == null && type.IsGenericType)
+                return Activator.CreateInstance(type);
+
+            if (value == null)
+                return null;
+
+            if (type == value.GetType())
+                return value;
+
             if (type.IsEnum)
             {
-                if (value is string)
-                    return Enum.Parse(type, value as string);
-                else
-                    return Enum.ToObject(type, value);
+                var s1 = value as string;
+                return s1 != null 
+                    ? Enum.Parse(type, s1) 
+                    : Enum.ToObject(type, value);
             }
+
             if (!type.IsInterface && type.IsGenericType)
             {
-                Type innerType = type.GetGenericArguments()[0];
-                object innerValue = ChangeType(value, innerType);
+                var innerType = type.GetGenericArguments()[0];
+                var innerValue = ChangeType(value, innerType);
                 return Activator.CreateInstance(type, new object[] { innerValue });
             }
-            if (value is string && type == typeof(Guid)) return new Guid(value as string);
-            if (value is string && type == typeof(Version)) return new Version(value as string);
-            if (!(value is IConvertible)) return value;
+
+            var s = value as string;
+            if (s != null && type == typeof(Guid))
+                return new Guid(s);
+            
+            if (s != null && type == typeof(Version))
+                return new Version(s);
+
+            if (!(value is IConvertible))
+                return value;
+
             return Convert.ChangeType(value, type);
         } 
     }

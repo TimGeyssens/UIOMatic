@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace UIOMatic
 {
@@ -9,8 +6,9 @@ namespace UIOMatic
     {
         public ObjectEventArgs(object obj)
         {
-            this.Object = obj;
+            Object = obj;
         }
-        public Object Object { get; set; }
+
+        public object Object { get; set; }
     }
 }
