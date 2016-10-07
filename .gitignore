@@ -102,3 +102,6 @@ src/*/App_Data/TEMP/*
 
 artifacts
 build/_temp
+
+applicationhost.config
+*.Matt.sln
