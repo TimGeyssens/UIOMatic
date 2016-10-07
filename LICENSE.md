@@ -1,8 +1,8 @@
 The MIT License (MIT)
 
-Copyright &copy; 2016 Our Umbraco and other contributors
-Copyright &copy; 2016 Matt Brialsford, The Outfield
-Copyright &copy; 2015 Tim Geyssens, Nibble
+Copyright &copy; 2016 Our Umbraco and other contributors 
+Copyright &copy; 2016 Matt Brialsford, The Outfield 
+Copyright &copy; 2015 Tim Geyssens, Nibble 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
