@@ -193,7 +193,7 @@ namespace UIOmatic.Services
 
         public UIOMaticTypeInfo GetType(Type type)
         {
-            var uioMaticAttri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var uioMaticAttri = type.GetCustomAttribute<UIOMaticAttribute>(); 
             var ignoreColumnsFromListView = new List<string>();
 
             var nameField = "";

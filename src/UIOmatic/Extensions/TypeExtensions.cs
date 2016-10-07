@@ -40,36 +40,19 @@ namespace UIOmatic.Extensions
 
         public static PrimaryKeyColumnAttribute GetPrimaryKeyColumn(this Type type)
         {
-            return type
-                .GetProperties()
-                .Select(x => x.GetCustomAttribute<PrimaryKeyColumnAttribute>())
-                .FirstOrDefault(x => x != null);
-        }
-
-        public static string GetPrimaryKeyPropertyName(this Type type, string defaultName = "Id")
-        {
-            var primaryKeyPropertyName = "";
-            var primKeyAttrs = type.GetCustomAttributes<PrimaryKeyAttribute>().ToArray();
-
-            if (primKeyAttrs.Any())
-                primaryKeyPropertyName = primKeyAttrs.First().Value;
-
-            if (string.IsNullOrWhiteSpace(primaryKeyPropertyName))
+            foreach (var propertyInfo in type.GetProperties())
             {
-                foreach (var property in type.GetProperties())
+                var attr = propertyInfo.GetCustomAttribute<PrimaryKeyColumnAttribute>();
+                if (attr != null)
                 {
-                    var keyAttri = property.GetCustomAttributes<PrimaryKeyColumnAttribute>();
-                    if (!keyAttri.Any()) continue;
-
-                    primaryKeyPropertyName = property.Name;
+                    if (string.IsNullOrWhiteSpace(attr.Name))
+                    {
+                        attr.Name = propertyInfo.Name;
+                    }
+                    return attr;
                 }
             }
-            else
-            {
-                primaryKeyPropertyName = defaultName;
-            }
-
-            return primaryKeyPropertyName;
+            return null;
         }
 
         public static object GetPropertyValue(this Type type, string propertyName, object instance)

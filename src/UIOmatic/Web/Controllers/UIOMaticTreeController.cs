@@ -92,7 +92,7 @@ namespace UIOmatic.Web.Controllers
                     var attri2 = attri as UIOMaticAttribute;
                     if (attri2 != null)
                     {
-                        var primaryKeyPropertyName = type.GetPrimaryKeyPropertyName();
+                        var primaryKeyPropertyName = type.GetPrimaryKeyName();
 
                         // List nodes
                         foreach (dynamic item in _service.GetAll(type, attri2.SortColumn, attri2.SortOrder))
