@@ -1,14 +1,9 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.Radiobuttonlist",
     function ($scope, uioMaticObjectResource,$parse) {
-        //example config
-        //{'typeName': 'Example.Models.Person, Example', 'valueColumn': 'Id', 'sortColumn': 'FirstName', 'textTemplate' : 'FirstName + \" \"+ LastName '}
-
-       
 
         function init() {
             uioMaticObjectResource.getAll($scope.property.Config.typeAlias, $scope.property.Config.sortColumn, "asc").then(function (response) {
                 $scope.objects = response.data;
-
             });
         }
 

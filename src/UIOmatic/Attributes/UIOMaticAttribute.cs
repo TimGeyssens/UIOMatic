@@ -12,6 +12,8 @@ namespace UIOMatic.Attributes
 
         public string SortOrder { get; set; }
 
+        public string WhereClause { get; set; }
+
         public UIOMaticRenderType RenderType { get; set; }
 
         public string ConnectionStringName { get; set; }

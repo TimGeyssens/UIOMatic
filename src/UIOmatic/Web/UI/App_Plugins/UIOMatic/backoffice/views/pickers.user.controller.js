@@ -2,11 +2,9 @@
     function ($scope, uioMaticFieldResource) {
 
         function init() {
-
             uioMaticFieldResource.getAllUsers().then(function (resp) {
                 $scope.users = resp.data;
             });
-
         };
 
         init();
