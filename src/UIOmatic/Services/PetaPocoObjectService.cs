@@ -124,86 +124,90 @@ namespace UIOmatic.Services
 
         public UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties =  false)
         {
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>(); 
-
-            var properties = new List<UIOMaticPropertyInfo>();
-            var listViewProperties = new List<UIOMaticPropertyInfo>();
-
-            var nameField = "";
-
-            foreach (var prop in type.GetProperties())
+            // Types shouldn't change without an app pool recycle so might as well cache these
+            return (UIOMaticTypeInfo)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
             {
-                var attris = prop.GetCustomAttributes();
+                var attri = type.GetCustomAttribute<UIOMaticAttribute>();
 
-                if (populateProperties)
-                { 
-                    // Check for regular properties
-                    var attri2 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticFieldAttribute)) as UIOMaticFieldAttribute;
-                    if (attri2 != null)
+                var properties = new List<UIOMaticPropertyInfo>();
+                var listViewProperties = new List<UIOMaticPropertyInfo>();
+
+                var nameField = "";
+
+                foreach (var prop in type.GetProperties())
+                {
+                    var attris = prop.GetCustomAttributes();
+
+                    if (populateProperties)
                     {
-                        var view = attri2.GetView();
-
-                        // If field was left as textfield, see if we have a better match based on type
-                        if (attri2.View == "textfield")
+                        // Check for regular properties
+                        var attri2 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticFieldAttribute)) as UIOMaticFieldAttribute;
+                        if (attri2 != null)
                         {
-                            if (prop.PropertyType == typeof(bool)) view = Constants.Views["checkbox"];
-                            if (prop.PropertyType == typeof(DateTime)) view = Constants.Views["datetime"];
-                            if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.Views["number"];
+                            var view = attri2.GetView();
+
+                            // If field was left as textfield, see if we have a better match based on type
+                            if (attri2.View == "textfield")
+                            {
+                                if (prop.PropertyType == typeof(bool)) view = Constants.Views["checkbox"];
+                                if (prop.PropertyType == typeof(DateTime)) view = Constants.Views["datetime"];
+                                if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.Views["number"];
+                            }
+
+                            var pi = new UIOMaticPropertyInfo
+                            {
+                                Key = prop.Name,
+                                Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
+                                Tab = attri2.Tab.IsNullOrWhiteSpace() ? "Misc" : attri2.Tab,
+                                Description = attri2.Description,
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString(),
+                                Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config)
+                            };
+
+                            properties.Add(pi);
                         }
 
-                        var pi = new UIOMaticPropertyInfo
+                        // Check for list view properties
+                        var attri3 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFieldAttribute)) as UIOMaticListViewFieldAttribute;
+                        if (attri3 != null)
                         {
-                            Key = prop.Name,
-                            Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
-                            Tab = attri2.Tab.IsNullOrWhiteSpace() ? "Misc" : attri2.Tab,
-                            Description = attri2.Description,
-                            View = IOHelper.ResolveUrl(view),
-                            Type = prop.PropertyType.ToString(),
-                            Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config)
-                        };
+                            var view = attri3.GetView();
 
-                        properties.Add(pi);
+                            // Handle custom views?
+
+                            var pi = new UIOMaticPropertyInfo
+                            {
+                                Key = prop.Name,
+                                Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString(),
+                                Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config)
+                            };
+
+                            listViewProperties.Add(pi);
+                        }
                     }
 
-                    // Check for list view properties
-                    var attri3 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFieldAttribute)) as UIOMaticListViewFieldAttribute;
-                    if (attri3 != null)
-                    {
-                        var view = attri3.GetView();
-
-                        // Handle custom views?
-
-                        var pi = new UIOMaticPropertyInfo
-                        {
-                            Key = prop.Name,
-                            Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
-                            View = IOHelper.ResolveUrl(view),
-                            Type = prop.PropertyType.ToString(),
-                            Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config)
-                        };
-
-                        listViewProperties.Add(pi);
-                    }
+                    // Check for name field
+                    var nameAttri = prop.GetCustomAttribute<UIOMaticNameFieldAttribute>();
+                    if (nameAttri != null)
+                        nameField = prop.Name;
                 }
 
-                // Check for name field
-                var nameAttri = prop.GetCustomAttribute<UIOMaticNameFieldAttribute>();
-                if (nameAttri != null)
-                    nameField = prop.Name;
-            }
-
-            return new UIOMaticTypeInfo
-            {
-                TypeAlias = attri.Alias,
-                TableName = type.GetTableName(),
-                RenderType = attri.RenderType,
-                PrimaryKeyColumnName = type.GetPrimaryKeyName(),
-                AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
-                NameField = nameField,
-                ReadOnly = attri.ReadOnly,
-                Properties = properties.ToArray(),
-                ListViewProperties = listViewProperties.ToArray()
-            };
+                return new UIOMaticTypeInfo
+                {
+                    TypeAlias = attri.Alias,
+                    TableName = type.GetTableName(),
+                    RenderType = attri.RenderType,
+                    PrimaryKeyColumnName = type.GetPrimaryKeyName(),
+                    AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
+                    NameField = nameField,
+                    ReadOnly = attri.ReadOnly,
+                    Properties = properties.ToArray(),
+                    ListViewProperties = listViewProperties.ToArray()
+                };
+            });
         }
 
         public object GetScaffold(Type type)
