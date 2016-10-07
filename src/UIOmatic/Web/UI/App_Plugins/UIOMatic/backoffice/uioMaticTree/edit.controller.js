@@ -21,7 +21,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    {
 	        $scope.type = response.data;
 	        $scope.readOnly = response.data.ReadOnly;
-	        $scope.properties = response.data.Properties;
+	        $scope.properties = response.data.EditableProperties;
 	        $scope.type.NameFieldIndex = $scope.type.NameField.length > 0
                 ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameField)
 	            : -1;

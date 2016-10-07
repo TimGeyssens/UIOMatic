@@ -5,4 +5,4 @@
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.fcBaseUrl + "GetAllUsers");
 	        }
 	    }
-	    });
+	});

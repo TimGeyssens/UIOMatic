@@ -2,16 +2,22 @@
 	function ($scope, $http, editorState) {
 
 	    $scope.current = editorState.current;
-	    $scope.typeAlias = _.where($scope.current.preValues, { key: "typeAlias" })[0].value;
+
+	    var typeAliasPreValue = _.where($scope.current.preValues, { key: "typeAlias" })[0];
+	    if (typeAliasPreValue) {
+	        $scope.typeAlias = typeAliasPreValue.value;
+	    }
 
 	    $scope.$watch('typeAlias', function () {
 	        getColumns();
 	    });
 
 	    function getColumns() {
-	        $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetAllColumns?typeAlias=" + $scope.typeAlias).then(function (response) {
-	            $scope.columns = response.data;
-	        });
+	        if ($scope.typeAlias) {
+	            $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetAllColumns?typeAlias=" + $scope.typeAlias).then(function(response) {
+	                $scope.columns = response.data;
+	            });
+	        }
 	    }
 
 	});

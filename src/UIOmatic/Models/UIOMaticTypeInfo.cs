@@ -4,7 +4,9 @@ namespace UIOMatic.Models
 {
     public class UIOMaticTypeInfo
     {
-        public string TypeAlias { get; set; }
+        public string Alias { get; set; }
+
+        public string Name { get; set; }
 
         public string TableName { get; set; }
 
@@ -14,9 +16,11 @@ namespace UIOMatic.Models
 
         public UIOMaticRenderType RenderType { get; set; }
 
-        public UIOMaticPropertyInfo[] Properties { get; set; }
+        public UIOMaticPropertyInfo[] RawProperties { get; set; }
 
-        public UIOMaticPropertyInfo[] ListViewProperties { get; set; }
+        public UIOMaticEditablePropertyInfo[] EditableProperties { get; set; }
+
+        public UIOMaticViewablePropertyInfo[] ListViewProperties { get; set; }
 
         public string NameField { get; set; }
 

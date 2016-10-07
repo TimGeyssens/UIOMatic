@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UIOmatic.Services;
 using UIOMatic;
 using UIOMatic.Interfaces;
@@ -19,9 +20,10 @@ namespace UIOmatic.Web.Controllers
             _service = UIOMaticObjectService.Instance;
         }
 
-        public IEnumerable<Type> GetAllTypes()
+        public IEnumerable<UIOMaticTypeInfo> GetAllTypes()
         {
-            return Helper.GetUIOMaticTypes();
+            var types = Helper.GetUIOMaticTypes();
+            return types.Select(x => _service.GetTypeInfo(x));
         }
 
         public IEnumerable<object> GetAllObjects(string typeAlias, string sortColumn, string sortOrder)

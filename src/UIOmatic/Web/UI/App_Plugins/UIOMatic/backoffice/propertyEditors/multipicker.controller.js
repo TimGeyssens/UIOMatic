@@ -27,8 +27,7 @@
 	    $scope.parseTemplate = function (object) {
 	        var template = $parse($scope.model.config.objectTemplate);
 	        return template(object);
-            2
-	    }
+        }
 	    function getFullDetails()
 	    {
 
@@ -36,9 +35,9 @@
 	        if($scope.model.value)
 	        {
 	            angular.forEach($scope.model.value, function (id) {
-	                uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function (resp) {
+	                uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function(resp) {
 	                    $scope.objects.push(resp.data);
-	                })
+	                });
 	            });
 	        }
 	    }

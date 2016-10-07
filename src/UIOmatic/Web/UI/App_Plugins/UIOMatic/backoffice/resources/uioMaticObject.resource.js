@@ -2,7 +2,6 @@
 	.factory("uioMaticObjectResource", function ($http) {
 	    return {
 	        getAll: function (type, sortColumn, sortOrder) {
-	            //return this.getPaged(type, 1, 1, sortColumn, sortOrder);
 	            if (sortColumn == undefined)
 	                sortColumn = "";
 	            if (sortOrder == undefined)
@@ -10,7 +9,6 @@
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeAlias=" + type + "&sortColumn=" + sortColumn + "&sortOrder="+sortOrder);
 	        },
 	        getFiltered: function (type, filterColumn, filterValue, sortColumn, sortOrder) {
-
 	            if (sortColumn == undefined)
 	                sortColumn = "";
 	            if (sortOrder == undefined)

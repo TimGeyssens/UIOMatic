@@ -60,7 +60,7 @@
                                 </td>
                                 <td ng-repeat="prop in properties">
                                     <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {Value:row[prop.Key]}"><!-- Fake property object so we can reuse views -->
-                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true">
+                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true" style="font-weight: bold;">
                                             <span ng-include="prop.View"></span>
                                         </a>
                                         <span ng-switch-when="false">

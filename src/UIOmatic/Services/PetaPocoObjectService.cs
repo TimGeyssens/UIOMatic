@@ -129,8 +129,9 @@ namespace UIOmatic.Services
             {
                 var attri = type.GetCustomAttribute<UIOMaticAttribute>();
 
-                var properties = new List<UIOMaticPropertyInfo>();
-                var listViewProperties = new List<UIOMaticPropertyInfo>();
+                var editableProperties = new List<UIOMaticEditablePropertyInfo>();
+                var listViewProperties = new List<UIOMaticViewablePropertyInfo>();
+                var rawProperties = new List<UIOMaticPropertyInfo>();
 
                 var nameField = "";
 
@@ -154,7 +155,7 @@ namespace UIOmatic.Services
                                 if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.Views["number"];
                             }
 
-                            var pi = new UIOMaticPropertyInfo
+                            var pi = new UIOMaticEditablePropertyInfo
                             {
                                 Key = prop.Name,
                                 Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
@@ -165,7 +166,7 @@ namespace UIOmatic.Services
                                 Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config)
                             };
 
-                            properties.Add(pi);
+                            editableProperties.Add(pi);
                         }
                         else
                         {
@@ -180,7 +181,7 @@ namespace UIOmatic.Services
 
                             // Handle custom views?
 
-                            var pi = new UIOMaticPropertyInfo
+                            var pi = new UIOMaticViewablePropertyInfo
                             {
                                 Key = prop.Name,
                                 Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
@@ -191,6 +192,14 @@ namespace UIOmatic.Services
 
                             listViewProperties.Add(pi);
                         }
+
+                        // Raw properties
+                        rawProperties.Add(new UIOMaticPropertyInfo
+                        {
+                            Key = prop.Name,
+                            Name = prop.Name,
+                            Type = prop.PropertyType.ToString(),
+                        });
                     }
 
                     // Check for name field
@@ -201,15 +210,17 @@ namespace UIOmatic.Services
 
                 return new UIOMaticTypeInfo
                 {
-                    TypeAlias = attri.Alias,
+                    Alias = attri.Alias,
+                    Name = type.Name,
                     TableName = type.GetTableName(),
                     RenderType = attri.RenderType,
                     PrimaryKeyColumnName = type.GetPrimaryKeyName(),
                     AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
                     NameField = nameField,
                     ReadOnly = attri.ReadOnly,
-                    Properties = properties.ToArray(),
-                    ListViewProperties = listViewProperties.ToArray()
+                    EditableProperties = editableProperties.ToArray(),
+                    ListViewProperties = listViewProperties.ToArray(),
+                    RawProperties = rawProperties.ToArray()
                 };
             });
         }
