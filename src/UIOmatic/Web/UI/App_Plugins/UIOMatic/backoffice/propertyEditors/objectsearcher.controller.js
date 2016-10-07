@@ -1,7 +1,7 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.Dialogs.Searcher",
 	function ($scope, $http, uioMaticObjectResource, $parse) {
 
-	    $scope.typeName = $scope.dialogData.typeName;
+	    $scope.typeAlias = $scope.dialogData.typeAlias;
 	    $scope.selectedIds = [];
 
 	    if ($scope.dialogData.selectedIds) {
@@ -18,7 +18,7 @@
 
 	    function fetchData() {
 
-	        uioMaticObjectResource.getPaged($scope.typeName, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", $scope.searchTerm).then(function (resp) {
+	        uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", $scope.searchTerm).then(function (resp) {
 
 	            $scope.rows = resp.data.Items;
 	            $scope.totalPages = resp.data.TotalPages;
@@ -31,7 +31,7 @@
 	        });
 	    }
 
-	    uioMaticObjectResource.getType($scope.typeName).then(function (response) {
+	    uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
 	        //.replace(' ', '_') nasty hack to allow columns with a space
 	        $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
 	        $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');

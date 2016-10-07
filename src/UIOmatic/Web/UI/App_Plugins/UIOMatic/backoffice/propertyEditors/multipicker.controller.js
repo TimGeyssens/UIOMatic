@@ -14,7 +14,7 @@
 	            show: true,
 	            callback: done,
 	            dialogData: {
-	                typeName: $scope.model.config.typeName,
+	                typeAlias: $scope.model.config.typeAlias,
 	                objectTemplate: $scope.model.config.objectTemplate,
 	                selectedIds : $scope.model.value
 	            }
@@ -36,7 +36,7 @@
 	        if($scope.model.value)
 	        {
 	            angular.forEach($scope.model.value, function (id) {
-	                uioMaticObjectResource.getById($scope.model.config.typeName, id).then(function (resp) {
+	                uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function (resp) {
 	                    $scope.objects.push(resp.data);
 	                })
 	            });

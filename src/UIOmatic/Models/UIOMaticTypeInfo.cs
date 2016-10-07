@@ -4,6 +4,8 @@ namespace UIOMatic.Models
 {
     public class UIOMaticTypeInfo
     {
+        public string TypeAlias { get; set; }
+
         public UIOMaticRenderType RenderType { get; set; }
 
         public string PrimaryKeyColumnName { get; set; }

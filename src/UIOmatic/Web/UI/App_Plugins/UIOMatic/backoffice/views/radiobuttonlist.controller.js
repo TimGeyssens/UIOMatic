@@ -6,7 +6,7 @@
        
 
         function init() {
-            uioMaticObjectResource.getAll($scope.property.Config.typeName, $scope.property.Config.sortColumn, "asc").then(function (response) {
+            uioMaticObjectResource.getAll($scope.property.Config.typeAlias, $scope.property.Config.sortColumn, "asc").then(function (response) {
                 $scope.objects = response.data;
 
             });

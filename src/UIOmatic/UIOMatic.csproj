@@ -270,11 +270,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\UIOMaticListViewFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFolderAttribute.cs" />
     <Compile Include="Attributes\UIOMaticAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticIgnoreFieldAttribute.cs" />
-    <Compile Include="Attributes\UIOMaticIgnoreFromListViewAttribute.cs" />
+    <Compile Include="Attributes\_UIOMaticIgnoreFromListViewAttribute.cs" />
     <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Config.cs" />

@@ -9,7 +9,7 @@
 
 
         function fetchData() {
-            uioMaticObjectResource.getFiltered($scope.property.Config.typeName, $scope.property.Config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
+            uioMaticObjectResource.getFiltered($scope.property.Config.typeAlias, $scope.property.Config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
                 $scope.rows = response.data;
 
                 if ($scope.rows.length > 0) {
@@ -21,9 +21,9 @@
         }
         function init() {
             
-            $scope.typeName = $scope.property.Config.typeName;
+            $scope.typeAlias = $scope.property.Config.typeAlias;
 
-            uioMaticObjectResource.getType($scope.typeName).then(function (response) {
+            uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
                 //.replace(' ', '_') nasty hack to allow columns with a space
                 $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
                 $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
@@ -83,7 +83,7 @@
             if (confirm("Are you sure you want to delete " + $scope.selectedIds.length + " object" + ($scope.selectedIds.length > 1 ? "s" : "") + "?")) {
                 $scope.actionInProgress = true;
                 var keyPropName = $scope.primaryKeyColumnName;
-                uioMaticObjectResource.deleteByIds($scope.typeName, $scope.selectedIds).then(function () {
+                uioMaticObjectResource.deleteByIds($scope.typeAlias, $scope.selectedIds).then(function () {
                     $scope.rows = _.reject($scope.rows, function (el) { return $scope.selectedIds.indexOf(el[keyPropName]) > -1; });
                     $scope.selectedIds = [];
                     $scope.actionInProgress = false;

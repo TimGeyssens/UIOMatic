@@ -3,18 +3,23 @@
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticListViewFieldAttribute : Attribute
+    public class UIOMaticFieldAttribute: Attribute
     {
         public string Name { get; set; }
+
+        public string Tab { get; set; }
+
+        public string Description { get; set; }
 
         public string View { get; set; }
 
         public string Config { get; set; }
 
-        public UIOMaticListViewFieldAttribute(string name)
+        public UIOMaticFieldAttribute(string name, string description)
         {
             Name = name;
-            View = "label";
+            Description = description;
+            View = "textfield";
         }
 
         public string GetView()

@@ -211,6 +211,7 @@ namespace UIOmatic.Services
 
             return new UIOMaticTypeInfo
             {
+                TypeAlias = uioMaticAttri.Alias,
                 RenderType = uioMaticAttri.RenderType,
                 PrimaryKeyColumnName = type.GetPrimaryKeyName(),
                 IgnoreColumnsFromListView = ignoreColumnsFromListView.ToArray(),
