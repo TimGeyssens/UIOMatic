@@ -24,7 +24,7 @@
                  
                     <div class="umb-sub-header">
                         <div class="btn-group" ng-hide="readOnly">
-                            <a class="btn" href="#/uiomatic/uioMaticTree/edit/{{typeName}}">
+                            <a class="btn" href="#/uiomatic/uioMaticTree/edit/{{typeAlias}}">
                                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
                             </a>
                         </div>
@@ -62,7 +62,7 @@
                                 </td>
                                 <td ng-repeat="column in cols ">
                                     <div ng-switch="isColumnLinkable(column,$index)">
-                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Ftype={{typeName}}" ng-switch-when="true">{{row[column]}}</a>
+                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true">{{row[column]}}</a>
                                         <span ng-switch-when="false">{{row[column]}}</span>
                                     </div>
                                 </td>
