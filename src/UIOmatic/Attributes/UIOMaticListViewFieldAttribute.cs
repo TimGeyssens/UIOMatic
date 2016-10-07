@@ -15,10 +15,8 @@ namespace UIOMatic.Attributes
 
         public string Config { get; set; }
 
-        public UIOMaticFieldAttribute(string name, string description)
+        public UIOMaticFieldAttribute()
         {
-            Name = name;
-            Description = description;
             View = "textfield";
         }
 

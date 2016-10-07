@@ -43,17 +43,10 @@ namespace UIOmatic.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeAlias)
+        public UIOMaticTypeInfo GetTypeInfo(string typeAlias, bool includePropertyInfo)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetAllProperties(t);
-        }
-
-        [HttpGet]
-        public UIOMaticTypeInfo GetType(string typeAlias)
-        {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetType(t);
+            return _service.GetTypeInfo(t, includePropertyInfo);
         }
 
         [HttpGet]

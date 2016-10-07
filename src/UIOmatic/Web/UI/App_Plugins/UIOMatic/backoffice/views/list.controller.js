@@ -11,23 +11,17 @@
         function fetchData() {
             uioMaticObjectResource.getFiltered($scope.property.Config.typeAlias, $scope.property.Config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
                 $scope.rows = response.data;
-
-                if ($scope.rows.length > 0) {
-                    $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
-                        return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
-                    });
-                }
             });
         }
         function init() {
             
             $scope.typeAlias = $scope.property.Config.typeAlias;
 
-            uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
+            uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
                 //.replace(' ', '_') nasty hack to allow columns with a space
                 $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
                 $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
-                $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
+                $scope.properties = response.data.ListViewproperties;
                 $scope.nameField = response.data.NameField.replace(' ', '_');
 
                 if ($routeParams.id.split("?").length == 2)

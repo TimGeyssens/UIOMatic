@@ -17,58 +17,50 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        $scope.typeAlias = $routeParams.id.split("=").slice(1).join('=');
 	    }
 
-	    uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
+	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
+	    {
 	        $scope.type = response.data;
 	        $scope.readOnly = response.data.ReadOnly;
+	        $scope.properties = response.data.Properties;
+	        $scope.type.NameFieldIndex = $scope.type.NameField.length > 0
+                ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameField)
+	            : -1;
 
-	        uioMaticObjectResource.getAllProperties($scope.typeAlias).then(function (response) {
-	            $scope.properties = response.data;
-	            $scope.type.NameFieldIndex = $scope.type.NameField.length > 0
-                    ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameField)
-	                : -1;
-
-	            var tabsArr = [];
-	            angular.forEach(response.data, function (value, key) {
-	                if (this.map(function (e) { return e.label; }).indexOf(value.Tab) == -1) {
-	                    if (value.Tab == "") {
-	                        this.push({ id: 99, label: "Misc" });
-	                    } else {
-	                        this.push({ id: key, label: value.Tab });
-	                    }
+	        var tabsArr = [];
+	        angular.forEach(response.data, function (value, key) {
+	            if (this.map(function (e) { return e.label; }).indexOf(value.Tab) == -1) {
+	                if (value.Tab == "") {
+	                    this.push({ id: 99, label: "Misc" });
+	                } else {
+	                    this.push({ id: key, label: value.Tab });
 	                }
-	            }, tabsArr);
-	            if (tabsArr.length > 1 && tabsArr[0].id != 99) {
-	                $scope.content = { tabs: tabsArr };
 	            }
+	        }, tabsArr);
+
+	        if (tabsArr.length > 1 && tabsArr[0].id != 99) {
+	            $scope.content = { tabs: tabsArr };
+	        }
 
 
-	            if ($isId <= 0) {
-	                uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
-	                    $scope.object = response.data;
-
-	                    $scope.loaded = true;
-	                   
-	                    setValues();
-
-	                    $scope.$broadcast('ValuesLoaded');
-	                });
-	                
-	                //$scope.object = {};
-	                //$scope.loaded = true;
-	            }
-	            else {
-
-	                uioMaticObjectResource.getById($routeParams.id.split("=")[1], $routeParams.id.split("?")[0]).then(function (response) {
-	                    $scope.object = response.data;
-
-	                    $scope.loaded = true;
-	                    $scope.editing = true;
-	                    setValues();
-
-	                    $scope.$broadcast('ValuesLoaded');
-	                });
-	            }
-	        });
+	        if ($isId <= 0)
+	        {
+	            uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
+	                $scope.object = response.data;
+	                $scope.loaded = true;
+	                setValues();
+	                $scope.$broadcast('ValuesLoaded');
+	            });
+	        }
+	        else
+	        {
+	            uioMaticObjectResource.getById($routeParams.id.split("=")[1], $routeParams.id.split("?")[0]).then(function (response) {
+	                $scope.object = response.data;
+	                $scope.loaded = true;
+	                $scope.editing = true;
+	                setValues();
+	                $scope.$broadcast('ValuesLoaded');
+	            });
+	        }
 	    });
 
 
@@ -158,9 +150,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            if ($scope.object.hasOwnProperty(theKey)) {
 
 	                if (_.where($scope.properties, { Key: theKey }).length > 0) {
-
-	                    //_.where($scope.properties, { Key: theKey }).Value = "test";
-	                    //_.where($scope.properties, { Key: theKey }).Value = $scope.object[theKey];
 
 	                    for (var prop in $scope.properties) {
 	                        if ($scope.properties[prop].Key == theKey) {

@@ -1,26 +1,24 @@
 ﻿<div ng-controller="uioMatic.ObjectListController">
 
     <umb-panel>
-    <umb-header>
+        <umb-header>
 
-        <div class="span7">
-            <h1>Object List</h1>
-        </div>
-
-        <div class="span5">
-            <div class="btn-toolbar pull-right umb-btn-toolbar">
-                <umb-options-menu ng-show="currentNode"
-                                  current-node="currentNode"
-                                  current-section="{{currentSection}}">
-                </umb-options-menu>
+            <div class="span7">
+                <h1>Object List</h1>
             </div>
-        </div>
-    </umb-header>
+
+            <div class="span5">
+                <div class="btn-toolbar pull-right umb-btn-toolbar">
+                    <umb-options-menu ng-show="currentNode"
+                        current-node="currentNode"
+                        current-section="{{currentSection}}">
+                    </umb-options-menu>
+                </div>
+            </div>
+        </umb-header>
         <div class="umb-panel-body umb-scrollable row-fluid">
             <div class="tab-content form-horizontal" style="padding-bottom: 90px">
                 <div class="umb-pane">
-
-
                  
                     <div class="umb-sub-header">
                         <div class="btn-group" ng-hide="readOnly">
@@ -48,9 +46,9 @@
                             <thead>
                             <tr>
                                 <td style="width:35px" ng-hide="readOnly"></td>
-                                <td ng-repeat="col in cols">
-                                    <a href="" class="sortable" ng-click="order(col)">{{unCamelCase(col)}}</a>
-                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == col"></i>
+                                <td ng-repeat="prop in properties">
+                                    <a href="" class="sortable" ng-click="order(prop.Key)">{{unCamelCase(prop.Name)}}</a>
+                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.Key"></i>
                                 </td>
                             </tr>
                             </thead>
@@ -60,10 +58,14 @@
                                     <i class="icon icon-edit"></i>
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
                                 </td>
-                                <td ng-repeat="column in cols ">
-                                    <div ng-switch="isColumnLinkable(column,$index)">
-                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true">{{row[column]}}</a>
-                                        <span ng-switch-when="false">{{row[column]}}</span>
+                                <td ng-repeat="prop in properties">
+                                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {Value:row[prop.Key]}">
+                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true">
+                                            <span ng-include="prop.View"></span>
+                                        </a>
+                                        <span ng-switch-when="false">
+                                            <span ng-include="prop.View"></span>
+                                        </span>
                                     </div>
                                 </td>
                             </tr>

@@ -17,29 +17,19 @@
 
         function fetchData() {
             uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.initialFetch ? "" : $scope.predicate, $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"), $scope.searchTerm).then(function (resp) {
-               
                 $scope.rows = resp.data.Items;
                 $scope.totalPages = resp.data.TotalPages;
-
-                if ($scope.rows.length > 0) {
-                    $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
-                        return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
-                    });
-                }
-
-                
             });
         }
 
-        uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
+        uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
             //.replace(' ', '_') nasty hack to allow columns with a space
             $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
             $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
-            $scope.ignoreColumnsFromListView = response.data.IgnoreColumnsFromListView;
+            $scope.properties = response.data.ListViewProperties;
             $scope.nameField = response.data.NameField.replace(' ', '_');
-            $scope.readOnly = response.data.ReadOnly
+            $scope.readOnly = response.data.ReadOnly;
             fetchData();
-
         });
 
 
@@ -52,9 +42,7 @@
         };
 
         $scope.getObjectKey = function (object) {
-            var keyPropName = $scope.primaryKeyColumnName;
-            return object[keyPropName];
-
+            return object[$scope.primaryKeyColumnName];
         }
 
         $scope.delete = function (object) {
@@ -106,7 +94,6 @@
         };
 
         $scope.setPage = function (pageNumber) {
-            console.log(pageNumber);
             $scope.currentPage = pageNumber;
             fetchData();
         };
@@ -117,14 +104,11 @@
             fetchData();
         };
 
-        $scope.isColumnLinkable = function (column, index) {
-           
+        $scope.isColumnLinkable = function (prop, index) {
             if ($scope.nameField.length > 0) {
-                return column == $scope.nameField;
+                return prop.Key == $scope.nameField;
             } else {
-               
-                return index == 0
-                || (index == 1 && $scope.cols[0] == $scope.primaryKeyColumnName)
+                return index == 0 || (index == 1 && prop.Key == $scope.primaryKeyColumnName);
             }
         }
 

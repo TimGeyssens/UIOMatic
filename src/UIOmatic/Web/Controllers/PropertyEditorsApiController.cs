@@ -31,10 +31,10 @@ namespace UIOmatic.Web.Controllers
 
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(string typeAlias)
+        public UIOMaticTypeInfo GetTypeInfo(string typeAlias, bool includePropertyInfo)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetAllProperties(t, true);
+            return _service.GetTypeInfo(t, includePropertyInfo);
         }
 
         public IEnumerable<string> GetAllColumns(string typeAlias)

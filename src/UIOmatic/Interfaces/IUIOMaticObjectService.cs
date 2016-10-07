@@ -12,11 +12,9 @@ namespace UIOMatic.Interfaces
 
         UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm);
 
-        IEnumerable<UIOMaticPropertyInfo> GetAllProperties(Type type, bool includeIgnored = false);
-
         IEnumerable<string> GetAllColumns(Type type);
 
-        UIOMaticTypeInfo GetType(Type type);
+        UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties = false);
 
         object GetById(Type type, string id);
 

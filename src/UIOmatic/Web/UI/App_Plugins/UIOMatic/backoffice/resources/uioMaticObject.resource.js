@@ -33,8 +33,8 @@
 	        getScaffold: function (type) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetScaffold?typeAlias=" + type);
 	        },
-	        getType: function(type) {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetType?typeAlias=" + type);
+	        getTypeInfo: function(type, includePropertyInfo) {
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetTypeInfo?typeAlias=" + type + "&includePropertyInfo=" + includePropertyInfo);
 	        },
 	        create: function (type, object) {
 	            var item = {

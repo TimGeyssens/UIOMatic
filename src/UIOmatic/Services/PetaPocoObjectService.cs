@@ -27,11 +27,11 @@ namespace UIOmatic.Services
 
         public IEnumerable<object> GetAll(Type type, string sortColumn, string sortOrder)
         {
-            var tableName = type.GetTableName();
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
-            
-            var query = new Sql().Select("*").From(tableName);
+
+            var typeInfo = GetTypeInfo(type);
+            var query = new Sql().Select("*").From(typeInfo.TableName);
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
                 query.OrderBy(sortColumn + " " + sortOrder);
@@ -42,13 +42,13 @@ namespace UIOmatic.Services
 
         public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
         {
-            var tableName = type.GetTableName();
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
 
-            var query = new Sql().Select("*").From(tableName);
+            var typeInfo = GetTypeInfo(type);
+            var query = new Sql().Select("*").From(typeInfo.TableName);
 
-            var a1 = new QueryEventArgs(type, tableName, query, sortColumn, sortOrder, searchTerm);
+            var a1 = new QueryEventArgs(type, typeInfo.TableName, query, sortColumn, sortOrder, searchTerm);
             UIOMaticObjectService.OnBuildingQuery(this, a1);
             query = a1.Query;
 
@@ -93,7 +93,7 @@ namespace UIOmatic.Services
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
-            var a2 = new QueryEventArgs(type, tableName, query,sortColumn,sortOrder,searchTerm);
+            var a2 = new QueryEventArgs(type, typeInfo.TableName, query,sortColumn,sortOrder,searchTerm);
             UIOMaticObjectService.OnBuiltQuery(this, a2);
             query = a2.Query;
 
@@ -109,75 +109,6 @@ namespace UIOmatic.Services
             };
         }
 
-        public IEnumerable<UIOMaticPropertyInfo> GetAllProperties(Type type, bool includeIgnored = false)
-        {
-            foreach (var prop in type.GetProperties())
-            {
-                var attris = prop.GetCustomAttributes();
-
-                if (includeIgnored || attris.All(x => x.GetType() != typeof(UIOMaticIgnoreFieldAttribute)))
-                {
-                    if (attris.Any(x => x.GetType() == typeof (UIOMaticFieldAttribute)))
-                    {
-                        var attri = attris.FirstOrDefault(x => x.GetType() == typeof (UIOMaticFieldAttribute)) as UIOMaticFieldAttribute;
-                        if(attri != null)
-                        { 
-                            var key = prop.Name;
-                            var view = attri.GetView();
-
-                            // If field was left as textfield, see if we have a better match based on type
-                            if (attri.View == "textfield")
-                            {
-                                if (prop.PropertyType == typeof(bool)) view = Constants.Views["checkbox"];
-                                if (prop.PropertyType == typeof(DateTime)) view = Constants.Views["datetime"];
-                                if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.Views["number"];
-                            }
-
-                            var pi = new UIOMaticPropertyInfo
-                            {
-                                Key = key,
-                                Name = attri.Name,
-                                Tab = string.IsNullOrEmpty(attri.Tab) ? "Misc" : attri.Tab,
-                                Description = attri.Description,
-                                View = IOHelper.ResolveUrl(view),
-                                Type = prop.PropertyType.ToString() ,
-                                Config = string.IsNullOrEmpty(attri.Config) ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri.Config)
-                            };
-
-                            yield return pi;
-                        }
-                    }
-                    else
-                    {
-                        var key = prop.Name;
-
-                        var view = Constants.Views["textfield"];
-
-                        // See if we have a better view match based on type
-                        if (prop.PropertyType == typeof(bool)) view = Constants.Views["checkbox"];
-                        if (prop.PropertyType == typeof(DateTime)) view = Constants.Views["datetime"];
-                        if (prop.PropertyType == typeof(int) | prop.PropertyType == typeof(long)) view = Constants.Views["number"];
-
-                        var pi = new UIOMaticPropertyInfo
-                        {
-                            Key = key,
-                            Name = prop.Name,
-                            Tab = "Misc",
-                            Description = string.Empty,
-                            View = IOHelper.ResolveUrl(view),
-                            Type = prop.PropertyType.ToString()
-                               
-                        };
-
-                        yield return pi;
-                    }
-                }
-
-                
-            }
-
-        }
-
         public IEnumerable<string> GetAllColumns(Type type)
         {
             foreach (var prop in type.GetProperties())
@@ -191,32 +122,87 @@ namespace UIOmatic.Services
 
         }
 
-        public UIOMaticTypeInfo GetType(Type type)
+        public UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties =  false)
         {
-            var uioMaticAttri = type.GetCustomAttribute<UIOMaticAttribute>(); 
-            var ignoreColumnsFromListView = new List<string>();
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>(); 
+
+            var properties = new List<UIOMaticPropertyInfo>();
+            var listViewProperties = new List<UIOMaticPropertyInfo>();
 
             var nameField = "";
 
-            foreach (var property in type.GetProperties())
+            foreach (var prop in type.GetProperties())
             {
-                var ignoreAttri = property.GetCustomAttribute<UIOMaticIgnoreFromListViewAttribute>();
-                if (ignoreAttri != null)
-                    ignoreColumnsFromListView.Add(property.Name);
+                var attris = prop.GetCustomAttributes();
 
-                var nameAttri = property.GetCustomAttribute<UIOMaticNameFieldAttribute>();
+                if (populateProperties)
+                { 
+                    // Check for regular properties
+                    var attri2 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticFieldAttribute)) as UIOMaticFieldAttribute;
+                    if (attri2 != null)
+                    {
+                        var view = attri2.GetView();
+
+                        // If field was left as textfield, see if we have a better match based on type
+                        if (attri2.View == "textfield")
+                        {
+                            if (prop.PropertyType == typeof(bool)) view = Constants.Views["checkbox"];
+                            if (prop.PropertyType == typeof(DateTime)) view = Constants.Views["datetime"];
+                            if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.Views["number"];
+                        }
+
+                        var pi = new UIOMaticPropertyInfo
+                        {
+                            Key = prop.Name,
+                            Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
+                            Tab = attri2.Tab.IsNullOrWhiteSpace() ? "Misc" : attri2.Tab,
+                            Description = attri2.Description,
+                            View = IOHelper.ResolveUrl(view),
+                            Type = prop.PropertyType.ToString(),
+                            Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config)
+                        };
+
+                        properties.Add(pi);
+                    }
+
+                    // Check for list view properties
+                    var attri3 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFieldAttribute)) as UIOMaticListViewFieldAttribute;
+                    if (attri3 != null)
+                    {
+                        var view = attri3.GetView();
+
+                        // Handle custom views?
+
+                        var pi = new UIOMaticPropertyInfo
+                        {
+                            Key = prop.Name,
+                            Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
+                            View = IOHelper.ResolveUrl(view),
+                            Type = prop.PropertyType.ToString(),
+                            Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config)
+                        };
+
+                        listViewProperties.Add(pi);
+                    }
+                }
+
+                // Check for name field
+                var nameAttri = prop.GetCustomAttribute<UIOMaticNameFieldAttribute>();
                 if (nameAttri != null)
-                    nameField = property.Name;
+                    nameField = prop.Name;
             }
 
             return new UIOMaticTypeInfo
             {
-                TypeAlias = uioMaticAttri.Alias,
-                RenderType = uioMaticAttri.RenderType,
+                TypeAlias = attri.Alias,
+                TableName = type.GetTableName(),
+                RenderType = attri.RenderType,
                 PrimaryKeyColumnName = type.GetPrimaryKeyName(),
-                IgnoreColumnsFromListView = ignoreColumnsFromListView.ToArray(),
+                AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
                 NameField = nameField,
-                ReadOnly = uioMaticAttri.ReadOnly
+                ReadOnly = attri.ReadOnly,
+                Properties = properties.ToArray(),
+                ListViewProperties = listViewProperties.ToArray()
             };
         }
 
@@ -242,18 +228,15 @@ namespace UIOmatic.Services
         {
             var obj = CreateAndPopulateType(type, values);
 
-            var tableName = type.GetTableName();
-            var primaryKeyColum = type.GetPrimaryKeyName();
-            var autoIncrement = type.AutoIncrementPrimaryKey();
-
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
 
+            var typeInfo = GetTypeInfo(type);
             var a1 = new ObjectEventArgs(obj);
             UIOMaticObjectService.OnCreatingObject(this, a1);
 
-            if (autoIncrement)
-                db.Insert(tableName, primaryKeyColum, true, obj);
+            if (typeInfo.AutoIncrementPrimaryKey)
+                db.Insert(typeInfo.TableName, typeInfo.PrimaryKeyColumnName, true, obj);
             else
                 db.Insert(obj);
 
@@ -261,7 +244,6 @@ namespace UIOmatic.Services
             UIOMaticObjectService.OnCreatingObject(this, a2);
 
             return obj;
-
         }
 
         public object Update(Type type, IDictionary<string, object> values)
@@ -284,15 +266,13 @@ namespace UIOmatic.Services
 
         public string[] DeleteByIds(Type type, string[] ids)
         {
-            var tableName = type.GetTableName();
-            var primaryKeyColum = type.GetPrimaryKeyName();
-
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
-            
-            var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})", 
-                tableName, 
-                primaryKeyColum,
+
+            var typeInfo = GetTypeInfo(type);
+            var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})",
+                typeInfo.TableName,
+                typeInfo.PrimaryKeyColumnName,
                 ids.Select(x => "'" + x + "'").ToArray());
 
             db.Execute(sql);
@@ -308,12 +288,11 @@ namespace UIOmatic.Services
 
         public IEnumerable<object> GetFiltered(Type type, string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
-            var tableName = type.GetTableName();
-
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
 
-            var query = new Sql().Select("*").From(tableName);
+            var typeInfo = GetTypeInfo(type);
+            var query = new Sql().Select("*").From(typeInfo.TableName);
 
             if (!filterColumn.IsNullOrWhiteSpace())
             {

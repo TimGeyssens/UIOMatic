@@ -17,5 +17,10 @@ namespace UIOMatic.Models
         public string Type { get; set; }
 
         public JObject Config { get; set; }
+
+        public UIOMaticPropertyInfo()
+        {
+            Tab = "Misc";
+        }
     }
 }

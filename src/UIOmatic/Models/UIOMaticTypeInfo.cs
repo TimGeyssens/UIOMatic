@@ -6,11 +6,17 @@ namespace UIOMatic.Models
     {
         public string TypeAlias { get; set; }
 
-        public UIOMaticRenderType RenderType { get; set; }
+        public string TableName { get; set; }
 
         public string PrimaryKeyColumnName { get; set; }
 
-        public string[] IgnoreColumnsFromListView { get; set; }
+        public bool AutoIncrementPrimaryKey { get; set; } 
+
+        public UIOMaticRenderType RenderType { get; set; }
+
+        public UIOMaticPropertyInfo[] Properties { get; set; }
+
+        public UIOMaticPropertyInfo[] ListViewProperties { get; set; }
 
         public string NameField { get; set; }
 

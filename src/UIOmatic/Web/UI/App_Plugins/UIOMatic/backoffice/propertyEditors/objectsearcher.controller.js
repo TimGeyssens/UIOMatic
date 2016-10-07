@@ -31,7 +31,7 @@
 	        });
 	    }
 
-	    uioMaticObjectResource.getType($scope.typeAlias).then(function (response) {
+	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
 	        //.replace(' ', '_') nasty hack to allow columns with a space
 	        $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
 	        $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
