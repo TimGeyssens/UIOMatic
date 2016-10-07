@@ -167,6 +167,10 @@ namespace UIOmatic.Services
 
                             properties.Add(pi);
                         }
+                        else
+                        {
+                            //TODO: If someone needs to re-instate supporting non-attributed properties, logic to handle these should be added here
+                        }
 
                         // Check for list view properties
                         var attri3 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFieldAttribute)) as UIOMaticListViewFieldAttribute;
