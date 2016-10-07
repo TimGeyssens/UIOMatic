@@ -18,17 +18,12 @@ namespace UIOMatic.Attributes
 
         public bool ReadOnly { get; set; }
 
-        [Obsolete("Use the constructor where you provide an alias for this type", false)]
-        public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
-            : this(name, "", folderIcon, itemIcon)
-        { }
-
         public UIOMaticAttribute(string name, string alias, string folderIcon, string itemIcon)
             : base(name, alias, folderIcon)
         {
             ItemIcon = itemIcon;
             RenderType = UIOMaticRenderType.Tree;
-            SortOrder = "asc";
+            SortOrder = "ASC";
             ReadOnly = false;
         }
     }

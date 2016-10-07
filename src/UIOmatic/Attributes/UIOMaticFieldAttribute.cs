@@ -24,8 +24,8 @@ namespace UIOMatic.Attributes
 
         public string GetView()
         {
-            return this.View.StartsWith("~") 
-                ? this.View 
+            return View.StartsWith("~") 
+                ? View 
                 : string.Format("~/App_Plugins/UIOMatic/Backoffice/Views/{0}.html", View);
         }
     }
