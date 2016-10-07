@@ -69,6 +69,8 @@ namespace UIOmatic.Web.Controllers
                                 false,
                                 "uiomatic/uioMaticTree/list/" + alias);
 
+                            node.SetContainerStyle();
+
                             nodes.Add(node);
                         }
                     }
