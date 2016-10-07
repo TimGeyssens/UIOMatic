@@ -22,8 +22,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        $scope.type = response.data;
 	        $scope.readOnly = response.data.ReadOnly;
 	        $scope.properties = response.data.EditableProperties;
-	        $scope.type.NameFieldIndex = $scope.type.NameField.length > 0
-                ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameField)
+	        $scope.type.NameFieldIndex = $scope.type.NameFieldKey.length > 0
+                ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameFieldKey)
 	            : -1;
 
 	        var tabsArr = [];
@@ -170,12 +170,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 
 	}).filter("removeProperty", function () {
-	    return function (input, propertyKey) {
-	        if (propertyKey == null || propertyKey == "" || input == null)
+	    return function (input, nameProperty) {
+	        if (nameProperty == null || nameProperty.Key == null || nameProperty.Key == "" || input == null)
 	            return input;
-
 	        return input.filter(function (property) {
-	            return property.Key != propertyKey;
+	            return property.Key != nameProperty.Key;
 	        });
 	    }
 	});;

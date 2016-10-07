@@ -2,11 +2,15 @@
 
 namespace UIOMatic.Models
 {
-    public class UIOMaticEditablePropertyInfo : UIOMaticViewablePropertyInfo
+    public class UIOMaticEditablePropertyInfo : UIOMaticPropertyInfo
     {
         public string Tab { get; set; }
 
         public string Description { get; set; }
+
+        public string View { get; set; }
+
+        public JObject Config { get; set; }
 
         public UIOMaticEditablePropertyInfo()
         {

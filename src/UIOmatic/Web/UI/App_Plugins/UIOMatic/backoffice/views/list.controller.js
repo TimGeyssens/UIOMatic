@@ -22,7 +22,7 @@
                 $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
                 $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
                 $scope.properties = response.data.ListViewproperties;
-                $scope.nameField = response.data.NameField.replace(' ', '_');
+                $scope.nameField = response.data.NameFieldKey.replace(' ', '_');
 
                 if ($routeParams.id.split("?").length == 2)
                     fetchData();

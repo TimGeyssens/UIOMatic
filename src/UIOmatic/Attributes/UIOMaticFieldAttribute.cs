@@ -3,24 +3,29 @@
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticListViewFieldAttribute : Attribute
+    public class UIOMaticFieldAttribute : Attribute
     {
         public string Name { get; set; }
+
+        public string Tab { get; set; }
+
+        public string Description { get; set; }
 
         public string View { get; set; }
 
         public string Config { get; set; }
 
-        public UIOMaticListViewFieldAttribute(string name)
+        public bool IsNameField { get; set; }
+
+        public UIOMaticFieldAttribute()
         {
-            Name = name;
-            View = "label";
+            View = "textfield";
         }
 
         public string GetView()
         {
-            return View.StartsWith("~") 
-                ? View 
+            return View.StartsWith("~")
+                ? View
                 : string.Format("~/App_Plugins/UIOMatic/Backoffice/Views/{0}.html", View);
         }
     }

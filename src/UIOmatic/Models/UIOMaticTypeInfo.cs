@@ -22,7 +22,7 @@ namespace UIOMatic.Models
 
         public UIOMaticViewablePropertyInfo[] ListViewProperties { get; set; }
 
-        public string NameField { get; set; }
+        public string NameFieldKey { get; set; }
 
         public bool ReadOnly { get; set; }
     }

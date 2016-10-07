@@ -132,8 +132,7 @@ namespace UIOmatic.Services
                 var editableProperties = new List<UIOMaticEditablePropertyInfo>();
                 var listViewProperties = new List<UIOMaticViewablePropertyInfo>();
                 var rawProperties = new List<UIOMaticPropertyInfo>();
-
-                var nameField = "";
+                var nameFieldKey = "";
 
                 foreach (var prop in type.GetProperties())
                 {
@@ -165,6 +164,12 @@ namespace UIOmatic.Services
                                 Type = prop.PropertyType.ToString(),
                                 Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config)
                             };
+
+
+                            if (attri2.IsNameField)
+                            {
+                                nameFieldKey = prop.Name;
+                            }
 
                             editableProperties.Add(pi);
                         }
@@ -201,11 +206,6 @@ namespace UIOmatic.Services
                             Type = prop.PropertyType.ToString(),
                         });
                     }
-
-                    // Check for name field
-                    var nameAttri = prop.GetCustomAttribute<UIOMaticNameFieldAttribute>();
-                    if (nameAttri != null)
-                        nameField = prop.Name;
                 }
 
                 return new UIOMaticTypeInfo
@@ -216,7 +216,7 @@ namespace UIOmatic.Services
                     RenderType = attri.RenderType,
                     PrimaryKeyColumnName = type.GetPrimaryKeyName(),
                     AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
-                    NameField = nameField,
+                    NameFieldKey = nameFieldKey,
                     ReadOnly = attri.ReadOnly,
                     EditableProperties = editableProperties.ToArray(),
                     ListViewProperties = listViewProperties.ToArray(),

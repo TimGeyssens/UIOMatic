@@ -12,6 +12,7 @@ namespace UIOMatic.Attributes
 
         public string SortOrder { get; set; }
 
+        //TODO: Hook this up so that lists can use the same DB tables
         public string WhereClause { get; set; }
 
         public UIOMaticRenderType RenderType { get; set; }

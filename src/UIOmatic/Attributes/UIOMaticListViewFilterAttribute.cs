@@ -3,7 +3,7 @@
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticListViewFieldAttribute : Attribute
+    public class UIOMaticListViewFilterAttribute : Attribute
     {
         public string Name { get; set; }
 
@@ -11,9 +11,9 @@ namespace UIOMatic.Attributes
 
         public string Config { get; set; }
 
-        public UIOMaticListViewFieldAttribute()
+        public UIOMaticListViewFilterAttribute()
         {
-            View = "label";
+            View = "dropdown";
         }
 
         public string GetView()

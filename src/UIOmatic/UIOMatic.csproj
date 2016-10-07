@@ -270,11 +270,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\UIOMaticListViewFilterAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFolderAttribute.cs" />
     <Compile Include="Attributes\UIOMaticAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
-    <Compile Include="Attributes\UIOMaticNameFieldAttribute.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />
@@ -303,6 +303,7 @@
     <Compile Include="Web\ServerVariableParserEvent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\assets\moment.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\dropdown.html" />
