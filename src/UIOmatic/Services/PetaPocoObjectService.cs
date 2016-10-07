@@ -31,10 +31,10 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
             
-            var query = new Sql().Select("*").From(tableName.MakeSqlSafeName());
+            var query = new Sql().Select("*").From(tableName);
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
-                query.OrderBy(sortColumn.MakeSqlSafeName() + " " + sortOrder);
+                query.OrderBy(sortColumn + " " + sortOrder);
             }
             
             return db.Fetch(type, query);
@@ -46,7 +46,7 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
 
-            var query = new Sql().Select("*").From(tableName.MakeSqlSafeName());
+            var query = new Sql().Select("*").From(tableName);
 
             var a1 = new QueryEventArgs(type, tableName, query, sortColumn, sortOrder, searchTerm);
             UIOMaticObjectService.OnBuildingQuery(this, a1);
@@ -59,7 +59,7 @@ namespace UIOmatic.Services
                 foreach (var property in type.GetProperties())
                 {
                     var attris = property.GetCustomAttributes();
-                    if (!attris.Any(x=>x.GetType() == typeof(IgnoreAttribute)))
+                    if (!attris.Any(x=>x.GetType() == typeof(IgnoreAttribute))) 
                     {
                         var before = "WHERE";
                         if (c > 0)
@@ -71,7 +71,7 @@ namespace UIOmatic.Services
                         if (columnAttri != null)
                             columnName = columnAttri.Name;
 
-                        query.Append(before + " " + columnName.MakeSqlSafeName() + " like @0", "%" + searchTerm + "%");
+                        query.Append(before + " " + columnName + " like @0", "%" + searchTerm + "%");
                         c++;
 
                     }
@@ -81,16 +81,16 @@ namespace UIOmatic.Services
             // Sort
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
-                query.OrderBy(sortColumn.MakeSqlSafeName() + " " + sortOrder);
+                query.OrderBy(sortColumn + " " + sortOrder);
             }
             else if (!string.IsNullOrEmpty(attri.SortColumn) && !string.IsNullOrEmpty(attri.SortOrder))
             {
-                query.OrderBy(attri.SortColumn.MakeSqlSafeName() + " " + attri.SortOrder);
+                query.OrderBy(attri.SortColumn + " " + attri.SortOrder);
             }
             else
             {
                 var primaryKeyColum = type.GetPrimaryKeyName();
-                query.OrderBy(primaryKeyColum.MakeSqlSafeName() + " asc");
+                query.OrderBy(primaryKeyColum + " asc");
             }
 
             var a2 = new QueryEventArgs(type, tableName, query,sortColumn,sortOrder,searchTerm);
@@ -290,8 +290,8 @@ namespace UIOmatic.Services
             var db = GetDb(attri.ConnectionStringName);
             
             var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})", 
-                tableName.MakeSqlSafeName(), 
-                primaryKeyColum.MakeSqlSafeName(),
+                tableName, 
+                primaryKeyColum,
                 ids.Select(x => "'" + x + "'").ToArray());
 
             db.Execute(sql);
@@ -312,16 +312,16 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
 
-            var query = new Sql().Select("*").From(tableName.MakeSqlSafeName());
+            var query = new Sql().Select("*").From(tableName);
 
             if (!filterColumn.IsNullOrWhiteSpace())
             {
-                query.Append("WHERE" + filterColumn.MakeSqlSafeName() + " = @0", filterValue);
+                query.Append("WHERE" + filterColumn + " = @0", filterValue);
             }
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
-                query.OrderBy(sortColumn.MakeSqlSafeName() + " " + sortOrder);
+                query.OrderBy(sortColumn + " " + sortOrder);
             }
 
             return db.Fetch(type, query);
