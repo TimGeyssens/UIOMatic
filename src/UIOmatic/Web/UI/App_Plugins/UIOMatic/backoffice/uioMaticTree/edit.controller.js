@@ -170,11 +170,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 
 	}).filter("removeProperty", function () {
-	    return function (input, nameProperty) {
-	        if (nameProperty == null || nameProperty.Key == null || nameProperty.Key == "" || input == null)
+	    return function (input, namePropertyKey) {
+	        if (namePropertyKey == null || namePropertyKey == "" || input == null)
 	            return input;
 	        return input.filter(function (property) {
-	            return property.Key != nameProperty.Key;
+	            return property.Key != namePropertyKey;
 	        });
 	    }
 	});;
