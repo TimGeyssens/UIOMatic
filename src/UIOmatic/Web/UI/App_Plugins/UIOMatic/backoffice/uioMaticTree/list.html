@@ -47,7 +47,7 @@
                             <tr>
                                 <td style="width:35px" ng-hide="readOnly"></td>
                                 <td ng-repeat="prop in properties">
-                                    <a href="" class="sortable" ng-click="order(prop.Key)">{{unCamelCase(prop.Name)}}</a>
+                                    <a href="" class="sortable" ng-click="order(prop.Key)">{{prop.Name}}</a>
                                     <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.Key"></i>
                                 </td>
                             </tr>
@@ -59,7 +59,7 @@
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
                                 </td>
                                 <td ng-repeat="prop in properties">
-                                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {Value:row[prop.Key]}">
+                                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {Value:row[prop.Key]}"><!-- Fake property object so we can reuse views -->
                                         <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true">
                                             <span ng-include="prop.View"></span>
                                         </a>

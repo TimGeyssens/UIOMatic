@@ -27,7 +27,7 @@
 	    $scope.parseTemplate = function (object) {
 	        var template = $parse($scope.model.config.objectTemplate);
 	        return template(object);
-
+            2
 	    }
 	    function getFullDetails()
 	    {

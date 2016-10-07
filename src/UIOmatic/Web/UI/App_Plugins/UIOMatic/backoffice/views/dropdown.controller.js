@@ -1,7 +1,5 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.Dropdown",
     function ($scope, uioMaticObjectResource, $parse) {
-        //example config
-        //{'typeName': 'Example.Models.Person, Example', 'valueColumn': 'Id', 'sortColumn': 'FirstName', 'textTemplate' : 'FirstName + \" \"+ LastName '}
 
         function init() {
             uioMaticObjectResource.getAll($scope.property.Config.typeAlias, $scope.property.Config.sortColumn, "asc").then(function (response) {

@@ -9,8 +9,8 @@
 	    });
 
 	    function getProperties() {
-	        $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetAllProperties?typeAlias=" + $scope.typeAlias).then(function (response) {
-	            $scope.properties = response.data;
+	        $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetTypeInfo?typeAlias=" + $scope.typeAlias + "&includePropertyInfo=true").then(function (response) {
+	            $scope.properties = response.data.Properties;
 	        });
 	    }
 
