@@ -8,18 +8,42 @@ namespace UIOmatic.Extensions
 {
     internal static class TypeExtensions
     {
-        public static string GetTableName(this Type type, bool wrapInSquareBrackets = false)
+        public static string GetTableName(this Type type)
         {
             var attr = type.GetCustomAttribute<TableNameAttribute>(false);
             var name = attr != null ? attr.Value.Trim('[',']') : type.Name;
-            return wrapInSquareBrackets ? "[" + name + "]" : name;
+            return name;
         }
 
-        public static string GetPrimaryKeyName(this Type type, bool wrapInSquareBrackets = false)
+        public static string GetPrimaryKeyName(this Type type)
         {
             var attr = type.GetCustomAttribute<PrimaryKeyAttribute>(true);
-            var name = attr != null ? attr.Value.Trim('[', ']') : "Id";
-            return wrapInSquareBrackets ? "[" + name + "]" : name;
+            if (attr != null)
+                return attr.Value.Trim('[', ']');
+
+            var attr2 = type.GetPrimaryKeyColumn();
+            if (attr2 != null)
+                return attr2.Name.Trim('[', ']');
+            
+            return "Id";
+        }
+
+        public static bool AutoIncrementPrimaryKey(this Type type)
+        {
+            var attr = type.GetCustomAttribute<PrimaryKeyAttribute>(true);
+            if (attr != null)
+                return attr.autoIncrement;
+            
+            var attr2 = type.GetPrimaryKeyColumn();
+            return attr2 != null && attr2.AutoIncrement;
+        }
+
+        public static PrimaryKeyColumnAttribute GetPrimaryKeyColumn(this Type type)
+        {
+            return type
+                .GetProperties()
+                .Select(x => x.GetCustomAttribute<PrimaryKeyColumnAttribute>())
+                .FirstOrDefault(x => x != null);
         }
 
         public static string GetPrimaryKeyPropertyName(this Type type, string defaultName = "Id")

@@ -88,7 +88,7 @@ namespace UIOmatic.Web.Controllers
         public string[] DeleteByIds(string typeAlias, string ids)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.DeleteByIds(t, ids);
+            return _service.DeleteByIds(t, ids.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries));
         }
 
         [HttpPost]

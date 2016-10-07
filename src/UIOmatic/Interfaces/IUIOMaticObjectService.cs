@@ -26,7 +26,7 @@ namespace UIOMatic.Interfaces
 
         object Update(Type type, IDictionary<string, object> values);
 
-        string[] DeleteByIds(Type type, string ids);
+        string[] DeleteByIds(Type type, string[] ids);
 
         IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values);
     }
