@@ -27,10 +27,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            : -1;
 
 	        var tabsArr = [];
-	        angular.forEach(response.data, function (value, key) {
+	        angular.forEach($scope.properties, function (value, key) {
 	            if (this.map(function (e) { return e.label; }).indexOf(value.Tab) == -1) {
 	                if (value.Tab == "") {
-	                    this.push({ id: 99, label: "Misc" });
+	                    this.push({ id: 99, label: "General" });
 	                } else {
 	                    this.push({ id: key, label: value.Tab });
 	                }

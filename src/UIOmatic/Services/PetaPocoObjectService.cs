@@ -158,7 +158,7 @@ namespace UIOmatic.Services
                             {
                                 Key = prop.Name,
                                 Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
-                                Tab = attri2.Tab.IsNullOrWhiteSpace() ? "Misc" : attri2.Tab,
+                                Tab = attri2.Tab.IsNullOrWhiteSpace() ? "General" : attri2.Tab,
                                 Description = attri2.Description,
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString(),

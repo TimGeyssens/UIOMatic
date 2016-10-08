@@ -14,7 +14,7 @@ namespace UIOMatic.Models
 
         public UIOMaticEditablePropertyInfo()
         {
-            Tab = "Misc";
+            Tab = "General";
         }
     }
 
