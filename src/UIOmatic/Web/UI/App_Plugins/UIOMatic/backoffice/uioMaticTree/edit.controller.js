@@ -154,7 +154,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    for (var prop in $scope.properties) {
 	                        if ($scope.properties[prop].Key == theKey) {
 	                            if ($scope.properties[prop].Type == "System.DateTime") {
-	                                var date = moment($scope.object[theKey]).format("YYYY-MM-DD HH:mm:ss");
+	                                var date = moment($scope.object[theKey]).add(new Date().getTimezoneOffset(), "minutes").format("YYYY-MM-DD HH:mm:ss");
 	                                $scope.properties[prop].Value = date;
 	                            } else {
 	                                $scope.properties[prop].Value = $scope.object[theKey];
