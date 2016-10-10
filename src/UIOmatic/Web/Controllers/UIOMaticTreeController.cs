@@ -28,7 +28,7 @@ namespace UIOmatic.Web.Controllers
         protected override TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
             var nodes = new TreeNodeCollection();
-            var types = Helper.GetUIOMaticFolderTypes().OrderBy(x=> x.Name);
+            var types = Helper.GetUIOMaticFolderTypes().OrderBy(x=> x.GetCustomAttribute<UIOMaticFolderAttribute>(false).Order);
             
             foreach (var type in types)
             {
