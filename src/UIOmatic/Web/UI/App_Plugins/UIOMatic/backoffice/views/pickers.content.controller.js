@@ -6,7 +6,7 @@
                 $scope.setting = {};
             }
 
-            var val = parseInt($scope.property.Value);
+            var val = parseInt($scope.property.value);
 
             if (!isNaN(val) && angular.isNumber(val)) {
                 $scope.showQuery = false;
@@ -29,7 +29,7 @@
             $scope.clear = function () {
                 $scope.id = undefined;
                 $scope.node = undefined;
-                $scope.property.Value = undefined;
+                $scope.property.value = undefined;
             };
 
             function populate(item) {
@@ -37,13 +37,13 @@
                 item.icon = iconHelper.convertFromLegacyIcon(item.icon);
                 $scope.node = item;
                 $scope.id = item.id;
-                $scope.property.Value = item.id;
+                $scope.property.value = item.id;
             }
         };
 
         init();
 
-        $scope.$on('ValuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function (event, data) {
             init();
         });
     });

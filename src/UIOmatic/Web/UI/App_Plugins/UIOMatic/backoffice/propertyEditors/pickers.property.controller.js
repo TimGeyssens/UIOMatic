@@ -3,8 +3,6 @@
 
 	    $scope.current = editorState.current;
 
-	    console.log($scope.current.preValues);
-
 	    var typeAliasPreValue = _.where($scope.current.preValues, { key: "typeAlias" })[0];
 	    if (typeAliasPreValue) {
 	        $scope.typeAlias = typeAliasPreValue.value;
@@ -17,7 +15,7 @@
 	    function getProperties() {
 	        if ($scope.typeAlias) {
 	            $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetTypeInfo?typeAlias=" + $scope.typeAlias + "&includePropertyInfo=true").then(function(response) {
-	                $scope.properties = response.data.RawProperties;
+	                $scope.properties = response.data.rawProperties;
 	            });
 	        }
 	    }

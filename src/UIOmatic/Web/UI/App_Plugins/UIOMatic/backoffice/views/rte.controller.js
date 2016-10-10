@@ -15,14 +15,14 @@ app.controller("UIOMatic.Views.RTE", function ($scope, $http, $routeParams) {
                     dimensions: { height: 400, width: '100%' }
                 }
             },
-            value: rowProps.Value
+            value: rowProps.value
         };
 
         $scope.$watch('property', function () {
             if ($scope.property != undefined) {
-                var result = $.grep($scope.properties, function (e) { return e.Key === rowProps.Key; });
+                var result = $.grep($scope.properties, function (e) { return e.key === rowProps.key; });
                 if (result != null && result.length > 0) {
-                    result[0].Value = $scope.property.value;
+                    result[0].value = $scope.property.value;
                 }
             }
         }, true);
@@ -30,7 +30,7 @@ app.controller("UIOMatic.Views.RTE", function ($scope, $http, $routeParams) {
 
     init();
 
-    $scope.$on('ValuesLoaded', function (event, data) {
+    $scope.$on('valuesLoaded', function (event, data) {
         init();
     });
 });

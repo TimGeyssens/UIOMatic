@@ -17,18 +17,18 @@
 
         function fetchData() {
             uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.initialFetch ? "" : $scope.predicate, $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"), $scope.searchTerm).then(function (resp) {
-                $scope.rows = resp.data.Items;
-                $scope.totalPages = resp.data.TotalPages;
+                $scope.rows = resp.data.items;
+                $scope.totalPages = resp.data.totalPages;
             });
         }
 
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
             //.replace(' ', '_') nasty hack to allow columns with a space
-            $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
-            $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
-            $scope.properties = response.data.ListViewProperties;
-            $scope.nameField = response.data.NameFieldKey.replace(' ', '_');
-            $scope.readOnly = response.data.ReadOnly;
+            $scope.primaryKeyColumnName = response.data.primaryKeyColumnName.replace(' ', '_');
+            $scope.predicate = response.data.primaryKeyColumnName.replace(' ', '_');
+            $scope.properties = response.data.listViewProperties;
+            $scope.nameField = response.data.nameFieldKey.replace(' ', '_');
+            $scope.readOnly = response.data.readOnly;
             fetchData();
         });
 
@@ -106,9 +106,9 @@
 
         $scope.isColumnLinkable = function (prop, index) {
             if ($scope.nameField.length > 0) {
-                return prop.Key == $scope.nameField;
+                return prop.key == $scope.nameField;
             } else {
-                return index == 0 || (index == 1 && prop.Key == $scope.primaryKeyColumnName);
+                return index == 0 || (index == 1 && prop.key == $scope.primaryKeyColumnName);
             }
         }
 

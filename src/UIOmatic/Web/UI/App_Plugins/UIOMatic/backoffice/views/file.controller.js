@@ -6,7 +6,7 @@ angular.module("umbraco").controller("UIOMatic.Views.File",
 	    };
 
 	    function populateFile(item) {
-            $scope.property.Value = item.image;
+            $scope.property.value = item.image;
 	    }
 
         $scope.isPicture = function(path) {

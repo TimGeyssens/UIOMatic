@@ -9,7 +9,7 @@
 
         init();
 
-        $scope.$on('ValuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function (event, data) {
             init();
         });
 

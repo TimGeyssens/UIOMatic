@@ -2,24 +2,24 @@
     function ($scope, uioMaticObjectResource,$parse) {
 
         function init() {
-            uioMaticObjectResource.getAll($scope.property.Config.typeAlias, $scope.property.Config.sortColumn, "asc").then(function (response) {
+            uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
                 $scope.objects = response.data;
             });
         }
 
         init();
 
-        $scope.$on('ValuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function (event, data) {
             init();
         });
 
         $scope.setValue = function (val) {
 
-            $scope.property.Value = val;
+            $scope.property.value = val;
         }
 
         $scope.parseTemplate = function (object) {
-            var template = $parse($scope.property.Config.textTemplate);
+            var template = $parse($scope.property.config.textTemplate);
             return template(object);
         }
     });

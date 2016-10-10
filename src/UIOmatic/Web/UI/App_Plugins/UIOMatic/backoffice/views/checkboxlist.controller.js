@@ -2,15 +2,15 @@
     function ($scope, uioMaticObjectResource, $parse) {
 
         $scope.delimiter = ",";
-        if ($scope.property.Config.delimiter)
-            $scope.delimiter = $scope.property.Config.delimiter;
+        if ($scope.property.config.delimiter)
+            $scope.delimiter = $scope.property.config.delimiter;
 
         function init() {
-            uioMaticObjectResource.getAll($scope.property.Config.typeAlias, $scope.property.Config.sortColumn, "asc").then(function (response) {
+            uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
                 $scope.objects = response.data;
 
                 angular.forEach($scope.objects, function (object) {
-                    if ($scope.property.Value && _.indexOf($scope.property.Value.toString().split($scope.delimiter), object[$scope.property.Config.valueColumn].toString()) > -1)
+                    if ($scope.property.value && _.indexOf($scope.property.value.toString().split($scope.delimiter), object[$scope.property.config.valueColumn].toString()) > -1)
                         object.selected = true;
                     else
                         object.selected = false;
@@ -21,7 +21,7 @@
 
         init();
 
-        $scope.$on('ValuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function (event, data) {
             init();
         });
 
@@ -29,14 +29,14 @@
             var val = [];
             angular.forEach($scope.objects, function (object) {
                 if (object.selected)
-                    val.push(object[$scope.property.Config.valueColumn]);
+                    val.push(object[$scope.property.config.valueColumn]);
             });
 
-            $scope.property.Value = val.join($scope.delimiter);
+            $scope.property.value = val.join($scope.delimiter);
         }
 
         $scope.parseTemplate = function (object) {
-            var template = $parse($scope.property.Config.textTemplate);
+            var template = $parse($scope.property.config.textTemplate);
             return template(object);
         }
     });

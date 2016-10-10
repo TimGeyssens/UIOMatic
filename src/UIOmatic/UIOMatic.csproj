@@ -387,6 +387,11 @@ IF NOT "$(SolutionDir)" == "*Undefined*" (
 xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
 xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
 xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2"
+
+xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
+xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
+xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website"
+
 )
 )</PostBuildEvent>
   </PropertyGroup>

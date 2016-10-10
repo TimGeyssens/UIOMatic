@@ -20,19 +20,19 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
 	        $scope.type = response.data;
-	        $scope.readOnly = response.data.ReadOnly;
-	        $scope.properties = response.data.EditableProperties;
-	        $scope.type.NameFieldIndex = $scope.type.NameFieldKey.length > 0
-                ? _.indexOf(_.pluck($scope.properties, "Key"), $scope.type.NameFieldKey)
+	        $scope.readOnly = response.data.readOnly;
+	        $scope.properties = response.data.editableProperties;
+	        $scope.type.nameFieldIndex = $scope.type.nameFieldKey.length > 0
+                ? _.indexOf(_.pluck($scope.properties, "key"), $scope.type.nameFieldKey)
 	            : -1;
 
 	        var tabsArr = [];
 	        angular.forEach($scope.properties, function (value, key) {
-	            if (this.map(function (e) { return e.label; }).indexOf(value.Tab) == -1) {
-	                if (value.Tab == "") {
+	            if (this.map(function (e) { return e.label; }).indexOf(value.tab) == -1) {
+	                if (value.tab == "") {
 	                    this.push({ id: 99, label: "General" });
 	                } else {
-	                    this.push({ id: key, label: value.Tab });
+	                    this.push({ id: key, label: value.tab });
 	                }
 	            }
 	        }, tabsArr);
@@ -48,7 +48,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.object = response.data;
 	                $scope.loaded = true;
 	                setValues();
-	                $scope.$broadcast('ValuesLoaded');
+	                $scope.$broadcast('valuesLoaded');
 	            });
 	        }
 	        else
@@ -58,7 +58,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.loaded = true;
 	                $scope.editing = true;
 	                setValues();
-	                $scope.$broadcast('ValuesLoaded');
+	                $scope.$broadcast('valuesLoaded');
 	            });
 	        }
 	    });
@@ -69,8 +69,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        if ($isId <= 0) {
 
 	            angular.forEach($scope.properties, function (property) {
-	                var key = property.Key;
-	                var value = property.Value;
+	                var key = property.key;
+	                var value = property.value;
 	                $scope.object[key] = value;
 
 	            });
@@ -97,8 +97,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        } else {
 
 	            angular.forEach($scope.properties, function (property) {
-	                var key = property.Key;
-	                var value = property.Value;
+	                var key = property.key;
+	                var value = property.value;
 	                $scope.object[key] = value;
 
 	            });
@@ -149,15 +149,16 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	            if ($scope.object.hasOwnProperty(theKey)) {
 
-	                if (_.where($scope.properties, { Key: theKey }).length > 0) {
+	                if (_.where($scope.properties, { key: theKey }).length > 0) {
 
 	                    for (var prop in $scope.properties) {
-	                        if ($scope.properties[prop].Key == theKey) {
-	                            if ($scope.properties[prop].Type == "System.DateTime") {
+	                        if ($scope.properties[prop].key == theKey) {
+	                            if ($scope.properties[prop].type == "System.DateTime") {
 	                                var date = moment($scope.object[theKey]).add(new Date().getTimezoneOffset(), "minutes").format("YYYY-MM-DD HH:mm:ss");
-	                                $scope.properties[prop].Value = date;
+	                                var date = moment($scope.object[theKey]).format("YYYY-MM-DD HH:mm:ss");
+	                                $scope.properties[prop].value = date;
 	                            } else {
-	                                $scope.properties[prop].Value = $scope.object[theKey];
+	                                $scope.properties[prop].value = $scope.object[theKey];
 	                            }
 	                        }
 	                    }
@@ -174,7 +175,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        if (namePropertyKey == null || namePropertyKey == "" || input == null)
 	            return input;
 	        return input.filter(function (property) {
-	            return property.Key != namePropertyKey;
+	            return property.key != namePropertyKey;
 	        });
 	    }
 	});;

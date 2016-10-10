@@ -5,24 +5,24 @@
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
 
-        $scope.canEdit = $scope.property.Config.canEdit != undefined ? $scope.property.Config.canEdit : true;
+        $scope.canEdit = $scope.property.config.canEdit != undefined ? $scope.property.config.canEdit : true;
 
 
         function fetchData() {
-            uioMaticObjectResource.getFiltered($scope.property.Config.typeAlias, $scope.property.Config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
+            uioMaticObjectResource.getFiltered($scope.property.config.typeAlias, $scope.property.config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
                 $scope.rows = response.data;
             });
         }
         function init() {
             
-            $scope.typeAlias = $scope.property.Config.typeAlias;
+            $scope.typeAlias = $scope.property.config.typeAlias;
 
             uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
                 //.replace(' ', '_') nasty hack to allow columns with a space
-                $scope.primaryKeyColumnName = response.data.PrimaryKeyColumnName.replace(' ', '_');
-                $scope.predicate = response.data.PrimaryKeyColumnName.replace(' ', '_');
-                $scope.properties = response.data.ListViewproperties;
-                $scope.nameField = response.data.NameFieldKey.replace(' ', '_');
+                $scope.primaryKeyColumnName = response.data.primaryKeyColumnName.replace(' ', '_');
+                $scope.predicate = response.data.primaryKeyColumnName.replace(' ', '_');
+                $scope.properties = response.data.listViewproperties;
+                $scope.nameField = response.data.nameFieldKey.replace(' ', '_');
 
                 if ($routeParams.id.split("?").length == 2)
                     fetchData();
@@ -34,7 +34,7 @@
 
         init();
 
-        $scope.$on('ValuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function (event, data) {
             init();
         });
 

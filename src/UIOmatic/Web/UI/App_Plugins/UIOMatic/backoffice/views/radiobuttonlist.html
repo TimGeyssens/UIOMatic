@@ -4,9 +4,9 @@
     <div ng-repeat="object in objects">
         <label>
             <input type="radio"
-                   ng-model="property.Value"
-                   name="{{property.Key}}"
-                   value="{{object[property.Config.valueColumn]}}"> {{parseTemplate(object)}}
+                   ng-model="property.value"
+                   name="{{property.key}}"
+                   value="{{object[property.config.valueColumn]}}"> {{parseTemplate(object)}}
         </label>
     </div>
 </div>

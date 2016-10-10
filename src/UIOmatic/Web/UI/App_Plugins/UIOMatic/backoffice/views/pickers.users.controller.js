@@ -12,7 +12,7 @@
                     $scope.users2 = [];
 
 
-                    var ids = $scope.property.Value.split(",");
+                    var ids = $scope.property.value.split(",");
 
                     angular.forEach(ids, function (value) {
 
@@ -65,7 +65,7 @@
                         index = $scope.userIds.indexOf(value.Id);
                         $scope.userIds.splice(index, 1);
                         
-                        $scope.property.Value = $scope.userIds.join();
+                        $scope.property.value = $scope.userIds.join();
                     }
 
                 });
@@ -82,14 +82,14 @@
 
                         $scope.userIds.push(value.Id);
 
-                        $scope.property.Value = $scope.userIds.join();
+                        $scope.property.value = $scope.userIds.join();
                     }
 
                 });
             }
 
 
-            $scope.$on('ValuesLoaded', function () {
+            $scope.$on('valuesLoaded', function () {
                
                 init();
             });

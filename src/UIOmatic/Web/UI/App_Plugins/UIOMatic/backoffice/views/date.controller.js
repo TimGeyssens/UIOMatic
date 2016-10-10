@@ -23,7 +23,7 @@
 	            // when a date is changed, update the model
 	            if (e.date) {
 	               
-	                    $scope.property.Value = e.date.format("YYYY-MM-DD");
+	                    $scope.property.value = e.date.format("YYYY-MM-DD");
 	                
 	            }
 
