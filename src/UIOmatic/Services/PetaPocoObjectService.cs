@@ -380,6 +380,7 @@ namespace UIOmatic.Services
             return ((IUIOMaticModel)obj).Validate();
         }
 
+        //TODO: Merge this in with get paged as it now supports filtering
         public IEnumerable<object> GetFiltered(Type type, string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();

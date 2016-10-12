@@ -49,6 +49,8 @@ namespace UIOmatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
+            // Need a better approache than this as this is hacky and horrible
+            // Probably want to switch to a HttpPost method and just pass a json body instead
             var filtersDict = (filters ?? "").Split('|')
                 .InGroupsOf(2) 
                 .ToDictionary(x => x.First(), x => x.Last())
