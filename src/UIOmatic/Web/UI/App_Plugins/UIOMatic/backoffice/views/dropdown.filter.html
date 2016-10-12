@@ -1,0 +1,10 @@
+﻿<div ng-controller="UIOMatic.Views.DropdownFilter">
+    <select ng-model="property.value">
+        <option value="">-- {{property.name}} --</option>
+        <option ng-selected="{{object.key == property.value}}"
+                ng-repeat="object in objects"
+                value="{{object.key}}">
+            {{object.value}}
+        </option>
+    </select><br>
+</div>

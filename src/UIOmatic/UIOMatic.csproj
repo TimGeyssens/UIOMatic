@@ -333,6 +333,8 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\date.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\datetime.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\datetime.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.filter.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.filter.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\file.controller.js" />

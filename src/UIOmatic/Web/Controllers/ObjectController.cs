@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using UIOmatic.Services;
 using UIOmatic.Web.PostModels;
 using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
+using Umbraco.Core;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
@@ -29,6 +31,13 @@ namespace UIOmatic.Web.Controllers
         }
 
         [HttpGet]
+        public IEnumerable<object> GetFilterLookup(string typeAlias, string keyPropertyName, string valuePropertyName)
+        {
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetFilterLookup(t, keyPropertyName, valuePropertyName); 
+        }
+
+        [HttpGet]
         public IEnumerable<object> GetFiltered(string typeAlias, string filterColumn, string filterValue, string sortColumn, string sortOrder)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
@@ -36,10 +45,17 @@ namespace UIOmatic.Web.Controllers
         }
 
         [HttpGet]
-        public UIOMaticPagedResult GetPaged(string typeAlias, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
+        public UIOMaticPagedResult GetPaged(string typeAlias, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, searchTerm);
+
+            var filtersDict = (filters ?? "").Split('|')
+                .InGroupsOf(2) 
+                .ToDictionary(x => x.First(), x => x.Last())
+                .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
+                .ToDictionary(x => x.Key, x => x.Value);
+             
+            return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
 
         [HttpGet]

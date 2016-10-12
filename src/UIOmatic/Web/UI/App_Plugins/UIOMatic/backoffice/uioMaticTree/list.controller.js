@@ -11,12 +11,18 @@
         
         $scope.reverse = false;
 
-        $scope.searchTerm = "";
+        $scope.filtersStr = "";
+        $scope.searchTerm = ""; 
 
         $scope.initialFetch = true;
 
         function fetchData() {
-            uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.initialFetch ? "" : $scope.predicate, $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"), $scope.searchTerm).then(function (resp) {
+            uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage,
+                $scope.initialFetch ? "" : $scope.predicate,
+                $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
+                $scope.initialFetch ? "" : $scope.filtersStr,
+                $scope.searchTerm).then(function (resp) {
+                $scope.initialFetch = false;
                 $scope.rows = resp.data.items;
                 $scope.totalPages = resp.data.totalPages;
             });
@@ -29,6 +35,13 @@
             $scope.properties = response.data.listViewProperties;
             $scope.nameField = response.data.nameFieldKey.replace(' ', '_');
             $scope.readOnly = response.data.readOnly;
+
+            // Pass extra meta data into filter properties
+            $scope.filterProperties = response.data.listViewFilterProperties.map(function (itm) {
+                itm.typeAlias = $scope.typeAlias;
+                return itm;
+            });
+
             fetchData();
         });
 
@@ -37,7 +50,6 @@
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
             $scope.currentPage = 1;
-            $scope.initialFetch = false;
             fetchData();
         };
 
@@ -122,4 +134,20 @@
                 // uppercase the first character
                 .replace(/^./, function(str){ return str.toUpperCase(); })
         }
+
+        $scope.$watch("filterProperties", function() {
+
+            if (!$scope.filterProperties)
+                return;
+
+            var str = $scope.filterProperties.map(function (itm) {
+                return itm.keyColumnName + "|" + (itm.value !== undefined ? itm.value : "");
+            }).join("|");
+
+            if (str != $scope.filtersStr) {
+                $scope.filtersStr = str;
+                fetchData();
+            }
+
+        }, true);
     });

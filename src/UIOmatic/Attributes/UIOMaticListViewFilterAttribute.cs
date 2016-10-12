@@ -7,13 +7,15 @@ namespace UIOMatic.Attributes
     {
         public string Name { get; set; }
 
+        public string KeyField { get; set; }
+
         public string View { get; set; }
 
         public string Config { get; set; }
 
         public UIOMaticListViewFilterAttribute()
         {
-            View = "dropdown";
+            View = "dropdown.filter";
         }
 
         public string GetView()

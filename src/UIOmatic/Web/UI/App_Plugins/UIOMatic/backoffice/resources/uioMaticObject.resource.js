@@ -8,6 +8,13 @@
 	                sortOrder = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeAlias=" + type + "&sortColumn=" + sortColumn + "&sortOrder="+sortOrder);
 	        },
+	        getFilterLookup: function (type, keyPropertyName, valuePropertyName) {
+	            if (keyPropertyName == undefined)
+	                keyPropertyName = "";
+	            if (valuePropertyName == undefined)
+	                valuePropertyName = "";
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFilterLookup?typeAlias=" + type + "&keyPropertyName=" + keyPropertyName + "&valuePropertyName=" + valuePropertyName);
+	        },
 	        getFiltered: function (type, filterColumn, filterValue, sortColumn, sortOrder) {
 	            if (sortColumn == undefined)
 	                sortColumn = "";
@@ -15,12 +22,14 @@
 	                sortOrder = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFiltered?typeAlias=" + type + "&filterColumn=" + filterColumn + "&filterValue=" + filterValue + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder);
 	        },
-	        getPaged: function(type, itemsPerPage, pageNumber, sortColumn, sortOrder,searchTerm) {
+	        getPaged: function(type, itemsPerPage, pageNumber, sortColumn, sortOrder, filters, searchTerm) {
 	            if (sortColumn == undefined)
 	                sortColumn = "";
 	            if (sortOrder == undefined)
 	                sortOrder = "";
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeAlias=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&searchTerm=" + searchTerm);
+	            if (filters == undefined)
+	                filters = "";
+	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeAlias=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + searchTerm);
 	        },
 	        getAllProperties: function (type) {
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeAlias=" + type);

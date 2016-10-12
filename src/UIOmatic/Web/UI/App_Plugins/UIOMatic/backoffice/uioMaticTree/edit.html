@@ -33,7 +33,7 @@
                 {{properties | json}}
                 <h1>Object</h1>
                 {{ object | json }}-->
-                <umb-tab ng-repeat="tab in content.tabs | filter:content.tabs != null" id="tab{{tab.id}}" rel="{{tab.label}}">
+                <umb-tab ng-repeat="tab in content.tabs | filter:tab != null" id="tab{{tab.id}}" rel="{{tab.label}}">
                     <div class="umb-pane">
                         <umb-control-group ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: tab.label}" label="{{property.name}}" description="{{property.description}}">
                             <div ng-include="property.view"></div>

@@ -57,7 +57,9 @@ namespace UIOmatic.Extensions
 
         public static object GetPropertyValue(this Type type, string propertyName, object instance)
         {
-            return type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).GetValue(instance, null);
+            var propertyInfo = type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+
+            return propertyInfo != null ? propertyInfo.GetValue(instance, null) : null; 
         }
 
         public static void SetPropertyValue(this Type type, string propertyName, object value, object instance)

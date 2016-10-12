@@ -37,8 +37,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            }
 	        }, tabsArr);
 
-	        if (tabsArr.length > 1 && tabsArr[0].id != 99) {
+	        if (tabsArr.length > 1) {
 	            $scope.content = { tabs: tabsArr };
+	            console.log($scope.content);
 	        }
 
 

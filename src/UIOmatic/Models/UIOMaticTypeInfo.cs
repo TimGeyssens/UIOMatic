@@ -32,6 +32,9 @@ namespace UIOMatic.Models
         [JsonProperty("listViewProperties")]
         public UIOMaticViewablePropertyInfo[] ListViewProperties { get; set; }
 
+        [JsonProperty("listViewFilterProperties")]
+        public UIOMaticFilterPropertyInfo[] ListViewFilterProperties { get; set; }
+
         [JsonProperty("nameFieldKey")]
         public string NameFieldKey { get; set; }
 

@@ -10,9 +10,11 @@ namespace UIOMatic.Interfaces
 
         IEnumerable<object> GetFiltered(Type type, string filterColumn, string filterValue, string sortColumn, string sortOrder);
 
-        UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm);
+        UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm);
 
         IEnumerable<string> GetAllColumns(Type type);
+
+        IEnumerable<object> GetFilterLookup(Type type, string keyPropertyName, string valuePropertyName);
 
         UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties = false);
 

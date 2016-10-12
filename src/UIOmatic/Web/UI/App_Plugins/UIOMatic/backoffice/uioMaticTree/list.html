@@ -33,6 +33,14 @@
                             </a>
                         </div>
 
+                        <div class="btn-group" ng-if="filterProperties" style="line-height: 28px; border-left: 1px solid #ccc; font-size: 14px; font-weight: bold; margin-left: 10px; padding-left: 10px;">
+                            Filter by: 
+                        </div>
+
+                        <div class="btn-group" ng-repeat="property in filterProperties">
+                            <span ng-include="property.view"></span>
+                        </div>
+
                         <form class="form-search pull-right ng-pristine ng-valid" novalidate="">
                             <div class="inner-addon left-addon">
                                 <i class="icon icon-search"></i>

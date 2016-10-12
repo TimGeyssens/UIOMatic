@@ -13,7 +13,14 @@ namespace UIOmatic.Extensions
             var method = typeof(Database).GetGenericMethod("Fetch", new [] { type }, new [] { typeof(Sql) }); 
             var generic = method.MakeGenericMethod(type);
             return (IEnumerable<object>)generic.Invoke(db, new object[] { query }); 
-        } 
+        }
+
+        public static IEnumerable<object> Query(this Database db, Type type, Sql query)
+        {
+            var method = typeof(Database).GetGenericMethod("Query", new[] { type }, new[] { typeof(Sql) });
+            var generic = method.MakeGenericMethod(type);
+            return (IEnumerable<object>)generic.Invoke(db, new object[] { query });
+        }
 
         public static Page<object> Page(this Database db, Type type, long page, long itemsPerPage, Sql query)
         {

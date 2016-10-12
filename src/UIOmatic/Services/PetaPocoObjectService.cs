@@ -25,22 +25,34 @@ namespace UIOmatic.Services
                 : ApplicationContext.Current.DatabaseContext.Database;
         }
 
-        public IEnumerable<object> GetAll(Type type, string sortColumn, string sortOrder)
+        public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
         {
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
 
             var typeInfo = GetTypeInfo(type);
             var query = new Sql().Select("*").From(typeInfo.TableName);
+            
+            var a1 = new QueryEventArgs(type, typeInfo.TableName, query, sortColumn, sortOrder, "");
+            UIOMaticObjectService.OnBuildingQuery(this, a1);
+            query = a1.Query;
+
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
                 query.OrderBy(sortColumn + " " + sortOrder);
             }
-            
+
+            var a2 = new QueryEventArgs(type, typeInfo.TableName, query, sortColumn, sortOrder, "");
+            UIOMaticObjectService.OnBuiltQuery(this, a2);
+            query = a2.Query;
+
             return db.Fetch(type, query);
         }
 
-        public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string searchTerm)
+        public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, 
+            string sortColumn = "", string sortOrder = "",
+            IDictionary<string, string> filters = null,
+            string searchTerm = "")
         {
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
@@ -52,29 +64,39 @@ namespace UIOmatic.Services
             UIOMaticObjectService.OnBuildingQuery(this, a1);
             query = a1.Query;
 
+            query.Append("WHERE 1=1");
+
             // Filter by search term
             if (!string.IsNullOrEmpty(searchTerm))
             {
+                query.Append("AND (1=0");
+
                 var c = 0;
                 foreach (var property in type.GetProperties())
                 {
                     var attris = property.GetCustomAttributes();
                     if (!attris.Any(x=>x.GetType() == typeof(IgnoreAttribute))) 
                     {
-                        var before = "WHERE";
-                        if (c > 0)
-                            before = "OR";
-
                         var columnName = property.Name;
 
                         var columnAttri = attris.FirstOrDefault(x => x.GetType() == typeof(ColumnAttribute)) as ColumnAttribute;
                         if (columnAttri != null)
                             columnName = columnAttri.Name;
 
-                        query.Append(before + " " + columnName + " like @0", "%" + searchTerm + "%");
+                        query.Append("OR " + columnName + " like @0", "%" + searchTerm + "%");
                         c++;
 
                     }
+                }
+
+                query.Append(")");
+            }
+
+            if (filters != null && filters.Any()) 
+            {
+                foreach (var filter in filters)
+                {
+                    query.Append("AND " + filter.Key + " = @0", filter.Value);
                 }
             }
 
@@ -119,7 +141,32 @@ namespace UIOmatic.Services
                     yield return prop.GetColumnName();
                 }
             }
+        }
 
+        public IEnumerable<object> GetFilterLookup(Type type, string keyPropertyName, string valuePropertyName)
+        {
+            // Sorry Marc, I don't actually think this is the best way of doing this as we are fetching all objects
+            // and getting the distinct values in memory, which could be quite intensive, 
+            // but I can't think of another way right now.
+
+            var distinctData = new Dictionary<string, object>(); 
+            var data = GetAll(type, "", ""); 
+
+            foreach (var dataItem in data)
+            {
+                var keyPropValue = type.GetPropertyValue(keyPropertyName, dataItem);
+                if (keyPropValue != null && !distinctData.ContainsKey(keyPropValue.ToString()))
+                {
+                    distinctData.Add(keyPropValue.ToString(), dataItem);
+                }
+            }
+
+            var returnData = distinctData.Values.Select(x => new {
+                key = type.GetPropertyValue(keyPropertyName, x),
+                value = type.GetPropertyValue(valuePropertyName, x)
+            });
+
+            return returnData;
         }
 
         public UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties =  false)
@@ -131,10 +178,12 @@ namespace UIOmatic.Services
 
                 var editableProperties = new List<UIOMaticEditablePropertyInfo>();
                 var listViewProperties = new List<UIOMaticViewablePropertyInfo>();
+                var listViewFilterProperties = new List<UIOMaticFilterPropertyInfo>();
                 var rawProperties = new List<UIOMaticPropertyInfo>();
                 var nameFieldKey = "";
 
-                foreach (var prop in type.GetProperties())
+                var props = type.GetProperties().ToArray();
+                foreach (var prop in props)
                 {
                     var attris = prop.GetCustomAttributes();
 
@@ -158,6 +207,7 @@ namespace UIOmatic.Services
                             {
                                 Key = prop.Name,
                                 Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
+                                ColumnName = prop.GetColumnName(),
                                 Tab = attri2.Tab.IsNullOrWhiteSpace() ? "General" : attri2.Tab,
                                 Description = attri2.Description,
                                 View = IOHelper.ResolveUrl(view),
@@ -190,12 +240,36 @@ namespace UIOmatic.Services
                             {
                                 Key = prop.Name,
                                 Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
+                                ColumnName = prop.GetColumnName(),
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString(),
                                 Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config)
                             };
 
                             listViewProperties.Add(pi);
+                        }
+
+                        // Check for list view filter properties
+                        var attri4 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFilterAttribute)) as UIOMaticListViewFilterAttribute;
+                        if (attri4 != null)
+                        {
+                            var view = attri4.GetView();
+                            var keyProp = attri4.KeyField.IsNullOrWhiteSpace() ? prop : props.FirstOrDefault(x => x.Name == attri4.KeyField);
+
+                            // Handle custom views?
+                            var pi = new UIOMaticFilterPropertyInfo
+                            {
+                                Key = prop.Name,
+                                Name = attri4.Name.IsNullOrWhiteSpace() ? prop.Name : attri4.Name,
+                                ColumnName = prop.GetColumnName(),
+                                KeyPropertyName = keyProp.Name,
+                                KeyColumnName = keyProp.GetColumnName(),
+                                View = IOHelper.ResolveUrl(view),
+                                Type = prop.PropertyType.ToString(),
+                                Config = attri4.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri4.Config)
+                            };
+
+                            listViewFilterProperties.Add(pi);
                         }
 
                         // Raw properties
@@ -220,6 +294,7 @@ namespace UIOmatic.Services
                     ReadOnly = attri.ReadOnly,
                     EditableProperties = editableProperties.ToArray(),
                     ListViewProperties = listViewProperties.ToArray(),
+                    ListViewFilterProperties = listViewFilterProperties.ToArray(),
                     RawProperties = rawProperties.ToArray()
                 };
             });

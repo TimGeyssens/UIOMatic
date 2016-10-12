@@ -32,6 +32,21 @@ namespace UIOMatic.Models
         public JObject Config { get; set; }
     }
 
+    public class UIOMaticFilterPropertyInfo : UIOMaticPropertyInfo
+    {
+        [JsonProperty("keyPropertyName")]
+        public string KeyPropertyName { get; set; }
+
+        [JsonProperty("keyColumnName")]
+        public string KeyColumnName { get; set; }
+
+        [JsonProperty("view")]
+        public string View { get; set; }
+
+        [JsonProperty("config")]
+        public JObject Config { get; set; }
+    }
+
     public class UIOMaticPropertyInfo
     {
         [JsonProperty("key")]
@@ -39,6 +54,9 @@ namespace UIOMatic.Models
 
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonProperty("columnName")]
+        public string ColumnName { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
