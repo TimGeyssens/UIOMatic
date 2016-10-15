@@ -50,7 +50,7 @@
 
                 <div class="umb-tab-buttons" detect-fold>
                     <div class="btn-group" ng-show="type.renderType == 1">
-                        <a class="btn" href="#{{returnUrl}}">
+                        <a class="btn" ng-click="navigate(returnUrl)">
                             <localize key="buttons_returnToList">Return to list</localize>
                         </a>
                     </div>

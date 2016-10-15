@@ -96,4 +96,9 @@
                 });
             }
         }
+
+        $scope.navigate = function (url) {
+            // Because some JS seems to be translating any links starting '#'
+            $location.url(url);
+        }
  });

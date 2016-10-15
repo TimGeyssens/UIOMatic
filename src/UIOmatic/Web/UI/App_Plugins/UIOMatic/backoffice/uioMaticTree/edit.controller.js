@@ -1,7 +1,7 @@
 ﻿var app = angular.module("umbraco");
 
 angular.module("umbraco").controller("uioMatic.ObjectEditController",
-	function ($scope, $routeParams, uioMaticObjectResource, notificationsService, navigationService) {
+	function ($scope, $routeParams, $location, uioMaticObjectResource, notificationsService, navigationService) {
 
 	    $scope.loaded = false;
 	    $scope.editing = false;
@@ -132,6 +132,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        });
 
 	    };
+
+	    $scope.navigate = function (url) {
+            // Because some JS seems to be translating any links starting '#'
+	        $location.url(url);
+	    }
 
 	    var setValues = function () {
 

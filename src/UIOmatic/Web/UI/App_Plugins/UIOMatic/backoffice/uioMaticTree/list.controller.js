@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function($scope, $routeParams, uioMaticObjectResource) {
+    function ($scope, $routeParams, $location, uioMaticObjectResource) {
 
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
@@ -133,6 +133,11 @@
                 .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
                 // uppercase the first character
                 .replace(/^./, function(str){ return str.toUpperCase(); })
+        }
+
+        $scope.navigate = function (url) {
+            // Because some JS seems to be translating any links starting '#'
+            $location.url(url);
         }
 
         $scope.$watch("filterProperties", function() {

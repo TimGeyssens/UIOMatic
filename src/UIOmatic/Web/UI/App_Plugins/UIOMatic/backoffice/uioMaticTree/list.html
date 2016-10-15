@@ -22,7 +22,7 @@
                  
                     <div class="umb-sub-header">
                         <div class="btn-group" ng-hide="readOnly">
-                            <a class="btn" href="#/uiomatic/uioMaticTree/edit/{{typeAlias}}">
+                            <a class="btn" ng-click="navigate('/uiomatic/uioMaticTree/edit/' + typeAlias)">
                                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
                             </a>
                         </div>
@@ -68,7 +68,7 @@
                                 </td>
                                 <td ng-repeat="prop in properties">
                                     <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], config:prop.config}"><!-- Fake property object so we can reuse views -->
-                                        <a href="#/uiomatic/uioMaticTree/edit/{{getObjectKey(row)}}%3Fta={{typeAlias}}" ng-switch-when="true" style="font-weight: bold;">
+                                        <a ng-click="navigate('/uiomatic/uioMaticTree/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias)" ng-switch-when="true" style="font-weight: bold; cursor: pointer;">
                                             <span ng-include="prop.view"></span>
                                         </a>
                                         <span ng-switch-when="false">
