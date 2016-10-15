@@ -11,6 +11,8 @@ namespace UIOMatic.Attributes
 
         public string Config { get; set; }
 
+        public int Order { get; set; }
+
         public UIOMaticListViewFieldAttribute()
         {
             View = "label";

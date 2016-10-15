@@ -1,30 +1,35 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.List",
-    function ($scope, uioMaticObjectResource,$routeParams) {
+    function ($scope, $location, uioMaticObjectResource, $routeParams) {
 
-        
+        $scope.filterId = $routeParams.id.split("?")[0];
+        $scope.typeAlias = $scope.property.config.typeAlias;
+        $scope.foreignKeyColumn = $scope.property.config.foreignKeyColumn;
+        $scope.returnUrl = encodeURIComponent(encodeURIComponent($location.url()));
+
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
-
         $scope.canEdit = $scope.property.config.canEdit != undefined ? $scope.property.config.canEdit : true;
 
-
         function fetchData() {
-            uioMaticObjectResource.getFiltered($scope.property.config.typeAlias, $scope.property.config.foreignKeyColumn, $routeParams.id.split("?")[0], "", "").then(function (response) {
-                $scope.rows = response.data;
-            });
+            uioMaticObjectResource.getPaged($scope.typeAlias, 1000, 1, "", "",
+                 $scope.foreignKeyColumn + "|" + $scope.filterId,
+                "").then(function (resp) {
+                    $scope.rows = resp.data.items;
+                });
         }
+
         function init() {
             
-            $scope.typeAlias = $scope.property.config.typeAlias;
 
             uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
                 //.replace(' ', '_') nasty hack to allow columns with a space
                 $scope.primaryKeyColumnName = response.data.primaryKeyColumnName.replace(' ', '_');
                 $scope.predicate = response.data.primaryKeyColumnName.replace(' ', '_');
-                $scope.properties = response.data.listViewproperties;
+                $scope.properties = response.data.listViewProperties;
                 $scope.nameField = response.data.nameFieldKey.replace(' ', '_');
+                $scope.readOnly = response.data.readOnly;
 
-                if ($routeParams.id.split("?").length == 2)
+                if ($scope.filterId)
                     fetchData();
 
             });
@@ -39,19 +44,14 @@
         });
 
         $scope.getObjectKey = function (object) {
-            var keyPropName = $scope.primaryKeyColumnName;
-            return object[keyPropName];
-
+            return object[$scope.primaryKeyColumnName];
         }
 
-        $scope.isColumnLinkable = function (column, index) {
-
+        $scope.isColumnLinkable = function (prop, index) {
             if ($scope.nameField.length > 0) {
-                return column == $scope.nameField;
+                return prop.key == $scope.nameField;
             } else {
-
-                return index == 0
-                || (index == 1 && $scope.cols[0] == $scope.primaryKeyColumnName)
+                return index == 0 || (index == 1 && prop.key == $scope.primaryKeyColumnName);
             }
         }
 

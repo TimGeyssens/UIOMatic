@@ -8,6 +8,9 @@ namespace UIOMatic.Models
         [JsonProperty("tab")]
         public string Tab { get; set; }
 
+        [JsonProperty("tabOrder")]
+        public int TabOrder { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
 
@@ -60,5 +63,8 @@ namespace UIOMatic.Models
 
         [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("order")]
+        public int Order { get; set; }
     }
 }

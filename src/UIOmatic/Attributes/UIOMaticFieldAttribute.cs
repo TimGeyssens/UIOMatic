@@ -9,6 +9,8 @@ namespace UIOMatic.Attributes
 
         public string Tab { get; set; }
 
+        public int TabOrder { get; set; }
+
         public string Description { get; set; }
 
         public string View { get; set; }
@@ -16,6 +18,8 @@ namespace UIOMatic.Attributes
         public string Config { get; set; }
 
         public bool IsNameField { get; set; }
+
+        public int Order { get; set; }
 
         public UIOMaticFieldAttribute()
         {

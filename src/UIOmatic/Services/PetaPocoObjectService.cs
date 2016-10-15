@@ -209,10 +209,12 @@ namespace UIOmatic.Services
                                 Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
                                 ColumnName = prop.GetColumnName(),
                                 Tab = attri2.Tab.IsNullOrWhiteSpace() ? "General" : attri2.Tab,
+                                TabOrder = attri2.TabOrder,
                                 Description = attri2.Description,
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString(),
-                                Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config)
+                                Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config),
+                                Order = attri2.Order
                             };
 
 
@@ -243,7 +245,8 @@ namespace UIOmatic.Services
                                 ColumnName = prop.GetColumnName(),
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString(),
-                                Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config)
+                                Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config),
+                                Order = attri3.Order
                             };
 
                             listViewProperties.Add(pi);
@@ -266,7 +269,8 @@ namespace UIOmatic.Services
                                 KeyColumnName = keyProp.GetColumnName(),
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString(),
-                                Config = attri4.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri4.Config)
+                                Config = attri4.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri4.Config),
+                                Order = attri4.Order
                             };
 
                             listViewFilterProperties.Add(pi);
@@ -277,7 +281,7 @@ namespace UIOmatic.Services
                         {
                             Key = prop.Name,
                             Name = prop.Name,
-                            Type = prop.PropertyType.ToString(),
+                            Type = prop.PropertyType.ToString()
                         });
                     }
                 }
@@ -292,9 +296,9 @@ namespace UIOmatic.Services
                     AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
                     NameFieldKey = nameFieldKey,
                     ReadOnly = attri.ReadOnly,
-                    EditableProperties = editableProperties.ToArray(),
-                    ListViewProperties = listViewProperties.ToArray(),
-                    ListViewFilterProperties = listViewFilterProperties.ToArray(),
+                    EditableProperties = editableProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
+                    ListViewProperties = listViewProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
+                    ListViewFilterProperties = listViewFilterProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
                     RawProperties = rawProperties.ToArray()
                 };
             });

@@ -6,16 +6,30 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.loaded = false;
 	    $scope.editing = false;
 
-	    $isId = $routeParams.id.indexOf("?");
+	    var urlParts = $routeParams.id.split("?");
+	    var id = urlParts[0];
+	    var qs = {};
 
-	    $scope.id = $routeParams.id.split("?")[0];
-
-	    $scope.typeAlias = "";
-	    if ($isId <= 0) {
-	        $scope.typeAlias = $routeParams.id;
-	    } else {
-	        $scope.typeAlias = $routeParams.id.split("=").slice(1).join('=');
+	    if (urlParts.length > 1) {
+	        var vars = urlParts[1].split('&');
+	        for (var i = 0; i < vars.length; i++) {
+	            var pair = vars[i].split('=');
+	            qs[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+	        }
 	    }
+
+	    var hasId = !isNaN(id) && id > 0;
+
+	    if (!hasId) {
+	        $scope.id = 0;
+	        $scope.typeAlias = id;
+	    } else {
+	        $scope.id = id;
+	        $scope.typeAlias = qs["ta"];
+	    }
+
+	    $scope.queryString = qs;
+	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uioMaticTree/list/" + $scope.typeAlias;
 
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
@@ -27,23 +41,32 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            : -1;
 
 	        var tabsArr = [];
+
 	        angular.forEach($scope.properties, function (value, key) {
-	            if (this.map(function (e) { return e.label; }).indexOf(value.tab) == -1) {
+                if (this.map(function (e) { return e.label; }).indexOf(value.tab) === -1) {
 	                if (value.tab == "") {
 	                    this.push({ id: 99, label: "General" });
 	                } else {
-	                    this.push({ id: key, label: value.tab });
+	                    this.push({ id: value.tabOrder > 0 ? value.tabOrder : key, label: value.tab });
 	                }
 	            }
+
 	        }, tabsArr);
 
 	        if (tabsArr.length > 1) {
-	            $scope.content = { tabs: tabsArr };
-	            console.log($scope.content);
+	            $scope.content = {
+	                 tabs: tabsArr.sort(function(a, b) {
+	                     if (a.id < b.id)
+	                         return -1;
+	                     if (a.id > b.id)
+	                         return 1;
+	                     return 0;
+	                 })
+	            };
 	        }
 
 
-	        if ($isId <= 0)
+	        if (!hasId)
 	        {
 	            uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
 	                $scope.object = response.data;
@@ -54,7 +77,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        }
 	        else
 	        {
-	            uioMaticObjectResource.getById($routeParams.id.split("=")[1], $routeParams.id.split("?")[0]).then(function (response) {
+	            uioMaticObjectResource.getById($scope.typeAlias, $scope.id).then(function (response) {
 	                $scope.object = response.data;
 	                $scope.loaded = true;
 	                $scope.editing = true;
@@ -67,24 +90,22 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    $scope.save = function (object) {
 
-	        if ($isId <= 0) {
+	        angular.forEach($scope.properties, function (property) {
+	            var key = property.key;
+	            var value = $scope.queryString[property.columnName] || property.value;
+	            $scope.object[key] = value;
 
-	            angular.forEach($scope.properties, function (property) {
-	                var key = property.key;
-	                var value = property.value;
-	                $scope.object[key] = value;
+	        });
 
-	            });
+	        uioMaticObjectResource.validate($scope.typeAlias, object).then(function (resp) {
 
-	            uioMaticObjectResource.validate($routeParams.id.split("?")[0], object).then(function (resp) {
-
+	            if (!hasId) {
 	                if (resp.data.length > 0) {
 	                    angular.forEach(resp.data, function (error) {
-
 	                        notificationsService.error("Failed to create object", error.Message);
 	                    });
 	                } else {
-	                    uioMaticObjectResource.create($routeParams.id.split("?")[0], object).then(function (response) {
+	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
 	                        $scope.object = response.data;
 	                        $scope.editing = true;
 	                        $scope.objectForm.$dirty = false;
@@ -93,58 +114,40 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    });
 	                }
 
-
-	            });
-	        } else {
-
-	            angular.forEach($scope.properties, function (property) {
-	                var key = property.key;
-	                var value = property.value;
-	                $scope.object[key] = value;
-
-	            });
-
-	            uioMaticObjectResource.validate($routeParams.id.split("=")[1], object).then(function (resp) {
-
+	            } else {
 	                if (resp.data.length > 0) {
-
 	                    angular.forEach(resp.data, function (error) {
-
 	                        notificationsService.error("Failed to update object", error.Message);
 	                    });
-
 	                } else {
-	                    uioMaticObjectResource.update($routeParams.id.split("=")[1], object).then(function (response) {
-	                        //$scope.object = response.data;
+	                    uioMaticObjectResource.update($scope.typeAlias, object).then(function (response) {
 	                        $scope.objectForm.$dirty = false;
 	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been saved");
 	                    });
 	                }
+	            }
 
 
-	            });
-	        }
+	        });
 
 	    };
 
 	    $scope.delete = function (object) {
 
-	        if ($isId > 0) {
+	        if (hasId) {
 
-	            var arr = [];
-	            arr.push($scope.id);
-	            uioMaticObjectResource.deleteByIds(type, arr).then(function () {
-	                treeService.removeNode($scope.currentNode);
-	                navigationService.hideNavigation();
-
-	            });
+	            //var arr = [];
+	            //arr.push($scope.id);
+	            //uioMaticObjectResource.deleteByIds($scope.typeAlias, arr).then(function () {
+	            //    treeService.removeNode($scope.currentNode);
+	            //    navigationService.hideNavigation();
+	            //});
 	        }
 
 	    };
 
 	    var setValues = function () {
-
 
 	        for (var theKey in $scope.object) {
 
@@ -156,7 +159,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                        if ($scope.properties[prop].key == theKey) {
 	                            if ($scope.properties[prop].type == "System.DateTime") {
 	                                var date = moment($scope.object[theKey]).add(new Date().getTimezoneOffset(), "minutes").format("YYYY-MM-DD HH:mm:ss");
-	                                var date = moment($scope.object[theKey]).format("YYYY-MM-DD HH:mm:ss");
 	                                $scope.properties[prop].value = date;
 	                            } else {
 	                                $scope.properties[prop].value = $scope.object[theKey];
