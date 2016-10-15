@@ -384,28 +384,6 @@ namespace UIOmatic.Services
             return ((IUIOMaticModel)obj).Validate();
         }
 
-        //TODO: Merge this in with get paged as it now supports filtering
-        public IEnumerable<object> GetFiltered(Type type, string filterColumn, string filterValue, string sortColumn, string sortOrder)
-        {
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
-
-            var typeInfo = GetTypeInfo(type);
-            var query = new Sql().Select("*").From(typeInfo.TableName);
-
-            if (!filterColumn.IsNullOrWhiteSpace())
-            {
-                query.Append("WHERE" + filterColumn + " = @0", filterValue);
-            }
-
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-            {
-                query.OrderBy(sortColumn + " " + sortOrder);
-            }
-
-            return db.Fetch(type, query);
-        }
-
         private object CreateAndPopulateType(Type type, IDictionary<string, object> values)
         {
             var obj = Activator.CreateInstance(type, null);

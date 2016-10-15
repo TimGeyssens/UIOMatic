@@ -38,13 +38,6 @@ namespace UIOmatic.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<object> GetFiltered(string typeAlias, string filterColumn, string filterValue, string sortColumn, string sortOrder)
-        {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetFiltered(t,filterColumn,filterValue, sortColumn, sortOrder);
-        }
-
-        [HttpGet]
         public UIOMaticPagedResult GetPaged(string typeAlias, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);

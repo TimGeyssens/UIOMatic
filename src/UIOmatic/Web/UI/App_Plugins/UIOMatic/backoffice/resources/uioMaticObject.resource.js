@@ -15,13 +15,6 @@
 	                valuePropertyName = "";
 	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFilterLookup?typeAlias=" + type + "&keyPropertyName=" + keyPropertyName + "&valuePropertyName=" + valuePropertyName);
 	        },
-	        getFiltered: function (type, filterColumn, filterValue, sortColumn, sortOrder) {
-	            if (sortColumn == undefined)
-	                sortColumn = "";
-	            if (sortOrder == undefined)
-	                sortOrder = "";
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFiltered?typeAlias=" + type + "&filterColumn=" + filterColumn + "&filterValue=" + filterValue + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder);
-	        },
 	        getPaged: function(type, itemsPerPage, pageNumber, sortColumn, sortOrder, filters, searchTerm) {
 	            if (sortColumn == undefined)
 	                sortColumn = "";

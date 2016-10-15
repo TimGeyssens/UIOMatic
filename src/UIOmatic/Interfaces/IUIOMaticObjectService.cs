@@ -8,8 +8,6 @@ namespace UIOMatic.Interfaces
     {
         IEnumerable<object> GetAll(Type type,string sortColumn, string sortOrder);
 
-        IEnumerable<object> GetFiltered(Type type, string filterColumn, string filterValue, string sortColumn, string sortOrder);
-
         UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm);
 
         IEnumerable<string> GetAllColumns(Type type);
