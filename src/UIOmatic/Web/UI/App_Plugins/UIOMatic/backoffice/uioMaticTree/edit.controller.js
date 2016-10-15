@@ -133,20 +133,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    };
 
-	    $scope.delete = function (object) {
-
-	        if (hasId) {
-
-	            //var arr = [];
-	            //arr.push($scope.id);
-	            //uioMaticObjectResource.deleteByIds($scope.typeAlias, arr).then(function () {
-	            //    treeService.removeNode($scope.currentNode);
-	            //    navigationService.hideNavigation();
-	            //});
-	        }
-
-	    };
-
 	    var setValues = function () {
 
 	        for (var theKey in $scope.object) {

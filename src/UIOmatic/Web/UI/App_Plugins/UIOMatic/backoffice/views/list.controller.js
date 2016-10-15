@@ -10,11 +10,17 @@
         $scope.actionInProgress = false;
         $scope.canEdit = $scope.property.config.canEdit != undefined ? $scope.property.config.canEdit : true;
 
+        $scope.reverse = false;
+        $scope.initialFetch = true;
+
         function fetchData() {
-            uioMaticObjectResource.getPaged($scope.typeAlias, 1000, 1, "", "",
-                 $scope.foreignKeyColumn + "|" + $scope.filterId,
+            uioMaticObjectResource.getPaged($scope.typeAlias, 1000, 1,
+                $scope.initialFetch ? "" : $scope.predicate,
+                $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
+                $scope.foreignKeyColumn + "|" + $scope.filterId,
                 "").then(function (resp) {
                     $scope.rows = resp.data.items;
+                    $scope.initialFetch = false;
                 });
         }
 
@@ -42,6 +48,12 @@
         $scope.$on('valuesLoaded', function (event, data) {
             init();
         });
+
+        $scope.order = function (predicate) {
+            $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+            $scope.predicate = predicate;
+            fetchData();
+        };
 
         $scope.getObjectKey = function (object) {
             return object[$scope.primaryKeyColumnName];

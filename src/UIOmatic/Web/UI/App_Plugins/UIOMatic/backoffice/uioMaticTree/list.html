@@ -55,8 +55,8 @@
                             <tr>
                                 <td style="width:35px" ng-hide="readOnly"></td>
                                 <td ng-repeat="prop in properties">
-                                    <a href="" class="sortable" ng-click="order(prop.key)">{{prop.name}}</a>
-                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.key"></i>
+                                    <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
+                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.columnName"></i>
                                 </td>
                             </tr>
                             </thead>

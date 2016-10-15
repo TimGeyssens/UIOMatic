@@ -61,7 +61,7 @@
             if (confirm("Are you sure you want to delete " + $scope.selectedIds.length + " object" + ($scope.selectedIds.length > 1 ? "s" : "") + "?")) {
                 $scope.actionInProgress = true;
                 var keyPropName = $scope.primaryKeyColumnName;
-                uioMaticObjectResource.deleteByIds($routeParams.id, $scope.selectedIds).then(function() {
+                uioMaticObjectResource.deleteByIds($scope.typeAlias, $scope.selectedIds).then(function () {
                     $scope.rows = _.reject($scope.rows, function (el) { return $scope.selectedIds.indexOf(el[keyPropName]) > -1; });
                     $scope.selectedIds = [];
                     $scope.actionInProgress = false;
