@@ -77,6 +77,7 @@ namespace UIOMatic
             }
             if (value is string && type == typeof(Guid)) return new Guid(value as string);
             if (value is string && type == typeof(Version)) return new Version(value as string);
+            if (value is string && type == typeof(DateTimeOffset)) return DateTimeOffset.Parse(value as string);
             if (!(value is IConvertible)) return value;
             return Convert.ChangeType(value, type);
         } 
