@@ -309,6 +309,8 @@
     <Content Include="App_Plugins\UIOMatic\backoffice\views\checkboxlist.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\date.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\datetimeoffset.controller.js" />
+    <Content Include="App_Plugins\UIOMatic\backoffice\views\datetimeoffset.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\datetime.controller.js" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\datetime.html" />
     <Content Include="App_Plugins\UIOMatic\backoffice\views\dropdown.controller.js" />
