@@ -87,6 +87,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/date.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/datetime.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/datetimeoffset.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.content.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/pickers.media.controller.js',
