@@ -62,18 +62,6 @@ namespace UIOmatic.Extensions
             return propertyInfo != null ? propertyInfo.GetValue(instance, null) : null; 
         }
 
-        public static void SetPropertyValue(this Type type, string propertyName, object value, object instance)
-        {
-            var propertyInfo = type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-
-            var targetType = propertyInfo.PropertyType.IsNullable() ? Nullable.GetUnderlyingType(propertyInfo.PropertyType) : propertyInfo.PropertyType;
-
-            value = value.ChangeType(targetType);
-
-            propertyInfo.SetValue(instance, value, null);
-
-        }
-
         public static bool HasAttribute<TAttribute>(this Type type) where TAttribute : Attribute
         {
             return type.GetCustomAttribute<TAttribute>() != null;

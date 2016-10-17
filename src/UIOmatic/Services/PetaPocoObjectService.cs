@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UIOmatic.Extensions;
 using UIOMatic;
@@ -386,19 +387,8 @@ namespace UIOmatic.Services
 
         private object CreateAndPopulateType(Type type, IDictionary<string, object> values)
         {
-            var obj = Activator.CreateInstance(type, null);
-
-            foreach (var prop in values)
-            {
-                var propKey = prop.Key;
-
-                var propI = type.GetProperty(propKey);
-                if (propI != null)
-                {
-                    obj.SetPropertyValue(propI.Name, prop.Value);
-                }
-            }
-
+            var json = JsonConvert.SerializeObject(values);
+            var obj = JsonConvert.DeserializeObject(json, type);
             return obj;
         }
     }

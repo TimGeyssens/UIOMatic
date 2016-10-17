@@ -8,5 +8,15 @@ namespace UIOmatic.Extensions
         {
             return "[" + input.Trim('[', ']') + "]";
         }
+
+        public static bool DetectIsJson(this string input)
+        {
+            input = input.Trim();
+            if (input.StartsWith("{") && input.EndsWith("}"))
+                return true;
+            if (input.StartsWith("["))
+                return input.EndsWith("]");
+            return false;
+        }
     }
 }
