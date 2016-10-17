@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <language alias="en" intName="English (UK)" localName="English (UK)" lcid="" culture="en-GB">
   <creator>
     <name>The Umbraco community</name>
@@ -751,7 +751,7 @@ To manage your website, simply open the Umbraco back office and start adding con
     <key alias="help" version="7.0">Help</key>
     <key alias="forms">Forms</key>
     <key alias="analytics">Analytics</key>
-  </area>
+  <key alias="uiomatic">UI-O-Matic</key></area>
   <area alias="help">
     <key alias="goTo">go to</key>
     <key alias="helpTopicsFor">Help topics for</key>
