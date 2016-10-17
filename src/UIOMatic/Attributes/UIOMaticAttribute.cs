@@ -23,6 +23,8 @@ namespace UIOMatic.Attributes
 
         public bool ReadOnly { get; set; }
 
+        public bool HideFromTree { get; set; }
+
         public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
         {
             this.Name = name;
@@ -33,6 +35,8 @@ namespace UIOMatic.Attributes
             this.SortOrder = "asc";
 
             this.ReadOnly = false;
+
+            this.HideFromTree = false;
         }
     }
 }

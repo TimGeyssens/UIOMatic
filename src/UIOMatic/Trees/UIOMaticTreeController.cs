@@ -33,30 +33,33 @@ namespace UIOMatic.Trees
                 {
                     var attri = (UIOMaticAttribute)Attribute.GetCustomAttribute(type, typeof(UIOMaticAttribute));
 
-                    if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                    if (!attri.HideFromTree)
                     {
-                        var node = CreateTreeNode(
-                            type.AssemblyQualifiedName,
-                            "-1",
-                            queryStrings,
-                            attri.Name,
-                            attri.FolderIcon,
-                            true);
+                        if (attri.RenderType == Enums.UIOMaticRenderType.Tree)
+                        {
+                            var node = CreateTreeNode(
+                                type.AssemblyQualifiedName,
+                                "-1",
+                                queryStrings,
+                                attri.Name,
+                                attri.FolderIcon,
+                                true);
 
-                        nodes.Add(node);
-                    }
-                    else
-                    {
-                        var node = CreateTreeNode(
-                            type.AssemblyQualifiedName,
-                            "-1",
-                            queryStrings,
-                            attri.Name,
-                            attri.FolderIcon,
-                            false,
-                            "uiomatic/uioMaticTree/list/" + type.AssemblyQualifiedName);
+                            nodes.Add(node);
+                        }
+                        else
+                        {
+                            var node = CreateTreeNode(
+                                type.AssemblyQualifiedName,
+                                "-1",
+                                queryStrings,
+                                attri.Name,
+                                attri.FolderIcon,
+                                false,
+                                "uiomatic/uioMaticTree/list/" + type.AssemblyQualifiedName);
 
-                        nodes.Add(node);
+                            nodes.Add(node);
+                        }
                     }
                 }
                 return nodes;
