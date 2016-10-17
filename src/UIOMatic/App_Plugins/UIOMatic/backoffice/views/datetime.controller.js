@@ -26,8 +26,6 @@
 	                $scope.property.Value = e.date.format("YYYY-MM-DD HH:mm:ss");
 
 	            }
-
-
 	        });
 	    };
 
@@ -42,4 +40,10 @@
 	                .on("dp.change", applyDate);
 	        });
 
+
+	    //Fix reset value to null if empty string
+	    $scope.$watch('property.Value', function (newValue, oldValue) {
+	        if (newValue === "")
+	            $scope.property.Value = null;
+	    });
 	});
