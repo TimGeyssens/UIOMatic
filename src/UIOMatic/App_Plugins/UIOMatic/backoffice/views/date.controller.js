@@ -22,23 +22,29 @@
 	        angularHelper.safeApply($scope, function () {
 	            // when a date is changed, update the model
 	            if (e.date) {
-	               
-	                    $scope.property.Value = e.date.format("YYYY-MM-DD");
-	                
+
+	                $scope.property.Value = e.date.format("YYYY-MM-DD");
+
 	            }
 
-	            
+
 	        });
 	    };
 
 	    var filesToLoad = ["lib/datetimepicker/bootstrap-datetimepicker.js"];
 
 	    assetsService.load(filesToLoad).then(
-	        function() {
+	        function () {
 
 	            $element.find("div:first")
 	                .datetimepicker($scope.config)
 	                .on("dp.change", applyDate);
 	        });
-	    
+
+
+	    //Fix reset value to null if empty string
+	    $scope.$watch('property.Value', function (newValue, oldValue) {
+	        if (newValue === "")
+	            $scope.property.Value = null;
+	    });
 	});
