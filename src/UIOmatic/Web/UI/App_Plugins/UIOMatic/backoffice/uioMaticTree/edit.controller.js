@@ -107,8 +107,14 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                } else {
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
 	                        $scope.objectForm.$dirty = false;
-	                        console.log(response);
-	                        //$location.url("/uiomatic/uioMaticTree/edit/" + response.id + "%3Fta=" + $scope.typeAlias);
+	                        var redirectUrl = "/uiomatic/uioMaticTree/edit/" + response.Id + "%3Fta=" + $scope.typeAlias;
+	                        for(var k in $scope.queryString) {
+	                            if ($scope.queryString.hasOwnProperty(k) && k != "ta") {
+	                                redirectUrl += "%26" + encodeURIComponent(k) + "=" + encodeURIComponent(encodeURIComponent($scope.queryString[k]));
+	                            }
+	                        };
+	                        console.log(redirectUrl); 
+	                        $location.url(redirectUrl);
 	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been created");
 	                    });

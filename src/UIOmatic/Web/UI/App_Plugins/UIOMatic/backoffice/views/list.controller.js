@@ -14,14 +14,16 @@
         $scope.initialFetch = true;
 
         function fetchData() {
-            uioMaticObjectResource.getPaged($scope.typeAlias, 1000, 1,
-                $scope.initialFetch ? "" : $scope.predicate,
-                $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
-                $scope.foreignKeyColumn + "|" + $scope.filterId,
-                "").then(function (resp) {
+            if (!isNaN($scope.filterId)) { // Only fetch if we have an ID (ie, editing)
+                uioMaticObjectResource.getPaged($scope.typeAlias, 1000, 1,
+                    $scope.initialFetch ? "" : $scope.predicate,
+                    $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
+                    $scope.foreignKeyColumn + "|" + $scope.filterId,
+                    "").then(function(resp) {
                     $scope.rows = resp.items;
                     $scope.initialFetch = false;
                 });
+            }
         }
 
         function init() {
