@@ -6,7 +6,7 @@
             function init() {
                 console.log("init");
                 uioMaticFieldResource.getAllUsers().then(function (resp) {
-                    $scope.users = resp.data;
+                    $scope.users = resp;
                     $scope.selectedUsers = [];
                     $scope.selectedUsers2 = [];
                     $scope.users2 = [];
@@ -45,7 +45,7 @@
             };
 
             uioMaticFieldResource.getAllUsers().then(function (resp) {
-                $scope.users = resp.data;
+                $scope.users = resp;
                 $scope.selectedUsers = [];
                 $scope.selectedUsers2 = [];
                 $scope.users2 = [];

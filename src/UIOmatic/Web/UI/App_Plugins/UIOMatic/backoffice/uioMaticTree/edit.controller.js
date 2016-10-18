@@ -33,9 +33,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
-	        $scope.type = response.data;
-	        $scope.readOnly = response.data.readOnly;
-	        $scope.properties = response.data.editableProperties;
+	        $scope.type = response;
+	        $scope.readOnly = response.readOnly;
+	        $scope.properties = response.editableProperties;
 	        $scope.type.nameFieldIndex = $scope.type.nameFieldKey.length > 0
                 ? _.indexOf(_.pluck($scope.properties, "key"), $scope.type.nameFieldKey)
 	            : -1;
@@ -69,7 +69,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        if (!hasId)
 	        {
 	            uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
-	                $scope.object = response.data;
+	                $scope.object = response;
 	                $scope.loaded = true;
 	                setValues();
 	                $scope.$broadcast('valuesLoaded');
@@ -78,7 +78,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        else
 	        {
 	            uioMaticObjectResource.getById($scope.typeAlias, $scope.id).then(function (response) {
-	                $scope.object = response.data;
+	                $scope.object = response;
 	                $scope.loaded = true;
 	                $scope.editing = true;
 	                setValues();
@@ -100,27 +100,27 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        uioMaticObjectResource.validate($scope.typeAlias, object).then(function (resp) {
 
 	            if (!hasId) {
-	                if (resp.data.length > 0) {
-	                    angular.forEach(resp.data, function (error) {
+	                if (resp.length > 0) {
+	                    angular.forEach(resp, function (error) {
 	                        notificationsService.error("Failed to create object", error.Message);
 	                    });
 	                } else {
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
-	                        $scope.object = response.data;
-	                        $scope.editing = true;
 	                        $scope.objectForm.$dirty = false;
+	                        console.log(response);
+	                        //$location.url("/uiomatic/uioMaticTree/edit/" + response.id + "%3Fta=" + $scope.typeAlias);
 	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been created");
 	                    });
 	                }
 
 	            } else {
-	                if (resp.data.length > 0) {
-	                    angular.forEach(resp.data, function (error) {
+	                if (resp.length > 0) {
+	                    angular.forEach(resp, function (error) {
 	                        notificationsService.error("Failed to update object", error.Message);
 	                    });
 	                } else {
-	                    uioMaticObjectResource.update($scope.typeAlias, object).then(function (response) {
+	                    uioMaticObjectResource.update($scope.typeAlias, object).then(function () {
 	                        $scope.objectForm.$dirty = false;
 	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been saved");

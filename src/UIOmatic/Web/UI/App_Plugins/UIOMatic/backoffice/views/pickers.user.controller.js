@@ -3,7 +3,7 @@
 
         function init() {
             uioMaticFieldResource.getAllUsers().then(function (resp) {
-                $scope.users = resp.data;
+                $scope.users = resp;
             });
         };
 

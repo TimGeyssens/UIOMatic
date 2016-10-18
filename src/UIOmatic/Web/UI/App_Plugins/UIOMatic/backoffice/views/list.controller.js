@@ -19,7 +19,7 @@
                 $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
                 $scope.foreignKeyColumn + "|" + $scope.filterId,
                 "").then(function (resp) {
-                    $scope.rows = resp.data.items;
+                    $scope.rows = resp.items;
                     $scope.initialFetch = false;
                 });
         }
@@ -29,11 +29,11 @@
 
             uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
                 //.replace(' ', '_') nasty hack to allow columns with a space
-                $scope.primaryKeyColumnName = response.data.primaryKeyColumnName.replace(' ', '_');
-                $scope.predicate = response.data.primaryKeyColumnName.replace(' ', '_');
-                $scope.properties = response.data.listViewProperties;
-                $scope.nameField = response.data.nameFieldKey.replace(' ', '_');
-                $scope.readOnly = response.data.readOnly;
+                $scope.primaryKeyColumnName = response.primaryKeyColumnName.replace(' ', '_');
+                $scope.predicate = response.primaryKeyColumnName.replace(' ', '_');
+                $scope.properties = response.listViewProperties;
+                $scope.nameField = response.nameFieldKey.replace(' ', '_');
+                $scope.readOnly = response.readOnly;
 
                 if ($scope.filterId)
                     fetchData();

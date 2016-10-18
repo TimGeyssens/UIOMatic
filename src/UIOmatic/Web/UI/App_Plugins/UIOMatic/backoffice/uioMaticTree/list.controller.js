@@ -23,21 +23,21 @@
                 $scope.initialFetch ? "" : $scope.filtersStr,
                 $scope.searchTerm).then(function (resp) {
                 $scope.initialFetch = false;
-                $scope.rows = resp.data.items;
-                $scope.totalPages = resp.data.totalPages;
+                $scope.rows = resp.items;
+                $scope.totalPages = resp.totalPages;
             });
         }
 
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
             //.replace(' ', '_') nasty hack to allow columns with a space
-            $scope.primaryKeyColumnName = response.data.primaryKeyColumnName.replace(' ', '_');
-            $scope.predicate = response.data.primaryKeyColumnName.replace(' ', '_');
-            $scope.properties = response.data.listViewProperties;
-            $scope.nameField = response.data.nameFieldKey.replace(' ', '_');
-            $scope.readOnly = response.data.readOnly;
+            $scope.primaryKeyColumnName = response.primaryKeyColumnName.replace(' ', '_');
+            $scope.predicate = response.primaryKeyColumnName.replace(' ', '_');
+            $scope.properties = response.listViewProperties;
+            $scope.nameField = response.nameFieldKey.replace(' ', '_');
+            $scope.readOnly = response.readOnly;
 
             // Pass extra meta data into filter properties
-            $scope.filterProperties = response.data.listViewFilterProperties.map(function (itm) {
+            $scope.filterProperties = response.listViewFilterProperties.map(function (itm) {
                 itm.typeAlias = $scope.typeAlias;
                 return itm;
             });

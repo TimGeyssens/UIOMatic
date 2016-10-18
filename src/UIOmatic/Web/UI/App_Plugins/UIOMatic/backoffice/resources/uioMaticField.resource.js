@@ -2,7 +2,10 @@
 	.factory("uioMaticFieldResource", function ($http) {
 	    return {
 	        getAllUsers: function () {
-	            return $http.get(Umbraco.Sys.ServerVariables.uioMatic.fcBaseUrl + "GetAllUsers");
+	            return umbRequestHelper.resourcePromise(
+                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.fcBaseUrl + "GetAllUsers"),
+                    'Failed to get all users'
+                );
 	        }
 	    }
 	});

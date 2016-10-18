@@ -3,7 +3,7 @@
 
         function init() {
             uioMaticObjectResource.getFilterLookup($scope.property.typeAlias, $scope.property.keyPropertyName, $scope.property.key).then(function (response) {
-                $scope.objects = response.data;
+                $scope.objects = response;
             });
         }
 

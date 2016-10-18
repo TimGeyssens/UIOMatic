@@ -3,7 +3,7 @@
 
         function init() {
             uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
-                $scope.objects = response.data;
+                $scope.objects = response;
             });
         }
 

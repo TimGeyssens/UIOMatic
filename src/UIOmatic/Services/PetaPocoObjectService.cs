@@ -102,6 +102,7 @@ namespace UIOmatic.Services
             }
 
             // Sort
+            // BUG: There is a bug in the peta poco version used that errors if sort column is wrapped in [] so need to make sure it's not
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
                 query.OrderBy(sortColumn + " " + sortOrder);
@@ -372,7 +373,7 @@ namespace UIOmatic.Services
             var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})",
                 typeInfo.TableName,
                 typeInfo.PrimaryKeyColumnName,
-                ids.Select(x => "'" + x + "'").ToArray());
+                string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
 
             db.Execute(sql);
 

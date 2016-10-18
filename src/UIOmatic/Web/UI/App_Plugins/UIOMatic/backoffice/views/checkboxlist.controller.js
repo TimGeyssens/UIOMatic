@@ -7,7 +7,7 @@
 
         function init() {
             uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
-                $scope.objects = response.data;
+                $scope.objects = response;
 
                 angular.forEach($scope.objects, function (object) {
                     if ($scope.property.value && _.indexOf($scope.property.value.toString().split($scope.delimiter), object[$scope.property.config.valueColumn].toString()) > -1)

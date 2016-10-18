@@ -36,7 +36,7 @@
 	        {
 	            angular.forEach($scope.model.value, function (id) {
 	                uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function(resp) {
-	                    $scope.objects.push(resp.data);
+	                    $scope.objects.push(resp);
 	                });
 	            });
 	        }
