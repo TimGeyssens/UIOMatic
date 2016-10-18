@@ -1,7 +1,8 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.Dropdown",
-	function ($scope, $http, $parse) {
-	    $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetAllObjects?typeAlias=" + $scope.model.config.typeAlias + "&sortColumn=" + $scope.model.config.sortColumn + "&sortOrder=" + $scope.model.config.sortOrder).then(function (response) {
-	        $scope.objects = response.data;
+	function ($scope, $parse, uioMaticObjectResource) {
+
+	    uioMaticObjectResource.getAll($scope.model.config.typeAlias, $scope.model.config.sortColumn, $scope.model.config.sortOrder).then(function (response) {
+	        $scope.objects = response;
 	    });
 
 	    $scope.parseTemplate = function(object) {

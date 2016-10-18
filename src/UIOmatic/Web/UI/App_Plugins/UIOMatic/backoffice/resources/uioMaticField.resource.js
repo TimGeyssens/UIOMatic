@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco.resources")
-	.factory("uioMaticFieldResource", function ($http) {
+	.factory("uioMaticFieldResource", function ($http, umbRequestHelper) {
 	    return {
 	        getAllUsers: function () {
 	            return umbRequestHelper.resourcePromise(

@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.Dialogs.Searcher",
-	function ($scope, $http, uioMaticObjectResource, $parse) {
+	function ($scope, uioMaticObjectResource, $parse) {
 
 	    $scope.typeAlias = $scope.dialogData.typeAlias;
 	    $scope.selectedIds = [];

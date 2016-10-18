@@ -84,6 +84,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/delete.controller.js',
         '~/App_Plugins/UIOMatic/backoffice/resources/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/resources/uioMaticField.resource.js',
+		'~/App_Plugins/UIOMatic/backoffice/resources/uioMaticPropertyEditor.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/file.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/date.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/datetime.controller.js',

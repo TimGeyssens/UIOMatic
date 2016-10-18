@@ -318,6 +318,7 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\pickers.property.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\pickers.type.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\pickers.type.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\resources\uioMaticPropertyEditor.resource.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\resources\uioMaticField.resource.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\resources\uioMaticObject.resource.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\uioMaticTree\delete.controller.js" />

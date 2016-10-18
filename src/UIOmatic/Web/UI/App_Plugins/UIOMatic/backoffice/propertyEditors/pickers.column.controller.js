@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.Pickers.Column",
-	function ($scope, $http, editorState) {
+	function ($scope, editorState, uioMaticPropertyEditorResource) {
 
 	    $scope.current = editorState.current;
 
@@ -14,8 +14,8 @@
 
 	    function getColumns() {
 	        if ($scope.typeAlias) {
-	            $http.get(Umbraco.Sys.ServerVariables.uioMatic.pecBaseUrl + "GetAllColumns?typeAlias=" + $scope.typeAlias).then(function(response) {
-	                $scope.columns = response.data;
+	            uioMaticPropertyEditorResource.getAllColumns($scope.typeAlias).then(function (response) {
+	                $scope.columns = response;
 	            });
 	        }
 	    }

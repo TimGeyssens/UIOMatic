@@ -140,7 +140,9 @@ namespace UIOmatic.Services
                 var attri = prop.GetCustomAttribute<IgnoreAttribute>();
                 if (attri == null)
                 {
-                    yield return prop.GetColumnName();
+                    var column = prop.GetColumnName();
+                    if (!column.IsNullOrWhiteSpace())
+                        yield return prop.GetColumnName();
                 }
             }
         }
