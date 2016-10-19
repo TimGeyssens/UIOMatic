@@ -42,6 +42,14 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	        var tabsArr = [];
 
+            // Build items path
+	        $scope.path = response.path;
+	        if ($scope.id > 0 && response.renderType == 0) // Tree view so append the node id
+	            $scope.path.push($scope.id);
+
+	        // Sync the tree
+	        navigationService.syncTree({ tree: 'uioMaticTree', path: $scope.path, forceReload: false, activate: true });
+
 	        angular.forEach($scope.properties, function (value, key) {
                 if (this.map(function (e) { return e.label; }).indexOf(value.tab) === -1) {
 	                if (value.tab == "") {
@@ -113,9 +121,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                                redirectUrl += "%26" + encodeURIComponent(k) + "=" + encodeURIComponent(encodeURIComponent($scope.queryString[k]));
 	                            }
 	                        };
-	                        console.log(redirectUrl); 
 	                        $location.url(redirectUrl);
-	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
 	                        notificationsService.success("Success", "Object has been created");
 	                    });
 	                }
@@ -128,7 +134,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                } else {
 	                    uioMaticObjectResource.update($scope.typeAlias, object).then(function () {
 	                        $scope.objectForm.$dirty = false;
-	                        navigationService.syncTree({ tree: 'uioMaticTree', path: [-1, -1], forceReload: true });
+
+                            // Sync the tree
+	                        navigationService.syncTree({ tree: 'uioMaticTree', path: $scope.path, forceReload: true, activate: true });
 	                        notificationsService.success("Success", "Object has been saved");
 	                    });
 	                }

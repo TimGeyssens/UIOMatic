@@ -40,5 +40,8 @@ namespace UIOMatic.Models
 
         [JsonProperty("readOnly")]
         public bool ReadOnly { get; set; }
+
+        [JsonProperty("path")]
+        public string[] Path { get; set; }
     }
 }

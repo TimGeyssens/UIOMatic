@@ -6,6 +6,7 @@ using UIOmatic.Extensions;
 using UIOmatic.Services;
 using UIOMatic;
 using UIOMatic.Attributes;
+using UIOMatic.Enums;
 using UIOMatic.Interfaces;
 using Umbraco.Core;
 using Umbraco.Web.Models.Trees;
@@ -27,7 +28,7 @@ namespace UIOmatic.Web.Controllers
 
         protected override TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
-            var nodes = new TreeNodeCollection();
+            var nodes = new TreeNodeCollection(); 
             var types = Helper.GetUIOMaticFolderTypes().OrderBy(x=> x.GetCustomAttribute<UIOMaticFolderAttribute>(false).Order);
             
             foreach (var type in types)
@@ -96,18 +97,21 @@ namespace UIOmatic.Web.Controllers
                     {
                         var primaryKeyPropertyName = type.GetPrimaryKeyName();
 
-                        // List nodes
-                        foreach (dynamic item in _service.GetAll(type, attri2.SortColumn, attri2.SortOrder))
-                        {
-                            var node = CreateTreeNode(
-                                ((object)item).GetPropertyValue(primaryKeyPropertyName) + "?ta=" + id,
-                                id,
-                                queryStrings,
-                                item.ToString(),
-                                attri2.ItemIcon,
-                                false);
+                        if(attri2.RenderType == UIOMaticRenderType.Tree)
+                        { 
+                            // List nodes
+                            foreach (dynamic item in _service.GetAll(type, attri2.SortColumn, attri2.SortOrder))
+                            {
+                                var node = CreateTreeNode(
+                                    ((object)item).GetPropertyValue(primaryKeyPropertyName) + "?ta=" + id,
+                                    id,
+                                    queryStrings,
+                                    item.ToString(),
+                                    attri2.ItemIcon,
+                                    false);
 
-                            nodes.Add(node);
+                                nodes.Add(node);
+                            }
                         }
                     }
                 }

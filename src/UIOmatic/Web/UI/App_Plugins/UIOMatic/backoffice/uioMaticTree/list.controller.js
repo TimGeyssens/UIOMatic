@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, $location, uioMaticObjectResource) {
+    function ($scope, $routeParams, $location, uioMaticObjectResource, navigationService) {
 
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
@@ -41,6 +41,9 @@
                 itm.typeAlias = $scope.typeAlias;
                 return itm;
             });
+
+            // Sync the tree
+            navigationService.syncTree({ tree: 'uioMaticTree', path: response.path, forceReload: false, activate: true });
 
             fetchData();
         });

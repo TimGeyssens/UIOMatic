@@ -290,6 +290,26 @@ namespace UIOmatic.Services
                     }
                 }
 
+                // Calculate the types path
+                var path = new List<string>(new[] { attri.Alias, attri.ParentAlias });
+                var parentTypeAlias = attri.ParentAlias;
+                while (parentTypeAlias != "-1")
+                {
+                    var parentType = Helper.GetUIOMaticTypeByAlias(parentTypeAlias, includeFolders: true);
+                    if (parentType != null)
+                    {
+                        var parentAttri = parentType.GetCustomAttribute<UIOMaticFolderAttribute>();
+                        parentTypeAlias = parentAttri.ParentAlias;
+                    }
+                    else
+                    {
+                        parentTypeAlias = "-1";
+                    }
+
+                    path.Add(parentTypeAlias);
+                }
+                path.Reverse();
+
                 return new UIOMaticTypeInfo
                 {
                     Alias = attri.Alias,
@@ -303,7 +323,8 @@ namespace UIOmatic.Services
                     EditableProperties = editableProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
                     ListViewProperties = listViewProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
                     ListViewFilterProperties = listViewFilterProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
-                    RawProperties = rawProperties.ToArray()
+                    RawProperties = rawProperties.ToArray(),
+                    Path = path.ToArray()
                 };
             });
         }
@@ -370,6 +391,8 @@ namespace UIOmatic.Services
         {
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var db = GetDb(attri.ConnectionStringName);
+
+            //TODO: add event
 
             var typeInfo = GetTypeInfo(type);
             var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})",
