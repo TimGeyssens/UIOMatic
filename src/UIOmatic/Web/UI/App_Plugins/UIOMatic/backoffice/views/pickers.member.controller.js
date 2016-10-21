@@ -9,7 +9,7 @@
 
             var val = parseInt($scope.property.value);
 
-            if (!isNaN(val) && angular.isNumber(val)) {
+            if (!isNaN(val) && angular.isNumber(val) && val > 0) {
                 $scope.showQuery = false;
 
                 entityResource.getById(val, "Member").then(function (item) {
