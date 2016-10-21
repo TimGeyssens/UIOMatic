@@ -10,7 +10,7 @@ namespace UIOMatic
 {
     public class Config
     {
-        public const string Application = "uiomatic";
+        public const string ApplicationAlias = "uiomatic";
 
         public const string PluginFolder = "~/App_plugins/UIOMatic";
 

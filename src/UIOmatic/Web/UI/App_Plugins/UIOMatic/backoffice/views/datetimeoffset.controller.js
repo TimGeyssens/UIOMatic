@@ -23,7 +23,7 @@
 	        angularHelper.safeApply($scope, function () {
 	            // when a date is changed, update the model
 	            if (e.date) {
-	                $scope.property.Value = e.date.format(DATE_FORMAT) + $scope.property.offset;
+	                $scope.property.value = e.date.format(DATE_FORMAT) + $scope.property.offset;
 	            }
 	        });
 	    };
@@ -33,14 +33,14 @@
 
 	    assetsService.load(filesToLoad).then(
 	        function () {
-	            $scope.property.viewValue = moment.parseZone($scope.property.Value).format(DATE_FORMAT);
-	            $scope.property.offset = moment.parseZone($scope.property.Value).format("Z");
+	            $scope.property.viewValue = moment.parseZone($scope.property.value).format(DATE_FORMAT);
+	            $scope.property.offset = moment.parseZone($scope.property.value).format("Z");
 
 	            // It's important to remove the T from the value to make sure
 	            // web api bind this as a string and not as a DateTime because
 	            // when it does so, it converts the DateTimeOffset to a local
 	            // DateTime.
-	            $scope.property.Value = $scope.property.Value.replace('T', ' ');
+	            $scope.property.value = $scope.property.value.replace('T', ' ');
 
 	            // The $timeout 0 is a little hack to delay the execution of this 
 	            // code on the call stack and be sure the viewValue property is 

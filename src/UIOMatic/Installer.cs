@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using Umbraco.Core;
 using Umbraco.Core.IO;
@@ -10,13 +8,13 @@ using Umbraco.Core.Logging;
 
 namespace UIOMatic
 {
+    //TODO: Move all this to migrations?
     public class Installer : ApplicationEventHandler
     {
         private readonly string _marker = IOHelper.MapPath(Path.Combine(Config.PluginFolder, "installed"));
 
         public bool NeedsInstall()
         {
-
             if (File.Exists(_marker) == false)
                 return true;
 
@@ -28,9 +26,9 @@ namespace UIOMatic
             int i;
             var users = ApplicationContext.Current.Services.UserService.GetAll(0, 100, out i).Where(x => x.UserType.Alias == "admin");
 
-            foreach (var user in users.Where(user => user.AllowedSections.Contains(Config.Application) == false))
+            foreach (var user in users.Where(user => user.AllowedSections.Contains(Config.ApplicationAlias) == false))
             {
-                user.AddAllowedSection(Config.Application);
+                user.AddAllowedSection(Config.ApplicationAlias);
                 ApplicationContext.Current.Services.UserService.Save(user);
             }
         }
@@ -41,23 +39,22 @@ namespace UIOMatic
             if (File.Exists(fileName) == false)
                 return;
 
-
             var languageFile = new XmlDocument { PreserveWhitespace = true };
             languageFile.Load(fileName);
 
             if (languageFile.DocumentElement == null)
                 return;
-
            
             var sectionsRoot = languageFile.DocumentElement.SelectSingleNode("//area [@alias = 'sections']");
-
             if (sectionsRoot == null)
                 return;
 
             var languageKey = languageFile.CreateNode(XmlNodeType.Element, "key", "");
             languageKey.InnerText = "UI-O-Matic";
+
             var attribute = languageFile.CreateAttribute("alias");
             attribute.Value = "uiomatic";
+
             if (languageKey.Attributes != null)
                 languageKey.Attributes.Append(attribute);
 
@@ -67,7 +64,6 @@ namespace UIOMatic
         }
         public void SetInstallMarker()
         {
-
             try
             {
 

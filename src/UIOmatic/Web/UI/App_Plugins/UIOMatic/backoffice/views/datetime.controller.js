@@ -42,8 +42,8 @@
 
 
 	    //Fix reset value to null if empty string
-	    $scope.$watch('property.Value', function (newValue, oldValue) {
+	    $scope.$watch('property.value', function (newValue, oldValue) {
 	        if (newValue === "")
-	            $scope.property.Value = null;
+	            $scope.property.value = null;
 	    });
 	});
