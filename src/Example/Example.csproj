@@ -262,6 +262,7 @@
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\TestWithDateTime.cs" />
     <Compile Include="Models\TestWithDateCopy.cs" />
     <Compile Include="Models\TestWithDate.cs" />
     <Compile Include="Models\umbracoLog.cs" />
