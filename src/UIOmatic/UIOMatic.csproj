@@ -311,7 +311,6 @@
   <ItemGroup>
     <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\lib\moment\moment.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\multipicker.controller.js" />

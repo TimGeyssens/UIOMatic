@@ -1,12 +1,14 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.DateTime",
 	function ($scope, $element, assetsService, angularHelper) {
 
+	    var DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";
+
 	    //setup the default config
 	    var config = {
 	        pickDate: true,
 	        pickTime: true,
 	        useSeconds: true,
-	        format: "YYYY-MM-DD HH:mm:ss",
+	        format: DATE_FORMAT,
 	        icons: {
 	            time: "icon-time",
 	            date: "icon-calendar",
@@ -22,15 +24,12 @@
 	        angularHelper.safeApply($scope, function () {
 	            // when a date is changed, update the model
 	            if (e.date) {
-
-	                $scope.property.value = e.date.format("YYYY-MM-DD HH:mm:ss");
-
+	                $scope.property.value = e.date.format(DATE_FORMAT);
 	            }
 	        });
 	    };
 
-	    var filesToLoad = ["lib/moment/moment-with-locales.js",
-            "lib/datetimepicker/bootstrap-datetimepicker.js"];
+	    var filesToLoad = ["lib/moment/moment-with-locales.js", "lib/datetimepicker/bootstrap-datetimepicker.js"];
 
 	    assetsService.load(filesToLoad).then(
 	        function () {

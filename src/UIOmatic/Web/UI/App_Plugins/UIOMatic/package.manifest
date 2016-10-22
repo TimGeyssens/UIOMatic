@@ -79,8 +79,6 @@
     ]
     ,
     javascript: [
-	    '~/App_Plugins/UIOMatic/backoffice/lib/moment/moment.js',
-
         '~/App_Plugins/UIOMatic/backoffice/resources/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/resources/uioMaticField.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/resources/uioMaticPropertyEditor.resource.js',

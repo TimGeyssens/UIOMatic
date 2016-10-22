@@ -1,12 +1,18 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.Date",
 	function ($scope, $element, assetsService, angularHelper) {
 
+	    var DATE_FORMAT = "YYYY-MM-DD";
+
+	    // Remove the time part from the value
+	    if ($scope.property.value)
+	        $scope.property.value = moment($scope.property.value).format(DATE_FORMAT);
+
 	    //setup the default config
 	    var config = {
 	        pickDate: true,
 	        pickTime: false,
 	        useSeconds: true,
-	        format: "YYYY-MM-DD",
+	        format: DATE_FORMAT,
 	        icons: {
 	            time: "icon-time",
 	            date: "icon-calendar",
@@ -22,12 +28,8 @@
 	        angularHelper.safeApply($scope, function () {
 	            // when a date is changed, update the model
 	            if (e.date) {
-	               
-	                    $scope.property.value = e.date.format("YYYY-MM-DD");
-	                
+	                $scope.property.value = e.date.format(DATE_FORMAT); 
 	            }
-
-	            
 	        });
 	    };
 
