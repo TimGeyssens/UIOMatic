@@ -75,8 +75,8 @@ For docs please go to[ http://uiomatic.readthedocs.org/](http://uiomatic.readthe
 ## Presentation ##
 For the quick intro check [http://slides.com/timgeyssens/uiomatic#/](http://slides.com/timgeyssens/uiomatic#/)
 
-### Test site ###
-Backoffice credentials: 
-- tim@nibble.be / password
+## The Team ##
 
-
+* [Tim Geyssens](https://github.com/TimGeyssens)
+* [Matt Brailsford](https://github.com/mattbrailsford)
+* [Other Contributors](https://github.com/TimGeyssens/UIOMatic/graphs/contributors)

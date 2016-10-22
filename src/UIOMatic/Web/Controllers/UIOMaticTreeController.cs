@@ -4,7 +4,6 @@ using umbraco;
 using umbraco.BusinessLogic.Actions;
 using UIOMatic.Extensions;
 using UIOMatic.Services;
-using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Enums;
 using UIOMatic.Interfaces;
