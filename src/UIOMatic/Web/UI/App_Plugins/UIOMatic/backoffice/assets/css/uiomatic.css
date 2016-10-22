@@ -1,0 +1,33 @@
+﻿.uiomatic .umb-textstring {
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.uiomatic_map .uiomatic_map_controls {
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 36px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.uiomatic_map .uiomatic_map_search {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 300px;
+    display: none;
+}
+.uiomatic_map .uiomatic_map_map .uiomatic_map_search {
+    display: inline-block;
+}
+.uiomatic_map .uiomatic_map_search:focus {
+    border-color: #4d90fe;
+}

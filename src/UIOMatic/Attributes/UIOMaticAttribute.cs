@@ -1,42 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using UIOMatic.Data;
 using UIOMatic.Enums;
 
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticAttribute : Attribute
+    public class UIOMaticAttribute : UIOMaticFolderAttribute
     {
-        public string Name { get; set; }
-        public string FolderIcon { get; set; }
-
         public string ItemIcon { get; set; }
 
-        public string SortColumn{ get; set; }
-
-        public string SortOrder { get; set; }
         public UIOMaticRenderType RenderType { get; set; }
+
+        public Type RepositoryType { get; set; }
 
         public string ConnectionStringName { get; set; }
 
+        public string SortColumn { get; set; }
+
+        public string SortOrder { get; set; }
+
         public bool ReadOnly { get; set; }
 
-        public bool HideFromTree { get; set; }
-
-        public UIOMaticAttribute(string name, string folderIcon, string itemIcon)
+        public UIOMaticAttribute(string name, string alias, string folderIcon, string itemIcon)
+            : base(name, alias, folderIcon)
         {
-            this.Name = name;
-            this.FolderIcon = folderIcon;
-            this.ItemIcon = itemIcon;
-
-            this.RenderType = UIOMaticRenderType.Tree;
-            this.SortOrder = "asc";
-
-            this.ReadOnly = false;
-
-            this.HideFromTree = false;
+            ItemIcon = itemIcon;
+            RenderType = UIOMaticRenderType.Tree;
+            SortOrder = "ASC";
+            ReadOnly = false;
+            RepositoryType = typeof(DefaultUIOMaticRepository);
         }
     }
 }

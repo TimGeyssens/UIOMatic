@@ -1,95 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web;
-using System.Xml;
+using Semver;
 using Umbraco.Core;
-using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
+using Umbraco.Core.Persistence.Migrations;
+using Umbraco.Web;
 
 namespace UIOMatic
 {
     public class Installer : ApplicationEventHandler
     {
-        private readonly string _marker = IOHelper.MapPath(Path.Combine(Config.PluginFolder, "installed"));
-
-        public bool NeedsInstall()
+        protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
+            var targetDbVersion = new SemVersion(2, 0, 0); // Update this whenever a migration change is made
+            var currentDbVersion = new SemVersion(0, 0, 0);
+            
+            var migrations = ApplicationContext.Current.Services.MigrationEntryService.GetAll(Constants.ApplicationAlias);
+            var latestMigration = migrations.OrderByDescending(x => x.Version).FirstOrDefault();
 
-            if (File.Exists(_marker) == false)
-                return true;
+            if (latestMigration != null)
+                currentDbVersion = latestMigration.Version;
 
-            return false;
-        }
-
-        public void SetUserAccess()
-        {
-            int i;
-            var users = ApplicationContext.Current.Services.UserService.GetAll(0, 100, out i).Where(x => x.UserType.Alias == "admin");
-
-            foreach (var user in users.Where(user => user.AllowedSections.Contains(Config.Application) == false))
-            {
-                user.AddAllowedSection(Config.Application);
-                ApplicationContext.Current.Services.UserService.Save(user);
-            }
-        }
-
-        public void InstallLanguageFiles()
-        {
-            var fileName = IOHelper.MapPath(umbraco.GlobalSettings.Path + "/config/lang/en.xml");
-            if (File.Exists(fileName) == false)
+            if (targetDbVersion == currentDbVersion)
                 return;
 
-
-            var languageFile = new XmlDocument { PreserveWhitespace = true };
-            languageFile.Load(fileName);
-
-            if (languageFile.DocumentElement == null)
-                return;
-
-           
-            var sectionsRoot = languageFile.DocumentElement.SelectSingleNode("//area [@alias = 'sections']");
-
-            if (sectionsRoot == null)
-                return;
-
-            var languageKey = languageFile.CreateNode(XmlNodeType.Element, "key", "");
-            languageKey.InnerText = "UI-O-Matic";
-            var attribute = languageFile.CreateAttribute("alias");
-            attribute.Value = "uiomatic";
-            if (languageKey.Attributes != null)
-                languageKey.Attributes.Append(attribute);
-
-            sectionsRoot.AppendChild(languageKey);
-            languageFile.Save(fileName);
-
-        }
-        public void SetInstallMarker()
-        {
+            var migrationsRunner = new MigrationRunner(
+              ApplicationContext.Current.Services.MigrationEntryService,
+              ApplicationContext.Current.ProfilingLogger.Logger,
+              currentDbVersion,
+              targetDbVersion,
+              Constants.ApplicationAlias);
 
             try
             {
-
-                File.WriteAllText(_marker, string.Empty);
-                using (var streamWriter = new StreamWriter(_marker, false))
-                {
-                    streamWriter.Write("Installed");
-                }
+                migrationsRunner.Execute(UmbracoContext.Current.Application.DatabaseContext.Database);
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                LogHelper.Error<Installer>(string.Format("Can't create the install marker at {0}", _marker), exception);
-            }
-        }
-
-        protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-        {
-            if (NeedsInstall())
-            {
-                SetUserAccess();
-                InstallLanguageFiles();
-                SetInstallMarker();
+                LogHelper.Error<Installer>("Error running UI-O-Matic migrations", e);
             }
         }
     }

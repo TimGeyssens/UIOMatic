@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Newtonsoft.Json.Linq;
 
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticFieldAttribute: Attribute
+    public class UIOMaticFieldAttribute : Attribute
     {
         public string Name { get; set; }
 
         public string Tab { get; set; }
+
+        public int TabOrder { get; set; }
 
         public string Description { get; set; }
 
@@ -19,21 +17,20 @@ namespace UIOMatic.Attributes
 
         public string Config { get; set; }
 
-        public UIOMaticFieldAttribute(string name, string description)
-        {
-            this.Name = name;
-            this.Description = description;
+        public bool IsNameField { get; set; }
 
-            this.View = "textfield";
+        public int Order { get; set; }
+
+        public UIOMaticFieldAttribute()
+        {
+            View = "textfield";
         }
 
         public string GetView()
         {
-            if (View.StartsWith("~"))
-                return View;
-            else
-                return string.Format("~/App_Plugins/UIOMatic/Backoffice/Views/{0}.html", View);
-
+            return View.StartsWith("~")
+                ? View
+                : string.Format("~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/{0}.html", View);
         }
     }
 }

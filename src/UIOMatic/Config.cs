@@ -1,25 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
 using System.Xml;
+using UIOMatic.Services;
 using UC = Umbraco.Core;
 
 namespace UIOMatic
 {
     public class Config
     {
-        public const string Application = "uiomatic";
-
         public const string PluginFolder = "~/App_plugins/UIOMatic";
 
         public const string ConfigFileName = "UIOMatic.config";
 
-        public static Type DefaultObjectControllerType
+        public static Type DefaultObjectServiceType
         {
-            get { return Type.GetType(ConfigFile.DocumentElement.Attributes["defaultObjectControllerType"].Value); }
+            get
+            { 
+                var attr = ConfigFile.DocumentElement.Attributes["defaultObjectServiceType"];
+                return attr != null ? Type.GetType(attr.Value) : typeof(PetaPocoObjectService);
+            }
         }
 
         public static XmlDocument ConfigFile

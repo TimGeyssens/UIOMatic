@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Lucene.Net.Util;
 using Umbraco.Core.Persistence;
 
 namespace UIOMatic
 {
     public class QueryEventArgs : EventArgs
     {
-        public QueryEventArgs(Type currentType, string tableName, Sql query, string sortColumn,
+        public QueryEventArgs(Type objectType, string tableName, Sql query, string sortColumn,
             string sortOrder, string searchTerm)
         {
-            this.CurrentType = currentType;
-            this.TableName = tableName;
-            this.Query = query;
-            this.SortColumn = sortColumn;
-            this.SortOrder = sortOrder;
-            this.SearhTerm = searchTerm;
+            ObjectType = objectType;
+            TableName = tableName;
+            Query = query;
+            SortColumn = sortColumn;
+            SortOrder = sortOrder;
+            SearhTerm = searchTerm;
         }
 
-        public Type CurrentType { get; set; }
+        public Type ObjectType { get; set; }
 
         public string TableName { get; set; }
 

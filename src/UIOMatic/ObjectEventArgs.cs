@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace UIOMatic
 {
     public class ObjectEventArgs : EventArgs
     {
-        public ObjectEventArgs(object obj)
+        public ObjectEventArgs(Type objectType, object obj)
         {
-            this.Object = obj;
+            ObjectType = objectType;
+            Object = obj;
         }
-        public Object Object { get; set; }
+
+        public Type ObjectType { get; set; }
+
+        public object Object { get; set; }
     }
 }
