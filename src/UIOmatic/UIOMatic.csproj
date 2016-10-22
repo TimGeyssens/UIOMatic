@@ -374,6 +374,9 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\textfield.html" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Web\UI\App_Plugins\UIOMatic\lang\en-GB.xml" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\lang\en.xml" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\lang\en-US.xml" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\package.manifest" />
   </ItemGroup>
   <ItemGroup>

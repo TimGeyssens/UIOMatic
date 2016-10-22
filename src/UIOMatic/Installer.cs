@@ -33,40 +33,10 @@ namespace UIOMatic
             }
         }
 
-        public void InstallLanguageFiles()
-        {
-            var fileName = IOHelper.MapPath(umbraco.GlobalSettings.Path + "/config/lang/en.xml");
-            if (File.Exists(fileName) == false)
-                return;
-
-            var languageFile = new XmlDocument { PreserveWhitespace = true };
-            languageFile.Load(fileName);
-
-            if (languageFile.DocumentElement == null)
-                return;
-           
-            var sectionsRoot = languageFile.DocumentElement.SelectSingleNode("//area [@alias = 'sections']");
-            if (sectionsRoot == null)
-                return;
-
-            var languageKey = languageFile.CreateNode(XmlNodeType.Element, "key", "");
-            languageKey.InnerText = "UI-O-Matic";
-
-            var attribute = languageFile.CreateAttribute("alias");
-            attribute.Value = "uiomatic";
-
-            if (languageKey.Attributes != null)
-                languageKey.Attributes.Append(attribute);
-
-            sectionsRoot.AppendChild(languageKey);
-            languageFile.Save(fileName);
-
-        }
         public void SetInstallMarker()
         {
             try
             {
-
                 File.WriteAllText(_marker, string.Empty);
                 using (var streamWriter = new StreamWriter(_marker, false))
                 {
@@ -84,7 +54,6 @@ namespace UIOMatic
             if (NeedsInstall())
             {
                 SetUserAccess();
-                InstallLanguageFiles();
                 SetInstallMarker();
             }
         }
