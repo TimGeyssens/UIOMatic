@@ -43,7 +43,7 @@
             });
 
             // Sync the tree
-            navigationService.syncTree({ tree: 'uioMaticTree', path: response.path, forceReload: false, activate: true });
+            navigationService.syncTree({ tree: 'uiomatic', path: response.path, forceReload: false, activate: true });
 
             fetchData();
         });

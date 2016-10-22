@@ -15,7 +15,7 @@ using Umbraco.Web.Trees;
 
 namespace UIOmatic.Web.Controllers
 {
-    [Tree("uiomatic", "uioMaticTree", "UI-O-Matic")]
+    [Tree("uiomatic", "uiomatic", "UI-O-Matic")]
     [PluginController("UIOMatic")]
     public class UIOMaticTreeController : TreeController
     {
@@ -68,7 +68,7 @@ namespace UIOmatic.Web.Controllers
                                 attri.Name,
                                 attri.FolderIcon,
                                 false,
-                                "uiomatic/uioMaticTree/list/" + alias);
+                                "uiomatic/uiomatic/list/" + alias);
 
                             node.SetContainerStyle();
 

@@ -29,7 +29,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    }
 
 	    $scope.queryString = qs;
-	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uioMaticTree/list/" + $scope.typeAlias;
+	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uiomatic/list/" + $scope.typeAlias;
 
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
@@ -48,7 +48,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            $scope.path.push($scope.id);
 
 	        // Sync the tree
-	        navigationService.syncTree({ tree: 'uioMaticTree', path: $scope.path, forceReload: false, activate: true });
+	        navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: false, activate: true });
 
 	        angular.forEach($scope.properties, function (value, key) {
                 if (this.map(function (e) { return e.label; }).indexOf(value.tab) === -1) {
@@ -115,7 +115,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                } else {
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
 	                        $scope.objectForm.$dirty = false;
-	                        var redirectUrl = "/uiomatic/uioMaticTree/edit/" + response.Id + "%3Fta=" + $scope.typeAlias;
+	                        var redirectUrl = "/uiomatic/uiomatic/edit/" + response.Id + "%3Fta=" + $scope.typeAlias;
 	                        for(var k in $scope.queryString) {
 	                            if ($scope.queryString.hasOwnProperty(k) && k != "ta") {
 	                                redirectUrl += "%26" + encodeURIComponent(k) + "=" + encodeURIComponent(encodeURIComponent($scope.queryString[k]));
@@ -136,7 +136,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                        $scope.objectForm.$dirty = false;
 
                             // Sync the tree
-	                        navigationService.syncTree({ tree: 'uioMaticTree', path: $scope.path, forceReload: true, activate: true });
+	                        navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: true, activate: true });
 	                        notificationsService.success("Success", "Object has been saved");
 	                    });
 	                }

@@ -9,9 +9,9 @@ namespace UIOMatic
         // TODO: Add paths to all built in views
         public static readonly IReadOnlyDictionary<string, string> Views = new Dictionary<string, string>
         {
-            { "textfield", "~/App_Plugins/UIOMatic/Backoffice/Views/checkbox.html"},
-            { "datetime", "~/App_Plugins/UIOMatic/Backoffice/Views/datetime.html"},
-            { "number", "~/App_Plugins/UIOMatic/Backoffice/Views/number.html"}
+            { "textfield", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/checkbox.html"},
+            { "datetime", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/datetime.html"},
+            { "number", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/number.html"}
         }; 
     }
 }

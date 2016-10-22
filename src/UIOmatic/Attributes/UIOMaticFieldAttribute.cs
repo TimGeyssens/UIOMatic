@@ -30,7 +30,7 @@ namespace UIOMatic.Attributes
         {
             return View.StartsWith("~")
                 ? View
-                : string.Format("~/App_Plugins/UIOMatic/Backoffice/Views/{0}.html", View);
+                : string.Format("~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/{0}.html", View);
         }
     }
 }

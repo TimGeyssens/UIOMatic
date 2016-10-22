@@ -3,7 +3,7 @@
     <div class="umb-sub-header" ng-show="canEdit">
         
         <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" ng-click="navigate('/uiomatic/uioMaticTree/edit/' + typeAlias + '%3F' + foreignKeyColumn + '=' + filterId + '%26returnUrl=' + returnUrl)">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" ng-click="navigate('/uiomatic/uiomatic/edit/' + typeAlias + '%3F' + foreignKeyColumn + '=' + filterId + '%26returnUrl=' + returnUrl)">
                 <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
             </a>
         </div>
@@ -35,7 +35,7 @@
                 <td ng-repeat="prop in properties">
                     <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], config:prop.config}">
                         <!-- Fake property object so we can reuse views -->
-                        <a ng-click="navigate('/uiomatic/uioMaticTree/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias + '%26' + foreignKeyColumn + '=' + filterId + '%26returnUrl=' + returnUrl)" ng-switch-when="true" style="font-weight: bold; cursor: pointer;">
+                        <a ng-click="navigate('/uiomatic/uiomatic/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias + '%26' + foreignKeyColumn + '=' + filterId + '%26returnUrl=' + returnUrl)" ng-switch-when="true" style="font-weight: bold; cursor: pointer;">
                             <span ng-include="prop.view"></span>
                         </a>
                         <span ng-switch-when="false">
