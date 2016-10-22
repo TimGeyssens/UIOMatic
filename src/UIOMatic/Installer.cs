@@ -1,60 +1,43 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Xml;
+using Semver;
 using Umbraco.Core;
-using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
+using Umbraco.Core.Persistence.Migrations;
+using Umbraco.Web;
 
 namespace UIOMatic
 {
-    //TODO: Move all this to migrations?
     public class Installer : ApplicationEventHandler
     {
-        private readonly string _marker = IOHelper.MapPath(Path.Combine(Config.PluginFolder, "installed"));
-
-        public bool NeedsInstall()
-        {
-            if (File.Exists(_marker) == false)
-                return true;
-
-            return false;
-        }
-
-        public void SetUserAccess()
-        {
-            int i;
-            var users = ApplicationContext.Current.Services.UserService.GetAll(0, 100, out i).Where(x => x.UserType.Alias == "admin");
-
-            foreach (var user in users.Where(user => user.AllowedSections.Contains(Config.ApplicationAlias) == false))
-            {
-                user.AddAllowedSection(Config.ApplicationAlias);
-                ApplicationContext.Current.Services.UserService.Save(user);
-            }
-        }
-
-        public void SetInstallMarker()
-        {
-            try
-            {
-                File.WriteAllText(_marker, string.Empty);
-                using (var streamWriter = new StreamWriter(_marker, false))
-                {
-                    streamWriter.Write("Installed");
-                }
-            }
-            catch (Exception exception)
-            {
-                LogHelper.Error<Installer>(string.Format("Can't create the install marker at {0}", _marker), exception);
-            }
-        }
-
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            if (NeedsInstall())
+            var targetDbVersion = new SemVersion(2, 0, 0); // Update this whenever a migration change is made
+            var currentDbVersion = new SemVersion(0, 0, 0);
+            
+            var migrations = ApplicationContext.Current.Services.MigrationEntryService.GetAll(Config.ApplicationAlias);
+            var latestMigration = migrations.OrderByDescending(x => x.Version).FirstOrDefault();
+
+            if (latestMigration != null)
+                currentDbVersion = latestMigration.Version;
+
+            if (targetDbVersion == currentDbVersion)
+                return;
+
+            var migrationsRunner = new MigrationRunner(
+              ApplicationContext.Current.Services.MigrationEntryService,
+              ApplicationContext.Current.ProfilingLogger.Logger,
+              currentDbVersion,
+              targetDbVersion,
+              Config.ApplicationAlias);
+
+            try
             {
-                SetUserAccess();
-                SetInstallMarker();
+                migrationsRunner.Execute(UmbracoContext.Current.Application.DatabaseContext.Database);
+            }
+            catch (Exception e)
+            {
+                LogHelper.Error<Installer>("Error running UI-O-Matic migrations", e);
             }
         }
     }
