@@ -10,8 +10,6 @@ namespace UIOMatic
 {
     public class Config
     {
-        public const string ApplicationAlias = "uiomatic";
-
         public const string PluginFolder = "~/App_plugins/UIOMatic";
 
         public const string ConfigFileName = "UIOMatic.config";
@@ -19,7 +17,7 @@ namespace UIOMatic
         public static Type DefaultObjectServiceType
         {
             get
-            {
+            { 
                 var attr = ConfigFile.DocumentElement.Attributes["defaultObjectServiceType"];
                 return attr != null ? Type.GetType(attr.Value) : typeof(PetaPocoObjectService);
             }

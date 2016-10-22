@@ -15,7 +15,7 @@ namespace UIOMatic
             var targetDbVersion = new SemVersion(2, 0, 0); // Update this whenever a migration change is made
             var currentDbVersion = new SemVersion(0, 0, 0);
             
-            var migrations = ApplicationContext.Current.Services.MigrationEntryService.GetAll(Config.ApplicationAlias);
+            var migrations = ApplicationContext.Current.Services.MigrationEntryService.GetAll(Constants.ApplicationAlias);
             var latestMigration = migrations.OrderByDescending(x => x.Version).FirstOrDefault();
 
             if (latestMigration != null)
@@ -29,7 +29,7 @@ namespace UIOMatic
               ApplicationContext.Current.ProfilingLogger.Logger,
               currentDbVersion,
               targetDbVersion,
-              Config.ApplicationAlias);
+              Constants.ApplicationAlias);
 
             try
             {

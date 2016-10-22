@@ -4,6 +4,8 @@ namespace UIOMatic
 {
     public static class Constants
     {
+        public const string ApplicationAlias = "uiomatic";
+
         // TODO: Add paths to all built in views
         public static readonly IReadOnlyDictionary<string, string> Views = new Dictionary<string, string>
         {

@@ -290,6 +290,7 @@
     <Compile Include="Interfaces\IUIOMaticModel.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectService.cs" />
     <Compile Include="Interfaces\IUIOMaticRepository.cs" />
+    <Compile Include="Migrations\2.0.0\AddAllowedSectionToAdmins.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />
     <Compile Include="Models\UIOMaticTypeInfo.cs" />

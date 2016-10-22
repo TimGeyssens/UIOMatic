@@ -1,13 +1,13 @@
 ﻿using System.Linq;
-using UIOMatic;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
 using Umbraco.Core.Persistence.Migrations;
 using Umbraco.Core.Persistence.SqlSyntax;
+using Constants = UIOMatic.Constants;
 
 namespace UIOmatic.Migrations._2._0._0
 {
-    [Migration("2.0.0", 0, Config.ApplicationAlias)]
+    [Migration("2.0.0", 0, Constants.ApplicationAlias)]
     public class AddAllowedSectionToAdmins : MigrationBase
     {
         public AddAllowedSectionToAdmins(ISqlSyntaxProvider sqlSyntax, ILogger logger)
@@ -20,9 +20,9 @@ namespace UIOmatic.Migrations._2._0._0
             var users = ApplicationContext.Current.Services.UserService.GetAll(0, 100, out i)
                 .Where(x => x.UserType.Alias == "admin");
 
-            foreach (var user in users.Where(user => user.AllowedSections.Contains(Config.ApplicationAlias) == false))
+            foreach (var user in users.Where(user => user.AllowedSections.Contains(Constants.ApplicationAlias) == false))
             {
-                user.AddAllowedSection(Config.ApplicationAlias);
+                user.AddAllowedSection(Constants.ApplicationAlias);
                 ApplicationContext.Current.Services.UserService.Save(user);
             }
         }
@@ -33,9 +33,9 @@ namespace UIOmatic.Migrations._2._0._0
             var users = ApplicationContext.Current.Services.UserService.GetAll(0, 100, out i)
                 .Where(x => x.UserType.Alias == "admin");
 
-            foreach (var user in users.Where(user => user.AllowedSections.Contains(Config.ApplicationAlias) == false))
+            foreach (var user in users.Where(user => user.AllowedSections.Contains(Constants.ApplicationAlias) == false))
             {
-                user.RemoveAllowedSection(Config.ApplicationAlias);
+                user.RemoveAllowedSection(Constants.ApplicationAlias);
                 ApplicationContext.Current.Services.UserService.Save(user);
             }
         }
