@@ -57,13 +57,13 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var repo = Helper.GetRepository(attri, typeInfo);
             
-            var a1 = new ObjectEventArgs(obj);
+            var a1 = new ObjectEventArgs(typeInfo.Type, obj);
             UIOMaticObjectService.OnCreatingObject(a1);
             obj = a1.Object;
 
             obj = repo.Create(obj);
 
-            var a2 = new ObjectEventArgs(obj);
+            var a2 = new ObjectEventArgs(typeInfo.Type, obj);
             UIOMaticObjectService.OnCreatingObject(a2);
 
             return a2.Object;
@@ -77,13 +77,13 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var repo = Helper.GetRepository(attri, typeInfo);
 
-            var a1 = new ObjectEventArgs(obj);
+            var a1 = new ObjectEventArgs(typeInfo.Type, obj);
             UIOMaticObjectService.OnUpdatingObject(a1);
             obj = a1.Object;
 
             obj = repo.Update(obj);
 
-            var a2 = new ObjectEventArgs(obj);
+            var a2 = new ObjectEventArgs(typeInfo.Type, obj);
             UIOMaticObjectService.OnUpdatedObject(a2);
 
             return a2.Object;
@@ -315,7 +315,7 @@ namespace UIOmatic.Services
         {
             var obj = Activator.CreateInstance(type);
 
-            var a1 = new ObjectEventArgs(obj);
+            var a1 = new ObjectEventArgs(type, obj);
             UIOMaticObjectService.OnScaffoldingObject(a1);
 
             return a1.Object;

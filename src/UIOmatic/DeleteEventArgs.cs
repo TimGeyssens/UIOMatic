@@ -4,13 +4,13 @@ namespace UIOMatic
 {
     public class DeleteEventArgs : EventArgs
     {
-        public DeleteEventArgs(Type currentType, string[] ids)
+        public DeleteEventArgs(Type objectType, string[] ids)
         {
-            CurrentType = currentType;
+            ObjectType = objectType;
             Ids = ids;
         }
 
-        public Type CurrentType { get; set; }
+        public Type ObjectType { get; set; }
 
         public string[] Ids { get; set; }
     }

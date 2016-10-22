@@ -5,10 +5,10 @@ namespace UIOMatic
 {
     public class QueryEventArgs : EventArgs
     {
-        public QueryEventArgs(Type currentType, string tableName, Sql query, string sortColumn,
+        public QueryEventArgs(Type objectType, string tableName, Sql query, string sortColumn,
             string sortOrder, string searchTerm)
         {
-            CurrentType = currentType;
+            ObjectType = objectType;
             TableName = tableName;
             Query = query;
             SortColumn = sortColumn;
@@ -16,7 +16,7 @@ namespace UIOMatic
             SearhTerm = searchTerm;
         }
 
-        public Type CurrentType { get; set; }
+        public Type ObjectType { get; set; }
 
         public string TableName { get; set; }
 
