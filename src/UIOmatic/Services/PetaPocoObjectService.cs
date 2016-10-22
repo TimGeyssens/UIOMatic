@@ -56,8 +56,17 @@ namespace UIOmatic.Services
             var typeInfo = GetTypeInfo(type);
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var repo = Helper.GetRepository(attri, typeInfo);
+            
+            var a1 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnCreatingObject(a1);
+            obj = a1.Object;
 
-            return repo.Create(obj);
+            obj = repo.Create(obj);
+
+            var a2 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnCreatingObject(a2);
+
+            return a2.Object;
         }
 
         public object Update(Type type, IDictionary<string, object> values)
@@ -68,7 +77,16 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var repo = Helper.GetRepository(attri, typeInfo);
 
-            return repo.Update(obj);
+            var a1 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnUpdatingObject(a1);
+            obj = a1.Object;
+
+            obj = repo.Update(obj);
+
+            var a2 = new ObjectEventArgs(obj);
+            UIOMaticObjectService.OnUpdatedObject(a2);
+
+            return a2.Object;
         }
 
         public string[] DeleteByIds(Type type, string[] ids)
@@ -76,10 +94,17 @@ namespace UIOmatic.Services
             var typeInfo = GetTypeInfo(type);
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var repo = Helper.GetRepository(attri, typeInfo);
+            
+            var a1 = new DeleteEventArgs(typeInfo.Type, typeInfo.TableName, ids);
+            UIOMaticObjectService.OnDeletingObjects(a1);
+            ids = a1.Ids;
 
             repo.Delete(ids);
+            
+            var a2 = new DeleteEventArgs(typeInfo.Type, typeInfo.TableName, ids);
+            UIOMaticObjectService.OnDeletedObjects(a2);
 
-            return ids;
+            return a2.Ids;
         }
 
         public IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values)
@@ -110,7 +135,7 @@ namespace UIOmatic.Services
             // but I can't think of another way right now.
 
             var distinctData = new Dictionary<string, object>(); 
-            var data = GetAll(type, "", ""); 
+            var data = GetAll(type); 
 
             foreach (var dataItem in data)
             {

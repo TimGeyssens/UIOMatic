@@ -138,17 +138,11 @@ namespace UIOmatic.Data
         public object Create(object entity)
         {
             var db = GetDb();
-            
-            var a1 = new ObjectEventArgs(entity);
-            UIOMaticObjectService.OnCreatingObject(a1);
 
             if (_typeInfo.AutoIncrementPrimaryKey)
                 db.Insert(_typeInfo.TableName, _typeInfo.PrimaryKeyColumnName, true, entity);
             else
                 db.Insert(entity);
-
-            var a2 = new ObjectEventArgs(entity);
-            UIOMaticObjectService.OnCreatingObject(a2);
 
             return entity;
         }
@@ -157,13 +151,7 @@ namespace UIOmatic.Data
         {
             var db = GetDb();
 
-            var a1 = new ObjectEventArgs(entity);
-            UIOMaticObjectService.OnUpdatingObject(a1);
-
             db.Update(entity);
-
-            var a2 = new ObjectEventArgs(entity);
-            UIOMaticObjectService.OnUpdatedObject(a2);
 
             return entity;
         }
@@ -172,17 +160,10 @@ namespace UIOmatic.Data
         {
             var db = GetDb();
 
-            var a1 = new DeleteEventArgs(_typeInfo.Type, _typeInfo.TableName, ids);
-            UIOMaticObjectService.OnDeletingObjects(a1);
-            ids = a1.Ids;
-
             var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})",
                 _typeInfo.TableName,
                 _typeInfo.PrimaryKeyColumnName,
                 string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
-
-            var a2 = new DeleteEventArgs(_typeInfo.Type, _typeInfo.TableName, ids);
-            UIOMaticObjectService.OnDeletedObjects(a2);
 
             db.Execute(sql);
         }
