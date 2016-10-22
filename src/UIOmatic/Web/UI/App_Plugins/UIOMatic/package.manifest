@@ -106,8 +106,12 @@
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/pickers.column.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/uioMatictree/list.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/PropertyEditors/objectsearcher.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/views/rte.controller.js'
+		'~/App_Plugins/UIOMatic/backoffice/views/rte.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/map.controller.js'
 		
-    ]
+    ],
+    css: [
+		'~/App_Plugins/UIOMatic/assets/uiomatic.css'
+	]
 	
 }

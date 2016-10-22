@@ -309,6 +309,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\assets\uiomatic.css" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\assets\moment.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\propertyEditors\dropdown.html" />
@@ -341,6 +342,8 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\datetime.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\datetimeoffset.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\datetimeoffset.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\map.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\map.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.filter.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.filter.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dropdown.controller.js" />
@@ -398,9 +401,9 @@ xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2
 xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
 xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2"
 
-REM xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
-REM xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
-REM xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website"
+xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
+xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
+xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website"
 
 )
 )</PostBuildEvent>
