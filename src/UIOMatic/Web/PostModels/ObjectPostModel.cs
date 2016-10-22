@@ -1,6 +1,6 @@
 ﻿using System.Dynamic;
 
-namespace UIOmatic.Web.PostModels
+namespace UIOMatic.Web.PostModels
 {
     public class ObjectPostModel
     {

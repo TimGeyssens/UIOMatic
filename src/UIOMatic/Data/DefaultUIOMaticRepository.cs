@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UIOmatic.Extensions;
-using UIOmatic.Interfaces;
-using UIOmatic.Services;
+using UIOMatic.Extensions;
+using UIOMatic.Interfaces;
+using UIOMatic.Services;
 using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
 using Umbraco.Core;
 using Umbraco.Core.Persistence;
 
-namespace UIOmatic.Data
+namespace UIOMatic.Data
 {
     internal class DefaultUIOMaticRepository : IUIOMaticRepository
     {

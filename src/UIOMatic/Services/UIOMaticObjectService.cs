@@ -2,7 +2,7 @@
 using UIOMatic;
 using UIOMatic.Interfaces;
 
-namespace UIOmatic.Services
+namespace UIOMatic.Services
 {
     public class UIOMaticObjectService
     {

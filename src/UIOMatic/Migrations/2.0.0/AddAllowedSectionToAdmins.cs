@@ -5,7 +5,7 @@ using Umbraco.Core.Persistence.Migrations;
 using Umbraco.Core.Persistence.SqlSyntax;
 using Constants = UIOMatic.Constants;
 
-namespace UIOmatic.Migrations._2._0._0
+namespace UIOMatic.Migrations._2._0._0
 {
     [Migration("2.0.0", 0, Constants.ApplicationAlias)]
     public class AddAllowedSectionToAdmins : MigrationBase

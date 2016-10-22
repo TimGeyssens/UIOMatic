@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UIOmatic.Services;
+using UIOMatic.Services;
 using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
-namespace UIOmatic.Web.Controllers
+namespace UIOMatic.Web.Controllers
 {
     [PluginController("UIOMatic")]
     public class PropertyEditorsApiController: UmbracoAuthorizedJsonController

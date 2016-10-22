@@ -4,7 +4,7 @@ using System.Reflection;
 using Umbraco.Core.Persistence;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
 
-namespace UIOmatic.Extensions
+namespace UIOMatic.Extensions
 {
     internal static class TypeExtensions
     {

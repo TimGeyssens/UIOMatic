@@ -3,12 +3,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using UIOmatic.Web.Controllers;
+using UIOMatic.Web.Controllers;
 using Umbraco.Core;
 using Umbraco.Web;
 using Umbraco.Web.UI.JavaScript;
 
-namespace UIOmatic.Web
+namespace UIOMatic.Web
 {
     public class ServerVariableParserEvent : ApplicationEventHandler
     {

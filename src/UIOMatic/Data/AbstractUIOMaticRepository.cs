@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using UIOmatic.Interfaces;
+using UIOMatic.Interfaces;
 using UIOMatic.Models;
 
-namespace UIOmatic.Data
+namespace UIOMatic.Data
 {
     public abstract class AbstractUIOMaticRepository<TEntity, TId> : IUIOMaticRepository
     {

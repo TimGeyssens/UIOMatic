@@ -2,8 +2,8 @@
 using System.Linq;
 using umbraco;
 using umbraco.BusinessLogic.Actions;
-using UIOmatic.Extensions;
-using UIOmatic.Services;
+using UIOMatic.Extensions;
+using UIOMatic.Services;
 using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Enums;
@@ -13,7 +13,7 @@ using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
 
-namespace UIOmatic.Web.Controllers
+namespace UIOMatic.Web.Controllers
 {
     [Tree("uiomatic", "uiomatic", "UI-O-Matic")]
     [PluginController("UIOMatic")]
@@ -43,7 +43,7 @@ namespace UIOmatic.Web.Controllers
                     var attri2 = attri as UIOMaticAttribute; 
                     if (attri2 != null)
                     {
-                        // UIOmatic node
+                        // UIOMatic node
                         if (attri2.RenderType == UIOMatic.Enums.UIOMaticRenderType.Tree)
                         {
                             // Tree node

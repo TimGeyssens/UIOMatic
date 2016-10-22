@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using UIOmatic.Data;
-using UIOmatic.Extensions;
-using UIOmatic.Interfaces;
+using UIOMatic.Data;
+using UIOMatic.Extensions;
+using UIOMatic.Interfaces;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
 using Umbraco.Core;
@@ -32,7 +32,7 @@ namespace UIOMatic
 
         private static IEnumerable<Type> EnsureUIOMaticTypes()
         {
-            var t = TypeFinder.FindClassesWithAttribute<UIOMaticFolderAttribute>(); // UIOMaticFolderAttribute is the base type for all UIOmatic entities
+            var t = TypeFinder.FindClassesWithAttribute<UIOMaticFolderAttribute>(); // UIOMaticFolderAttribute is the base type for all UIOMatic entities
             HttpRuntime.Cache.Insert("UIOMaticFolderTypes", t);
             return t;
         }
@@ -40,7 +40,7 @@ namespace UIOMatic
         internal static Type GetUIOMaticTypeByAlias(string typeAlias, bool includeFolders = false, bool throwNullError = false)
         {
             var t = (includeFolders ? GetUIOMaticFolderTypes() : GetUIOMaticTypes()).FirstOrDefault(x => {
-                var attr = x.GetCustomAttribute<UIOMaticFolderAttribute>(true);  // UIOMaticFolderAttribute is the base type for all UIOmatic entities
+                var attr = x.GetCustomAttribute<UIOMaticFolderAttribute>(true);  // UIOMaticFolderAttribute is the base type for all UIOMatic entities
                 return attr == null || attr.Alias.IsNullOrWhiteSpace()
                     ? x.Name == typeAlias
                     : attr.Alias == typeAlias;

@@ -3,7 +3,7 @@ using Umbraco.Core.Models.Membership;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
-namespace UIOmatic.Web.Controllers
+namespace UIOMatic.Web.Controllers
 {
     [PluginController("UIOMatic")]
     public class FieldApiController : UmbracoAuthorizedJsonController

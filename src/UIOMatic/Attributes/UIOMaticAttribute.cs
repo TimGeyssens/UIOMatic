@@ -1,5 +1,5 @@
 ﻿using System;
-using UIOmatic.Data;
+using UIOMatic.Data;
 using UIOMatic.Enums;
 
 namespace UIOMatic.Attributes

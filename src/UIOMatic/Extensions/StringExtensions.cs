@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UIOmatic.Extensions
+namespace UIOMatic.Extensions
 {
     internal static class StringExtensions
     {

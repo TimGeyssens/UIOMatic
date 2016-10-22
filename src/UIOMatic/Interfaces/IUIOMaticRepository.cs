@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UIOMatic.Models;
 
-namespace UIOmatic.Interfaces
+namespace UIOMatic.Interfaces
 {
     public interface IUIOMaticRepository
     {

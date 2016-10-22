@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using UIOmatic.Services;
-using UIOmatic.Web.PostModels;
+using UIOMatic.Services;
+using UIOMatic.Web.PostModels;
 using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
@@ -11,7 +11,7 @@ using Umbraco.Core;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
-namespace UIOmatic.Web.Controllers
+namespace UIOMatic.Web.Controllers
 {
     [PluginController("UIOMatic")]
     public class ObjectController : UmbracoAuthorizedJsonController

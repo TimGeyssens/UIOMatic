@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
 using System.Xml;
-using UIOmatic.Services;
+using UIOMatic.Services;
 using UC = Umbraco.Core;
 
 namespace UIOMatic

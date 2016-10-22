@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UIOmatic.Extensions;
+using UIOMatic.Extensions;
 using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
@@ -14,7 +14,7 @@ using Umbraco.Core.IO;
 using Umbraco.Core.Persistence;
 using Constants = UIOMatic.Constants;
 
-namespace UIOmatic.Services
+namespace UIOMatic.Services
 {
     
     public class PetaPocoObjectService : IUIOMaticObjectService

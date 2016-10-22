@@ -2,7 +2,7 @@
 using Umbraco.Core;
 using Umbraco.Core.Persistence;
 
-namespace UIOmatic.Extensions
+namespace UIOMatic.Extensions
 {
     internal static class PropertyInfoExtensions
     {
