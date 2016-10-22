@@ -32,7 +32,7 @@ namespace Example.Models
         [UIOMaticField("Lastname", "Enter your lastname")]
         public string LastName { get; set; }
 
-        [UIOMaticField("TheDate", "Select a date")]
+        [UIOMaticField("TheDate", "Select a date", View = "date")]
         public DateTime TheDate { get; set; }
 
         public IEnumerable<Exception> Validate()
