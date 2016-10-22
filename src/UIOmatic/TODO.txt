@@ -1,5 +1,2 @@
 ﻿* Fix search dialog for picker property editor
-* Fix list field view
-* Move property editor resource calls to resource JS file
-* Add filter support to list view
 * Add where clause option to UIOMatic attribute?
