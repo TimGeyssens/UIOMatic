@@ -17,6 +17,9 @@ namespace UIOmatic.Services
         public static event EventHandler<ObjectEventArgs> CreatingObject;
         public static event EventHandler<ObjectEventArgs> CreatedObject;
 
+        public static event EventHandler<DeleteEventArgs> DeletingObjects;
+        public static event EventHandler<DeleteEventArgs> DeletedObjects;
+
         private static Lazy<IUIOMaticObjectService> _instance = new Lazy<IUIOMaticObjectService>(() => (IUIOMaticObjectService)Activator.CreateInstance(Config.DefaultObjectServiceType, null));
 
         private UIOMaticObjectService()
@@ -30,59 +33,75 @@ namespace UIOmatic.Services
             }
         }
 
-        public static void OnBuildingQuery(IUIOMaticObjectService instance, QueryEventArgs args)
+        public static void OnBuildingQuery(QueryEventArgs args)
         {
             if (BuildingQuery != null)
             {
-                BuildingQuery(instance, args);
+                BuildingQuery(Instance, args);
             }
         }
 
-        public static void OnBuiltQuery(IUIOMaticObjectService instance, QueryEventArgs args)
+        public static void OnBuiltQuery(QueryEventArgs args)
         {
             if (BuiltQuery != null)
             {
-                BuiltQuery(instance, args);
+                BuiltQuery(Instance, args);
             }
         }
 
-        public static void OnScaffoldingObject(IUIOMaticObjectService instance, ObjectEventArgs args)
+        public static void OnScaffoldingObject(ObjectEventArgs args)
         {
             if (ScaffoldingObject != null)
             {
-                ScaffoldingObject(instance, args);
+                ScaffoldingObject(Instance, args);
             }
         }
 
-        public static void OnUpdatingObject(IUIOMaticObjectService instance, ObjectEventArgs args)
+        public static void OnUpdatingObject(ObjectEventArgs args)
         {
             if (UpdatingObject != null)
             {
-                UpdatingObject(instance, args);
+                UpdatingObject(Instance, args);
             }
         }
 
-        public static void OnUpdatedObject(IUIOMaticObjectService instance, ObjectEventArgs args)
+        public static void OnUpdatedObject(ObjectEventArgs args)
         {
             if (UpdatedObject != null)
             {
-                UpdatedObject(instance, args);
+                UpdatedObject(Instance, args);
             }
         }
 
-        public static void OnCreatingObject(IUIOMaticObjectService instance, ObjectEventArgs args)
+        public static void OnCreatingObject(ObjectEventArgs args)
         {
             if (CreatingObject != null)
             {
-                CreatingObject(instance, args);
+                CreatingObject(Instance, args);
             }
         }
 
-        public static void OnCreatedObject(IUIOMaticObjectService instance, ObjectEventArgs args)
+        public static void OnCreatedObject(ObjectEventArgs args)
         {
             if (CreatedObject != null)
             {
-                CreatedObject(instance, args);
+                CreatedObject(Instance, args);
+            }
+        }
+
+        public static void OnDeletingObjects(DeleteEventArgs args)
+        {
+            if (DeletingObjects != null)
+            {
+                DeletingObjects(Instance, args);
+            }
+        }
+
+        public static void OnDeletedObjects(DeleteEventArgs args)
+        {
+            if (DeletedObjects != null)
+            {
+                DeletedObjects(Instance, args);
             }
         }
     }

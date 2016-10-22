@@ -1,4 +1,5 @@
 ﻿using System;
+using UIOmatic.Data;
 using UIOMatic.Enums;
 
 namespace UIOMatic.Attributes
@@ -8,16 +9,15 @@ namespace UIOMatic.Attributes
     {
         public string ItemIcon { get; set; }
 
+        public UIOMaticRenderType RenderType { get; set; }
+
+        public Type RepositoryType { get; set; }
+
+        public string ConnectionStringName { get; set; }
+
         public string SortColumn { get; set; }
 
         public string SortOrder { get; set; }
-
-        //TODO: Hook this up so that lists can use the same DB tables
-        public string WhereClause { get; set; }
-
-        public UIOMaticRenderType RenderType { get; set; }
-
-        public string ConnectionStringName { get; set; }
 
         public bool ReadOnly { get; set; }
 
@@ -28,6 +28,7 @@ namespace UIOMatic.Attributes
             RenderType = UIOMaticRenderType.Tree;
             SortOrder = "ASC";
             ReadOnly = false;
+            RepositoryType = typeof(DefaultUIOMaticRepository);
         }
     }
 }

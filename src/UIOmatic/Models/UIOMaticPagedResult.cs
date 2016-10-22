@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace UIOMatic.Models
 {
-    public class UIOMaticPagedResult
+    public class UIOMaticPagedResult : UIOMaticPagedResult<object>
+    { }
+
+    public class UIOMaticPagedResult<TEntity>
     {
         [JsonProperty("currentPage")]
         public long CurrentPage { get; set; }
@@ -18,6 +21,6 @@ namespace UIOMatic.Models
         public long TotalItems { get; set; }
 
         [JsonProperty("items")]
-        public IEnumerable<object> Items { get; set; }
+        public IEnumerable<TEntity> Items { get; set; }
     }
 }

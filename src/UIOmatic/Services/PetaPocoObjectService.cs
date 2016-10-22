@@ -19,35 +19,13 @@ namespace UIOmatic.Services
     
     public class PetaPocoObjectService : IUIOMaticObjectService
     {
-        private Database GetDb(string connStr)
-        {
-            return !string.IsNullOrEmpty(connStr)
-                ? new Database(connStr)
-                : ApplicationContext.Current.DatabaseContext.Database;
-        }
-
         public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
         {
+            var typeInfo = GetTypeInfo(type); 
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
+            var repo = Helper.GetRepository(attri, typeInfo);
 
-            var typeInfo = GetTypeInfo(type);
-            var query = new Sql().Select("*").From(typeInfo.TableName);
-            
-            var a1 = new QueryEventArgs(type, typeInfo.TableName, query, sortColumn, sortOrder, "");
-            UIOMaticObjectService.OnBuildingQuery(this, a1);
-            query = a1.Query;
-
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-            {
-                query.OrderBy(sortColumn + " " + sortOrder);
-            }
-
-            var a2 = new QueryEventArgs(type, typeInfo.TableName, query, sortColumn, sortOrder, "");
-            UIOMaticObjectService.OnBuiltQuery(this, a2);
-            query = a2.Query;
-
-            return db.Fetch(type, query);
+            return repo.GetAll(sortColumn, sortOrder);
         }
 
         public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, 
@@ -55,82 +33,60 @@ namespace UIOmatic.Services
             IDictionary<string, string> filters = null,
             string searchTerm = "")
         {
+            var typeInfo = GetTypeInfo(type);
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
+            var repo = Helper.GetRepository(attri, typeInfo);
+
+            return repo.GetPaged(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
+        }
+
+        public object GetById(Type type, string id)
+        {
+            var typeInfo = GetTypeInfo(type);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var repo = Helper.GetRepository(attri, typeInfo);
+
+            return repo.Get(id);
+        }
+
+        public object Create(Type type, IDictionary<string, object> values)
+        {
+            var obj = CreateAndPopulateType(type, values);
 
             var typeInfo = GetTypeInfo(type);
-            var query = new Sql().Select("*").From(typeInfo.TableName);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var repo = Helper.GetRepository(attri, typeInfo);
 
-            var a1 = new QueryEventArgs(type, typeInfo.TableName, query, sortColumn, sortOrder, searchTerm);
-            UIOMaticObjectService.OnBuildingQuery(this, a1);
-            query = a1.Query;
+            return repo.Create(obj);
+        }
 
-            query.Append("WHERE 1=1");
+        public object Update(Type type, IDictionary<string, object> values)
+        {
+            var obj = CreateAndPopulateType(type, values);
 
-            // Filter by search term
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                query.Append("AND (1=0");
+            var typeInfo = GetTypeInfo(type);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var repo = Helper.GetRepository(attri, typeInfo);
 
-                var c = 0;
-                foreach (var property in type.GetProperties())
-                {
-                    var attris = property.GetCustomAttributes();
-                    if (!attris.Any(x=>x.GetType() == typeof(IgnoreAttribute))) 
-                    {
-                        var columnName = property.Name;
+            return repo.Update(obj);
+        }
 
-                        var columnAttri = attris.FirstOrDefault(x => x.GetType() == typeof(ColumnAttribute)) as ColumnAttribute;
-                        if (columnAttri != null)
-                            columnName = columnAttri.Name;
+        public string[] DeleteByIds(Type type, string[] ids)
+        {
+            var typeInfo = GetTypeInfo(type);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var repo = Helper.GetRepository(attri, typeInfo);
 
-                        query.Append("OR " + columnName + " like @0", "%" + searchTerm + "%");
-                        c++;
+            repo.Delete(ids);
 
-                    }
-                }
+            return ids;
+        }
 
-                query.Append(")");
-            }
+        public IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values)
+        {
+            var obj = CreateAndPopulateType(type, values);
 
-            if (filters != null && filters.Any()) 
-            {
-                foreach (var filter in filters)
-                {
-                    query.Append("AND " + filter.Key + " = @0", filter.Value);
-                }
-            }
-
-            // Sort
-            // BUG: There is a bug in the peta poco version used that errors if sort column is wrapped in [] so need to make sure it's not
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-            {
-                query.OrderBy(sortColumn + " " + sortOrder);
-            }
-            else if (!string.IsNullOrEmpty(attri.SortColumn) && !string.IsNullOrEmpty(attri.SortOrder))
-            {
-                query.OrderBy(attri.SortColumn + " " + attri.SortOrder);
-            }
-            else
-            {
-                var primaryKeyColum = type.GetPrimaryKeyName();
-                query.OrderBy(primaryKeyColum + " asc");
-            }
-
-            var a2 = new QueryEventArgs(type, typeInfo.TableName, query,sortColumn,sortOrder,searchTerm);
-            UIOMaticObjectService.OnBuiltQuery(this, a2);
-            query = a2.Query;
-
-            var p = db.Page(type, pageNumber, itemsPerPage, query);
-
-            return new UIOMaticPagedResult
-            {
-                CurrentPage = p.CurrentPage,
-                ItemsPerPage = p.ItemsPerPage,
-                TotalItems = p.TotalItems,
-                TotalPages = p.TotalPages,
-                Items = p.Items
-            };
+            return ((IUIOMaticModel)obj).Validate();
         }
 
         public IEnumerable<string> GetAllColumns(Type type)
@@ -324,7 +280,8 @@ namespace UIOmatic.Services
                     ListViewProperties = listViewProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
                     ListViewFilterProperties = listViewFilterProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
                     RawProperties = rawProperties.ToArray(),
-                    Path = path.ToArray()
+                    Path = path.ToArray(),
+                    Type = type
                 };
             });
         }
@@ -334,81 +291,9 @@ namespace UIOmatic.Services
             var obj = Activator.CreateInstance(type);
 
             var a1 = new ObjectEventArgs(obj);
-            UIOMaticObjectService.OnScaffoldingObject(this, a1);
+            UIOMaticObjectService.OnScaffoldingObject(a1);
 
             return a1.Object;
-        }
-
-        public object GetById(Type type, string id)
-        {
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
-
-            return db.SingleOrDefault(type, id);
-        }
-
-        public object Create(Type type, IDictionary<string, object> values)
-        {
-            var obj = CreateAndPopulateType(type, values);
-
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
-
-            var typeInfo = GetTypeInfo(type);
-            var a1 = new ObjectEventArgs(obj);
-            UIOMaticObjectService.OnCreatingObject(this, a1);
-
-            if (typeInfo.AutoIncrementPrimaryKey)
-                db.Insert(typeInfo.TableName, typeInfo.PrimaryKeyColumnName, true, obj);
-            else
-                db.Insert(obj);
-
-            var a2 = new ObjectEventArgs(obj);
-            UIOMaticObjectService.OnCreatingObject(this, a2);
-
-            return obj;
-        }
-
-        public object Update(Type type, IDictionary<string, object> values)
-        {
-            var obj = CreateAndPopulateType(type, values);
-            
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
-
-            var a1 = new ObjectEventArgs(obj);
-            UIOMaticObjectService.OnUpdatingObject(this, a1);
-
-            db.Update(obj);
-
-            var a2 = new ObjectEventArgs(obj);
-            UIOMaticObjectService.OnUpdatedObject(this, a2);
-
-            return obj;
-        }
-
-        public string[] DeleteByIds(Type type, string[] ids)
-        {
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var db = GetDb(attri.ConnectionStringName);
-
-            //TODO: add event
-
-            var typeInfo = GetTypeInfo(type);
-            var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})",
-                typeInfo.TableName,
-                typeInfo.PrimaryKeyColumnName,
-                string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
-
-            db.Execute(sql);
-
-           return ids;
-        }
-
-        public IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values)
-        {
-            var obj = CreateAndPopulateType(type, values);
-            return ((IUIOMaticModel)obj).Validate();
         }
 
         private object CreateAndPopulateType(Type type, IDictionary<string, object> values)

@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using UIOmatic.Data;
 using UIOmatic.Extensions;
+using UIOmatic.Interfaces;
 using UIOMatic.Attributes;
+using UIOMatic.Models;
 using Umbraco.Core;
 
 namespace UIOMatic
 {
     public class Helper
     {
+        public static IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
+        {
+            return attr.RepositoryType == typeof(DefaultUIOMaticRepository)
+                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo)
+                : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType);
+        }
+
         public static IEnumerable<Type> GetUIOMaticTypes()
         {
             return GetUIOMaticFolderTypes().Where(x => x.HasAttribute<UIOMaticAttribute>());

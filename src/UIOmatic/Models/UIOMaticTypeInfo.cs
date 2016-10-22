@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using UIOMatic.Enums;
 
 namespace UIOMatic.Models
@@ -43,5 +44,8 @@ namespace UIOMatic.Models
 
         [JsonProperty("path")]
         public string[] Path { get; set; }
+
+        [JsonProperty("type")]
+        public Type Type { get; set; }
     }
 }
