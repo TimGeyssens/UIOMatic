@@ -11,12 +11,12 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 
 namespace Example.Models
 {
-    [UIOMatic("TestWithDate", "icon-users", "icon-user", RenderType = UIOMaticRenderType.List,
-        SortColumn = "TheDate", SortOrder = "desc")]
-    [TableName("TestWithDate")]
-    public class TestWithDate : IUIOMaticModel
+    [UIOMatic("TestWithDateTime", "icon-users", "icon-user", RenderType = UIOMaticRenderType.List,
+        SortColumn = "TheDateTime", SortOrder = "desc")]
+    [TableName("TestWithDateTime")]
+    public class TestWithDateTime : IUIOMaticModel
     {
-        public TestWithDate()
+        public TestWithDateTime()
         {
 
         }
@@ -32,8 +32,8 @@ namespace Example.Models
         [UIOMaticField("Lastname", "Enter your lastname")]
         public string LastName { get; set; }
 
-        [UIOMaticField("TheDate", "Select a date", View = "date")]
-        public DateTime TheDate { get; set; }
+        [UIOMaticField("TheDateTime", "Select a date time")]
+        public DateTime TheDateTime { get; set; }
 
         public IEnumerable<Exception> Validate()
         {
