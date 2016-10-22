@@ -95,13 +95,13 @@ namespace UIOmatic.Services
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
             var repo = Helper.GetRepository(attri, typeInfo);
             
-            var a1 = new DeleteEventArgs(typeInfo.Type, typeInfo.TableName, ids);
+            var a1 = new DeleteEventArgs(typeInfo.Type, ids);
             UIOMaticObjectService.OnDeletingObjects(a1);
             ids = a1.Ids;
 
             repo.Delete(ids);
             
-            var a2 = new DeleteEventArgs(typeInfo.Type, typeInfo.TableName, ids);
+            var a2 = new DeleteEventArgs(typeInfo.Type, ids);
             UIOMaticObjectService.OnDeletedObjects(a2);
 
             return a2.Ids;
