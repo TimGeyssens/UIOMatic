@@ -1,7 +1,7 @@
 ﻿var app = angular.module("umbraco");
 
 angular.module("umbraco").controller("uioMatic.ObjectEditController",
-	function ($scope, $routeParams, $location, uioMaticObjectResource, notificationsService, navigationService) {
+	function ($scope, $routeParams, $location, $timeout, uioMaticObjectResource, notificationsService, navigationService) {
 
 	    $scope.loaded = false;
 	    $scope.editing = false;
@@ -31,6 +31,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.queryString = qs;
 	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uiomatic/list/" + $scope.typeAlias;
 
+	    //if ($scope.queryString["tab"])
+	    //    $scope.returnUrl += ($scope.returnUrl.indexOf("%3F") >= 0 ? "%26" : "%3F") + "tab=" + $scope.queryString["returnTab"];
+
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
 	        $scope.type = response;
@@ -55,7 +58,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                if (value.tab == "") {
 	                    this.push({ id: 99, label: "General" });
 	                } else {
-	                    this.push({ id: value.tabOrder > 0 ? value.tabOrder : key, label: value.tab });
+	                    this.push({ id: value.tabOrder > 0 ? value.tabOrder : key, label: value.tab, active: $scope.queryString["tab"] === "tab" + value.tabOrder });
 	                }
 	            }
 
@@ -94,7 +97,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	            });
 	        }
 	    });
-
 
 	    $scope.save = function (object) {
 
@@ -151,6 +153,14 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
             // Because some JS seems to be translating any links starting '#'
 	        $location.url(url);
 	    }
+
+	    $scope.$on("valuesLoaded", function () {
+	        $timeout(function() {
+	            if ($scope.content.tabs.length > 1 && $scope.queryString["tab"]) {
+	                $("a[href='#" + $scope.queryString["tab"] + "']").trigger("click");
+	            }
+	        }, 202); // 202 is very specific, as tabs init code runs on a 200 timeout so gotta wait for that first
+	    });
 
 	    var setValues = function () {
 

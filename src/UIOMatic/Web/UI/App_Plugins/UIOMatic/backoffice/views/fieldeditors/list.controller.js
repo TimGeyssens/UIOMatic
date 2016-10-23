@@ -4,7 +4,6 @@
         $scope.filterId = $routeParams.id.split("?")[0];
         $scope.typeAlias = $scope.property.config.typeAlias;
         $scope.foreignKeyColumn = $scope.property.config.foreignKeyColumn;
-        $scope.returnUrl = encodeURIComponent(encodeURIComponent($location.url()));
 
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
@@ -27,8 +26,6 @@
         }
 
         function init() {
-            
-
             uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
                 //.replace(' ', '_') nasty hack to allow columns with a space
                 $scope.primaryKeyColumnName = response.primaryKeyColumnName.replace(' ', '_');
@@ -41,8 +38,6 @@
                     fetchData();
 
             });
-
-            
         }
 
         init();
@@ -97,6 +92,18 @@
                     $scope.actionInProgress = false;
                 });
             }
+        }
+
+        $scope.getReturnUrl = function () {
+            var activeTab = $("li[val-tab].active > a");
+            var tabId = activeTab.length === 1 ? activeTab.attr("href").replace('#', '') : "";
+            var url = $location.url();
+            if (url.indexOf("tab=") === -1) {
+                url += (url.indexOf("%3F") === -1 ? "%3F" : "%26") + "tab=" + tabId;
+            } else {
+                url = url.replace(/(tab=)(tab[0-9]*)/g, "$1" + tabId);
+            }
+            return encodeURIComponent(encodeURIComponent(url));
         }
 
         $scope.navigate = function (url) {
