@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using UIOMatic.Services;
 using UIOMatic.Web.PostModels;
-using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 using Umbraco.Core;
