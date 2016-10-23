@@ -29,7 +29,6 @@ This class
     {
         public Person() { }
 
-        [UIOMaticIgnoreField]
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
 
