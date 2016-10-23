@@ -1,4 +1,4 @@
-# UI-O-Matic #
+# ![](docs/img/uiomatic.png?raw=true) #
 
 [![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
 [![Documentation Status](https://readthedocs.org/projects/uiomatic/badge/?version=latest)](http://uiomatic.readthedocs.org/en/latest/)
@@ -8,8 +8,6 @@
 
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco ](http://www.toptensoftware.com/petapoco/)poco**
-
-![](docs/img/logo.png?raw=true)
 
 Implement an interface and decorate your class and properties with some additional attributes.
 
