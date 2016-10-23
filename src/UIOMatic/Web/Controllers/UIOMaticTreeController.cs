@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using umbraco;
 using umbraco.BusinessLogic.Actions;
 using UIOMatic.Extensions;
 using UIOMatic.Services;
@@ -44,7 +43,7 @@ namespace UIOMatic.Web.Controllers
                     if (attri2 != null)
                     {
                         // UIOMatic node
-                        if (attri2.RenderType == UIOMatic.Enums.UIOMaticRenderType.Tree)
+                        if (attri2.RenderType == UIOMaticRenderType.Tree)
                         {
                             // Tree node
                             var node = this.CreateTreeNode(
