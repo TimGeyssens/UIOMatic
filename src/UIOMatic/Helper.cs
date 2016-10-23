@@ -15,7 +15,7 @@ namespace UIOMatic
     {
         public static IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
         {
-            return attr.RepositoryType == typeof(DefaultUIOMaticRepository)
+            return typeof(DefaultUIOMaticRepository).IsAssignableFrom(attr.RepositoryType)
                 ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo)
                 : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType);
         }
