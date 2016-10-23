@@ -10,7 +10,7 @@
 	    $scope.openDialog = function()
 	    {
 	        var dialog = dialogService.open({
-	            template: '/App_Plugins/UIOMatic/backoffice/PropertyEditors/objectsearcher.html',
+	            template: '/App_Plugins/UIOMatic/backoffice/views/PropertyEditors/objectsearcher.html',
 	            show: true,
 	            callback: done,
 	            dialogData: {
