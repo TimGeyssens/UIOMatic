@@ -1,4 +1,4 @@
-# ![](docs/img/uiomatic.png?raw=true) #
+# ![](docs/img/uiomatic.png?raw=true&v=2) #
 
 [![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
 [![Documentation Status](https://readthedocs.org/projects/uiomatic/badge/?version=latest)](http://uiomatic.readthedocs.org/en/latest/)
