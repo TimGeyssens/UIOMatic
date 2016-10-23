@@ -40,7 +40,7 @@ namespace UIOMatic.Web.Controllers
                 if (attri.ParentAlias == id)
                 {
                     var attri2 = attri as UIOMaticAttribute; 
-                    if (attri2 != null)
+                    if (attri2 != null && !attri2.HideFromTree)
                     {
                         // UIOMatic node
                         if (attri2.RenderType == UIOMaticRenderType.Tree)

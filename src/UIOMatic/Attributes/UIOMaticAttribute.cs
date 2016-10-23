@@ -23,6 +23,8 @@ namespace UIOMatic.Attributes
 
         public bool ReadOnly { get; set; }
 
+        public bool HideFromTree { get; set; }
+
         public UIOMaticAttribute(string alias, string folderName, string itemName, string folderIcon, string itemIcon)
             : base(alias, folderName, folderIcon)
         {
@@ -32,6 +34,7 @@ namespace UIOMatic.Attributes
             SortOrder = "ASC";
             ReadOnly = false;
             RepositoryType = typeof(DefaultUIOMaticRepository);
+            HideFromTree = false;
         }
     }
 }
