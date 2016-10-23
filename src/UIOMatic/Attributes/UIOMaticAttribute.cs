@@ -7,6 +7,8 @@ namespace UIOMatic.Attributes
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class UIOMaticAttribute : UIOMaticFolderAttribute
     {
+        public string ItemName { get; set; }
+
         public string ItemIcon { get; set; }
 
         public UIOMaticRenderType RenderType { get; set; }
@@ -21,9 +23,10 @@ namespace UIOMatic.Attributes
 
         public bool ReadOnly { get; set; }
 
-        public UIOMaticAttribute(string name, string alias, string folderIcon, string itemIcon)
-            : base(name, alias, folderIcon)
+        public UIOMaticAttribute(string alias, string folderName, string itemName, string folderIcon, string itemIcon)
+            : base(alias, folderName, folderIcon)
         {
+            ItemName = itemName;
             ItemIcon = itemIcon;
             RenderType = UIOMaticRenderType.Tree;
             SortOrder = "ASC";

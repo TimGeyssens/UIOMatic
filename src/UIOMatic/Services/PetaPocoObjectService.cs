@@ -294,6 +294,8 @@ namespace UIOMatic.Services
                 return new UIOMaticTypeInfo
                 {
                     Alias = attri.Alias,
+                    DisplayNamePlural = attri.FolderName,
+                    DisplayNameSingular = attri.ItemName,
                     Name = type.Name,
                     TableName = type.GetTableName(),
                     RenderType = attri.RenderType,

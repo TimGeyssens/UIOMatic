@@ -9,6 +9,12 @@ namespace UIOMatic.Models
         [JsonProperty("alias")]
         public string Alias { get; set; }
 
+        [JsonProperty("displayNamePlural")]
+        public string DisplayNamePlural { get; set; }
+
+        [JsonProperty("displayNameSingular")]
+        public string DisplayNameSingular { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 

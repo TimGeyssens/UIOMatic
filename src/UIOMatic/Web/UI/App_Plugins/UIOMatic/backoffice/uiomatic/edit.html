@@ -12,8 +12,7 @@
                     <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.nameFieldIndex].value" />
                 </div>
                 <div ng-if="type.nameFieldIndex == -1">
-                    <h1 ng-show="editing">Object Editor</h1>
-                    <h1 ng-hide="editing">Object Creator</h1>
+                    <h1>{{title}}</h1>
                 </div>
             </div>
 
@@ -24,7 +23,7 @@
                                       current-section="{{currentSection}}">
                     </umb-options-menu>
                 </div>
-            </div>
+            </div> 
         </umb-header>
 
         <div class="umb-panel-body umb-scrollable row-fluid">

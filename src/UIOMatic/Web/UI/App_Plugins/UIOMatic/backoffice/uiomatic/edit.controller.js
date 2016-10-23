@@ -79,6 +79,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	        if (!hasId)
 	        {
+	            $scope.title = "Create "  + response.displayNameSingular;
 	            uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
 	                $scope.object = response;
 	                $scope.loaded = true;
@@ -88,6 +89,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        }
 	        else
 	        {
+	            $scope.title = "Edit " + response.displayNameSingular;
 	            uioMaticObjectResource.getById($scope.typeAlias, $scope.id).then(function (response) {
 	                $scope.object = response;
 	                $scope.loaded = true;
@@ -156,7 +158,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    $scope.$on("valuesLoaded", function () {
 	        $timeout(function() {
-	            if ($scope.content.tabs.length > 1 && $scope.queryString["tab"]) {
+	            if ($scope.content && $scope.content.tabs.length > 1 && $scope.queryString["tab"]) {
 	                $("a[href='#" + $scope.queryString["tab"] + "']").trigger("click");
 	            }
 	        }, 202); // 202 is very specific, as tabs init code runs on a 200 timeout so gotta wait for that first

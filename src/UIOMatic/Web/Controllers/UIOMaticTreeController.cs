@@ -50,7 +50,7 @@ namespace UIOMatic.Web.Controllers
                                 alias,
                                 id,
                                 queryStrings,
-                                attri.Name,
+                                attri.FolderName,
                                 attri.FolderIcon,
                                 true,
                                 "uiomatic");
@@ -64,7 +64,7 @@ namespace UIOMatic.Web.Controllers
                                 alias,
                                 id,
                                 queryStrings,
-                                attri.Name,
+                                attri.FolderName,
                                 attri.FolderIcon,
                                 false,
                                 "uiomatic/uiomatic/list/" + alias);
@@ -81,7 +81,7 @@ namespace UIOMatic.Web.Controllers
                                attri.Alias,
                                id,
                                queryStrings,
-                               attri.Name,
+                               attri.FolderName,
                                attri.FolderIcon,
                                true,
                                "uiomatic");

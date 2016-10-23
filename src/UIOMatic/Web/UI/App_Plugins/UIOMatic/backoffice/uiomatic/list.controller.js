@@ -29,7 +29,7 @@
         }
 
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
-            //.replace(' ', '_') nasty hack to allow columns with a space
+            $scope.title = response.displayNamePlural;
             $scope.primaryKeyColumnName = response.primaryKeyColumnName.replace(' ', '_');
             $scope.predicate = response.primaryKeyColumnName.replace(' ', '_');
             $scope.properties = response.listViewProperties;
