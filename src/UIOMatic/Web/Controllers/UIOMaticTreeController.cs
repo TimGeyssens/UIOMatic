@@ -8,6 +8,7 @@ using UIOMatic.Attributes;
 using UIOMatic.Enums;
 using UIOMatic.Interfaces;
 using Umbraco.Core;
+using Umbraco.Core.Services;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
@@ -121,11 +122,15 @@ namespace UIOMatic.Web.Controllers
 
         protected override MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
-            var menu = new MenuItemCollection(); 
+            var menu = new MenuItemCollection();
+
+            var createText = Services.TextService.Localize("actions/" + ActionNew.Instance.Alias);
+            var deleteText = Services.TextService.Localize("actions/" + ActionDelete.Instance.Alias);
+            var refreshText = Services.TextService.Localize("actions/" + ActionRefresh.Instance.Alias);
 
             if (id == "-1")
             {
-                menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                menu.Items.Add<RefreshNode, ActionRefresh>(refreshText, true);
             }
             else
             {
@@ -137,7 +142,7 @@ namespace UIOMatic.Web.Controllers
                     {
                         var attri = type.GetCustomAttribute<UIOMaticAttribute>(true);
                         if (attri != null && !attri.ReadOnly)
-                            menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+                            menu.Items.Add<ActionDelete>(deleteText);
                     }
                 }
                 else
@@ -152,14 +157,14 @@ namespace UIOMatic.Web.Controllers
                             if(attri2 != null)
                             { 
                                 if (!attri2.ReadOnly)
-                                    menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                                    menu.Items.Add<CreateChildEntity, ActionNew>(createText);
 
-                                if (attri2.RenderType == UIOMatic.Enums.UIOMaticRenderType.Tree)
-                                    menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                                if (attri2.RenderType == UIOMaticRenderType.Tree)
+                                    menu.Items.Add<RefreshNode, ActionRefresh>(refreshText, true);
                             }
                             else
                             {
-                                menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                                menu.Items.Add<RefreshNode, ActionRefresh>(refreshText, true);
                             }
                         }
                     }
