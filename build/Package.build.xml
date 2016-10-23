@@ -22,7 +22,7 @@
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
 		<PackageLicenseName>MIT license</PackageLicenseName>
 		<PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
-		<ProjectUrl>https://github.com/TimGeyssens/UIOMatice</ProjectUrl>
+		<ProjectUrl>https://github.com/TimGeyssens/UIOMatic</ProjectUrl>
 	</PropertyGroup>
 
 	<!-- NUGET ONLY PROPERTIES -->
@@ -34,7 +34,7 @@
 		<Copyright>Tim Geyssens, Matt Brailsford and other contributors</Copyright>
 		<Owners>Tim Geyssens, Matt Brailsford and other contributors</Owners>
 		<Summary>Auto generate an integrated crud UI in Umbraco for a db table based on a petapoco poco</Summary>
-		<IconUrl>https://raw.githubusercontent.com/TimGeyssens/UIOMatic/master/logo.png</IconUrl>
+		<IconUrl>https://raw.githubusercontent.com/TimGeyssens/UIOMatic/v2/docs/img/uiomatic.png</IconUrl>
 		<Tags>umbraco</Tags>
 		<Language>en-GB</Language>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
