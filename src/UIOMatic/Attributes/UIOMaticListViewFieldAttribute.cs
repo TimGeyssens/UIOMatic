@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace UIOMatic.Attributes
 {
@@ -13,9 +14,10 @@ namespace UIOMatic.Attributes
 
         public int Order { get; set; }
 
-        public UIOMaticListViewFieldAttribute()
+        public UIOMaticListViewFieldAttribute([CallerLineNumber] int order = 0)
         {
             View = "label";
+            Order = order;
         }
 
         public string GetView()
