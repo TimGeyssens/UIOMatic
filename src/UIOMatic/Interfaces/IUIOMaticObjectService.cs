@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using UIOMatic.Models;
 
 namespace UIOMatic.Interfaces
@@ -20,7 +21,7 @@ namespace UIOMatic.Interfaces
 
         string[] DeleteByIds(Type type, string[] ids);
 
-        IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values);
+        IEnumerable<ValidationResult> Validate(Type type, IDictionary<string, object> values);
 
         IEnumerable<object> GetAll(Type type,string sortColumn, string sortOrder);
 

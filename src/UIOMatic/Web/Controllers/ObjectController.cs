@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using UIOMatic.Services;
@@ -95,7 +96,7 @@ namespace UIOMatic.Web.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<Exception> Validate(ObjectPostModel model) 
+        public IEnumerable<ValidationResult> Validate(ObjectPostModel model) 
         {
             var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
             return _service.Validate(t, model.Value);

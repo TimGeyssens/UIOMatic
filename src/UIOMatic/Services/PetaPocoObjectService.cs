@@ -11,6 +11,7 @@ using UIOMatic.Models;
 using Umbraco.Core;
 using Umbraco.Core.IO;
 using Umbraco.Core.Persistence;
+using System.ComponentModel.DataAnnotations;
 
 namespace UIOMatic.Services
 {
@@ -105,11 +106,17 @@ namespace UIOMatic.Services
             return a2.Ids;
         }
 
-        public IEnumerable<Exception> Validate(Type type, IDictionary<string, object> values)
+        //TODO: Move validation out of ObjectService? as I think it isn't PetaPoco specific
+        public IEnumerable<ValidationResult> Validate(Type type, IDictionary<string, object> values)
         {
             var obj = CreateAndPopulateType(type, values);
 
-            return ((IUIOMaticModel)obj).Validate();
+            var context = new ValidationContext(obj, null, null);
+            var results = new List<ValidationResult>();
+
+            Validator.TryValidateObject(obj, context, results, true);
+
+            return results;
         }
 
         public IEnumerable<string> GetAllColumns(Type type)
