@@ -46,7 +46,7 @@ This class
             return FirstName + " " + LastName;
         }
 
-    }`
+    }
 
 Will generate the following UI
 
