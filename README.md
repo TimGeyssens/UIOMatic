@@ -25,20 +25,20 @@ This class
 
     [UIOMaticAttribute("people","People","Person","icon-users","icon-user")]
     [TableName("People")]
-    public class Person: IUIOMaticModel
+    public class Person
     {
-        public Person() { }
-
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
 
-        [UIOMaticField("First name","Enter the persons first name")]
+		[Required]
+        [UIOMaticField(Name = "First name", Description = "Enter the persons first name")]
         public string FirstName { get; set; }
 
-        [UIOMaticField("Last name", "Enter the persons last name")]
+		[Required]	
+        [UIOMaticField(Name = "Last name",Description = "Enter the persons last name")]
         public string LastName { get; set; }
 
-        [UIOMaticField("Picture", "Select a picture", View = "file")]
+        [UIOMaticField(Name = "Picture",Description = "Select a picture", View = "file")]
         public string Picture { get; set; }
 
         public override string ToString()
@@ -46,31 +46,11 @@ This class
             return FirstName + " " + LastName;
         }
 
-        public IEnumerable<Exception> Validate()
-        {
-            var exs = new List<Exception>();
-
-            if(string.IsNullOrEmpty(FirstName))
-                exs.Add(new Exception("Please provide a value for first name"));
-
-            if (string.IsNullOrEmpty(LastName))
-                exs.Add(new Exception("Please provide a value for last name"));
-
-
-            return exs;
-        }
     }`
 
 Will generate the following UI
 
 ![](docs/img/example.png?raw=true)
-
-## Documentation ##
-
-For docs please go to[ http://uiomatic.readthedocs.org/](http://uiomatic.readthedocs.org/)
-
-## Presentation ##
-For the quick intro check [http://slides.com/timgeyssens/uiomatic#/](http://slides.com/timgeyssens/uiomatic#/)
 
 ## The Team ##
 
