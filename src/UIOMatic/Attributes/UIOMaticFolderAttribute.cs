@@ -15,11 +15,11 @@ namespace UIOMatic.Attributes
 
         public int Order { get; set; }
 
-        public UIOMaticFolderAttribute(string alias, string folderName, string folderIcon)
+        public UIOMaticFolderAttribute(string alias, string folderName)
         {
             Alias = alias;
             FolderName = folderName;
-            FolderIcon = folderIcon;
+            FolderIcon = "icon-folder";
             ParentAlias = "-1"; // Root
             Order = 0;
         }

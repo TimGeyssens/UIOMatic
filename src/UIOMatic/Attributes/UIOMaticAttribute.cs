@@ -25,11 +25,11 @@ namespace UIOMatic.Attributes
 
         public bool HideFromTree { get; set; }
 
-        public UIOMaticAttribute(string alias, string folderName, string itemName, string folderIcon, string itemIcon)
-            : base(alias, folderName, folderIcon)
+        public UIOMaticAttribute(string alias, string folderName, string itemName)
+            : base(alias, folderName)
         {
             ItemName = itemName;
-            ItemIcon = itemIcon;
+            ItemIcon = "icon-umb-content";
             RenderType = UIOMaticRenderType.Tree;
             SortOrder = "ASC";
             ReadOnly = false;
