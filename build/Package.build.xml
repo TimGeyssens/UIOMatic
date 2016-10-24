@@ -92,6 +92,7 @@
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 			<CoreNuSpecFile Include="$(MSBuildProjectDirectory)\package.core.nuspec" />
+			<NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
 		</ItemGroup>
 		<!-- Umbraco -->
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
@@ -104,6 +105,7 @@
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
 		<Copy SourceFiles="@(CoreNuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+		<Copy SourceFiles="@(NugetReadmeFile)" DestinationFolder="$(BuildNuGetDir)" />
 	</Target>
 
 	<!-- MANIFEST UMBRACO -->
