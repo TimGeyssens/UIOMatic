@@ -9,7 +9,7 @@
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco ](http://www.toptensoftware.com/petapoco/)poco**
 
-Implement an interface and decorate your class and properties with some additional attributes.
+Simply decorate your class and properties with some additional attributes.
 
 ## Example ##
 If you have the following db table
