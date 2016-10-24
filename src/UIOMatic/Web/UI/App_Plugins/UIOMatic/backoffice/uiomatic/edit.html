@@ -12,7 +12,8 @@
                     <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.nameFieldIndex].value" />
                 </div>
                 <div ng-if="type.nameFieldIndex == -1">
-                    <h1>{{title}}</h1>
+                    <h1 ng-if="!editing">Create {{itemDisplayName}}</h1>
+                    <h1 ng-if="editing">Update {{itemDisplayName}}</h1>
                 </div>
             </div>
 

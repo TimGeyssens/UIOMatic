@@ -37,6 +37,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
 	        $scope.type = response;
+	        $scope.itemDisplayName = response.displayNameSingular;
 	        $scope.readOnly = response.readOnly;
 	        $scope.properties = response.editableProperties;
 	        $scope.type.nameFieldIndex = $scope.type.nameFieldKey.length > 0
@@ -79,7 +80,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	        if (!hasId)
 	        {
-	            $scope.title = "Create "  + response.displayNameSingular;
 	            uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
 	                $scope.object = response;
 	                $scope.loaded = true;
@@ -89,7 +89,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        }
 	        else
 	        {
-	            $scope.title = "Edit " + response.displayNameSingular;
 	            uioMaticObjectResource.getById($scope.typeAlias, $scope.id).then(function (response) {
 	                $scope.object = response;
 	                $scope.loaded = true;
@@ -115,7 +114,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	                if (resp.length > 0) {
 	                    angular.forEach(resp, function (error) {
-	                        notificationsService.error("Failed to create object", error.ErrorMessage);
+	                        notificationsService.error("Failed to create " + $scope.itemDisplayName, error.ErrorMessage);
 	                    });
 	                } else {
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
@@ -127,7 +126,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                            }
 	                        };
 	                        $location.url(redirectUrl);
-	                        notificationsService.success("Success", "Object has been created");
+	                        notificationsService.success("Success", $scope.itemDisplayName + " has been created");
 	                    });
 	                }
 
@@ -135,7 +134,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	                if (resp.length > 0) {
 	                    angular.forEach(resp, function (error) {
-	                        notificationsService.error("Failed to update object", error.ErrorMessage);
+	                        notificationsService.error("Failed to update " + $scope.itemDisplayName, error.ErrorMessage);
 	                    });
 	                } else {
 	                    uioMaticObjectResource.update($scope.typeAlias, object).then(function () {
@@ -143,7 +142,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
                             // Sync the tree
 	                        navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: true, activate: true });
-	                        notificationsService.success("Success", "Object has been saved");
+	                        notificationsService.success("Success", $scope.itemDisplayName + " has been saved");
 	                    });
 	                }
 
