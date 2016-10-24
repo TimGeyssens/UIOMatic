@@ -23,7 +23,6 @@ And the following petapoco poco
     [TableName("People")]
     public class Person
     {
-        public Person() { }
 
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
@@ -38,23 +37,22 @@ And the following petapoco poco
 
 The next additions to the class (attributes and interface)
 
-    [UIOMaticAttribute("People","icon-users","icon-user")]
+    [UIOMaticAttribute("people", "People", "Person","icon-users","icon-user")]
     [TableName("People")]
-    public class Person: IUIOMaticModel
+    public class Person
     {
-        public Person() { }
-
-        [UIOMaticIgnoreField]
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
 
-        [UIOMaticField("First name","Enter the persons first name")]
+		[Required]
+        [UIOMaticField(Name = "First name", Description = "Enter the persons first name")]
         public string FirstName { get; set; }
 
-        [UIOMaticField("Last name", "Enter the persons last name")]
+		[Required]
+        [UIOMaticField(Name = "Last name", Description = "Enter the persons last name")]
         public string LastName { get; set; }
 
-        [UIOMaticField("Picture", "Select a picture", View = "file")]
+        [UIOMaticField(Name = "Picture", Description  ="Select a picture", View = "file")]
         public string Picture { get; set; }
 
         public override string ToString()
@@ -62,27 +60,12 @@ The next additions to the class (attributes and interface)
             return FirstName + " " + LastName;
         }
 
-        public IEnumerable<Exception> Validate()
-        {
-            var exs = new List<Exception>();
-
-            if(string.IsNullOrEmpty(FirstName))
-                exs.Add(new Exception("Please provide a value for first name"));
-
-            if (string.IsNullOrEmpty(LastName))
-                exs.Add(new Exception("Please provide a value for last name"));
-
-
-            return exs;
-        }
     }
 
 will generate the following crud UI
 
 ![](img/gettingstartedexample.png)
 
-## Video demonstration ##
 
-Watch UI-O-Matic on [uHangout EP72](https://www.youtube.com/watch?v=MUlAO85oQ4s)
 
 
