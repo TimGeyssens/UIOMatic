@@ -5,14 +5,12 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UIOMatic.Extensions;
-using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 using Umbraco.Core;
 using Umbraco.Core.IO;
 using Umbraco.Core.Persistence;
-using Constants = UIOMatic.Constants;
 
 namespace UIOMatic.Services
 {
