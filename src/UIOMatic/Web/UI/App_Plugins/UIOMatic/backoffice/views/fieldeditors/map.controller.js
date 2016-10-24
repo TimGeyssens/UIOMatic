@@ -25,7 +25,7 @@
 	            marker.setMap(map);
 	            marker.setPosition(val);
 	        }
-	        $scope.property.value = ($scope.property.type === "System.String" && typeof $scope.property.value !== "string") ? JSON.stringify(val) : val;
+	        $scope.property.value = ($scope.property.type === "System.String") ? JSON.stringify(val) : val;
 	    }
 
 	    $scope.clearValue = function () {
