@@ -37,7 +37,7 @@ And the following petapoco poco
 
 The next additions to the class (attributes and interface)
 
-    [UIOMaticAttribute("people", "People", "Person","icon-users","icon-user")]
+    [UIOMaticAttribute("people","People","Person", FolderIcon = "icon-users", ItemIcon = "icon-user")]
     [TableName("People")]
     public class Person
     {
@@ -48,11 +48,11 @@ The next additions to the class (attributes and interface)
         [UIOMaticField(Name = "First name", Description = "Enter the persons first name")]
         public string FirstName { get; set; }
 
-		[Required]
-        [UIOMaticField(Name = "Last name", Description = "Enter the persons last name")]
+		[Required]	
+        [UIOMaticField(Name = "Last name",Description = "Enter the persons last name")]
         public string LastName { get; set; }
 
-        [UIOMaticField(Name = "Picture", Description  ="Select a picture", View = "file")]
+        [UIOMaticField(Name = "Picture",Description = "Select a picture", View = "file")]
         public string Picture { get; set; }
 
         public override string ToString()
