@@ -43,4 +43,8 @@
 	                .on("dp.change", applyDate);
 	        });
 	    
+	    $scope.$on('valuesLoaded', function (event, data) {
+	        if ($scope.property.value == "0000-12-31")
+	            $scope.property.value = null;
+	    });
 	});
