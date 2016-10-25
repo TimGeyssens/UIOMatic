@@ -84,7 +84,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.object = response;
 	                $scope.loaded = true;
 	                setValues();
-	                $scope.$broadcast('valuesLoaded');
+	                $timeout(function () {
+	                    $scope.$broadcast('valuesLoaded');
+	                });
 	            });
 	        }
 	        else
@@ -94,7 +96,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.loaded = true;
 	                $scope.editing = true;
 	                setValues();
-	                $scope.$broadcast('valuesLoaded');
+	                $timeout(function () {
+	                    $scope.$broadcast('valuesLoaded');
+	                });
 	            });
 	        }
 	    });
