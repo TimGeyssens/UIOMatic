@@ -18,11 +18,12 @@
 
 	    function fetchData() {
 
-	        uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", $scope.searchTerm).then(function (resp) {
+	        uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", null, $scope.searchTerm).then(function (resp) {
 
-	            $scope.rows = resp.Items;
-	            $scope.totalPages = resp.TotalPages;
-	           
+
+	            $scope.rows = resp.items;
+	            $scope.totalPages = resp.totalPages;
+
 	            if ($scope.rows.length > 0) {
 	                $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
 	                    return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
@@ -33,11 +34,11 @@
 
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
 	        //.replace(' ', '_') nasty hack to allow columns with a space
-	        $scope.primaryKeyColumnName = response.PrimaryKeyColumnName.replace(' ', '_');
-	        $scope.predicate = response.PrimaryKeyColumnName.replace(' ', '_');
-	        $scope.ignoreColumnsFromListView = response.IgnoreColumnsFromListView;
-	        $scope.nameField = response.NameFieldKey.replace(' ', '_');
-	        $scope.readOnly = response.ReadOnly;
+	        $scope.primaryKeyColumnName = response.primaryKeyColumnName.replace(' ', '_');
+	        $scope.predicate = response.primaryKeyColumnName.replace(' ', '_');
+	        $scope.ignoreColumnsFromListView = response.ignoreColumnsFromListView;
+	        $scope.nameField = response.nameFieldKey.replace(' ', '_');
+	        $scope.readOnly = response.readOnly;
 	        fetchData();
 
 	    });
@@ -98,8 +99,7 @@
 	        return $scope.selectedIds.indexOf(id) > -1;
 	    }
 
-	    $scope.returnSelection = function()
-	    {
+	    $scope.returnSelection = function () {
 	        $scope.submit($scope.selectedIds);
 	    }
-});
+	});
