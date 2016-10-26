@@ -103,7 +103,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/rte.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/map.controller.js',
 
-		'~/App_Plugins/UIOMatic/backoffice/views/fieldefilters/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/fieldfilters/dropdown.controller.js',
 
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/multipicker.controller.js',
