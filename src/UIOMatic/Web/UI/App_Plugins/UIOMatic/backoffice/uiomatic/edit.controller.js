@@ -180,12 +180,12 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	                    for (var prop in $scope.properties) {
 	                        if ($scope.properties[prop].key == theKey) {
-	                            if ($scope.properties[prop].type == "System.DateTime") {
-	                                var date = moment($scope.object[theKey]).add(new Date().getTimezoneOffset(), "minutes").format("YYYY-MM-DD HH:mm:ss");
-	                                $scope.properties[prop].value = date;
-	                            } else {
+	                            //if ($scope.properties[prop].type == "System.DateTime") {
+	                            //    var date = moment($scope.object[theKey]).add(new Date().getTimezoneOffset(), "minutes").format("YYYY-MM-DD HH:mm:ss");
+	                            //    $scope.properties[prop].value = date;
+	                            //} else {
 	                                $scope.properties[prop].value = $scope.object[theKey];
-	                            }
+	                            //}
 	                        }
 	                    }
 	                }
