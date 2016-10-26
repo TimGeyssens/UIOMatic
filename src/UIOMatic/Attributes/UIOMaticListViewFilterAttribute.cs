@@ -17,7 +17,7 @@ namespace UIOMatic.Attributes
 
         public UIOMaticListViewFilterAttribute()
         {
-            View = "dropdown.filter";
+            View = "dropdown";
         }
 
         public string GetView()
