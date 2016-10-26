@@ -1,10 +1,9 @@
 ﻿angular.module("umbraco").controller("UIOMatic.Views.Label",
-    function ($scope) {
+    function ($scope, $interpolate) {
 
         function init() {
             if ($scope.property.config && $scope.property.config.format) {
-                // TODO: Format value
-                $scope.labelValue = $scope.property.value;
+                $scope.labelValue = $interpolate($scope.property.config.format)({ value: $scope.property.value });
             } else {
                 $scope.labelValue = $scope.property.value;
             }
