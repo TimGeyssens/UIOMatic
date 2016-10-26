@@ -313,6 +313,7 @@
   <ItemGroup>
     <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldviews\label.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\multipicker.controller.js" />
@@ -346,13 +347,13 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\map.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\map.html" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\dropdown.filter.controller.js" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\dropdown.filter.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldfilters\dropdown.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldfilters\dropdown.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\dropdown.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\file.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\file.html" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\image.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldviews\image.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\label.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\list.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\list.html" />

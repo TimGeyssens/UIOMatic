@@ -188,9 +188,9 @@ namespace UIOMatic.Services
                             // If field was left as textfield, see if we have a better match based on type
                             if (attri2.View == "textfield")
                             {
-                                if (prop.PropertyType == typeof(bool)) view = Constants.Views["checkbox"];
-                                if (prop.PropertyType == typeof(DateTime)) view = Constants.Views["datetime"];
-                                if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.Views["number"];
+                                if (prop.PropertyType == typeof(bool)) view = Constants.FieldEditors.ViewPaths[Constants.FieldEditors.CheckBox];
+                                if (prop.PropertyType == typeof(DateTime)) view = Constants.FieldEditors.ViewPaths[Constants.FieldEditors.DateTime];
+                                if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.FieldEditors.ViewPaths[Constants.FieldEditors.Number];
                             }
 
                             var pi = new UIOMaticEditablePropertyInfo

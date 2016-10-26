@@ -92,7 +92,6 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/datetime.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/datetimeoffset.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/dropdown.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/dropdown.filter.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.content.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.media.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.member.controller.js',
@@ -103,6 +102,8 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/list.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/rte.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/map.controller.js',
+
+		'~/App_Plugins/UIOMatic/backoffice/views/fieldefilters/dropdown.controller.js',
 
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/dropdown.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/multipicker.controller.js',
