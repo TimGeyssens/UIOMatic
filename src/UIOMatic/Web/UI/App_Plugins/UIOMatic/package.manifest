@@ -99,6 +99,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.users.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/checkboxlist.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/radiobuttonlist.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/label.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/list.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/rte.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/map.controller.js',

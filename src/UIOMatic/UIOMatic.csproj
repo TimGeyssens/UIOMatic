@@ -313,6 +313,7 @@
   <ItemGroup>
     <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\label.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldviews\label.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.html" />
