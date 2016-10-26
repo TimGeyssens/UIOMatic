@@ -48,8 +48,5 @@
 	       
 	    });
 
-	    $scope.$on('valuesLoaded', function (event, data) {
-	        if ($scope.property.value == "0000-12-31 22:00:00")
-	            $scope.property.value = null;
-	    });
+	   
 	});
