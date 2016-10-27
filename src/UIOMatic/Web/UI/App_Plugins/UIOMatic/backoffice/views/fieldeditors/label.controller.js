@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Label",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Label",
     function ($scope, $interpolate) {
 
         function init() {
@@ -11,7 +11,7 @@
 
         init();
 
-        $scope.$on('valuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function () {
             init();
         });
         

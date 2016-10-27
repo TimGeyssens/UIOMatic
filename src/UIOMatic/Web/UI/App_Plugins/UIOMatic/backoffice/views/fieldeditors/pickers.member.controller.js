@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Pickers.MemberController",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Pickers.MemberController",
     function ($scope, $routeParams, dialogService, entityResource, iconHelper) {
 
         function init() {
@@ -45,7 +45,7 @@
 
         init();
 
-        $scope.$on('valuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function () {
             init();
         });
 

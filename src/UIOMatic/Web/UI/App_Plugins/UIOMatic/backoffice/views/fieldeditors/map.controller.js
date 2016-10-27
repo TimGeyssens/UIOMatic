@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Map",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Map",
 	function ($scope, $timeout, assetsService, notificationsService) {
 
 	    var map, marker, input, tabLinkSelector, markerZoom = 15;

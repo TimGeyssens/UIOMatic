@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Pickers.UserController",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Pickers.UserController",
     function ($scope, uioMaticFieldResource) {
 
         function init() {
@@ -9,7 +9,7 @@
 
         init();
 
-        $scope.$on('valuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function () {
             init();
         });
 

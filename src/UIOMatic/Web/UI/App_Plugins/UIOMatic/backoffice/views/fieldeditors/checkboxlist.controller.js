@@ -1,7 +1,8 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Checkboxlist",
-    function ($scope, uioMaticObjectResource, $parse) {
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Checkboxlist",
+    function ($scope, $interpolate, uioMaticObjectResource) {
 
         $scope.delimiter = ",";
+
         if ($scope.property.config.delimiter)
             $scope.delimiter = $scope.property.config.delimiter;
 
@@ -21,7 +22,7 @@
 
         init();
 
-        $scope.$on('valuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function () {
             init();
         });
 
@@ -36,7 +37,6 @@
         }
 
         $scope.parseTemplate = function (object) {
-            var template = $parse($scope.property.config.textTemplate);
-            return template(object);
+            return $interpolate($scope.property.config.textTemplate)(object);
         }
     });

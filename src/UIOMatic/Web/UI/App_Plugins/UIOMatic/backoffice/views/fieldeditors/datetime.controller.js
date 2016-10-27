@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Date",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Date",
 	function ($scope, $element, $timeout, assetsService, angularHelper) {
 
 	    var DATE_FORMAT = "YYYY-MM-DD";
@@ -136,7 +136,7 @@
 	        });
 	    }
 
-	    $scope.$on('valuesLoaded', function (event, data) {
+	    $scope.$on('valuesLoaded', function () {
 	        init();
 	    });
 	});

@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.Dialogs.Searcher",
-	function ($scope, uioMaticObjectResource, $parse) {
+	function ($scope, $interpolate, uioMaticObjectResource) {
 
 	    $scope.typeAlias = $scope.dialogData.typeAlias;
 	    $scope.selectedIds = [];
@@ -17,10 +17,7 @@
 	    $scope.searchTerm = "";
 
 	    function fetchData() {
-
 	        uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", null, $scope.searchTerm).then(function (resp) {
-
-
 	            $scope.rows = resp.items;
 	            $scope.totalPages = resp.totalPages;
 
@@ -44,8 +41,7 @@
 	    });
 
 	    $scope.parseTemplate = function (object) {
-	        var template = $parse($scope.dialogData.objectTemplate);
-	        return template(object);
+	        return $interpolate($scope.dialogData.textTemplate)(object);
 	    }
 
 	    $scope.getNumber = function (num) {

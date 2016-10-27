@@ -1,5 +1,5 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.DropdownFilter",
-    function ($scope, uioMaticObjectResource, $parse) {
+﻿angular.module("umbraco").controller("UIOMatic.FieldFilters.Dropdown",
+    function ($scope, uioMaticObjectResource) {
 
         function init() {
             uioMaticObjectResource.getFilterLookup($scope.property.typeAlias, $scope.property.keyPropertyName, $scope.property.key).then(function (response) {
@@ -9,14 +9,8 @@
 
         init();
 
-        $scope.$on('valuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function () {
             init();
         });
-
-        //$scope.parseTemplate = function (object) {
-        //    var template = $parse($scope.property.config.textTemplate);
-        //    return template(object);
-        //}
-
         
     });

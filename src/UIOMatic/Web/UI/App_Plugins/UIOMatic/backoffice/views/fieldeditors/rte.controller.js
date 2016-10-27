@@ -1,12 +1,10 @@
-var app = angular.module("umbraco");
-
-app.controller("UIOMatic.Views.RTE", function ($scope, $http, $routeParams) {
+angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($scope) {
 
     var rowProps = $scope.property;
 
     function init() {
         $scope.property = {
-            alias: 'UIOMatic.Views.RTE',
+            alias: 'UIOMatic.FieldEditors.RTE',
             view: 'rte',
             config: {
                 editor: {
@@ -30,7 +28,7 @@ app.controller("UIOMatic.Views.RTE", function ($scope, $http, $routeParams) {
 
     init();
 
-    $scope.$on('valuesLoaded', function (event, data) {
+    $scope.$on('valuesLoaded', function () {
         init();
     });
 });

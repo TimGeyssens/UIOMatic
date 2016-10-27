@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.Pickers.UsersController",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Pickers.UsersController",
     function ($scope, uioMaticFieldResource) {
 
             $scope.userIds = [];

@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.Views.List",
+﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.List",
     function ($scope, $location, uioMaticObjectResource, $routeParams) {
 
         $scope.filterId = $routeParams.id.split("?")[0];
@@ -42,7 +42,7 @@
 
         init();
 
-        $scope.$on('valuesLoaded', function (event, data) {
+        $scope.$on('valuesLoaded', function () {
             init();
         });
 

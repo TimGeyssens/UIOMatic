@@ -15,9 +15,9 @@
 						view: "~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.type.html"
 					},
 					{
-						label: "Object text template",
-						description: "Enter the text template aka FirstName + ' ' + LastName ",
-						key: "objectTemplate",
+						label: "Text template",
+						description: "Enter the text template, ie, '{{FirstName}} {{LastName}}'",
+						key: "textTemplate",
 						view: "requiredfield",
 						validation: [
 							{
@@ -51,9 +51,9 @@
                     
 				},
 				{
-                    label: "Object text template",
-                    description: "Enter the text template aka FirstName + ' ' + LastName ",
-                    key: "objectTemplate",
+                    label: "Text template",
+					description: "Enter the text template, ie, '{{FirstName}} {{LastName}}'",
+					key: "textTemplate",
                     view: "requiredfield",
                     validation: [
                         {

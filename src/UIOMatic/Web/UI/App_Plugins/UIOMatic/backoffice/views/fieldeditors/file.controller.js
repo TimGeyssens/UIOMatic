@@ -1,4 +1,4 @@
-angular.module("umbraco").controller("UIOMatic.Views.File",
+angular.module("umbraco").controller("UIOMatic.FieldEditors.File",
 	function ($scope, dialogService) {
 
 	    $scope.openMediaPicker = function() {
