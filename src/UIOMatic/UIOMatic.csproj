@@ -273,7 +273,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\UIOMaticListActionAttribute.cs" />
+    <Compile Include="Attributes\UIOMaticActionAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFilterAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFolderAttribute.cs" />

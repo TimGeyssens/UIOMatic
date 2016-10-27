@@ -171,7 +171,7 @@ namespace UIOMatic.Services
                 var listViewFilterProperties = new List<UIOMaticFilterPropertyInfo>();
                 var rawProperties = new List<UIOMaticPropertyInfo>();
                 var nameFieldKey = "";
-                var actions = new List<UIOMaticActionTypeInfo>();
+                var actions = new List<UIOMaticActionInfo>();
 
                 var props = type.GetProperties().ToArray();
                 foreach (var prop in props)
@@ -301,12 +301,12 @@ namespace UIOMatic.Services
                 {
                     foreach(var action in attri.ListActions)
                     {
-                        var attri5 = action.GetCustomAttribute<UIOMaticListActionAttribute>();
+                        var attri5 = action.GetCustomAttribute<UIOMaticActionAttribute>();
 
                         if (attri5 != null)
                         {
 
-                            actions.Add(new Models.UIOMaticActionTypeInfo
+                            actions.Add(new Models.UIOMaticActionInfo
                             {
                                 Alias = attri5.Alias,
                                 Name = attri5.Name,

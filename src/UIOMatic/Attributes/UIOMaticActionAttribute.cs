@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace UIOMatic.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class UIOMaticListActionAttribute : Attribute
+    public class UIOMaticActionAttribute : Attribute
     {
         public string Alias { get; set; }
 
@@ -15,7 +15,7 @@ namespace UIOMatic.Attributes
 
         public string View { get; set; }
 
-        public UIOMaticListActionAttribute(string alias, string name, string view)
+        public UIOMaticActionAttribute(string alias, string name, string view)
         {
             Alias = alias;
             Name = name;

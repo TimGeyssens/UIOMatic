@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UIOMatic.Models
 {
-    public class UIOMaticActionTypeInfo
+    public class UIOMaticActionInfo
     {
         [JsonProperty("alias")]
         public string Alias { get; set; }
