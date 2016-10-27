@@ -314,7 +314,7 @@
     <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\js\angular-relative-date.js" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\uiomatic\script.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\uiomatic\imports.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeutc.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />
