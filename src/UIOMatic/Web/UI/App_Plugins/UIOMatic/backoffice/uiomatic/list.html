@@ -8,11 +8,14 @@
             </div>
 
             <div class="span5">
-                <div class="btn-toolbar pull-right umb-btn-toolbar">
-                    <umb-options-menu ng-show="currentNode"
-                        current-node="currentNode"
-                        current-section="{{currentSection}}">
-                    </umb-options-menu>
+                <div class="btn-group pull-right umb-btn-toolbar" ng-show="listActions">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        Actions
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="action in listActions"><a ng-click="openAction(action)">{{action.name}}</a></li>
+                    </ul>
                 </div>
             </div>
         </umb-header>

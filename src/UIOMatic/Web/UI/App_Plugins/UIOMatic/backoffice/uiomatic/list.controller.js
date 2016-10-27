@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, $location, uioMaticObjectResource, navigationService) {
+    function ($scope, $routeParams, $location, uioMaticObjectResource, navigationService, dialogService) {
 
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
@@ -35,7 +35,7 @@
             $scope.properties = response.listViewProperties;
             $scope.nameField = response.nameFieldKey.replace(' ', '_');
             $scope.readOnly = response.readOnly;
-
+            $scope.listActions = response.listActions;
             // Pass extra meta data into filter properties
             $scope.filterProperties = response.listViewFilterProperties.map(function (itm) {
                 itm.typeAlias = $scope.typeAlias;
@@ -141,6 +141,16 @@
         $scope.navigate = function (url) {
             // Because some JS seems to be translating any links starting '#'
             $location.url(url);
+        }
+
+        $scope.openAction = function (action) {
+            var dialog = dialogService.open({
+                template: action.view,
+                show: true,
+                dialogData: {
+                    typeAlias: $scope.typeAlias
+                }
+            });
         }
 
         $scope.$watch("filterProperties", function() {

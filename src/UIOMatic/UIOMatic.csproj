@@ -273,6 +273,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\UIOMaticListActionAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFilterAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFolderAttribute.cs" />
@@ -293,6 +294,7 @@
     <Compile Include="Interfaces\IUIOMaticObjectService.cs" />
     <Compile Include="Interfaces\IUIOMaticRepository.cs" />
     <Compile Include="Migrations\2.0.0\AddAllowedSectionToAdmins.cs" />
+    <Compile Include="Models\UIOMaticActionTypeInfo.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />
     <Compile Include="Models\UIOMaticTypeInfo.cs" />
@@ -314,7 +316,7 @@
     <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\js\angular-relative-date.js" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\uiomatic\imports.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\imports.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeutc.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />

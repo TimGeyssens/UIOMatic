@@ -171,6 +171,7 @@ namespace UIOMatic.Services
                 var listViewFilterProperties = new List<UIOMaticFilterPropertyInfo>();
                 var rawProperties = new List<UIOMaticPropertyInfo>();
                 var nameFieldKey = "";
+                var actions = new List<UIOMaticActionTypeInfo>();
 
                 var props = type.GetProperties().ToArray();
                 foreach (var prop in props)
@@ -296,6 +297,25 @@ namespace UIOMatic.Services
                 }
                 path.Reverse();
 
+                if(attri.ListActions != null)
+                {
+                    foreach(var action in attri.ListActions)
+                    {
+                        var attri5 = action.GetCustomAttribute<UIOMaticListActionAttribute>();
+
+                        if (attri5 != null)
+                        {
+
+                            actions.Add(new Models.UIOMaticActionTypeInfo
+                            {
+                                Alias = attri5.Alias,
+                                Name = attri5.Name,
+                                View = IOHelper.ResolveUrl(attri5.View)
+                            });
+                        }
+                    }
+                }
+
                 return new UIOMaticTypeInfo
                 {
                     Alias = attri.Alias,
@@ -313,7 +333,8 @@ namespace UIOMatic.Services
                     ListViewFilterProperties = listViewFilterProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
                     RawProperties = rawProperties.ToArray(),
                     Path = path.ToArray(),
-                    Type = type
+                    Type = type,
+                    ListActions = actions.ToArray()
                 };
             });
         }
