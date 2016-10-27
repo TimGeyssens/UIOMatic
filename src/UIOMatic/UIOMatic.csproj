@@ -313,7 +313,6 @@
     <Compile Include="Web\ServerVariableParserEvent.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\js\angular-relative-date.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\imports.js" />
