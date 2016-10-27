@@ -1,2 +1,0 @@
-﻿* Fix search dialog for picker property editor
-* Add where clause option to UIOMatic attribute?
