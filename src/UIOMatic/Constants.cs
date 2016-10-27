@@ -13,6 +13,7 @@ namespace UIOMatic
             public const string Date = "date";
             public const string DateTime = "datetime";
             public const string DateTimeOffset = "datetimeoffset";
+            public const string DateTimeUtc = "datetimeutc";
             public const string Dropdown = "dropdown";
             public const string File = "file";
             public const string Label = "label";
@@ -36,6 +37,7 @@ namespace UIOMatic
                 { "date", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/date.html"},
                 { "datetime", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/datetime.html"},
                 { "datetimeoffset", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/datetimeoffset.html"},
+                { "datetimeutc", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/datetimeutc.html"},
                 { "dropdown", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/dropdown.html"},
                 { "file", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/file.html"},
                 { "label", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/label.html"},

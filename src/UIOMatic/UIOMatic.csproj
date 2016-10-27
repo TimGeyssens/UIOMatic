@@ -313,6 +313,9 @@
   <ItemGroup>
     <Content Include="TODO.txt" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\assets\css\uiomatic.css" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeutc.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\label.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldviews\label.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.controller.js" />
@@ -340,12 +343,8 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\checkbox.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\checkboxlist.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\checkboxlist.html" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.controller.js" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetime.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetime.html" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.controller.js" />
-    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\map.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\map.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldfilters\dropdown.controller.js" />
@@ -408,9 +407,9 @@ xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2
 xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
 xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2"
 
-xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
-xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
-xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website"
+REM xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
+REM xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
+REM xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website"
 
 )
 )</PostBuildEvent>

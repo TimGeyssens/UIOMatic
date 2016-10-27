@@ -171,28 +171,17 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    });
 
 	    var setValues = function () {
-
 	        for (var theKey in $scope.object) {
-
 	            if ($scope.object.hasOwnProperty(theKey)) {
-
 	                if (_.where($scope.properties, { key: theKey }).length > 0) {
-
 	                    for (var prop in $scope.properties) {
 	                        if ($scope.properties[prop].key == theKey) {
-	                            //if ($scope.properties[prop].type == "System.DateTime") {
-	                            //    var date = moment($scope.object[theKey]).add(new Date().getTimezoneOffset(), "minutes").format("YYYY-MM-DD HH:mm:ss");
-	                            //    $scope.properties[prop].value = date;
-	                            //} else {
-	                                $scope.properties[prop].value = $scope.object[theKey];
-	                            //}
+	                            $scope.properties[prop].value = $scope.object[theKey];
 	                        }
 	                    }
 	                }
-
 	            }
 	        }
-
 	    };
 
 

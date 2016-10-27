@@ -203,7 +203,7 @@ namespace UIOMatic.Services
                                 Description = attri2.Description,
                                 View = IOHelper.ResolveUrl(view),
                                 Type = prop.PropertyType.ToString(),
-                                Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri2.Config),
+                                Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)JsonConvert.DeserializeObject(attri2.Config),
                                 Order = attri2.Order
                             };
 
