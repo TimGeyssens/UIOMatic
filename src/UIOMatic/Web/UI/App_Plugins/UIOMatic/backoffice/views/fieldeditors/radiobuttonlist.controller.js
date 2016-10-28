@@ -12,13 +12,16 @@
             });
         }
 
-        init();
-
-        $scope.$on('valuesLoaded', function () {
-            init();
-        });
-
         $scope.setValue = function (val) {
             $scope.property.value = val;
+        }
+
+        if ($scope.valuesLoaded) {
+            init();
+        } else {
+            var unsubscribe = $scope.$on('valuesLoaded', function () {
+                init();
+                unsubscribe();
+            });
         }
     });

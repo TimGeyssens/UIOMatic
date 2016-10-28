@@ -40,12 +40,6 @@
             });
         }
 
-        init();
-
-        $scope.$on('valuesLoaded', function () {
-            init();
-        });
-
         $scope.order = function (predicate) {
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
@@ -109,5 +103,14 @@
         $scope.navigate = function (url) {
             // Because some JS seems to be translating any links starting '#'
             $location.url(url);
+        }
+
+        if ($scope.valuesLoaded) {
+            init();
+        } else {
+            var unsubscribe = $scope.$on('valuesLoaded', function () {
+                init();
+                unsubscribe();
+            });
         }
  });

@@ -31,9 +31,6 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    $scope.queryString = qs;
 	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uiomatic/list/" + $scope.typeAlias;
 
-	    //if ($scope.queryString["tab"])
-	    //    $scope.returnUrl += ($scope.returnUrl.indexOf("%3F") >= 0 ? "%26" : "%3F") + "tab=" + $scope.queryString["returnTab"];
-
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
 	        $scope.type = response;
@@ -85,6 +82,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.loaded = true;
 	                setValues();
 	                $timeout(function () {
+	                    $scope.valuesLoaded = true;
 	                    $scope.$broadcast('valuesLoaded');
 	                });
 	            });
@@ -97,6 +95,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                $scope.editing = true;
 	                setValues();
 	                $timeout(function () {
+	                    $scope.valuesLoaded = true;
 	                    $scope.$broadcast('valuesLoaded');
 	                });
 	            });

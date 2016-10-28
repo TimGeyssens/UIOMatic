@@ -9,10 +9,13 @@
             }
         }
 
-        init();
-
-        $scope.$on('valuesLoaded', function () {
+        if ($scope.valuesLoaded || $scope.property.view.indexOf("fieldviews") > -1) {
             init();
-        });
+        } else {
+            var unsubscribe = $scope.$on('valuesLoaded', function () {
+                init();
+                unsubscribe();
+            });
+        }
         
     });

@@ -88,14 +88,25 @@
 	        });
 	    }
 
-	    if (typeof google === 'undefined') {
-	        assetsService.loadJs("https://maps.googleapis.com/maps/api/js?key=" + $scope.config.apiKey + "&libraries=places").then(function () {
-	            $scope.initMap();
-	        });
+	    function init() {
+	        if (typeof google === 'undefined') {
+	            assetsService.loadJs("https://maps.googleapis.com/maps/api/js?key=" + $scope.config.apiKey + "&libraries=places").then(function() {
+	                $scope.initMap();
+	            });
+	        } else {
+	            $timeout(function() {
+	                $scope.initMap();
+	            }, 100);
+	        }
+	    }
+
+	    if ($scope.valuesLoaded) {
+	        init();
 	    } else {
-	        $timeout(function () {
-	            $scope.initMap();
-	        }, 100);
+	        var unsubscribe = $scope.$on('valuesLoaded', function () {
+	            init();
+	            unsubscribe();
+	        });
 	    }
 
 	    $scope.$on("$destroy", function () {

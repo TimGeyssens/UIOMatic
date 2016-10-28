@@ -70,7 +70,7 @@
                                     <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
                                 </td>
                                 <td ng-repeat="prop in properties">
-                                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], config:prop.config}"><!-- Fake property object so we can reuse views -->
+                                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], view:prop.view, config:prop.config}"><!-- Fake property object so we can reuse views -->
                                         <a ng-click="navigate('/uiomatic/uiomatic/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias)" ng-switch-when="true" style="font-weight: bold; cursor: pointer;">
                                             <span ng-include="prop.view"></span>
                                         </a>

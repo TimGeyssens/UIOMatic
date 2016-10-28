@@ -43,10 +43,13 @@
             }
         };
 
-        init();
-
-        $scope.$on('valuesLoaded', function () {
+        if ($scope.valuesLoaded) {
             init();
-        });
+        } else {
+            var unsubscribe = $scope.$on('valuesLoaded', function () {
+                init();
+                unsubscribe();
+            });
+        }
 
     });

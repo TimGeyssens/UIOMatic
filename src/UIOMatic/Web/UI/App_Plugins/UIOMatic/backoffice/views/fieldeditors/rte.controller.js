@@ -26,9 +26,12 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
         }, true);
     }
 
-    init();
-
-    $scope.$on('valuesLoaded', function () {
+    if ($scope.valuesLoaded) {
         init();
-    });
+    } else {
+        var unsubscribe = $scope.$on('valuesLoaded', function () {
+            init();
+            unsubscribe();
+        });
+    }
 });

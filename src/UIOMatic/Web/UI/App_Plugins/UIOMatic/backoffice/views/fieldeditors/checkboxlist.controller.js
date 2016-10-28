@@ -23,12 +23,6 @@
             });
         }
 
-        init();
-
-        $scope.$on('valuesLoaded', function () {
-            init();
-        });
-
         $scope.setValue = function() {
             var val = [];
 
@@ -38,6 +32,15 @@
             });
 
             $scope.property.value = val.join($scope.delimiter);
+        }
+
+        if ($scope.valuesLoaded) {
+            init();
+        } else {
+            var unsubscribe = $scope.$on('valuesLoaded', function () {
+                init();
+                unsubscribe();
+            });
         }
 
     });
