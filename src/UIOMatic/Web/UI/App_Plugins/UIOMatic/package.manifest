@@ -83,6 +83,8 @@
 
 		'~/App_Plugins/UIOMatic/backoffice/imports.js',
 		
+        '~/App_Plugins/UIOMatic/backoffice/services/utility.service.js',
+		
         '~/App_Plugins/UIOMatic/backoffice/directives/pagination.directive.js',
 
         '~/App_Plugins/UIOMatic/backoffice/resources/uioMaticObject.resource.js',

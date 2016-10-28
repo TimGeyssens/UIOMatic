@@ -60,7 +60,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td style="width:35px" ng-hide="readOnly"></td>
+                                <td style="width: 35px" ng-hide="readOnly"></td>
                                 <td ng-repeat="prop in properties">
                                     <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
                                     <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.columnName"></i>
@@ -85,8 +85,7 @@
                                 </td>
                             </tr>
                             </tbody>
-
-                            <tfoot ng-if="totalPages > 1">
+                            <tfoot ng-if="legacyPagination && totalPages > 1">
                                 <tr>
                                     <th colspan="{{properties.length + 1}}">
                                         <div class="pagination-right">
@@ -94,15 +93,25 @@
                                                 total-pages="totalPages"
                                                 on-next="nextPage"
                                                 on-prev="prevPage"
-                                                on-go-to-page="getNumber">
+                                                on-go-to-page="setPage">
                                             </uiomatic-pagination>
                                         </div>
                                     </th>
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <div ng-if="!legacyPagination && totalPages > 1" style="text-align: center;">
+                            <umb-pagination page-number="currentPage"
+                                total-pages="totalPages"
+                                on-next="nextPage"
+                                on-prev="prevPage"
+                                on-go-to-page="setPage">
+                            </umb-pagination>
                         </div>
+
                     </div>
+                </div>
             </div>
         </div>
         

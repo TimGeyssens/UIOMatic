@@ -318,6 +318,7 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\directives\pagination.directive.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\directives\pagination.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\imports.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\services\utility.service.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeutc.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />
