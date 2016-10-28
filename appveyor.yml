@@ -1,5 +1,5 @@
 # version format
-version: 2.0.0-beta.{build}
+version: 2.0.0-rc.{build}
 
 # Do not build on tags
 skip_tags: true
