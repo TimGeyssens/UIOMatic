@@ -26,7 +26,7 @@ namespace UIOMatic.Attributes
 
         public bool HideFromTree { get; set; }
 
-        public Type[] ListActions { get; set; }
+        public Type[] ListViewActions { get; set; }
 
         public UIOMaticAttribute(string alias, string folderName, string itemName)
             : base(alias, folderName)
@@ -38,7 +38,7 @@ namespace UIOMatic.Attributes
             ReadOnly = false;
             RepositoryType = typeof(DefaultUIOMaticRepository);
             HideFromTree = false;
-            ListActions = null;
+            ListViewActions = null;
         }
     }
 }

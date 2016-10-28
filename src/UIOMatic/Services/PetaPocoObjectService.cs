@@ -297,9 +297,9 @@ namespace UIOMatic.Services
                 }
                 path.Reverse();
 
-                if(attri.ListActions != null)
+                if(attri.ListViewActions != null)
                 {
-                    foreach(var action in attri.ListActions)
+                    foreach(var action in attri.ListViewActions)
                     {
                         var attri5 = action.GetCustomAttribute<UIOMaticActionAttribute>();
 
