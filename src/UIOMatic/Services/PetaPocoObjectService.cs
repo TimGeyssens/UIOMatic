@@ -310,7 +310,8 @@ namespace UIOMatic.Services
                             {
                                 Alias = attri5.Alias,
                                 Name = attri5.Name,
-                                View = IOHelper.ResolveUrl(attri5.View)
+                                View = IOHelper.ResolveUrl(attri5.View),
+                                Icon = attri5.Icon
                             });
                         }
                     }

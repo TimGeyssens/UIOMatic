@@ -18,5 +18,8 @@ namespace UIOMatic.Models
         [JsonProperty("view")]
         public string View { get; set; }
 
+        [JsonProperty("icon")]
+        public string Icon { get; set; }
+
     }
 }

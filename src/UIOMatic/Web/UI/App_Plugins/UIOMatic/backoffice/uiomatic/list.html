@@ -8,13 +8,17 @@
             </div>
 
             <div class="span5">
-                <div class="btn-group pull-right umb-btn-toolbar" ng-show="listActions">
+                <div class="btn-group pull-right umb-btn-toolbar" ng-show="listActions" style="margin-top:15px;">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                         Actions
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li ng-repeat="action in listActions"><a ng-click="openAction(action)">{{action.name}}</a></li>
+                        <li ng-repeat="action in listActions">
+                            <a ng-click="openAction(action)" style="cursor:pointer">
+                                <i class="icon {{action.icon}}" ng-show="action.icon"></i> {{action.name}}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
