@@ -82,6 +82,8 @@
 		'~/App_Plugins/UIOMatic/backoffice/assets/js/angular-relative-date.js',
 
 		'~/App_Plugins/UIOMatic/backoffice/imports.js',
+		
+        '~/App_Plugins/UIOMatic/backoffice/directives/pagination.directive.js',
 
         '~/App_Plugins/UIOMatic/backoffice/resources/uioMaticObject.resource.js',
 		'~/App_Plugins/UIOMatic/backoffice/resources/uioMaticField.resource.js',

@@ -82,21 +82,16 @@
                             </tr>
                             </tbody>
 
-                            <tfoot ng-show="totalPages > 1">
+                            <tfoot ng-if="totalPages > 1">
                                 <tr>
                                     <th colspan="{{properties.length + 1}}">
-                                        <div class="pagination pagination-right">
-                                            <ul> 
-                                                <li ng-class="{disabled: currentPage == 1}">
-                                                    <a href ng-click="prevPage()">Prev</a>
-                                                </li>
-                                                <li ng-repeat="i in getNumber(totalPages) track by $index" ng-class="{active: currentPage == ($index+1)}">
-                                                    <a href ng-click="setPage($index+1)">{{$index+1}}</a>
-                                                </li>
-                                                <li ng-class="{disabled: currentPage == totalPages}">
-                                                    <a href ng-click="nextPage()">Next</a>
-                                                </li>
-                                            </ul>
+                                        <div class="pagination-right">
+                                            <uiomatic-pagination page-number="currentPage"
+                                                total-pages="totalPages"
+                                                on-next="nextPage"
+                                                on-prev="prevPage"
+                                                on-go-to-page="getNumber">
+                                            </uiomatic-pagination>
                                         </div>
                                     </th>
                                 </tr>

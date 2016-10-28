@@ -29,17 +29,14 @@
 
 
         </ul>
-        
-        <div class="pagination pagination-right" style="display:block;">
-            <ul style="display:block;">
-                <li ng-class="{disabled: currentPage == 1}">
-                    <a href ng-click="prevPage()">Prev</a>
-                </li>
-                <li ng-repeat="i in getNumber(totalPages) track by $index" ng-click="setPage($index+1)" class="active"><span>{{$index+1}}</span></li>
-                <li ng-class="{disabled: currentPage == totalPages}">
-                    <a href ng-click="nextPage()">Next</a>
-                </li>
-            </ul>
+
+        <div class="pagination-right" style="display:block;" ng-if="totalPages > 1">
+            <uiomatic-pagination page-number="currentPage"
+                total-pages="totalPages"
+                on-next="nextPage"
+                on-prev="prevPage"
+                on-go-to-page="getNumber">
+            </uiomatic-pagination>
         </div>
 
     </div>
