@@ -1,4 +1,6 @@
-# UI-O-Matic #
+# UI-O-Matic  #
+
+*Please not that these docs are for v1 of UI-O-Matic, if you are using the latest and greatest version please go to the [latest docs](http://uiomatic.readthedocs.io/en/stable/)*
 
 UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco](http://www.toptensoftware.com/petapoco/) poco.
 
