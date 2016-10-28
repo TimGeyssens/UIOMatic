@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
@@ -13,6 +15,20 @@ namespace UIOMatic
         public const string PluginFolder = "~/App_plugins/UIOMatic";
 
         public const string ConfigFileName = "UIOMatic.config";
+
+        public static Dictionary<string, string> Settings
+        {
+            get
+            {
+                var d = new Dictionary<string, string>();
+
+                foreach (XmlNode node in ConfigFile.DocumentElement.SelectNodes("//setting"))
+                    d.Add(node.Attributes["key"].Value,node.InnerText);
+
+                return d;
+
+            }
+        }
 
         public static Type DefaultObjectServiceType
         {

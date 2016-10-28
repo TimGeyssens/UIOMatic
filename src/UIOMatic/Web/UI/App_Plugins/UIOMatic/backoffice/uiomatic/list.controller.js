@@ -6,7 +6,7 @@
         $scope.actionInProgress = false;
 
         $scope.currentPage = 1;
-        $scope.itemsPerPage = 10;
+        $scope.itemsPerPage = JSON.parse(Umbraco.Sys.ServerVariables.uioMatic.settings.defaultListViewPageSize);
         $scope.totalPages = 1;
         
         $scope.reverse = false;

@@ -39,6 +39,13 @@ namespace UIOMatic.Web
                 }
             };
 
+            var settingDictionary = new Dictionary<string, object>();
+
+            foreach (var setting in Config.Settings)
+                settingDictionary.Add(setting.Key, setting.Value);
+
+            mainDictionary.Add("settings", settingDictionary);
+
             if (!e.Keys.Contains("uioMatic"))
             {
                 e.Add("uioMatic", mainDictionary);

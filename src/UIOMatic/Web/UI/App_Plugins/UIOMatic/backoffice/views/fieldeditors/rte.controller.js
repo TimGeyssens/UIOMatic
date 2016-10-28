@@ -8,7 +8,7 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
             view: 'rte',
             config: {
                 editor: {
-                    toolbar: ['preview', '|', 'undo', 'redo', '|', 'copy', 'cut', 'paste', '|', 'bold', 'italic', '|', 'link', 'unlink'],
+                    toolbar: JSON.parse(Umbraco.Sys.ServerVariables.uioMatic.settings.rteFieldEditorButtons),
                     stylesheets: [],
                     dimensions: { height: 400, width: '100%' }
                 }
