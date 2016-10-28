@@ -6,16 +6,19 @@
         if ($scope.property.config.delimiter)
             $scope.delimiter = $scope.property.config.delimiter;
 
+        $scope.selectedValues = [];
+        if ($scope.property.value)
+            $scope.selectedValues = $scope.property.value.toString().split($scope.delimiter);
+
         function init() {
             uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
-                $scope.objects = response;
-
-                angular.forEach($scope.objects, function (object) {
-                    if ($scope.property.value && _.indexOf($scope.property.value.toString().split($scope.delimiter), object[$scope.property.config.valueColumn].toString()) > -1)
-                        object.selected = true;
-                    else
-                        object.selected = false;
-
+                $scope.items = response.map(function(itm) {
+                    var item = {
+                        value: itm[$scope.property.config.valueColumn],
+                        text: $interpolate($scope.property.config.textTemplate)(itm)
+                    }
+                    item.selected = _.indexOf($scope.selectedValues, item.value.toString()) > -1;
+                    return item;
                 });
             });
         }
@@ -28,15 +31,13 @@
 
         $scope.setValue = function() {
             var val = [];
-            angular.forEach($scope.objects, function (object) {
-                if (object.selected)
-                    val.push(object[$scope.property.config.valueColumn]);
+
+            angular.forEach($scope.items, function (itm) {
+                if (itm.selected)
+                    val.push(itm.value);
             });
 
             $scope.property.value = val.join($scope.delimiter);
         }
 
-        $scope.parseTemplate = function (object) {
-            return $interpolate($scope.property.config.textTemplate)(object);
-        }
     });

@@ -22,10 +22,9 @@
 
     <div class="umb-panel-body with-footer">
         <ul style="list-style-type:none;">
-            <li ng-repeat="row in rows">
-               
-                <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
-                {{parseTemplate(row)}}
+            <li ng-repeat="item in items">
+                <input type="checkbox" name="selectedItems[]" value="{{item.id}}" ng-checked="isSelected(item)" ng-click="toggleSelection(item)" />
+                {{item.text}}
             </li>
 
 

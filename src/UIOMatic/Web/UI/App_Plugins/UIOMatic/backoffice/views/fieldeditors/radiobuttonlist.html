@@ -1,12 +1,10 @@
 ﻿<div ng-controller="UIOMatic.FieldEditors.Radiobuttonlist">
-
-
-    <div ng-repeat="object in objects">
+    <div ng-repeat="item in items">
         <label>
             <input type="radio"
                    ng-model="property.value"
                    name="{{property.key}}"
-                   value="{{object[property.config.valueColumn]}}"> {{parseTemplate(object)}}
+                   value="{{item.value}}"> {{item.text}}
         </label>
     </div>
 </div>

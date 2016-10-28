@@ -1,43 +1,38 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.MultiPicker",
 	function ($scope, $interpolate, dialogService, uioMaticObjectResource) {
 
-	    $scope.objects = [];
-
-	    function done(data){
-	        $scope.model.value = data;
-	        getFullDetails();
-	    }
-
 	    $scope.openDialog = function()
 	    {
-	        var dialog = dialogService.open({
+	        dialogService.open({
 	            template: '/App_Plugins/UIOMatic/backoffice/views/PropertyEditors/objectsearcher.html',
 	            show: true,
-	            callback: done,
+	            callback: function (selectedIds) {
+	                $scope.model.value = selectedIds;
+	                getFullDetails();
+	            },
 	            dialogData: {
 	                typeAlias: $scope.model.config.typeAlias,
-	                objectTemplate: $scope.model.config.objectTemplate,
+	                textTemplate: $scope.model.config.textTemplate,
 	                selectedIds : $scope.model.value
 	            }
 	        });
 	    }
 
 	    $scope.remove = function (index) {
-	        $scope.objects.splice(index, 1);
+	        $scope.items.splice(index, 1);
 	        $scope.model.value.splice(index, 1);
-	    }
-
-	    $scope.parseTemplate = function (object) {
-	        return $interpolate($scope.model.config.textTemplate)(object);
 	    }
 
 	    function getFullDetails(){
 
-	        $scope.objects = [];
+	        $scope.items = [];
+
 	        if($scope.model.value) {
 	            angular.forEach($scope.model.value, function (id) {
 	                uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function(resp) {
-	                    $scope.objects.push(resp);
+	                    $scope.items.push({
+	                        text: $interpolate($scope.model.config.textTemplate)(resp)
+	                    });
 	                });
 	            });
 	        }

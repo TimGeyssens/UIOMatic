@@ -18,14 +18,13 @@
 
 	    function fetchData() {
 	        uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", null, $scope.searchTerm).then(function (resp) {
-	            $scope.rows = resp.items;
+	            $scope.items = resp.items.map(function(itm) {
+                    return {
+                        id: itm[$scope.primaryKeyColumnName],
+                        text: $interpolate($scope.dialogData.textTemplate)(itm)
+                    }
+	            });
 	            $scope.totalPages = resp.totalPages;
-
-	            if ($scope.rows.length > 0) {
-	                $scope.cols = Object.keys($scope.rows[0]).filter(function (c) {
-	                    return $scope.ignoreColumnsFromListView.indexOf(c) == -1;
-	                });
-	            }
 	        });
 	    }
 
@@ -33,16 +32,11 @@
 	        //.replace(' ', '_') nasty hack to allow columns with a space
 	        $scope.primaryKeyColumnName = response.primaryKeyColumnName.replace(' ', '_');
 	        $scope.predicate = response.primaryKeyColumnName.replace(' ', '_');
-	        $scope.ignoreColumnsFromListView = response.ignoreColumnsFromListView;
 	        $scope.nameField = response.nameFieldKey.replace(' ', '_');
 	        $scope.readOnly = response.readOnly;
 	        fetchData();
 
 	    });
-
-	    $scope.parseTemplate = function (object) {
-	        return $interpolate($scope.dialogData.textTemplate)(object);
-	    }
 
 	    $scope.getNumber = function (num) {
 	        return new Array(num);
@@ -63,7 +57,6 @@
 	    };
 
 	    $scope.setPage = function (pageNumber) {
-	        console.log(pageNumber);
 	        $scope.currentPage = pageNumber;
 	        fetchData();
 	    };
@@ -74,25 +67,17 @@
 	        fetchData();
 	    };
 
-
-	    $scope.getObjectKey = function (object) {
-	        var keyPropName = $scope.primaryKeyColumnName;
-	        return object[keyPropName];
-
-	    }
-
-	    $scope.toggleSelection = function (val) {
-	        var idx = $scope.selectedIds.indexOf(val);
+	    $scope.toggleSelection = function (item) {
+	        var idx = $scope.selectedIds.indexOf(item.id);
 	        if (idx > -1) {
 	            $scope.selectedIds.splice(idx, 1);
 	        } else {
-	            $scope.selectedIds.push(val);
+	            $scope.selectedIds.push(item.id);
 	        }
 	    }
 
-	    $scope.isRowSelected = function (row) {
-	        var id = $scope.getObjectKey(row);
-	        return $scope.selectedIds.indexOf(id) > -1;
+	    $scope.isSelected = function (item) {
+	        return $scope.selectedIds.indexOf(item.id) > -1;
 	    }
 
 	    $scope.returnSelection = function () {

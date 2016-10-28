@@ -144,7 +144,7 @@
         }
 
         $scope.openAction = function (action) {
-            var dialog = dialogService.open({
+            dialogService.open({
                 template: action.view,
                 show: true,
                 dialogData: {
@@ -158,8 +158,8 @@
             if (!$scope.filterProperties)
                 return;
 
-            var str = $scope.filterProperties.map(function (itm) {
-                return itm.keyColumnName + "|" + (itm.value !== undefined ? itm.value : "");
+            var str = _.filter($scope.filterProperties, function (itm) { return itm.value }).map(function (itm) {
+                return itm.keyColumnName + "|" + itm.value;
             }).join("|");
 
             if (str != $scope.filtersStr) {
