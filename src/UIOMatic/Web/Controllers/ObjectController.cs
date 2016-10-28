@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using UIOMatic.Attributes;
 using UIOMatic.Services;
 using UIOMatic.Web.PostModels;
 using UIOMatic.Interfaces;
@@ -74,6 +75,20 @@ namespace UIOMatic.Web.Controllers
             return _service.GetScaffold(t);
         }
 
+        [HttpGet]
+        public object GetSummaryDashboardTypes()
+        {
+            return Helper.GetUIOMaticTypes().Select(x => x.GetCustomAttribute<UIOMaticAttribute>(false))
+                .Where(x => x.ShowOnSummaryDashboard)
+                .Select(x => new
+                {
+                    alias = x.Alias,
+                    namePlural = x.FolderName,
+                    nameSingular = x.ItemName,
+                    folderIcon = x.FolderIcon
+                });
+        }
+
         [HttpPost]
         public object Create(ObjectPostModel model)
         {
@@ -93,6 +108,13 @@ namespace UIOMatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
             return _service.DeleteByIds(t, ids.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        [HttpGet]
+        public object GetTotalRecordCount(string typeAlias)
+        {
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            return _service.GetTotalRecordCount(t);
         }
 
         [HttpPost]

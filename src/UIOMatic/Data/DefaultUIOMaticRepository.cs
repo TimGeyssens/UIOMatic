@@ -3,7 +3,6 @@ using System.Linq;
 using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
 using UIOMatic.Services;
-using UIOMatic;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
 using Umbraco.Core;
@@ -166,6 +165,13 @@ namespace UIOMatic.Data
                 string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
 
             db.Execute(sql);
+        }
+
+        public long GetTotalRecordCount()
+        {
+            var db = GetDb();
+
+            return db.ExecuteScalar<long>(string.Format("SELECT COUNT(1) FROM {0}", _typeInfo.TableName));
         }
 
         private Database GetDb()

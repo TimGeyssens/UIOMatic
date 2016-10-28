@@ -117,7 +117,9 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.property.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.column.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/objectsearcher.controller.js',		
+		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/objectsearcher.controller.js',
+			
+		'~/App_Plugins/UIOMatic/backoffice/views/dashboards/summarydashboard.controller.js',		
     ],
     css: [
 		'~/App_Plugins/UIOMatic/backoffice/assets/css/uiomatic.css'

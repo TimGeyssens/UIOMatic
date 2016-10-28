@@ -106,6 +106,15 @@ namespace UIOMatic.Services
             return a2.Ids;
         }
 
+        public long GetTotalRecordCount(Type type)
+        {
+            var typeInfo = GetTypeInfo(type);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            var repo = Helper.GetRepository(attri, typeInfo);
+
+            return repo.GetTotalRecordCount();
+        }
+
         //TODO: Move validation out of ObjectService? as I think it isn't PetaPoco specific
         public IEnumerable<ValidationResult> Validate(Type type, IDictionary<string, object> values)
         {
@@ -335,7 +344,7 @@ namespace UIOMatic.Services
                     RawProperties = rawProperties.ToArray(),
                     Path = path.ToArray(),
                     Type = type,
-                    ListActions = actions.ToArray()
+                    ListViewActions = actions.ToArray()
                 };
             });
         }

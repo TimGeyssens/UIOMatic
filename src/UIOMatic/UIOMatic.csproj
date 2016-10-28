@@ -293,6 +293,7 @@
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectService.cs" />
     <Compile Include="Interfaces\IUIOMaticRepository.cs" />
+    <Compile Include="Migrations\2.0.0\AddSummaryDashboardToConfig.cs" />
     <Compile Include="Migrations\2.0.0\AddAllowedSectionToAdmins.cs" />
     <Compile Include="Models\UIOMaticActionInfo.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
@@ -319,6 +320,8 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\directives\pagination.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\imports.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\services\utility.service.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dashboards\summarydashboard.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dashboards\summarydashboard.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeutc.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />

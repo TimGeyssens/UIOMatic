@@ -92,6 +92,18 @@
                     $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "Validate", angular.toJson(item)),
                     'Failed to validate'
                 );
+	        },
+	        getSummaryDashboardTypes: function () {
+	            return umbRequestHelper.resourcePromise(
+                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetSummaryDashboardTypes"),
+                    'Failed to get summary dashboard types'
+                );
+	        },
+	        getTotalRecordCount: function (type) {
+	            return umbRequestHelper.resourcePromise(
+                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetTotalRecordCount?typeAlias=" + type),
+                    'Failed to get total record count'
+                );
 	        }
 	    };
 	});

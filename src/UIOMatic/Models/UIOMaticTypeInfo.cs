@@ -54,7 +54,7 @@ namespace UIOMatic.Models
         [JsonProperty("type")]
         public Type Type { get; set; }
 
-        [JsonProperty("listActions")]
-        public UIOMaticActionInfo[] ListActions { get; set; }
+        [JsonProperty("listViewActions")]
+        public UIOMaticActionInfo[] ListViewActions { get; set; }
     }
 }

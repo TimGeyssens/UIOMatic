@@ -20,7 +20,7 @@ namespace UIOMatic
 
             if (latestMigration != null)
                 currentDbVersion = latestMigration.Version;
-
+             
             if (targetDbVersion == currentDbVersion)
                 return;
 

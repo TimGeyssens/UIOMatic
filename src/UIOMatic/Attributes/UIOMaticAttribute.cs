@@ -28,6 +28,8 @@ namespace UIOMatic.Attributes
 
         public Type[] ListViewActions { get; set; }
 
+        public bool ShowOnSummaryDashboard { get; set; }
+
         public UIOMaticAttribute(string alias, string folderName, string itemName)
             : base(alias, folderName)
         {
@@ -39,6 +41,7 @@ namespace UIOMatic.Attributes
             RepositoryType = typeof(DefaultUIOMaticRepository);
             HideFromTree = false;
             ListViewActions = null;
+            ShowOnSummaryDashboard = false;
         }
     }
 }

@@ -21,6 +21,8 @@ namespace UIOMatic.Interfaces
 
         string[] DeleteByIds(Type type, string[] ids);
 
+        long GetTotalRecordCount(Type type);
+
         IEnumerable<ValidationResult> Validate(Type type, IDictionary<string, object> values);
 
         IEnumerable<object> GetAll(Type type,string sortColumn, string sortOrder);

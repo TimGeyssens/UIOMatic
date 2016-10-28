@@ -19,5 +19,7 @@ namespace UIOMatic.Interfaces
         object Update(object entity);
 
         void Delete(string[] id);
+
+        long GetTotalRecordCount();
     }
 }

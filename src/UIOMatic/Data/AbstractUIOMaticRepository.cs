@@ -26,6 +26,8 @@ namespace UIOMatic.Data
 
         public abstract void Delete(TId[] ids);
 
+        public abstract long GetTotalRecordCount();
+
         #region IUIOMaticRepository
 
         IEnumerable<object> IUIOMaticRepository.GetAll(string sortColumn, string sortOrder)
