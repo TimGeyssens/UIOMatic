@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, $location, uioMaticObjectResource, navigationService, dialogService) {
+    function ($scope, $routeParams, $location, uioMaticUtilityService, uioMaticObjectResource, navigationService, dialogService) {
 
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
@@ -8,6 +8,8 @@
         $scope.currentPage = 1;
         $scope.itemsPerPage = JSON.parse(Umbraco.Sys.ServerVariables.uioMatic.settings.defaultListViewPageSize);
         $scope.totalPages = 1;
+
+        $scope.legacyPagination = uioMaticUtilityService.useLegacyPaginationControl();
         
         $scope.reverse = false;
 

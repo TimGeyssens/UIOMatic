@@ -1,8 +1,14 @@
-﻿.uiomatic .umb-textstring {
+﻿/*
+    Input Styles
+*/
+.uiomatic .umb-textstring {
     height: 32px;
     box-sizing: border-box;
 }
 
+/*
+    Map Styles
+*/
 .uiomatic_map .uiomatic_map_controls {
     margin-top: 10px;
     border: 1px solid transparent;
@@ -30,4 +36,11 @@
 }
 .uiomatic_map .uiomatic_map_search:focus {
     border-color: #4d90fe;
+}
+
+/*
+    Pagination Styles
+*/
+.uiomatic {
+    
 }
