@@ -7,16 +7,17 @@
                 <h1>{{title}}</h1>
             </div>
 
-            <div class="span5">
-                <div class="btn-group pull-right umb-btn-toolbar" ng-show="listViewActions" style="margin-top:15px;">
+            <div style="float: right; margin: 20px 20px 0 0; position: relative;">
+                <div class="btn-group pull-right" ng-show="listViewActions" >
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                         Actions
                         <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu" style="right:20px">
-                        <li ng-repeat="action in listViewActions">
-                            <a ng-click="openAction(action)" style="cursor:pointer">
-                                <i class="icon {{action.icon}}" ng-show="action.icon"></i> {{action.name}}
+                    <ul class="dropdown-menu umb-actions">
+                        <li class="action" ng-repeat="action in listViewActions">
+                            <a ng-click="openAction(action)" style="cursor: pointer">
+                                <i class="icon {{action.icon}}" ng-show="action.icon"></i>
+                                <span class="menu-label">{{action.name}}</span> 
                             </a>
                         </li>
                     </ul>
