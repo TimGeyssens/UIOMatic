@@ -35,7 +35,7 @@ And the following petapoco poco
 
     }
 
-The next additions to the class (attributes and interface)
+The next additions to the class (attributes)
 
     [UIOMaticAttribute("people","People","Person", FolderIcon = "icon-users", ItemIcon = "icon-user")]
     [TableName("People")]
