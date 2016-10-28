@@ -59,8 +59,12 @@
 }
 
 .uiomatic__type-summary a:hover {
-    border: 2px solid #2e8aea;
+    border-color: #2e8aea;
     text-decoration:none !important;
+}
+
+.uiomatic__type-summary a.readonly:hover {
+    border-color: #f8f8f8;
 }
 
 .uiomatic__type-summary__icon {

@@ -1,6 +1,6 @@
 ﻿<div ng-controller="UIOMatic.Dashboards.SummaryDashboardController">
     <div ng-repeat="type in types" class="uiomatic__type-summary">
-        <a href="#/uiomatic/uiomatic/edit/{{type.alias}}">
+        <a ng-href="{{type.readOnly ? '' : '#/uiomatic/uiomatic/edit/' + type.alias}}" ng-class="{ readonly:type.readOnly }">
             <i class="uiomatic__type-summary__icon icon {{type.folderIcon}}"></i>
             <h1 class="uiomatic__type-summary__record-count">{{type.recordCount}}</h1>
             <p ng-if="type.recordCount != 1" class="uiomatic__type-summary__type-name">{{type.namePlural}}</p>

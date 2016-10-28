@@ -85,7 +85,9 @@ namespace UIOMatic.Web.Controllers
                     alias = x.Alias,
                     namePlural = x.FolderName,
                     nameSingular = x.ItemName,
-                    folderIcon = x.FolderIcon
+                    folderIcon = x.FolderIcon,
+                    renderType = x.RenderType.ToString(),
+                    readOnly = x.ReadOnly
                 });
         }
 
