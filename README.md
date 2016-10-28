@@ -38,7 +38,7 @@ This class
         [UIOMaticField(Name = "Last name",Description = "Enter the persons last name")]
         public string LastName { get; set; }
 
-        [UIOMaticField(Name = "Picture",Description = "Select a picture", View = "file")]
+        [UIOMaticField(Name = "Picture",Description = "Select a picture", View = UIOMatic.Constants.FieldEditors.File)]
         public string Picture { get; set; }
 
         public override string ToString()
