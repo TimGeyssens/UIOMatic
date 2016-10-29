@@ -40,8 +40,11 @@ namespace UIOMatic.Web.Controllers
                 if (attri.ParentAlias == id)
                 {
                     var attri2 = attri as UIOMaticAttribute; 
-                    if (attri2 != null && !attri2.HideFromTree)
+                    if (attri2 != null)
                     {
+                        if(attri2.HideFromTree)
+                            continue;
+
                         // UIOMatic node
                         if (attri2.RenderType == UIOMaticRenderType.Tree)
                         {
@@ -94,6 +97,9 @@ namespace UIOMatic.Web.Controllers
                     var attri2 = attri as UIOMaticAttribute;
                     if (attri2 != null)
                     {
+                        if (attri2.HideFromTree)
+                            continue;
+
                         var primaryKeyPropertyName = type.GetPrimaryKeyName();
 
                         if(attri2.RenderType == UIOMaticRenderType.Tree)
