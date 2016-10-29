@@ -82,6 +82,12 @@
     padding-left: 10px;
 }
 
+.uiomatic__filter-label.readonly {
+    border-left: 0; 
+    margin-left: 0; 
+    padding-left: 0;
+}
+
 .uiomatic .table .checkbox-column {
     width: 35px
 }
