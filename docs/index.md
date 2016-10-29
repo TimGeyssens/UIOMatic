@@ -1,4 +1,4 @@
-# UI-O-Matic #
+# ![petapoco](uiomatic.png) #
 
 UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco](http://www.toptensoftware.com/petapoco/) poco.
 
