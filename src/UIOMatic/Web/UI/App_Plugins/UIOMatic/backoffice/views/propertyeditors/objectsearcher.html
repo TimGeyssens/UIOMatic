@@ -21,16 +21,15 @@
     </div>
 
     <div class="umb-panel-body with-footer">
-        <ul style="list-style-type:none;">
+        
+        <ul class="uiomatic__object-searcher__list">
             <li ng-repeat="item in items">
-                <input type="checkbox" name="selectedItems[]" value="{{item.id}}" ng-checked="isSelected(item)" ng-click="toggleSelection(item)" />
+                <input type="checkbox" name="selectedItems[]" value="{{item.id}}" ng-checked="isSelected(item)" ng-click="toggleSelection(item)"/>
                 {{item.text}}
             </li>
-
-
         </ul>
 
-        <div class="pagination-right" style="display:block;" ng-if="totalPages > 1">
+        <div class="pagination-right block" ng-if="totalPages > 1">
             <uiomatic-pagination page-number="currentPage"
                 total-pages="totalPages"
                 on-next="nextPage"

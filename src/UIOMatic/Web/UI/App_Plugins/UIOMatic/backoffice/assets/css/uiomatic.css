@@ -6,6 +6,14 @@
     box-sizing: border-box;
 }
 
+.uiomatic .datepicker {
+    position: relative;
+}
+
+.block {
+    display: block;
+}
+
 /*
     Map Styles
 */
@@ -31,11 +39,63 @@
     width: 300px;
     display: none;
 }
+
+.uiomatic_map .uiomatic_map_map {
+    width: 66.6%; 
+    height: 500px;
+}
+
 .uiomatic_map .uiomatic_map_map .uiomatic_map_search {
     display: inline-block;
 }
+
 .uiomatic_map .uiomatic_map_search:focus {
     border-color: #4d90fe;
+}
+
+/*
+    Action Styles
+*/
+.uiomatic__action-menu-container {
+    float: right; 
+    margin: 20px 20px 0 0; 
+    position: relative;
+}
+
+.uiomatic__action-menu-container .action a {
+    cursor: pointer
+}
+
+/* 
+    List View Styles
+*/
+.uiomatic .tab-content {
+    padding-bottom: 90px;
+}
+
+.uiomatic__filter-label {
+    line-height: 28px; 
+    border-left: 1px solid #ccc; 
+    font-size: 14px; 
+    font-weight: bold; 
+    margin-left: 10px; 
+    padding-left: 10px;
+}
+
+.uiomatic .table .checkbox-column {
+    width: 35px
+}
+.uiomatic .table .table__link {
+    font-weight: bold; 
+    cursor: pointer;
+}
+
+/* 
+    Object Searcher Styles
+*/
+
+.uiomatic__object-searcher__list {
+    list-style-type: none;
 }
 
 /*
