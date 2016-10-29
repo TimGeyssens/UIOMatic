@@ -30,16 +30,19 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    $scope.queryString = qs;
 	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uiomatic/list/" + $scope.typeAlias;
+	    $scope.fromList = qs["returnUrl"]; // Assumes a return URL means you've come from a list field view
 
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
 	    {
 	        $scope.type = response;
 	        $scope.itemDisplayName = response.displayNameSingular;
 	        $scope.readOnly = response.readOnly;
+	        $scope.fromList = $scope.fromList || response.renderType == 1;
 	        $scope.properties = response.editableProperties;
 	        $scope.type.nameFieldIndex = $scope.type.nameFieldKey.length > 0
                 ? _.indexOf(_.pluck($scope.properties, "key"), $scope.type.nameFieldKey)
 	            : -1;
+
 
 	        var tabsArr = [];
 
