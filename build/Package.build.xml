@@ -15,7 +15,7 @@
 	<!-- PROPERTIES -->
 	<!-- SHARED PROPERTIES -->
 	<PropertyGroup>
-		<PackageName>UI-O-Matic</PackageName>
+		<PackageName>UIOMatic</PackageName>
 		<MinUmbracoVersion>7.3.0</MinUmbracoVersion>
 		<Readme>Auto generate an integrated crud UI in Umbraco for a db table based on a petapoco poco</Readme>
 		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
@@ -27,7 +27,7 @@
 
 	<!-- NUGET ONLY PROPERTIES -->
 	<PropertyGroup>
-		<NugetPackageName>UI-O-Matic</NugetPackageName>
+		<NugetPackageName>UIOMatic</NugetPackageName>
 		<PackageId>Nibble.Umbraco.UIOMatic</PackageId>
 		<CoreNugetPackageName>$(NugetPackageName) Core</CoreNugetPackageName>
 		<CorePackageId>$(PackageId).Core</CorePackageId>
@@ -42,7 +42,7 @@
 
 	<PropertyGroup>
 		<Version>2.0.0</Version>
-		<ProjectName>UI-O-Matic</ProjectName>
+		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 
 	<PropertyGroup>
