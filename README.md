@@ -52,6 +52,8 @@ Will generate the following UI
 
 ![](docs/img/example.png?raw=true)
 
+## Documentation ##
+For the full documentation please go to [http://uiomatic.readthedocs.org/en/stable/](http://uiomatic.readthedocs.org/en/stable/)
 ## The Team ##
 
 * [Tim Geyssens](https://github.com/TimGeyssens)
