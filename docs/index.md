@@ -39,7 +39,7 @@ And the following petapoco poco
 
 The next additions to the class (attributes)
 
-    [UIOMaticAttribute("people","People","Person", FolderIcon = "icon-users", ItemIcon = "icon-user")]
+    [UIOMatic("people","People","Person", FolderIcon = "icon-users", ItemIcon = "icon-user")]
     [TableName("People")]
     public class Person
     {

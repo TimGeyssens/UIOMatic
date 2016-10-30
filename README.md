@@ -23,7 +23,7 @@ If you have the following db table
 
 This class
 
-    [UIOMaticAttribute("people","People","Person", FolderIcon = "icon-users", ItemIcon = "icon-user")]
+    [UIOMatic("people","People","Person", FolderIcon = "icon-users", ItemIcon = "icon-user")]
     [TableName("People")]
     public class Person
     {
