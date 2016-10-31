@@ -18,7 +18,9 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	        }
 	    }
 
-	    var hasId = !isNaN(id) && id > 0;
+	    // If we have a ta querystring, it must be an edit 
+	    // and the first part of the URL must be the ID
+	    var hasId = !!qs["ta"]; 
 
 	    if (!hasId) {
 	        $scope.id = 0;
