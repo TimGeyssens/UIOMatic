@@ -6,7 +6,7 @@
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/developer-tools/ui-o-matic/)
 [![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/TimGeyssens/UIOMatic)
 
-<a href='https://pledgie.com/campaigns/32227'><img alt='Click here to lend your support to: UI-O-Matic Development and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/32227.png?skin_name=chrome' border='0' ></a>
+*Please not that these docs are for v1 of UI-O-Matic, if you are using the latest and greatest version please go to the [latest docs](http://uiomatic.readthedocs.io/en/stable/)*
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco ](http://www.toptensoftware.com/petapoco/)poco**
 
