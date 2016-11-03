@@ -2,8 +2,14 @@
 
 UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco](http://www.toptensoftware.com/petapoco/) (the default ORM in Umbraco) poco.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
+[![NuGet release](https://img.shields.io/nuget/v/Nibble.Umbraco.UIOMatic.svg)](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic)
+[![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/developer-tools/ui-o-matic/)
+
+
 ## How can I install it? ##
-UI-O-Matic can be installed from the [Nuget package repository](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
+UI-O-Matic can be installed from the [Nuget package repository](https://www.nuget.org/packages/Nibble.Umbra
+co.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
 
 ![nuget install](img/nuget.png)
 
