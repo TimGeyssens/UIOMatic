@@ -38,6 +38,8 @@
             $scope.nameField = response.nameFieldKey.replace(' ', '_');
             $scope.readOnly = response.readOnly;
             $scope.listViewActions = response.listViewActions;
+            $scope.predicate = response.sortColumn;
+            $scope.reverse = response.sortOrder == "desc";
             // Pass extra meta data into filter properties
             $scope.filterProperties = response.listViewFilterProperties.map(function (itm) {
                 itm.typeAlias = $scope.typeAlias;

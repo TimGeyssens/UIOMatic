@@ -344,7 +344,9 @@ namespace UIOMatic.Services
                     RawProperties = rawProperties.ToArray(),
                     Path = path.ToArray(),
                     Type = type,
-                    ListViewActions = actions.ToArray()
+                    ListViewActions = actions.ToArray(),
+                    SortColumn = attri.SortColumn,
+                    SortOrder = attri.SortOrder
                 };
             });
         }

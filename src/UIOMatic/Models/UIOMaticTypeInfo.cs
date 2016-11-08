@@ -56,5 +56,12 @@ namespace UIOMatic.Models
 
         [JsonProperty("listViewActions")]
         public UIOMaticActionInfo[] ListViewActions { get; set; }
+
+        [JsonProperty("sortColumn")]
+        public string SortColumn { get; set; }
+
+        [JsonProperty("sortOrder")]
+        public string SortOrder { get; set; }
+
     }
 }
