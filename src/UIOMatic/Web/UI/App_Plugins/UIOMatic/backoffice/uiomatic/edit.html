@@ -13,7 +13,7 @@
                 </div>
                 <div ng-if="type.nameFieldIndex == -1">
                     <h1 ng-if="!editing">Create {{itemDisplayName}}</h1>
-                    <h1 ng-if="editing">Update {{itemDisplayName}}</h1>
+                    <h1 ng-if="editing"><span ng-show="!readOnly">Update</span> {{itemDisplayName}}</h1>
                 </div>
             </div>
 
