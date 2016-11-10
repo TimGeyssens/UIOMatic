@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Umbraco.Core.Persistence;
 
 namespace UIOMatic
@@ -6,7 +7,7 @@ namespace UIOMatic
     public class QueryEventArgs : EventArgs
     {
         public QueryEventArgs(Type objectType, string tableName, Sql query, string sortColumn,
-            string sortOrder, string searchTerm)
+            string sortOrder, string searchTerm, IDictionary<string, string> filters)
         {
             ObjectType = objectType;
             TableName = tableName;
@@ -14,6 +15,7 @@ namespace UIOMatic
             SortColumn = sortColumn;
             SortOrder = sortOrder;
             SearhTerm = searchTerm;
+            Filters = filters;
         }
 
         public Type ObjectType { get; set; }
@@ -27,5 +29,6 @@ namespace UIOMatic
         public string SortOrder { get; set; }
 
         public string SearhTerm { get; set; }
+        public IDictionary<string, string> Filters { get; set; }
     }
 }

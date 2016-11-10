@@ -27,7 +27,7 @@ namespace UIOMatic.Data
             
             var query = new Sql().Select("*").From(_typeInfo.TableName);
 
-            var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "");
+            var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "",null);
             UIOMaticObjectService.OnBuildingQuery(a1);
             query = a1.Query;
 
@@ -36,7 +36,7 @@ namespace UIOMatic.Data
                 query.OrderBy(sortColumn + " " + sortOrder);
             }
 
-            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "");
+            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "",null);
             UIOMaticObjectService.OnBuiltQuery(a2);
             query = a2.Query;
 
@@ -55,7 +55,7 @@ namespace UIOMatic.Data
 
             var query = new Sql().Select("*").From(_typeInfo.TableName);
 
-            var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm);
+            var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
             UIOMaticObjectService.OnBuildingQuery(a1);
             query = a1.Query;
 
@@ -111,7 +111,7 @@ namespace UIOMatic.Data
                 query.OrderBy(primaryKeyColum + " asc");
             }
 
-            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm);
+            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
             UIOMaticObjectService.OnBuiltQuery(a2);
             query = a2.Query;
 
