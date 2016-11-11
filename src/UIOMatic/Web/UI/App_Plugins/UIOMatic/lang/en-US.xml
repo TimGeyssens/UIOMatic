@@ -3,4 +3,7 @@
   <area alias="sections">
     <key alias="uiomatic">UI-O-Matic</key>
   </area>
+  <area alias="treeHeaders">
+    <key alias="uiomatic">UI-O-Matic</key>
+  </area>
 </language>
