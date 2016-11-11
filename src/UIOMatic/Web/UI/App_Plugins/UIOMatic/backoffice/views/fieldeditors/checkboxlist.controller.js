@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Checkboxlist",
+angular.module("umbraco").controller("UIOMatic.FieldEditors.Checkboxlist",
     function ($scope, $interpolate, uioMaticObjectResource) {
 
         $scope.delimiter = ",";
@@ -7,8 +7,14 @@
             $scope.delimiter = $scope.property.config.delimiter;
 
         $scope.selectedValues = [];
-        if ($scope.property.value)
-            $scope.selectedValues = $scope.property.value.toString().split($scope.delimiter);
+
+        function updateSelected() {
+            if ($scope.property.value) {
+                $scope.selectedValues = $scope.property.value.toString().split($scope.delimiter);
+            }
+        }
+
+        updateSelected();
 
         function init() {
             uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
@@ -35,9 +41,11 @@
         }
 
         if ($scope.valuesLoaded) {
+            updateSelected();
             init();
         } else {
             var unsubscribe = $scope.$on('valuesLoaded', function () {
+                updateSelected();
                 init();
                 unsubscribe();
             });
