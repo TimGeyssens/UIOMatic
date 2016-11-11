@@ -63,7 +63,7 @@ namespace UIOMatic.Services
             obj = repo.Create(obj);
 
             var a2 = new ObjectEventArgs(typeInfo.Type, obj);
-            UIOMaticObjectService.OnCreatingObject(a2);
+            UIOMaticObjectService.OnCreatedObject(a2);
 
             return a2.Object;
         }
