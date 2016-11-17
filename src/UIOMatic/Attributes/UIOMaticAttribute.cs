@@ -29,6 +29,8 @@ namespace UIOMatic.Attributes
 
         public bool ShowOnSummaryDashboard { get; set; }
 
+        public string DeletedColumnName { get; set; }
+
         public UIOMaticAttribute(string alias, string folderName, string itemName)
             : base(alias, folderName)
         {

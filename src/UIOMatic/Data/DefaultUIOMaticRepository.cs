@@ -31,6 +31,11 @@ namespace UIOMatic.Data
             UIOMaticObjectService.OnBuildingQuery(a1);
             query = a1.Query;
 
+            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            {
+                query.Append("WHERE " + this._config.DeletedColumnName + " = 0");
+            }
+
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
             {
                 query.OrderBy(sortColumn + " " + sortOrder);
@@ -59,7 +64,14 @@ namespace UIOMatic.Data
             UIOMaticObjectService.OnBuildingQuery(a1);
             query = a1.Query;
 
-            query.Append("WHERE 1=1");
+            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            {
+                query.Append("WHERE " + this._config.DeletedColumnName + " = 0");
+            }
+            else
+            {
+                query.Append("WHERE 1=1");
+            }
 
             // Filter by search term
             if (!string.IsNullOrEmpty(searchTerm))
@@ -159,19 +171,41 @@ namespace UIOMatic.Data
         {
             var db = GetDb();
 
-            var sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})",
-                _typeInfo.TableName,
-                _typeInfo.PrimaryKeyColumnName,
-                string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
+            if (this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            {
+                var sql = string.Format(
+                    "DELETE FROM {0} WHERE {1} IN ({2})",
+                    _typeInfo.TableName,
+                    _typeInfo.PrimaryKeyColumnName,
+                    string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
 
-            db.Execute(sql);
+                db.Execute(sql);
+            }
+            else
+            {
+                var sql = string.Format(
+                    "UPDATE {0} SET {1} = 1 WHERE {2} IN ({3})",
+                    _typeInfo.TableName,
+                    this._config.DeletedColumnName,
+                    _typeInfo.PrimaryKeyColumnName,
+                    string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
+
+                db.Execute(sql);
+            }
         }
 
         public long GetTotalRecordCount()
         {
             var db = GetDb();
 
-            return db.ExecuteScalar<long>(string.Format("SELECT COUNT(1) FROM {0}", _typeInfo.TableName));
+            var sql = string.Format("SELECT COUNT(1) FROM {0}", _typeInfo.TableName);
+
+            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            {
+                sql += string.Format(" WHERE {0} = 0", this._config.DeletedColumnName);
+            }
+
+            return db.ExecuteScalar<long>(sql);
         }
 
         private Database GetDb()
