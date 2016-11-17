@@ -1,4 +1,6 @@
 ﻿<input name="numberField"
        type="number"
        ng-model="property.value"
+       min="{{property.config && property.config.min !== undefined ? property.config.min : Number.MIN_VALUE }}"
+       max="{{property.config && property.config.max !== undefined ? property.config.max : Number.MAX_VALUE }}"
        />
