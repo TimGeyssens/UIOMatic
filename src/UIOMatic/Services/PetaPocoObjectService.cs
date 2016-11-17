@@ -179,14 +179,30 @@ namespace UIOMatic.Services
                 var listViewProperties = new List<UIOMaticViewablePropertyInfo>();
                 var listViewFilterProperties = new List<UIOMaticFilterPropertyInfo>();
                 var rawProperties = new List<UIOMaticPropertyInfo>();
-                var nameFieldKey = "";
                 var actions = new List<UIOMaticActionInfo>();
+
+                var nameFieldKey = "";
+                var dateCreatedFieldKey = "";
+                var dateModifiedFieldKey = "";
 
                 var props = type.GetProperties().ToArray();
                 foreach (var prop in props)
                 {
-                    var attris = prop.GetCustomAttributes();
+                    var attris = prop.GetCustomAttributes().ToArray();
 
+                    // Get date created property key
+                    if (attris.Any(x => x.GetType() == typeof(UIOMaticDateCreatedAttribute)))
+                    {
+                        dateCreatedFieldKey = prop.Name;
+                    }
+
+                    // Get date modified property key
+                    if (attris.Any(x => x.GetType() == typeof(UIOMaticDateModifiedAttribute)))
+                    {
+                        dateModifiedFieldKey = prop.Name;
+                    }
+
+                    // Process properties
                     if (populateProperties)
                     {
                         // Check for regular properties
@@ -276,6 +292,16 @@ namespace UIOMatic.Services
                             listViewFilterProperties.Add(pi);
                         }
 
+                        // Check for date/modified properties
+                        if (prop.GetCustomAttribute<UIOMaticDateCreatedAttribute>() != null)
+                        {
+                            dateCreatedFieldKey = prop.Name;
+                        }
+                        if (prop.GetCustomAttribute<UIOMaticDateModifiedAttribute>() != null)
+                        {
+                            dateModifiedFieldKey = prop.Name;
+                        }
+
                         // Raw properties
                         rawProperties.Add(new UIOMaticPropertyInfo
                         {
@@ -346,7 +372,9 @@ namespace UIOMatic.Services
                     Type = type,
                     ListViewActions = actions.ToArray(),
                     SortColumn = attri.SortColumn,
-                    SortOrder = attri.SortOrder
+                    SortOrder = attri.SortOrder,
+                    DateCreatedFieldKey = dateCreatedFieldKey,
+                    DateModifiedFieldKey = dateModifiedFieldKey
                 };
             });
         }

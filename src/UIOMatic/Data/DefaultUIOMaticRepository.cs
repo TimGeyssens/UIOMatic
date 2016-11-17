@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
@@ -150,6 +151,16 @@ namespace UIOMatic.Data
         {
             var db = GetDb();
 
+            if (!this._typeInfo.DateCreatedFieldKey.IsNullOrWhiteSpace())
+            {
+                entity.SetPropertyValue(this._typeInfo.DateCreatedFieldKey, DateTime.Now);
+            }
+
+            if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
+            {
+                entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
+            }
+
             if (_typeInfo.AutoIncrementPrimaryKey)
                 db.Insert(_typeInfo.TableName, _typeInfo.PrimaryKeyColumnName, true, entity);
             else
@@ -161,6 +172,11 @@ namespace UIOMatic.Data
         public object Update(object entity)
         {
             var db = GetDb();
+             
+            if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
+            {
+                entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
+            }
 
             db.Update(entity);
 

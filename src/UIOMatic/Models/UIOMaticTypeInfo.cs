@@ -45,6 +45,12 @@ namespace UIOMatic.Models
         [JsonProperty("nameFieldKey")]
         public string NameFieldKey { get; set; }
 
+        [JsonProperty("dateCreatedFieldKey")]
+        public string DateCreatedFieldKey { get; set; }
+
+        [JsonProperty("dateModifiedFieldKey")]
+        public string DateModifiedFieldKey { get; set; }
+
         [JsonProperty("readOnly")]
         public bool ReadOnly { get; set; }
 
