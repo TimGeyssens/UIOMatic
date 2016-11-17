@@ -275,6 +275,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UIOMaticActionAttribute.cs" />
+    <Compile Include="Attributes\UIOMaticDateModifiedAttribute.cs" />
+    <Compile Include="Attributes\UIOMaticDateCreatedAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFilterAttribute.cs" />
     <Compile Include="Attributes\UIOMaticListViewFieldAttribute.cs" />
     <Compile Include="Attributes\UIOMaticFolderAttribute.cs" />
@@ -417,9 +419,9 @@ xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2
 xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2\bin"
 xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\Sandbox\Umbraco\UmbracoCms.7.5.2"
 
-REM xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
-REM xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website\bin"
-REM xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\WelcomeToYorkshire\Website\Src\WelcomeToYorkshire.Website"
+xcopy /s /y "$(TargetPath)" "C:\Users\Matt\Work\TheOutfield\CreativeSpark\ZUTO\CarDealerReviews\dlls"
+xcopy /s /y "$(TargetDir)UIOMatic.pdb" "C:\Users\Matt\Work\TheOutfield\CreativeSpark\ZUTO\CarDealerReviews\dlls"
+xcopy /s /y "$(ProjectDir)Web\UI\*" "C:\Users\Matt\Work\TheOutfield\CreativeSpark\ZUTO\CarDealerReviews\src\CarDealerReviews.Web"
 
 )
 )</PostBuildEvent>
