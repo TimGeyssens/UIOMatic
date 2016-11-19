@@ -1,5 +1,7 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, $location, uioMaticUtilityService, uioMaticObjectResource, navigationService, dialogService) {
+    function ($scope, $routeParams, $location, $timeout, uioMaticUtilityService, uioMaticObjectResource, navigationService, dialogService) {
+
+        var searchTimeout;
 
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
@@ -117,10 +119,16 @@
             fetchData();
         };
 
-        $scope.search = function(searchFilter) {
-            $scope.searchTerm = searchFilter;
-            $scope.currentPage = 1;
-            fetchData();
+        $scope.search = function (searchFilter) {
+            if (searchTimeout) { // if there is already a timeout in process cancel it
+                $timeout.cancel(searchTimeout);
+            }
+            searchTimeout = $timeout(function () {
+                $scope.searchTerm = searchFilter;
+                $scope.currentPage = 1;
+                fetchData();
+                searchTimeout = null;
+            }, 1000);
         };
 
         $scope.isColumnLinkable = function (prop, index) {
