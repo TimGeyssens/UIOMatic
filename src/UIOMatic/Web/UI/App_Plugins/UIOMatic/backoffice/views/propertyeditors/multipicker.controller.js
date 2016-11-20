@@ -4,7 +4,7 @@
 	    $scope.openDialog = function()
 	    {
 	        dialogService.open({
-	            template: '/App_Plugins/UIOMatic/backoffice/views/PropertyEditors/objectsearcher.html',
+	            template: '/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.html',
 	            show: true,
 	            callback: function (selectedIds) {
 	                $scope.model.value = selectedIds;

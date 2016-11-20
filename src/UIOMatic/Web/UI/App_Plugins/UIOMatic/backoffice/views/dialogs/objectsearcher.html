@@ -1,0 +1,65 @@
+﻿<div ng-controller="UIOMatic.PropertyEditors.Dialogs.Searcher" class="uiomatic">
+
+
+    <div class="umb-panel-header">
+
+        <div class="umb-el-wrap umb-panel-buttons">
+            <div class="span5">
+                <form class="form-search" novalidate="">
+                    <div class="inner-addon left-addon">
+                        <i class="icon icon-search"></i>
+                        <input type="text" class="umb-search-field search-query" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="umb-panel-body with-footer">
+
+        <ul class="umb-tree">
+            <li ng-repeat="item in items">
+                <div style="padding-left: 20px;" ng-class="{'umb-tree-node-checked':isSelected(item)}">
+                    <i class="icon umb-tree-icon sprTree {{itemIcon}}" ng-click="toggleSelection(item)" title="#"></i>
+                    <a href="#" ng-click="toggleSelection(item)" prevent-default>{{item.text}}</a>
+                </div>
+            </li>
+        </ul>
+
+        <div class="pagination-center block" ng-if="totalPages > 1">
+            <uiomatic-pagination page-size="3"
+                                 page-number="currentPage"
+                                 total-pages="totalPages"
+                                 on-next="nextPage"
+                                 on-prev="prevPage"
+                                 on-go-to-page="setPage">
+            </uiomatic-pagination>
+        </div>
+
+    </div>
+
+
+    <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+            <div class="btn-toolbar umb-btn-toolbar pull-right">
+                <a href="" ng-click="close()" class="btn btn-link">
+                    Cancel
+                </a>
+
+                <button class="btn btn-primary" ng-click="returnSelection()">
+                    Select
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+

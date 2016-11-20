@@ -15,6 +15,12 @@ namespace UIOMatic.Models
         [JsonProperty("displayNameSingular")]
         public string DisplayNameSingular { get; set; }
 
+        [JsonProperty("folderIcon")]
+        public string FolderIcon { get; set; }
+
+        [JsonProperty("itemIcon")]
+        public string ItemIcon { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 

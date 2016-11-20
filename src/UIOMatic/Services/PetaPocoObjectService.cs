@@ -357,6 +357,8 @@ namespace UIOMatic.Services
                     Alias = attri.Alias,
                     DisplayNamePlural = attri.FolderName,
                     DisplayNameSingular = attri.ItemName,
+                    FolderIcon = attri.FolderIcon,
+                    ItemIcon = attri.ItemIcon,
                     Name = type.Name,
                     TableName = type.GetTableName(),
                     RenderType = attri.RenderType,

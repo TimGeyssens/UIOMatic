@@ -20,7 +20,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    // If we have a ta querystring, it must be an edit 
 	    // and the first part of the URL must be the ID
-	    var hasId = !!qs["ta"]; 
+	    var hasId = !!qs["ta"];
 
 	    if (!hasId) {
 	        $scope.id = 0;
@@ -32,10 +32,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	    $scope.queryString = qs;
 	    $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uiomatic/list/" + $scope.typeAlias;
-	    $scope.fromList = qs["returnUrl"]; // Assumes a return URL means you've come from a list field view
+	    $scope.fromList = !!qs["returnUrl"]; // Assumes a return URL means you've come from a list field view
+	    $scope.syncTree = !$scope.fromList; // Don't sync the tree if we are a nested type
 
-	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response)
-	    {
+
+	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
 	        $scope.type = response;
 	        $scope.itemDisplayName = response.displayNameSingular;
 	        $scope.readOnly = response.readOnly;
@@ -48,16 +49,18 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	        var tabsArr = [];
 
-            // Build items path
+	        // Build items path
 	        $scope.path = response.path;
 	        if ($scope.id > 0 && response.renderType == 0) // Tree view so append the node id
 	            $scope.path.push($scope.id);
 
 	        // Sync the tree
-	        navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: false, activate: true });
+	        if ($scope.syncTree) {
+	            navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: false, activate: true });
+	        }
 
 	        angular.forEach($scope.properties, function (value, key) {
-                if (this.map(function (e) { return e.label; }).indexOf(value.tab) === -1) {
+	            if (this.map(function (e) { return e.label; }).indexOf(value.tab) === -1) {
 	                if (value.tab == "") {
 	                    this.push({ id: 99, label: "General" });
 	                } else {
@@ -69,19 +72,18 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
 	        if (tabsArr.length > 1) {
 	            $scope.content = {
-	                 tabs: tabsArr.sort(function(a, b) {
-	                     if (a.id < b.id)
-	                         return -1;
-	                     if (a.id > b.id)
-	                         return 1;
-	                     return 0;
-	                 })
+	                tabs: tabsArr.sort(function (a, b) {
+	                    if (a.id < b.id)
+	                        return -1;
+	                    if (a.id > b.id)
+	                        return 1;
+	                    return 0;
+	                })
 	            };
 	        }
 
 
-	        if (!hasId)
-	        {
+	        if (!hasId) {
 	            uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
 	                $scope.object = response;
 	                $scope.loaded = true;
@@ -92,8 +94,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                });
 	            });
 	        }
-	        else
-	        {
+	        else {
 	            uioMaticObjectResource.getById($scope.typeAlias, $scope.id).then(function (response) {
 	                $scope.object = response;
 	                $scope.loaded = true;
@@ -128,7 +129,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
 	                        $scope.objectForm.$dirty = false;
 	                        var redirectUrl = "/uiomatic/uiomatic/edit/" + response.Id + "%3Fta=" + $scope.typeAlias;
-	                        for(var k in $scope.queryString) {
+	                        for (var k in $scope.queryString) {
 	                            if ($scope.queryString.hasOwnProperty(k) && k != "ta") {
 	                                redirectUrl += "%26" + encodeURIComponent(k) + "=" + encodeURIComponent(encodeURIComponent($scope.queryString[k]));
 	                            }
@@ -148,8 +149,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                    uioMaticObjectResource.update($scope.typeAlias, object).then(function () {
 	                        $scope.objectForm.$dirty = false;
 
-                            // Sync the tree
-	                        navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: true, activate: true });
+	                        // Sync the tree
+	                        if ($scope.syncTree) {
+	                            navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: true, activate: true });
+	                        }
 	                        notificationsService.success("Success", $scope.itemDisplayName + " has been saved");
 	                    });
 	                }
@@ -162,12 +165,12 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	    };
 
 	    $scope.navigate = function (url) {
-            // Because some JS seems to be translating any links starting '#'
+	        // Because some JS seems to be translating any links starting '#'
 	        $location.url(url);
 	    }
 
 	    $scope.$on("valuesLoaded", function () {
-	        $timeout(function() {
+	        $timeout(function () {
 	            if ($scope.content && $scope.content.tabs.length > 1 && $scope.queryString["tab"]) {
 	                $("a[href='#" + $scope.queryString["tab"] + "']").trigger("click");
 	            }

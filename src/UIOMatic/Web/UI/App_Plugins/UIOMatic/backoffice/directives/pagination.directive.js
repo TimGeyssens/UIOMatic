@@ -10,8 +10,9 @@
                 scope.pagination = [];
 
                 var i = 0;
+                var pageSize = scope.pageSize || 10;
 
-                if (scope.totalPages <= 10) {
+                if (scope.totalPages <= pageSize) {
                     for (i = 0; i < scope.totalPages; i++) {
                         scope.pagination.push({
                             val: (i + 1),
@@ -20,16 +21,16 @@
                     }
                 }
                 else {
-                    //if there is more than 10 pages, we need to do some fancy bits
+                    //if there is more than pageSize pages, we need to do some fancy bits
 
                     //get the max index to start
-                    var maxIndex = scope.totalPages - 10;
+                    var maxIndex = scope.totalPages - Math.round(pageSize / 2);
                     //set the start, but it can't be below zero
-                    var start = Math.max(scope.pageNumber - 5, 0);
+                    var start = Math.max(scope.pageNumber - Math.round(pageSize / 2), 0);
                     //ensure that it's not too far either
                     start = Math.min(maxIndex, start);
 
-                    for (i = start; i < (10 + start) ; i++) {
+                    for (i = start; i < (pageSize + start) ; i++) {
                         scope.pagination.push({
                             val: (i + 1),
                             isActive: scope.pageNumber === (i + 1)
@@ -87,6 +88,7 @@
             replace: true,
             templateUrl: '../app_plugins/uiomatic/backoffice/directives/pagination.html',
             scope: {
+                pageSize: "=",
                 pageNumber: "=",
                 totalPages: "=",
                 onNext: "=",

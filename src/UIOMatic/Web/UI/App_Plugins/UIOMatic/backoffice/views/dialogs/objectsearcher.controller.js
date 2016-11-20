@@ -1,5 +1,7 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.Dialogs.Searcher",
-	function ($scope, $interpolate, uioMaticObjectResource) {
+	function ($scope, $interpolate, $timeout, uioMaticObjectResource) {
+
+	    var searchTimeout;
 
 	    $scope.typeAlias = $scope.dialogData.typeAlias;
 	    $scope.selectedIds = [];
@@ -18,11 +20,11 @@
 
 	    function fetchData() {
 	        uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage, $scope.predicate, $scope.reverse ? "desc" : "asc", null, $scope.searchTerm).then(function (resp) {
-	            $scope.items = resp.items.map(function(itm) {
-                    return {
-                        id: itm[$scope.primaryKeyColumnName],
-                        text: $interpolate($scope.dialogData.textTemplate)(itm)
-                    }
+	            $scope.items = resp.items.map(function (itm) {
+	                return {
+	                    id: itm[$scope.primaryKeyColumnName],
+	                    text: $interpolate($scope.dialogData.textTemplate)(itm)
+	                }
 	            });
 	            $scope.totalPages = resp.totalPages;
 	        });
@@ -34,6 +36,7 @@
 	        $scope.predicate = response.primaryKeyColumnName.replace(' ', '_');
 	        $scope.nameField = response.nameFieldKey.replace(' ', '_');
 	        $scope.readOnly = response.readOnly;
+	        $scope.itemIcon = response.itemIcon;
 	        fetchData();
 
 	    });
@@ -62,21 +65,28 @@
 	    };
 
 	    $scope.search = function (searchFilter) {
-	        $scope.searchTerm = searchFilter;
-	        $scope.currentPage = 1;
-	        fetchData();
+	        if (searchTimeout) { // if there is already a timeout in process cancel it
+	            $timeout.cancel(searchTimeout);
+	        }
+	        searchTimeout = $timeout(function () {
+	            $scope.searchTerm = searchFilter;
+	            $scope.currentPage = 1;
+	            fetchData();
+	            searchTimeout = null;
+	        }, 1000);
 	    };
 
 	    $scope.toggleSelection = function (item) {
 	        var idx = $scope.selectedIds.indexOf(item.id);
 	        if (idx > -1) {
 	            $scope.selectedIds.splice(idx, 1);
-	        } else {
+	        } else if ($scope.dialogData.maxItems == 0 || $scope.selectedIds.length < $scope.dialogData.maxItems) {
 	            $scope.selectedIds.push(item.id);
 	        }
 	    }
 
 	    $scope.isSelected = function (item) {
+	        if (!$scope.selectedIds) return false;
 	        return $scope.selectedIds.indexOf(item.id) > -1;
 	    }
 
