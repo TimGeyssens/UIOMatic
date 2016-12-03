@@ -1,43 +1,52 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.MultiPicker",
-	function ($scope, $interpolate, dialogService, uioMaticObjectResource) {
+    function ($scope, $routeParams, $interpolate, $http, dialogService, uioMaticObjectResource) {
 
-	    $scope.openDialog = function()
-	    {
-	        dialogService.open({
-	            template: '/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.html',
-	            show: true,
-	            callback: function (selectedIds) {
-	                $scope.model.value = selectedIds;
-	                getFullDetails();
-	            },
-	            dialogData: {
-	                typeAlias: $scope.model.config.typeAlias,
-	                textTemplate: $scope.model.config.textTemplate,
-	                selectedIds : $scope.model.value
-	            }
-	        });
-	    }
+        $scope.maxItems = $scope.model.config.maxItems || 0;
 
-	    $scope.remove = function (index) {
-	        $scope.items.splice(index, 1);
-	        $scope.model.value.splice(index, 1);
-	    }
+        $scope.openDialog = function () {
+            dialogService.open({
+                template: '/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.html',
+                show: true,
+                callback: function (selectedIds) {
+                    $scope.selectedIds = selectedIds;
+                    getFullDetails();
+                },
+                dialogData: {
+                    maxItems: $scope.maxItems > 0 ? $scope.maxItems - $scope.selectedIds.length : 0,
+                    typeAlias: $scope.model.config.typeAlias,
+                    textTemplate: $scope.model.config.textTemplate,
+                    selectedIds: $scope.selectedIds
+                }
+            });
+        }
 
-	    function getFullDetails(){
+        $scope.remove = function (index) {
+            $scope.items.splice(index, 1);
+            $scope.selectedIds.splice(index, 1);
+        }
 
-	        $scope.items = [];
+        function getFullDetails() {
+            $scope.items = [];
+            if ($scope.selectedIds.length > 0) {
+                angular.forEach($scope.selectedIds, function (id) {
+                    uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function (resp) {
+                        $scope.items.push({
+                            text: $interpolate($scope.model.config.textTemplate)(resp)
+                        });
+                    });
+                });
+            }
+        }
 
-	        if($scope.model.value) {
-	            angular.forEach($scope.model.value, function (id) {
-	                uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function(resp) {
-	                    $scope.items.push({
-	                        text: $interpolate($scope.model.config.textTemplate)(resp)
-	                    });
-	                });
-	            });
-	        }
-	    }
+        function init() {
+            $scope.selectedIds = $scope.model.value ? $scope.model.value.toString().split(',') : [];
 
-	    getFullDetails();
+            getFullDetails();
 
-	});
+            $scope.$watch("selectedIds", function () {
+                $scope.model.value = $scope.selectedIds ? $scope.selectedIds.join() : undefined;
+            }, true);
+        }
+
+        init();
+    });
