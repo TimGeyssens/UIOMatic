@@ -28,9 +28,10 @@
         function getFullDetails() {
             $scope.items = [];
             if ($scope.selectedIds.length > 0) {
-                angular.forEach($scope.selectedIds, function (id) {
+                angular.forEach($scope.selectedIds, function (id, idx) {
                     uioMaticObjectResource.getById($scope.property.config.typeAlias, id).then(function (resp) {
-                        $scope.items.push({
+                        $scope.items.splice(idx, 0, {
+                            id: id,
                             text: $interpolate($scope.property.config.textTemplate)(resp)
                         });
                     });
@@ -46,6 +47,17 @@
             $scope.$watch("selectedIds", function () {
                 $scope.property.value = $scope.selectedIds ? $scope.selectedIds.join() : undefined;
             }, true);
+
+            // Watch items for sorting
+            $scope.$watch(function () {
+                return _.map($scope.items, function (i) {
+                    return i.id;
+                }).join();
+            }, function () {
+                $scope.selectedIds = _.map($scope.items, function (i) {
+                    return i.id;
+                });
+            });
         }
 
         if ($scope.valuesLoaded) {

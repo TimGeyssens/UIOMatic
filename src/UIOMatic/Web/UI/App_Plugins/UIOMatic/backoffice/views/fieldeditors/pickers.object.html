@@ -1,9 +1,9 @@
 ﻿<div ng-controller="UIOMatic.FieldEditors.Pickers.ObjectController">
 
-    <ul class="unstyled list-icons">
+    <ul class="unstyled list-icons" ui-sortable ng-model="items">
         <li ng-repeat="item in items">
             <a href="#" prevent-default ng-click="remove($index)">
-                <i class="icon icon-delete red hover-show" style="padding-right: 7px;margin-left: -25px;"></i>
+                <i class="icon icon-delete red hover-show" style="margin-left: -5px;"></i>
                 {{item.text}}
             </a>
         </li>
