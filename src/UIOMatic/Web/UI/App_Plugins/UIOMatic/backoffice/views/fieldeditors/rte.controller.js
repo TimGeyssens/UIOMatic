@@ -1,8 +1,13 @@
 angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($scope) {
 
-    var rowProps = $scope.property;
-
     function init() {
+
+        var rowProps = $scope.property || { value : "" };
+
+        // RTE doesn't like value being undefined, so if it is, set it to empty string
+        if (rowProps.value == undefined)
+            rowProps.value = "";
+
         $scope.property = {
             alias: 'UIOMatic.FieldEditors.RTE',
             view: 'rte',
