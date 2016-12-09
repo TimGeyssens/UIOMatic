@@ -67,7 +67,7 @@
             // Pass extra meta data into filter properties
             $scope.filterProperties = response.listViewFilterProperties.map(function (itm) {
                 itm.typeAlias = $scope.typeAlias;
-                if (itm.config.defaultValue) {
+                if (itm.config && itm.config.defaultValue) {
                     itm.value = itm.config.defaultValue;
                 }
                 return itm;
