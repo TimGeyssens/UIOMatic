@@ -13,6 +13,8 @@ namespace UIOMatic.Attributes
 
         public string Icon { get; set; }
 
+        public string Config { get; set; }
+
         public UIOMaticActionAttribute(string alias, string name, string view)
         {
             Alias = alias;

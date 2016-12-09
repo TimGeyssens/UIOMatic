@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace UIOMatic.Models
 {
@@ -20,6 +16,12 @@ namespace UIOMatic.Models
 
         [JsonProperty("icon")]
         public string Icon { get; set; }
+
+        [JsonProperty("config")]
+        public JObject Config { get; set; }
+
+        [JsonProperty("order")]
+        public int Order { get; set; }
 
     }
 }

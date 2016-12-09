@@ -341,12 +341,14 @@ namespace UIOMatic.Services
                         if (attri5 != null)
                         {
 
-                            actions.Add(new Models.UIOMaticActionInfo
+                            actions.Add(new UIOMaticActionInfo
                             {
                                 Alias = attri5.Alias,
                                 Name = attri5.Name,
                                 View = IOHelper.ResolveUrl(attri5.View),
-                                Icon = attri5.Icon
+                                Icon = attri5.Icon,
+                                Config = attri5.Config.IsNullOrWhiteSpace() ? null : (JObject)JsonConvert.DeserializeObject(attri5.Config),
+
                             });
                         }
                     }
