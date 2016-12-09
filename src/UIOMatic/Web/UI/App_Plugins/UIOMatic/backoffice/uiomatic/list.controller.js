@@ -12,24 +12,45 @@
         $scope.totalPages = 1;
 
         $scope.legacyPagination = uioMaticUtilityService.useLegacyPaginationControl();
-        
+
         $scope.reverse = false;
 
         $scope.filtersStr = "";
-        $scope.searchTerm = ""; 
+        $scope.searchTerm = "";
 
         $scope.initialFetch = true;
+
+        function startFilterWatch() {
+            $scope.$watch("filterProperties", function () {
+
+                if (!$scope.filterProperties)
+                    return;
+
+                var str = buildFilterStr();
+                if (str != $scope.filtersStr) {
+                    $scope.filtersStr = str;
+                    fetchData();
+                }
+
+            }, true);
+        }
+
+        function buildFilterStr() {
+            return _.filter($scope.filterProperties, function (itm) { return itm.value }).map(function (itm) {
+                return itm.keyColumnName + "|" + itm.value;
+            }).join("|");
+        }
 
         function fetchData() {
             uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage,
                 $scope.initialFetch ? "" : $scope.predicate,
                 $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
-                $scope.initialFetch ? "" : $scope.filtersStr,
+                $scope.filtersStr,
                 $scope.searchTerm).then(function (resp) {
-                $scope.initialFetch = false;
-                $scope.rows = resp.items;
-                $scope.totalPages = resp.totalPages;
-            });
+                    $scope.initialFetch = false;
+                    $scope.rows = resp.items;
+                    $scope.totalPages = resp.totalPages;
+                });
         }
 
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
@@ -42,16 +63,25 @@
             $scope.listViewActions = response.listViewActions;
             $scope.predicate = response.sortColumn;
             $scope.reverse = response.sortOrder == "desc";
+
             // Pass extra meta data into filter properties
             $scope.filterProperties = response.listViewFilterProperties.map(function (itm) {
                 itm.typeAlias = $scope.typeAlias;
+                if (itm.config.defaultValue) {
+                    itm.value = itm.config.defaultValue;
+                }
                 return itm;
             });
+
+            // Build an initial filter string
+            $scope.filtersStr = buildFilterStr();
 
             // Sync the tree
             navigationService.syncTree({ tree: 'uiomatic', path: response.path, forceReload: false, activate: true });
 
             fetchData();
+
+            startFilterWatch();
         });
 
 
@@ -139,15 +169,14 @@
             }
         }
 
-        $scope.unCamelCase = function(str)
-        {
+        $scope.unCamelCase = function (str) {
             return str
                 // insert a space between lower & upper
                 .replace(/([a-z])([A-Z])/g, '$1 $2')
                 // space before last upper in a sequence followed by lower
                 .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
                 // uppercase the first character
-                .replace(/^./, function(str){ return str.toUpperCase(); })
+                .replace(/^./, function (str) { return str.toUpperCase(); })
         }
 
         $scope.navigate = function (url) {
@@ -160,24 +189,9 @@
                 template: action.view,
                 show: true,
                 dialogData: {
-                    typeAlias: $scope.typeAlias
+                    typeAlias: $scope.typeAlias,
+                    config: action.config
                 }
             });
         }
-
-        $scope.$watch("filterProperties", function() {
-
-            if (!$scope.filterProperties)
-                return;
-
-            var str = _.filter($scope.filterProperties, function (itm) { return itm.value }).map(function (itm) {
-                return itm.keyColumnName + "|" + itm.value;
-            }).join("|");
-
-            if (str != $scope.filtersStr) {
-                $scope.filtersStr = str;
-                fetchData();
-            }
-
-        }, true);
     });
