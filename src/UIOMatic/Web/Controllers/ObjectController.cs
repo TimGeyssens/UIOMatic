@@ -53,6 +53,22 @@ namespace UIOMatic.Web.Controllers
              
             return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
+        [HttpGet]
+        public UIOMaticPagedResult GetPaged(string typeAlias, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
+        {
+            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+
+            // Need a better approache than this as this is hacky and horrible
+            // Probably want to switch to a HttpPost method and just pass a json body instead
+            var filtersDict = (filters ?? "").Split('|')
+                .InGroupsOf(2)
+                .ToDictionary(x => x.First(), x => x.Last())
+                .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            return _service.GetPaged(t,nodeId,nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
+        }
+
 
         [HttpGet]
         public UIOMaticTypeInfo GetTypeInfo(string typeAlias, bool includePropertyInfo)

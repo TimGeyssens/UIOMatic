@@ -11,7 +11,7 @@ namespace UIOMatic.Interfaces
             string searchTerm = "",
             IDictionary<string, string> filters = null,
             string sortColumn = "", string sortOrder = "");
-
+    
         object Get(string id);
 
         object Create(object entity);
