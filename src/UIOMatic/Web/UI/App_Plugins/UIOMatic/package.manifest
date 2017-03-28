@@ -1,5 +1,81 @@
 ﻿{
     propertyEditors: [
+		 {
+			alias: "UIOMatic.ListView",
+			name: "UIOMatic List View",
+			editor: {
+			view: "~/App_Plugins/UIOMatic/backoffice/views/PropertyEditors/listview.html",
+			 hideLabel: true
+			},
+			prevalues: {
+				 fields: [
+                {
+                    label: "Type of object",
+                    description: "Select the type of object (reload the page after selecting to populate dropdowns)",
+                    key: "typeAlias",
+                    view: "~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.type.html"
+                },
+				{
+					label: "Property for NodeId",
+					description: "Property that holds the nodeid you wish to lookup through",
+					key: "nodeIdSelected",
+					view: "~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.property.html"
+                    
+				},
+				{
+                    label: "Column to sort on",
+                    description: "Enter the column name to sort on",
+                    key: "sortColumn",
+                    view: "~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.column.html"                      
+                },
+				{
+                    label: "Sort order",
+                    description: "Select the sortorder",
+                    key: "sortOrder",
+                    view: "~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/picker.tablesortorder.html"                       
+                },
+				{
+                    label: "Hide create",
+                    key: "hideCreate",
+                    view: "boolean"                       
+                },
+				{
+                    label: "Hide edit",
+                    key: "hideEdit",
+                    view: "boolean"                       
+                },
+				{
+                    label: "Hide delete",
+                    key: "hideDelete",
+                    view: "boolean"                       
+                },
+				{
+                    label: "Hide search",
+                    key: "hideSearch",
+                    view: "boolean"                       
+                },
+				{
+                    label: "Filters",
+                    key: "filters",
+					description: "Here you can set some predefined filters for this list view in this format key|value",
+                    view: "multivalues"                       
+                },
+				 {
+                    label: "Number of items per page.",
+                    description: "Type the number of items used per page",
+                    key: "numberOfItems",
+					view:"number",
+                    validation: [
+                        {
+                            type: "Required" 
+                        }                        
+                    ]
+
+                }
+            ]
+			}
+
+		},
 		{
 			alias: "UIOMatic.MultiPicker",
 			name: "UIOMatic Multi Picker",
@@ -98,7 +174,6 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/file.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/datetime.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/dropdown.controller.js',
-		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.object.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.content.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.media.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/pickers.member.controller.js',
@@ -114,14 +189,15 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldfilters/dropdown.controller.js',
 
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/dropdown.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/listview.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/listview.dialog.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/multipicker.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.type.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.property.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.column.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/objectsearcher.controller.js',
 			
-		'~/App_Plugins/UIOMatic/backoffice/views/dashboards/summarydashboard.controller.js',	
-
-		'~/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.controller.js',	
+		'~/App_Plugins/UIOMatic/backoffice/views/dashboards/summarydashboard.controller.js',		
     ],
     css: [
 		'~/App_Plugins/UIOMatic/backoffice/assets/css/uiomatic.css'
