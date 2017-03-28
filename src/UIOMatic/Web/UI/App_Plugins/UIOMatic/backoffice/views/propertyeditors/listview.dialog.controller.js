@@ -11,10 +11,12 @@ angular.module("umbraco").controller("UIOMatic.PropertyEditors.ListViewDialog",
 	    if (!hasId) {
             $scope.id = 0;
             $scope.typeAlias = $scope.dialogData.typeAlias;
-	    } else {
+
+	    } else {
 	        $scope.id = id;
 	        $scope.typeAlias = $scope.dialogData.typeAlias;
-	    }
+
+	    }
         
 	    uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
 	        $scope.type = response;
@@ -83,28 +85,39 @@ angular.module("umbraco").controller("UIOMatic.PropertyEditors.ListViewDialog",
 
 	        angular.forEach($scope.properties, function (property) {
 
-	            var key = property.key;
+
+	            var key = property.key;
 	            var value =  property.value;
 	            $scope.object[key] = value;
 
-	        });
-            //Setting nodeId on obj	        $scope.object[$scope.dialogData.nodeIdSelected] = $scope.dialogData.currentNodeId;
-            
+
+	        });
+
+	        //Setting nodeId on obj
+	        if ($scope.dialogData == "create") {
+	            $scope.object[$scope.dialogData.nodeIdSelected] = $scope.dialogData.currentNodeId;
+	        }
+	        
 	        uioMaticObjectResource.validate($scope.typeAlias, object).then(function (resp) {
 
 	            if (!hasId) {
 
 	                if (resp.length > 0) {
-	                    angular.forEach(resp, function (error) {
-	                        notificationsService.error("Failed to create " + $scope.itemDisplayName, error.ErrorMessage);
-	                    });
-	                } else {
+
+	                    angular.forEach(resp, function (error) {
+
+	                        notificationsService.error("Failed to create " + $scope.itemDisplayName, error.ErrorMessage);
+
+	                    });
+
+	                } else {
 	                    
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
 	                        notificationsService.success("Success", $scope.itemDisplayName + " has been created");
 	                        $scope.submit(object);
 
-	                    });	                  
+	                    });
+	                  
 	                }
 
 	            } else {

@@ -183,7 +183,8 @@
 	                id: -1,
 	                currentNodeId:$routeParams.id,
 	                typeAlias: $scope.model.config.typeAlias,
-	                nodeIdSelected: $scope.model.config.nodeIdSelected
+	                nodeIdSelected: $scope.model.config.nodeIdSelected,
+                    mode:"create"
 	            },
                 callback: function (data) {
 	                console.log(data);
@@ -199,7 +200,8 @@
 	                id: object,
 	                currentNodeId: $routeParams.id,
 	                typeAlias: $scope.model.config.typeAlias,
-	                nodeIdSelected: $scope.model.config.nodeIdSelected
+	                nodeIdSelected: $scope.model.config.nodeIdSelected,
+	                mode: "edit"
                    
 	            },
 	            callback: function (data) {
