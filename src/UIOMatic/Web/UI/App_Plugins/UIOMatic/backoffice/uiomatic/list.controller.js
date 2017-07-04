@@ -117,6 +117,16 @@
             }
         }
 
+        $scope.toggleSelectAll = function (event) {
+            var doSelect = event.target.checked;
+            $scope.rows.forEach(function (row) {
+                var rowSelected = $scope.isRowSelected(row);
+                if ((doSelect && !rowSelected) || (!doSelect && rowSelected)) {
+                    $scope.toggleSelection($scope.getObjectKey(row));
+                } 
+            });            
+        }
+
         $scope.isRowSelected = function (row) {
             var id = $scope.getObjectKey(row);
             return $scope.selectedIds.indexOf(id) > -1;

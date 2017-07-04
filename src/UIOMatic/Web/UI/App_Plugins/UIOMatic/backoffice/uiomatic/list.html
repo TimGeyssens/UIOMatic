@@ -63,7 +63,9 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td class="checkbox-column" ng-hide="readOnly"></td>
+                                <td class="checkbox-column" ng-hide="readOnly">
+                                    <input type="checkbox" ng-click="toggleSelectAll($event)">
+                                </td>
                                 <td ng-repeat="prop in properties">
                                     <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
                                     <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.columnName"></i>
