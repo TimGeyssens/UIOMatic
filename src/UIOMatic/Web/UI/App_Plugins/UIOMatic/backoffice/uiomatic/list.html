@@ -105,7 +105,9 @@
                                 </tr>
                             </tfoot>
                         </table>
-
+                        <div class="text-center">
+                            Total items: {{totalItems}}
+                        </div>
                         <div ng-if="!legacyPagination && totalPages > 1" class="text-center">
                             <umb-pagination page-number="currentPage"
                                 total-pages="totalPages"

@@ -10,6 +10,7 @@
         $scope.currentPage = 1;
         $scope.itemsPerPage = JSON.parse(Umbraco.Sys.ServerVariables.uioMatic.settings.defaultListViewPageSize);
         $scope.totalPages = 1;
+        $scope.totalItems = 0;
 
         $scope.legacyPagination = uioMaticUtilityService.useLegacyPaginationControl();
 
@@ -50,6 +51,7 @@
                     $scope.initialFetch = false;
                     $scope.rows = resp.items;
                     $scope.totalPages = resp.totalPages;
+                    $scope.totalItems = resp.totalItems;
                 });
         }
 
