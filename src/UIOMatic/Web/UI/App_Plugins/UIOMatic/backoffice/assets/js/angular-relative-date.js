@@ -30,7 +30,7 @@
                     var now = _now || new Date();
 
                     if (!(date instanceof Date)) {
-                        date = new Date(date);
+                         date = moment(date, 'YYYY-MM-DDHH:mm:ss').toDate();
                     }
 
                     var delta = null;
