@@ -41,8 +41,20 @@ namespace UIOMatic
 
             // Ensure unique aliases
             var aliases = new List<string>();
-            foreach (var attr in typesWithMyAttribute.Select(type => type.GetCustomAttribute<UIOMaticFolderAttribute>(true)))
+
+            var assemblesWithfolderAttributes = new List<Tuple<string, UIOMaticFolderAttribute>>();
+
+            foreach (var typeWithMyAttribute in typesWithMyAttribute)
             {
+                assemblesWithfolderAttributes.Add(new Tuple<string, UIOMaticFolderAttribute>(typeWithMyAttribute.Assembly.FullName, typeWithMyAttribute.GetCustomAttribute<UIOMaticFolderAttribute>(true)));
+            }
+
+            // dedupe the list of assemblies and attributes
+            assemblesWithfolderAttributes = assemblesWithfolderAttributes.Distinct().ToList();
+
+            foreach (var typeWithMyAttribute in assemblesWithfolderAttributes)
+            {
+                var attr = typeWithMyAttribute.Item2;
                 if (aliases.Any(x => x == attr.Alias))
                     throw new ApplicationException("Multiple UI-O-Matic model types found with alias '" + attr.Alias + "'. Please ensure all types have a unique alias value.");
 
