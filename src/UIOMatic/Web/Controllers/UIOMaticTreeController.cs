@@ -14,7 +14,7 @@ using Umbraco.Web.Trees;
 
 namespace UIOMatic.Web.Controllers
 {
-    [Tree("uiomatic", "uiomatic", "UI-O-Matic")]
+    [Tree("uiomatic", "uiomatic", null)]
     [PluginController("UIOMatic")]
     public class UIOMaticTreeController : TreeController
     {
