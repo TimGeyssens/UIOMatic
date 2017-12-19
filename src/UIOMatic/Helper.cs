@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using UIOMatic.Data;
 using UIOMatic.Extensions;
@@ -32,9 +33,20 @@ namespace UIOMatic
 
         private static IEnumerable<Type> EnsureUIOMaticTypes()
         {
+            var allTypes = new List<Type>();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try
+                {
+                    allTypes.AddRange(assembly.GetTypes());
+                }
+                catch (ReflectionTypeLoadException)
+                {
+                }
+            }
+
             var typesWithMyAttribute =
-                from a in AppDomain.CurrentDomain.GetAssemblies()
-                from t in a.GetTypes()
+                from t in allTypes
                 let attributes = t.GetCustomAttributes(typeof(UIOMaticFolderAttribute), true)
                 where attributes != null && attributes.Length > 0
                 select t; // UIOMaticFolderAttribute is the base type for all UIOMatic entities
