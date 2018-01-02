@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web;
 using UIOMatic.Data;
 using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
 using Umbraco.Core;
+using Umbraco.Core.Cache;
+using Umbraco.Core.Logging;
 
 namespace UIOMatic
 {
@@ -28,7 +29,22 @@ namespace UIOMatic
 
         public static IEnumerable<Type> GetUIOMaticFolderTypes()
         {
-            return (IEnumerable<Type>)HttpRuntime.Cache["UIOMaticFolderTypes"] ?? EnsureUIOMaticTypes();
+            var cachedItems = GetLocalCacheItem<IEnumerable<Type>>("UIOMaticFolderTypes");
+
+            // First cache request, need to set values
+            if (cachedItems == null)
+            {
+                var UIOMaticTypes = EnsureUIOMaticTypes();
+                InsertLocalCacheItem("UIOMaticFolderTypes", () => UIOMaticTypes);
+                cachedItems = UIOMaticTypes;
+                LogHelper.Debug<Helper>($"UIOMaticFolderTypes added to cache and returned from runtime with {cachedItems.Count()} items");
+            }
+            else
+            {
+                LogHelper.Debug<Helper>($"UIOMaticFolderTypes returned directly from cache with {cachedItems.Count()} items");
+            }
+
+            return cachedItems;
         }
 
         private static IEnumerable<Type> EnsureUIOMaticTypes()
@@ -73,7 +89,6 @@ namespace UIOMatic
                 aliases.Add(attr.Alias);
             }
 
-            HttpRuntime.Cache.Insert("UIOMaticFolderTypes", typesWithMyAttribute);
             return typesWithMyAttribute;
         }
 
@@ -92,6 +107,19 @@ namespace UIOMatic
             }
 
             return t;
+        }
+
+        private static T GetLocalCacheItem<T>(string cacheKey)
+        {
+            var runtimeCache = ApplicationContext.Current.ApplicationCache.RuntimeCache;
+            var cachedItem = runtimeCache.GetCacheItem<T>(cacheKey);
+            return cachedItem;
+        }
+
+        private static void InsertLocalCacheItem<T>(string cacheKey, Func<T> getCacheItem)
+        {
+            var runtimeCache = ApplicationContext.Current.ApplicationCache.RuntimeCache;
+            runtimeCache.InsertCacheItem<T>(cacheKey, getCacheItem);
         }
     }
 }
