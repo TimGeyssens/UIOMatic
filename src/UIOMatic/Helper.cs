@@ -37,11 +37,12 @@ namespace UIOMatic
                 var UIOMaticTypes = EnsureUIOMaticTypes();
                 InsertLocalCacheItem("UIOMaticFolderTypes", () => UIOMaticTypes);
                 cachedItems = UIOMaticTypes;
-                LogHelper.Debug<Helper>($"UIOMaticFolderTypes added to cache and returned from runtime with {cachedItems.Count()} items");
+                LogHelper.Debug<Helper>(string.Format("UIOMaticFolderTypes added to cache and returned from runtime with {0} items", cachedItems.Count()));
+
             }
             else
             {
-                LogHelper.Debug<Helper>($"UIOMaticFolderTypes returned directly from cache with {cachedItems.Count()} items");
+                LogHelper.Debug<Helper>(string.Format("UIOMaticFolderTypes returned directly from cache with {0} items", cachedItems.Count()));
             }
 
             return cachedItems;
