@@ -128,7 +128,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 	                } else {
 	                    uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
 	                        $scope.objectForm.$dirty = false;
-	                        var redirectUrl = "/uiomatic/uiomatic/edit/" + response.Id + "%3Fta=" + $scope.typeAlias;
+                            var redirectUrl = "/uiomatic/uiomatic/edit/" + response[$scope.type.primaryKeyColumnName] + "%3Fta=" + $scope.typeAlias;
 	                        for (var k in $scope.queryString) {
 	                            if ($scope.queryString.hasOwnProperty(k) && k != "ta") {
 	                                redirectUrl += "%26" + encodeURIComponent(k) + "=" + encodeURIComponent(encodeURIComponent($scope.queryString[k]));
