@@ -28,7 +28,7 @@ namespace UIOMatic.Interfaces
         IEnumerable<object> GetAll(Type type,string sortColumn, string sortOrder);
 
         UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm);
-        UIOMaticPagedResult GetPaged(Type type, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm);
+        UIOMaticPagedResult GetPagedWithNodeId(Type type, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm);
 
         IEnumerable<object> GetFilterLookup(Type type, string keyPropertyName, string valuePropertyName);
     }

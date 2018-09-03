@@ -33,7 +33,7 @@
                     'Failed to get paged'
                 );
 	        },
-	        getPaged: function(type,nodeId, nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filters, searchTerm) {
+	        getPagedWithNodeId: function(type,nodeId, nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filters, searchTerm) {
 	            if (sortColumn == undefined)
 	                sortColumn = "";
 	            if (sortOrder == undefined)
@@ -41,7 +41,7 @@
 	            if (filters == undefined)
 	                filters = "";
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeAlias=" + type + "&nodeId="+nodeId+ "&nodeIdField="+nodeIdField+ "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + searchTerm),
+                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPagedWithNodeId?typeAlias=" + type + "&nodeId="+nodeId+ "&nodeIdField="+nodeIdField+ "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + searchTerm),
                     'Failed to get paged'
                 );
 	        },

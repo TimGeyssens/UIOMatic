@@ -38,7 +38,7 @@ namespace UIOMatic.Services
 
             return repo.GetPaged(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
         }
-        public UIOMaticPagedResult GetPaged(Type type, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber,
+        public UIOMaticPagedResult GetPagedWithNodeId(Type type, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber,
           string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm)
         {
             var typeInfo = GetTypeInfo(type);

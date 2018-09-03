@@ -40,7 +40,7 @@
 	    }
 	      $scope.initialFetch = true;
 	    function fetchData() {
-	        uioMaticObjectResource.getPaged($scope.typeAlias, $routeParams.id,$scope.model.config.nodeIdSelected, $scope.itemsPerPage, $scope.currentPage,
+	        uioMaticObjectResource.getPagedWithNodeId($scope.typeAlias, $routeParams.id,$scope.model.config.nodeIdSelected, $scope.itemsPerPage, $scope.currentPage,
                 $scope.initialFetch ? $scope.model.config.sortColumn : $scope.predicate,
                 $scope.initialFetch ? $scope.model.config.sortOrder : ($scope.reverse ? "desc" : "asc"),
                 $scope.filtersStr,

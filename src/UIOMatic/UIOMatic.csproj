@@ -334,6 +334,10 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldviews\label.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\dropdown.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\listview.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\listview.dialog.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\listview.dialog.html" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\listview.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\multipicker.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\propertyeditors\multipicker.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\dialogs\objectsearcher.controller.js" />

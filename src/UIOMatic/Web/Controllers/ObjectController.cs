@@ -66,7 +66,7 @@ namespace UIOMatic.Web.Controllers
                 .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
                 .ToDictionary(x => x.Key, x => x.Value);
 
-            return _service.GetPaged(t,nodeId,nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
+            return _service.GetPagedWithNodeId(t,nodeId,nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
 
 
