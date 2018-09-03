@@ -54,7 +54,7 @@ namespace UIOMatic.Web.Controllers
             return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
         [HttpGet]
-        public UIOMaticPagedResult GetPaged(string typeAlias, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
+        public UIOMaticPagedResult GetPagedWithNodeId(string typeAlias, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
