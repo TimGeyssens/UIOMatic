@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- 
+    we could fit it all in bin with item groups and conditions (see below) but
+    more robust to copy all and let SqlServerCE pick exactly what it wants.
+  -->
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>amd64\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+
+    <None Include="$(MSBuildThisFileDirectory)..\runtimes\win-x86\native\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>x86\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
+  
+</Project>
