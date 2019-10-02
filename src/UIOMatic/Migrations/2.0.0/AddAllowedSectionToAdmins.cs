@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
-using Umbraco.Core.Persistence.Migrations;
+using Umbraco.Core.Migrations;
 using Umbraco.Core.Persistence.SqlSyntax;
 using Constants = UIOMatic.Constants;
 

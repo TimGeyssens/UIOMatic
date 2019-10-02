@@ -12,11 +12,12 @@ using Umbraco.Core;
 using Umbraco.Core.IO;
 using Umbraco.Core.Persistence;
 using System.ComponentModel.DataAnnotations;
+using NPoco;
 
 namespace UIOMatic.Services
 {
     
-    public class PetaPocoObjectService : IUIOMaticObjectService
+    public class NPocoObjectService : IUIOMaticObjectService
     {
         public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
         {
@@ -181,8 +182,9 @@ namespace UIOMatic.Services
 
         public UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties =  false)
         {
+          
             // Types shouldn't change without an app pool recycle so might as well cache these
-            return (UIOMaticTypeInfo)ApplicationContext.Current.ApplicationCache.RuntimeCache.GetCacheItem("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
+            return (UIOMaticTypeInfo)Umbraco.Web.Composing.Current.AppCaches.RuntimeCache.Get("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
             {
                 var attri = type.GetCustomAttribute<UIOMaticAttribute>();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPoco;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +9,23 @@ namespace UIOMatic.Extensions
 {
     internal static class DatabaseExtensions
     {
-        public static IEnumerable<object> Fetch(this Database db, Type type, Sql query)
+        public static IEnumerable<object> Fetch(this Database db, Type type, NPoco.Sql query)
         {
-            var method = typeof(Database).GetGenericMethod("Fetch", new [] { type }, new [] { typeof(Sql) }); 
+            var method = typeof(Database).GetGenericMethod("Fetch", new [] { type }, new [] { typeof(NPoco.Sql) }); 
             var generic = method.MakeGenericMethod(type);
             return (IEnumerable<object>)generic.Invoke(db, new object[] { query }); 
         }
 
-        public static IEnumerable<object> Query(this Database db, Type type, Sql query)
+        public static IEnumerable<object> Query(this Database db, Type type, NPoco.Sql query)
         {
-            var method = typeof(Database).GetGenericMethod("Query", new[] { type }, new[] { typeof(Sql) });
+            var method = typeof(Database).GetGenericMethod("Query", new[] { type }, new[] { typeof(NPoco.Sql) });
             var generic = method.MakeGenericMethod(type);
             return (IEnumerable<object>)generic.Invoke(db, new object[] { query });
         }
 
-        public static Page<object> Page(this Database db, Type type, long page, long itemsPerPage, Sql query)
+        public static Page<object> Page(this Database db, Type type, long page, long itemsPerPage, NPoco.Sql query)
         {
-            var method = typeof(Database).GetGenericMethod("Page", new[] { type }, new[] { typeof(long), typeof(long), typeof(Sql) }); 
+            var method = typeof(Database).GetGenericMethod("Page", new[] { type }, new[] { typeof(long), typeof(long), typeof(NPoco.Sql) }); 
             var generic = method.MakeGenericMethod(type);
             var result = generic.Invoke(db, new object[] { page, itemsPerPage, query });
             return new Page<object>
@@ -39,7 +40,8 @@ namespace UIOMatic.Extensions
 
         public static object SingleOrDefault(this Database db, Type type, object primaryKey)
         {
-            var method = typeof(Database).GetGenericMethod("SingleOrDefault", new[] { type }, new[] { typeof(object) });
+           
+            var method = typeof(Database).GetGenericMethod("SingleOrDefaultById", new[] { type }, new[] { typeof(object) });
             var generic = method.MakeGenericMethod(type);
             return generic.Invoke(db, new object[] { primaryKey });
         }

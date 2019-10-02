@@ -4,15 +4,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using UIOMatic.Web.Controllers;
-using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Web;
-using Umbraco.Web.UI.JavaScript;
+using Umbraco.Web.JavaScript;
+
 
 namespace UIOMatic.Web
 {
-    public class ServerVariableParserEvent : ApplicationEventHandler
+    public class ServerVariableParserEvent : IComponent
     {
-        protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        public ServerVariableParserEvent()
+        {
+                
+        }
+    
+        public void Initialize()
         {
             ServerVariablesParser.Parsing += this.ServerVariablesParser_Parsing;           
         }
@@ -52,6 +58,9 @@ namespace UIOMatic.Web
             }
         }
 
-        
+        public void Terminate()
+        { }
+
+
     }
 }

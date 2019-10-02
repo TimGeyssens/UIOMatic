@@ -35,7 +35,7 @@ namespace UIOMatic
             get
             { 
                 var attr = ConfigFile.DocumentElement.Attributes["defaultObjectServiceType"];
-                return attr != null ? Type.GetType(attr.Value) : typeof(PetaPocoObjectService);
+                return attr != null ? Type.GetType(attr.Value) : typeof(NPocoObjectService);
             }
         }
 
@@ -68,7 +68,7 @@ namespace UIOMatic
             catch (Exception e)
             {
 
-                UC.Logging.LogHelper.Error(typeof(Config), e.Message, e);
+                //UC.Logging.LogHelper.Error(typeof(Config), e.Message, e);
 
             }
             settingsReader.Close();

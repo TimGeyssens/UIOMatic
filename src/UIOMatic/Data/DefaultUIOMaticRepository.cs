@@ -8,6 +8,8 @@ using UIOMatic.Attributes;
 using UIOMatic.Models;
 using Umbraco.Core;
 using Umbraco.Core.Persistence;
+using NPoco;
+using System.Configuration;
 
 namespace UIOMatic.Data
 {
@@ -16,6 +18,7 @@ namespace UIOMatic.Data
         private UIOMaticAttribute _config;
         private UIOMaticTypeInfo _typeInfo;
 
+        
         public DefaultUIOMaticRepository(UIOMaticAttribute config, UIOMaticTypeInfo typeInfo)
         {
             _config = config;
@@ -228,7 +231,7 @@ namespace UIOMatic.Data
         {
             return !string.IsNullOrEmpty(_config.ConnectionStringName)
                 ? new Database(_config.ConnectionStringName)
-                : ApplicationContext.Current.DatabaseContext.Database;
+                : new Database(Umbraco.Core.Constants.System.UmbracoConnectionName);
         }
     }
 }

@@ -4,12 +4,14 @@ namespace UIOMatic
 {
     public static class Constants
     {
-        public const string ApplicationAlias = "uiomatic";
-        
+        public const string SectionAlias = "uiomatic";
+        public const string TreeAlias = "uiomatic";
+
         public static class FieldEditors
         {
             public const string CheckBox = "checkbox";
             public const string CheckBoxList = "checkboxlist";
+            public const string Consent = "consent";
             public const string Date = "date";
             public const string DateTime = "datetime";
             public const string DateTimeOffset = "datetimeoffset";
@@ -34,6 +36,7 @@ namespace UIOMatic
             {
                 { "checkbox", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/checkbox.html"},
                 { "checkboxlist", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/checkboxlist.html"},
+                { "consent", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/consent.html"},
                 { "date", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/date.html"},
                 { "datetime", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/datetime.html"},
                 { "datetimeoffset", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/datetimeoffset.html"},

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPoco;
+using System;
 using System.Linq;
 using System.Reflection;
 using Umbraco.Core.Persistence;
@@ -32,7 +33,7 @@ namespace UIOMatic.Extensions
         {
             var attr = type.GetCustomAttribute<PrimaryKeyAttribute>(true);
             if (attr != null)
-                return attr.autoIncrement;
+                return attr.AutoIncrement;
             
             var attr2 = type.GetPrimaryKeyColumn();
             return attr2 != null && attr2.AutoIncrement;

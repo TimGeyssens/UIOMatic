@@ -37,7 +37,7 @@ namespace UIOMatic
             }
             catch (Exception e)
             {
-                LogHelper.Error<Installer>("Error running UI-O-Matic migrations", e);
+                //LogHelper.Error<Installer>("Error running UI-O-Matic migrations", e);
             }
         }
     }

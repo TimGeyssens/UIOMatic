@@ -16,8 +16,8 @@
 	<!-- SHARED PROPERTIES -->
 	<PropertyGroup>
 		<PackageName>UIOMatic</PackageName>
-		<MinUmbracoVersion>7.3.0</MinUmbracoVersion>
-		<Readme>Auto generate an integrated crud UI in Umbraco for a db table based on a petapoco poco</Readme>
+		<MinUmbracoVersion>8.1.5</MinUmbracoVersion>
+		<Readme>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Readme>
 		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
 		<PackageLicenseName>MIT license</PackageLicenseName>
@@ -41,7 +41,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Version>2.1.2</Version>
+		<Version>3.0.0</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 

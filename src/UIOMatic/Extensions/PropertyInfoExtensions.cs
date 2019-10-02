@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using NPoco;
+using System.Reflection;
 using Umbraco.Core;
 using Umbraco.Core.Persistence;
 

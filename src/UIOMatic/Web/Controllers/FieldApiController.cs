@@ -10,7 +10,7 @@ namespace UIOMatic.Web.Controllers
     {
         public IEnumerable<IUser> GetAllUsers()
         {
-            var total = 0;
+            long total = 0;
             var us = Services.UserService;
             return us.GetAll(0, 1000, out total); //TODO: Limit what data gets sent down the line
         }
