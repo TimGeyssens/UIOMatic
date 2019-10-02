@@ -103,6 +103,8 @@ src/*/App_Data/TEMP/*
 !/Build/Tools/MSBuildNugetTasks/*
 !/Build/Tools/MSBuildUmbracoTasks/*
 
+!/src/packages/Umbraco.SqlServerCE.4.0.0.1/build/Umbraco.SqlServerCE.targets
+
 artifacts
 build/_temp
 
