@@ -1,17 +1,14 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
-
 	<!-- IMPORTS -->
 	<PropertyGroup>
 		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
 		<MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
 		<MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
 	</PropertyGroup>
-
 	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
 	<Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
 	<Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
-	
 	<!-- PROPERTIES -->
 	<!-- SHARED PROPERTIES -->
 	<PropertyGroup>
@@ -24,7 +21,6 @@
 		<PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
 		<ProjectUrl>https://github.com/TimGeyssens/UIOMatic</ProjectUrl>
 	</PropertyGroup>
-
 	<!-- NUGET ONLY PROPERTIES -->
 	<PropertyGroup>
 		<NugetPackageName>UIOMatic</NugetPackageName>
@@ -39,12 +35,10 @@
 		<Language>en-GB</Language>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
-
 	<PropertyGroup>
 		<Version>3.0.0</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
-
 	<PropertyGroup>
 		<BuildConfig>Release</BuildConfig>
 		<RootDir>$(MSBuildProjectDirectory)</RootDir>
@@ -54,9 +48,7 @@
 		<ArtifactsDir>$(RootDir)\..\artifacts</ArtifactsDir>
 		<ProjectDir>$(RootDir)\..\src\$(ProjectName)\</ProjectDir>
 	</PropertyGroup>
-
 	<!-- TARGETS -->
-
 	<!-- CLEAN -->
 	<Target Name="Clean">
 		<RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />  
@@ -64,7 +56,6 @@
 		<MakeDir Directories="$(BuildDir)" />
 		<MakeDir Directories="$(ArtifactsDir)" />
 	</Target>
-
 	<!-- UPDATE ASSEMBLEY VERSION -->
 	<Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean">
 		<ItemGroup>
@@ -76,12 +67,10 @@
 			AssemblyVersion="@(VersionMajor).@(VersionMinor).*"
 			AssemblyInformationalVersion="$(Version)"/>
 	</Target>
-
 	<!-- COMPILE -->
 	<Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
 		<MSBuild Projects="$(ProjectDir)\$(ProjectName).csproj" Properties="Configuration=$(BuildConfig)" />
 	</Target>
-
 	<!-- PREPARE FILES -->
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
@@ -107,7 +96,6 @@
 		<Copy SourceFiles="@(CoreNuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
 		<Copy SourceFiles="@(NugetReadmeFile)" DestinationFolder="$(BuildNuGetDir)" />
 	</Target>
-
 	<!-- MANIFEST UMBRACO -->
 	<Target Name="ManifestUmbraco" DependsOnTargets="PrepareFiles">
 		<ItemGroup>
@@ -127,7 +115,6 @@
 			PackageUrl="$(ProjectUrl)"
 			Files="@(UmbracoManifestFiles)" />
 	</Target>
-
 	<!-- MANIFEST FOR NUGET PACKAGE -->
 	<Target Name="ManifestNuGet" DependsOnTargets="PrepareFiles">
 		<ItemGroup>
@@ -182,7 +169,6 @@
 			XPath="/nu:package/nu:metadata/nu:dependencies/nu:dependency[@id='$(CorePackageId)']/@version"
 			Value="$(Version)" />
 	</Target>
-
 	<!-- PACKAGE -->
 	<Target Name="Package" DependsOnTargets="ManifestUmbraco; ManifestNuGet">
 		<ItemGroup>
@@ -208,5 +194,4 @@
 			OutputDirectory="$(ArtifactsDir)"
 			Symbols="false" />
 	</Target>
-
 </Project>
