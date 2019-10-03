@@ -123,7 +123,7 @@
 		</ItemGroup>
 		<!-- Core -->
 		<MSBuild.NuGet.Tasks.ManifestUpdate
-			ManifestFile="$(BuildNuGetDir)\package.core.nuspec"
+      ManifestFile="$(BuildNuGetDir)\package.core.nuspec"
 			WorkingDirectory="$(BuildNuGetDir)"
 			Title="$(CoreNugetPackageName)"
 			Description="$(Readme)"
