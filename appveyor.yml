@@ -11,7 +11,7 @@ before_build:
   - ps: nuget restore src/UIOMatic.sln
 
 build_script:
-  - msbuild build/Package.build.xml
+  - msbuild build/package.proj 
 
 artifacts:
   - path: artifacts\*.nupkg
