@@ -9,7 +9,8 @@ skip_tags: true
 before_build:
   - ps: nuget restore src/UIOMatic.sln
 
-
+build_script:
+  - msbuild build/Package.build.xml
 
 artifacts:
   - path: artifacts\*.nupkg
