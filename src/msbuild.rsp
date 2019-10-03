@@ -1,1 +1,2 @@
 ../build/Package.build.xml
+/verbosity:diag
