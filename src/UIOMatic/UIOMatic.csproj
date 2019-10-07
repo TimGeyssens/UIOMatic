@@ -68,7 +68,7 @@
     <Compile Include="Services\UIOMaticObjectService.cs" />
     <Compile Include="Web\Controllers\FieldApiController.cs" />
     <Compile Include="Web\Controllers\ObjectController.cs" />
-    <Compile Include="Services\PetaPocoObjectService.cs" />
+    <Compile Include="Services\NPocoObjectService.cs" />
     <Compile Include="Web\Controllers\PropertyEditorsApiController.cs" />
     <Compile Include="Web\Controllers\UIOMaticTreeController.cs" />
     <Compile Include="Web\PostModels\ObjectPostModel.cs" />
@@ -368,7 +368,6 @@
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- 
   <PropertyGroup>
     <PostBuildEvent>REM #################################################
 REM # Copy files
