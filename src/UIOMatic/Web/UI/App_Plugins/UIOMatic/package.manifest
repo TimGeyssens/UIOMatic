@@ -154,6 +154,15 @@
         }
     ]
     ,
+	dashboards:  [
+        {
+            alias: "UIOMaticSummaryDashboard",
+            view:  "~/app_plugins/uiomatic/backoffice/views/dashboards/summarydashboard.html",
+            sections:  [ "uiomatic" ],
+            weight: -10
+        }
+    ],
+
     javascript: [
 		'~/App_Plugins/UIOMatic/backoffice/assets/js/angular-relative-date.js',
 		'~/App_Plugins/UIOMatic/backoffice/assets/js/moment-with-locales.js',

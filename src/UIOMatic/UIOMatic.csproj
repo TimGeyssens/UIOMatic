@@ -56,6 +56,8 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\IUIOMaticObjectService.cs" />
     <Compile Include="Interfaces\IUIOMaticRepository.cs" />
+    <Compile Include="Migrations\3.0.0\AddAllowedSectionToAdmins.cs" />
+    <Compile Include="Migrations\UpgradeComponent.cs" />
     <Compile Include="Models\UIOMaticActionInfo.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
     <Compile Include="Models\UIOMaticPropertyInfo.cs" />

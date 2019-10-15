@@ -1,19 +1,19 @@
 ﻿using System.Xml;
-using umbraco.cms.businesslogic.packager.standardPackageActions;
+using Umbraco.Core.PackageActions;
 using Umbraco.Core.Logging;
-using Umbraco.Core.Persistence.Migrations;
+using Umbraco.Core.Migrations;
 using Umbraco.Core.Persistence.SqlSyntax;
 
-namespace UIOMatic.Migrations._2._0._0
+namespace UIOMatic.Migrations
 {
-    [Migration("2.0.0", 1, Constants.ApplicationAlias)]
+   
     public class AddSummaryDashboardToConfig : MigrationBase
     {
         private addDashboardSection _packageAction;
         private XmlNode _xml;
 
-        public AddSummaryDashboardToConfig(ISqlSyntaxProvider sqlSyntax, ILogger logger)
-            : base(sqlSyntax, logger)
+        public AddSummaryDashboardToConfig(IMigrationContext context)
+            : base(context)
         {
             _packageAction = new addDashboardSection();
 
@@ -34,14 +34,11 @@ namespace UIOMatic.Migrations._2._0._0
             _xml = xdoc.DocumentElement;
         }
 
-        public override void Up()
+        public override void Migrate()
         {
             _packageAction.Execute("uiomatic", _xml);
         }
 
-        public override void Down()
-        {
-            _packageAction.Undo("uiomatic", _xml);
-        }
+        
     }
 }
