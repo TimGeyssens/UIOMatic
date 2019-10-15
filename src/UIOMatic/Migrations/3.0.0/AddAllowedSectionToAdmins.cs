@@ -22,15 +22,14 @@ namespace UIOMatic.Migrations
 
         public override void Migrate()
         {
-
-            var users = _uService.GetAll(0, 100, out long i)
-                .Where(x => x.Groups.Any(y => y.Alias == "admin"));
-
-            foreach (var user in users.Where(user => user.AllowedSections.Contains(Constants.SectionAlias) == false))
+            var userGroup = _uService.GetUserGroupByAlias("admin");
+            if (userGroup != null)
             {
-                user.AllowedSections.Append(Constants.SectionAlias);
-                _uService.Save(user);
+                userGroup.AddAllowedSection(Constants.SectionAlias);
+                _uService.Save(userGroup);
             }
+
+            
         }
 
         
