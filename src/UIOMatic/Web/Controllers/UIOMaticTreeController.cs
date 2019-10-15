@@ -168,7 +168,9 @@ namespace UIOMatic.Web.Controllers
                             if (attri2 != null)
                             {
                                 if (!attri2.ReadOnly)
-                                    menu.Items.Add<ActionNew>(createText);
+                                {
+                                    menu.Items.Add(new CreateChildEntity(Services.TextService));
+                                }
 
                                 if (attri2.RenderType == UIOMaticRenderType.Tree)
                                     menu.Items.Add(new RefreshNode(refreshText, true));

@@ -1,5 +1,6 @@
 ﻿angular.module("umbraco.resources")
-	.factory("uioMaticObjectResource", function ($http, umbRequestHelper) {
+    .factory("uioMaticObjectResource", function ($http, umbRequestHelper) {
+        let ocBaseUrl = '/umbraco/backoffice/UIOMatic/object/';
 	    return {
 	        getAll: function (type, sortColumn, sortOrder) {
 	            if (sortColumn == undefined)
@@ -7,7 +8,7 @@
 	            if (sortOrder == undefined)
 	                sortOrder = "";
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAll?typeAlias=" + type + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder),
+                    $http.get(ocBaseUrl + "GetAll?typeAlias=" + type + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder),
                     'Failed to get all'
                 );
 	        },
@@ -17,7 +18,7 @@
 	            if (valuePropertyName == undefined)
 	                valuePropertyName = "";
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetFilterLookup?typeAlias=" + type + "&keyPropertyName=" + keyPropertyName + "&valuePropertyName=" + valuePropertyName),
+                    $http.get(ocBaseUrl + "GetFilterLookup?typeAlias=" + type + "&keyPropertyName=" + keyPropertyName + "&valuePropertyName=" + valuePropertyName),
                     'Failed to retrieve filter lookups'
                 );
 	        },
@@ -29,7 +30,7 @@
 	            if (filters == undefined)
 	                filters = "";
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPaged?typeAlias=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + encodeURIComponent(searchTerm)),
+                    $http.get(ocBaseUrl + "GetPaged?typeAlias=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + encodeURIComponent(searchTerm)),
                     'Failed to get paged'
                 );
 	        },
@@ -41,31 +42,31 @@
 	            if (filters == undefined)
 	                filters = "";
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetPagedWithNodeId?typeAlias=" + type + "&nodeId="+nodeId+ "&nodeIdField="+nodeIdField+ "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + searchTerm),
+                    $http.get(ocBaseUrl + "GetPagedWithNodeId?typeAlias=" + type + "&nodeId="+nodeId+ "&nodeIdField="+nodeIdField+ "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + searchTerm),
                     'Failed to get paged'
                 );
 	        },
 	        getAllProperties: function (type) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetAllProperties?typeAlias=" + type),
+                    $http.get(ocBaseUrl + "GetAllProperties?typeAlias=" + type),
                     'Failed to get all properties'
                 );
 	        },
 	        getById: function (type, id) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetById?typeAlias=" + type + "&id=" + id),
+                    $http.get(ocBaseUrl + "GetById?typeAlias=" + type + "&id=" + id),
                     'Failed to get by id'
                 );
 	        },
 	        getScaffold: function (type) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetScaffold?typeAlias=" + type),
+                    $http.get(ocBaseUrl + "GetScaffold?typeAlias=" + type),
                     'Failed to get scaffold'
                 );
 	        },
 	        getTypeInfo: function(type, includePropertyInfo) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetTypeInfo?typeAlias=" + type + "&includePropertyInfo=" + includePropertyInfo),
+                    $http.get(ocBaseUrl + "GetTypeInfo?typeAlias=" + type + "&includePropertyInfo=" + includePropertyInfo),
                     'Failed to get type info'
                 );
 	        },
@@ -75,7 +76,7 @@
 	                value: object
 	            };
 	            return umbRequestHelper.resourcePromise(
-                    $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "Create", angular.toJson(item)),
+                    $http.post(ocBaseUrl + "Create", angular.toJson(item)),
                     'Failed to create entity'
                 );
 	        },
@@ -85,13 +86,13 @@
 	                value: object
 	            };
 	            return umbRequestHelper.resourcePromise(
-                    $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "Update", angular.toJson(item)),
+                    $http.post(ocBaseUrl + "Update", angular.toJson(item)),
                     'Failed to update entity'
                 );
 	        },
 	        deleteByIds: function (type, idsArr) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.delete(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "DeleteByIds?typeAlias=" + type + "&ids=" + idsArr.join(',')),
+                    $http.delete(ocBaseUrl + "DeleteByIds?typeAlias=" + type + "&ids=" + idsArr.join(',')),
                     'Failed to delete'
                 );
 	        },
@@ -101,19 +102,19 @@
 	                value: object
 	            };
                 return umbRequestHelper.resourcePromise(
-                    $http.post(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "Validate", angular.toJson(item)),
+                    $http.post(ocBaseUrl + "Validate", angular.toJson(item)),
                     'Failed to validate'
                 );
 	        },
 	        getSummaryDashboardTypes: function () {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetSummaryDashboardTypes"),
+                    $http.get(ocBaseUrl + "GetSummaryDashboardTypes"),
                     'Failed to get summary dashboard types'
                 );
 	        },
 	        getTotalRecordCount: function (type) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl + "GetTotalRecordCount?typeAlias=" + type),
+                    $http.get(ocBaseUrl + "GetTotalRecordCount?typeAlias=" + type),
                     'Failed to get total record count'
                 );
 	        }
