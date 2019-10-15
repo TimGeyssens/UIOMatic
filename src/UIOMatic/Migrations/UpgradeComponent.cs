@@ -10,9 +10,18 @@ using Umbraco.Core.Scoping;
 using Umbraco.Core.Services;
 using Umbraco.Core.Logging;
 using Umbraco.Core.Migrations.Upgrade;
+using Umbraco.Core;
 
 namespace UIOMatic.Migrations
 {
+    public class UpgradeComponentComposer : IUserComposer
+    {
+        public void Compose(Composition composition)
+        {
+            composition.Components().Append<UpgradeComponent>();
+        }
+    }
+
     public class UpgradeComponent : IComponent
     {
         private readonly IScopeProvider _scopeProvider;
