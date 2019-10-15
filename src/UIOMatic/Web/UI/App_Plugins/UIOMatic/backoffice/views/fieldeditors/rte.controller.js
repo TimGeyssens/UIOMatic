@@ -1,21 +1,17 @@
 angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($scope) {
-
     function init() {
-
-        var rowProps = $scope.property || { value : "" };
-
+        var rowProps = $scope.property || { value: "" };
         // RTE doesn't like value being undefined, so if it is, set it to empty string
         if (rowProps.value == undefined)
             rowProps.value = "";
 
         $scope.property = {
-            alias: 'UIOMatic.FieldEditors.RTE',
             view: 'rte',
             config: {
                 editor: {
                     toolbar: JSON.parse(Umbraco.Sys.ServerVariables.uioMatic.settings.rteFieldEditorButtons),
                     stylesheets: [],
-                    dimensions: { height: 400, width: '100%' }
+                    dimensions: { height: 400 }
                 }
             },
             value: rowProps.value
@@ -32,11 +28,10 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
     }
 
     if ($scope.valuesLoaded) {
-        init();
-    } else {
-        var unsubscribe = $scope.$on('valuesLoaded', function () {
             init();
-            unsubscribe();
+    } else {
+       $scope.$on('valuesLoaded', function () {
+           init();
         });
     }
 });

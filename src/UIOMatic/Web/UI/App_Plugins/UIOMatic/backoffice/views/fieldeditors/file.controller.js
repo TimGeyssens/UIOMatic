@@ -1,8 +1,16 @@
 angular.module("umbraco").controller("UIOMatic.FieldEditors.File",
-	function ($scope, dialogService) {
+    function ($scope, editorService) {
 
 	    $scope.openMediaPicker = function() {
-	        dialogService.mediaPicker({ callback: populateFile });
+            editorService.mediaPicker({
+                submit: function (model) {
+                    populateFile(model.selection[0]);
+                    editorService.close();
+                },
+                close: function () {
+                    editorService.close();
+                }
+            });
 	    };
 
 	    function populateFile(item) {

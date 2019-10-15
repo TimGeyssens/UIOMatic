@@ -156,6 +156,8 @@
     ,
     javascript: [
 		'~/App_Plugins/UIOMatic/backoffice/assets/js/angular-relative-date.js',
+		'~/App_Plugins/UIOMatic/backoffice/assets/js/moment-with-locales.js',
+		'~/App_Plugins/UIOMatic/backoffice/assets/js/bootstrap-datetimepicker.js',
 
 		'~/App_Plugins/UIOMatic/backoffice/imports.js',
 		
@@ -200,7 +202,8 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/dashboards/summarydashboard.controller.js',		
     ],
     css: [
-		'~/App_Plugins/UIOMatic/backoffice/assets/css/uiomatic.css'
+		'~/App_Plugins/UIOMatic/backoffice/assets/css/uiomatic.css',
+		'~/App_Plugins/UIOMatic/backoffice/assets/css/bootstrap-datetimepicker.min.css'
 	]
 	
 }

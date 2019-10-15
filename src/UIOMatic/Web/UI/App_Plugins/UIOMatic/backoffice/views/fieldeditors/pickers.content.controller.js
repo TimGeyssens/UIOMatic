@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Pickers.ContentController",
-    function ($scope, $routeParams, $http, dialogService, entityResource, iconHelper) {
+    function ($scope, $routeParams, $http, editorService, entityResource, iconHelper) {
 
         function init() {
             if (!$scope.setting) {
@@ -18,11 +18,21 @@
             }
 
             $scope.openContentPicker = function () {
-                var d = dialogService.treePicker({
+                editorService.treePicker({
                     section: "content",
                     treeAlias: "content",
                     multiPicker: false,
-                    callback: populate
+                    filter: function filter(i) {
+                        return i.metaData.isContainer == true;
+                    },
+                    filterCssClass: 'not-allowed',
+                    submit: function (model) {
+                        populate(model.selection[0]);
+                        editorService.close();
+                    },
+                    close: function () {
+                        editorService.close();
+                    }
                 });
             };
 

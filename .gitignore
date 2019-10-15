@@ -109,3 +109,4 @@ build/_temp
 
 applicationhost.config
 *.Matt.sln
+src/msbuild.rsp

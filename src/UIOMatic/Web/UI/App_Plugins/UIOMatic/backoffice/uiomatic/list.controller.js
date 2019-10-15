@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, $location, $timeout, uioMaticUtilityService, uioMaticObjectResource, navigationService, dialogService) {
+    function ($scope, $routeParams, $location, $timeout, uioMaticUtilityService, uioMaticObjectResource, navigationService, editorService) {
 
         var searchTimeout;
 
@@ -197,7 +197,7 @@
         }
 
         $scope.openAction = function (action) {
-            dialogService.open({
+            editorService.open({
                 template: action.view,
                 show: true,
                 dialogData: {

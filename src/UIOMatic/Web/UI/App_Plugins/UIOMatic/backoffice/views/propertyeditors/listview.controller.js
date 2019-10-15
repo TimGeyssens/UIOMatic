@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("UIOMatic.PropertyEditors.ListView",
-	function ($scope, $routeParams, $location, uioMaticUtilityService, uioMaticObjectResource, navigationService, dialogService, notificationsService) {
+    function ($scope, $routeParams, $location, uioMaticUtilityService, uioMaticObjectResource, navigationService, editorService, notificationsService) {
 
 	    //$scope.model.config.typeAlias
 	    //$scope.model.config.sortColumn
@@ -167,7 +167,7 @@
 	    }
 
 	    $scope.openAction = function (action) {
-	        dialogService.open({
+            editorService.open({
 	            template: action.view,
 	            show: true,
 	            dialogData: {
@@ -177,7 +177,7 @@
 	    }
 
 	    $scope.addItem = function () {
-	        dialogService.open({
+            editorService.open({
 	            template: '/App_Plugins//UIOMatic/backoffice/views/PropertyEditors/Listview.Dialog.html',
 	            dialogData: {
 	                id: -1,
@@ -194,7 +194,7 @@
 	        });
 	    };
 	    $scope.editItem = function (object) {
-	        dialogService.open({
+            editorService.open({
 	            template: '/App_Plugins//UIOMatic/backoffice/views/PropertyEditors/Listview.Dialog.html',
 	            dialogData: {
 	                id: object,

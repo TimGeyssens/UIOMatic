@@ -184,7 +184,7 @@ namespace UIOMatic.Services
         {
           
             // Types shouldn't change without an app pool recycle so might as well cache these
-            return (UIOMaticTypeInfo)Umbraco.Web.Composing.Current.AppCaches.RuntimeCache.Get("NPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
+            return (UIOMaticTypeInfo)Umbraco.Web.Composing.Current.AppCaches.RuntimeCache.Get("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
             {
                 var attri = type.GetCustomAttribute<UIOMaticAttribute>();
 
