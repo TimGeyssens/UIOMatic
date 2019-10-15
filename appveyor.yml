@@ -13,6 +13,9 @@ before_build:
 build_script:
   - msbuild build/package.proj 
   
+artifacts:
+  - path: artifacts\*.nupkg
+  
 deploy:
   provider: NuGet
   server:
