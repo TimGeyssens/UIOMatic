@@ -6,8 +6,7 @@
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/developer-tools/ui-o-matic/)
 [![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/TimGeyssens/UIOMatic)
 
-
-**Auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco ](http://www.toptensoftware.com/petapoco/)poco**
+**Auto generate an integrated crud UI in Umbraco for a db table based on a [npoco ](<https://github.com/schotime/NPoco>)poco**
 
 Simply decorate your class and properties with some additional attributes.
 
@@ -29,23 +28,23 @@ This class
     {
         [PrimaryKeyColumn(AutoIncrement = true)]
         public int Id { get; set; }
-
-		[Required]
+    
+    	[Required]
         [UIOMaticField(Name = "First name", Description = "Enter the persons first name")]
         public string FirstName { get; set; }
-
-		[Required]	
+    
+    	[Required]	
         [UIOMaticField(Name = "Last name",Description = "Enter the persons last name")]
         public string LastName { get; set; }
-
+    
         [UIOMaticField(Name = "Picture",Description = "Select a picture", View = UIOMatic.Constants.FieldEditors.File)]
         public string Picture { get; set; }
-
+    
         public override string ToString()
         {
             return FirstName + " " + LastName;
         }
-
+    
     }
 
 Will generate the following UI

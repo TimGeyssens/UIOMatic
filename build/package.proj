@@ -36,7 +36,7 @@
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.5</Version>
+		<Version>3.0.6</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -185,7 +185,7 @@
 			BasePath="$(BuildNuGetDir)"
 			Version="$(Version)"
 			OutputDirectory="$(ArtifactsDir)"
-			Symbols="true"  />
+			Symbols="false"  />
 		<!-- NuGet -->
 		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\Tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
