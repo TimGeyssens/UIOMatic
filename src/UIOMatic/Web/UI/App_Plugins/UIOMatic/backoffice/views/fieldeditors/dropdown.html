@@ -1,5 +1,5 @@
 ﻿<div ng-controller="UIOMatic.FieldEditors.Dropdown">
-    <select ng-model="property.value" ng-options="item.value as item.text for item in items">
+    <select ng-model="property.value" ng-options="item.value as item.text for item in items" ng-change="onChange()">
         <option value="">---Please select---</option>
     </select><br>
 </div>
