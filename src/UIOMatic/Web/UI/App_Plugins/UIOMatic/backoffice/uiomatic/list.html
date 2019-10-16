@@ -1,5 +1,5 @@
 ﻿<div ng-controller="uioMatic.ObjectListController" class="uiomatic">
-
+    <umb-load-indicator ng-if="loading"></umb-load-indicator>
     <umb-panel>
         <umb-header>
 
@@ -17,7 +17,7 @@
                         <li class="action" ng-repeat="action in listViewActions">
                             <a ng-click="openAction(action)">
                                 <i class="icon {{action.icon}}" ng-show="action.icon"></i>
-                                <span class="menu-label">{{action.name}}</span> 
+                                <span class="menu-label">{{action.name}}</span>
                             </a>
                         </li>
                     </ul>
@@ -29,7 +29,7 @@
         <div class="umb-panel-body umb-scrollable row-fluid">
             <div class="tab-content form-horizontal">
                 <div class="umb-pane">
-                 
+
                     <div class="umb-sub-header">
                         <div class="btn-group" ng-hide="readOnly">
                             <a class="btn" ng-click="navigate('/uiomatic/uiomatic/edit/' + typeAlias)">
@@ -37,14 +37,14 @@
                             </a>
                         </div>
 
-                        <div class="btn-group" ng-show="!readonly && isAnythingSelected()" >
+                        <div class="btn-group" ng-show="!readonly && isAnythingSelected()">
                             <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
                                 <localize key="actions_delete">Delete</localize>
                             </a>
                         </div>
 
                         <div class="btn-group uiomatic__filter-label" ng-class="{ readonly:readOnly }" ng-if="filterProperties">
-                            Filter by: 
+                            Filter by:
                         </div>
 
                         <div class="btn-group" ng-repeat="property in filterProperties">
@@ -62,43 +62,44 @@
                     <div class="umb-listview">
                         <table class="table table-striped">
                             <thead>
-                            <tr>
-                                <td class="checkbox-column" ng-hide="readOnly">
-                                    <input type="checkbox" ng-click="toggleSelectAll($event)">
-                                </td>
-                                <td ng-repeat="prop in properties">
-                                    <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
-                                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.columnName"></i>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="checkbox-column" ng-hide="readOnly">
+                                        <input type="checkbox" ng-click="toggleSelectAll($event)">
+                                    </td>
+                                    <td ng-repeat="prop in properties">
+                                        <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
+                                        <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.columnName"></i>
+                                    </td>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
-                                <td class="checkbox-column" ng-hide="readOnly">
-                                    <i class="icon icon-edit"></i>
-                                    <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))"/>
-                                </td>
-                                <td ng-repeat="prop in properties">
-                                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], view:prop.view, config:prop.config}"><!-- Fake property object so we can reuse views -->
-                                        <a class="table__link" ng-click="navigate('/uiomatic/uiomatic/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias)" ng-switch-when="true">
-                                            <span ng-include="prop.view"></span>
-                                        </a>
-                                        <span ng-switch-when="false">
-                                            <span ng-include="prop.view"></span>
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
+                                    <td class="checkbox-column" ng-hide="readOnly">
+                                        <i class="icon icon-edit"></i>
+                                        <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
+                                    </td>
+                                    <td ng-repeat="prop in properties">
+                                        <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], view:prop.view, config:prop.config}">
+                                            <!-- Fake property object so we can reuse views -->
+                                            <a class="table__link" ng-click="navigate('/uiomatic/uiomatic/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias)" ng-switch-when="true">
+                                                <span ng-include="prop.view"></span>
+                                            </a>
+                                            <span ng-switch-when="false">
+                                                <span ng-include="prop.view"></span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tfoot ng-if="legacyPagination && totalPages > 1">
                                 <tr>
                                     <th colspan="{{properties.length + 1}}">
                                         <div class="pagination-right">
                                             <uiomatic-pagination page-number="currentPage"
-                                                total-pages="totalPages"
-                                                on-next="nextPage"
-                                                on-prev="prevPage"
-                                                on-go-to-page="setPage">
+                                                                 total-pages="totalPages"
+                                                                 on-next="nextPage"
+                                                                 on-prev="prevPage"
+                                                                 on-go-to-page="setPage">
                                             </uiomatic-pagination>
                                         </div>
                                     </th>
@@ -110,10 +111,10 @@
                         </div>
                         <div ng-if="!legacyPagination && totalPages > 1" class="text-center">
                             <umb-pagination page-number="currentPage"
-                                total-pages="totalPages"
-                                on-next="nextPage"
-                                on-prev="prevPage"
-                                on-go-to-page="setPage">
+                                            total-pages="totalPages"
+                                            on-next="nextPage"
+                                            on-prev="prevPage"
+                                            on-go-to-page="setPage">
                             </umb-pagination>
                         </div>
 
@@ -121,6 +122,6 @@
                 </div>
             </div>
         </div>
-        
-     </umb-panel>
+
+    </umb-panel>
 </div>
