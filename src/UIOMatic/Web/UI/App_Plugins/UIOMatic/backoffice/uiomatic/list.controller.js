@@ -9,6 +9,7 @@
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
+        $scope.loading = false;
 
         $scope.currentPage = 1;
         $scope.itemsPerPage = JSON.parse(Umbraco.Sys.ServerVariables.uioMatic.settings.defaultListViewPageSize);
@@ -46,6 +47,11 @@
         }
 
         function fetchData() {
+            
+            $scope.loading = true;
+            $scope.rows = 0;
+            $scope.totalPages = 0;
+
             uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage,
                 $scope.initialFetch ? "" : $scope.predicate,
                 $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
@@ -55,6 +61,7 @@
                     $scope.rows = resp.items;
                     $scope.totalPages = resp.totalPages;
                     $scope.totalItems = resp.totalItems;
+                    $scope.loading = false;
                 });
         }
 
