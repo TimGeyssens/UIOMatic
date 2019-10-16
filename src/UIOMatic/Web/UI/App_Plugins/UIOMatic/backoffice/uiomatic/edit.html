@@ -7,34 +7,38 @@
     <umb-editor-view>
 
 
-        <umb-header tabs="content.tabs">
-
-            <div class="span7">
-                <div ng-if="type.nameFieldIndex > -1">
-                    <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.nameFieldIndex].value" />
-                </div>
-                <div ng-if="type.nameFieldIndex == -1">
-
-                    <umb-editor-header name="headerCaption"
-                                       name-locked="headerCaption"
-                                       hide-icon="true"
-                                       hide-description="true"
-                                       hide-alias="true">
-                    </umb-editor-header>
+        <!--<umb-header tabs="content.tabs">-->
 
 
+        <div ng-if="type.nameFieldIndex > -1">
+            <div class="umb-editor-header">
+                <div class="flex items-center" style="height: 100%;">
+                    <div class="flex items-center" style="flex: 1;">
+                        <div class="umb-editor-header__name-and-description" style="flex: 1 1 auto;">
+                            <div class="umb-editor-header__name-wrapper">
+                                <label for="headerName" class="sr-only">{{headerCaption}}</label>
+                                <input class="umb-editor-header__name-input" id="headerName" ng-model="properties[type.nameFieldIndex].value" placeholder="Enter {{properties[type.nameFieldIndex].name}}" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div ng-if="type.nameFieldIndex == -1">
 
-            <div class="span5">
-                <div class="btn-toolbar pull-right umb-btn-toolbar">
-                    <umb-options-menu ng-show="currentNode"
-                                      current-node="currentNode"
-                                      current-section="{{currentSection}}">
-                    </umb-options-menu>
-                </div>
-            </div>
-        </umb-header>
+            <umb-editor-header name="headerCaption"
+                               name-locked="headerCaption"
+                               hide-icon="true"
+                               hide-description="true"
+                               hide-alias="true">
+            </umb-editor-header>
+
+
+        </div>
+
+
+
+        <!--</umb-header>-->
 
         <umb-editor-container>
             <div class="tab-content form-horizontal">
