@@ -13,7 +13,7 @@
         $scope.initialFetch = true;
 
         function fetchData() {
-            if (!isNaN($scope.filterId)) { // Only fetch if we have an ID (ie, editing)
+            if ($scope.filterId.length !== 0) { // Only fetch if we have something
                 uioMaticObjectResource.getPaged($scope.typeAlias, 1000, 1,
                     $scope.initialFetch ? "" : $scope.predicate,
                     $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
