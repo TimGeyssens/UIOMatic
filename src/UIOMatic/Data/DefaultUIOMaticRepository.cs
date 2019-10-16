@@ -13,11 +13,10 @@ using System.Configuration;
 
 namespace UIOMatic.Data
 {
-    internal class DefaultUIOMaticRepository : IUIOMaticRepository
+    public class DefaultUIOMaticRepository : IUIOMaticRepository
     {
         private UIOMaticAttribute _config;
         private UIOMaticTypeInfo _typeInfo;
-
         
         public DefaultUIOMaticRepository(UIOMaticAttribute config, UIOMaticTypeInfo typeInfo)
         {
@@ -25,7 +24,7 @@ namespace UIOMatic.Data
             _typeInfo = typeInfo;
         }
 
-        public IEnumerable<object> GetAll(string sortColumn = "", string sortOrder = "")
+        public virtual IEnumerable<object> GetAll(string sortColumn = "", string sortOrder = "")
         {
             var db = GetDb();
             
@@ -52,7 +51,7 @@ namespace UIOMatic.Data
             return db.Fetch(_typeInfo.Type, query);
         }
 
-        public UIOMaticPagedResult GetPaged(
+        public virtual UIOMaticPagedResult GetPaged(
             int pageNumber,
             int itemsPerPage,
             string searchTerm = "",
@@ -143,14 +142,14 @@ namespace UIOMatic.Data
             };
         }
 
-        public object Get(string id)
+        public virtual object Get(string id)
         {
             var db = GetDb();
 
             return db.SingleOrDefault(_typeInfo.Type, id);
         }
 
-        public object Create(object entity)
+        public virtual object Create(object entity)
         {
             var db = GetDb();
 
@@ -172,7 +171,7 @@ namespace UIOMatic.Data
             return entity;
         }
 
-        public object Update(object entity)
+        public virtual object Update(object entity)
         {
             var db = GetDb();
              
@@ -186,7 +185,7 @@ namespace UIOMatic.Data
             return entity;
         }
 
-        public void Delete(string[] ids)
+        public virtual void Delete(string[] ids)
         {
             var db = GetDb();
 
@@ -213,7 +212,7 @@ namespace UIOMatic.Data
             }
         }
 
-        public long GetTotalRecordCount()
+        public virtual long GetTotalRecordCount()
         {
             var db = GetDb();
 
@@ -227,7 +226,7 @@ namespace UIOMatic.Data
             return db.ExecuteScalar<long>(sql);
         }
 
-        private Database GetDb()
+        public virtual Database GetDb()
         {
             return !string.IsNullOrEmpty(_config.ConnectionStringName)
                 ? new Database(_config.ConnectionStringName)
