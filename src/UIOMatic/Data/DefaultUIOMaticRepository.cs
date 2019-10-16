@@ -60,6 +60,41 @@ namespace UIOMatic.Data
             string sortColumn = "",
             string sortOrder = "")
         {
+
+            var numberDataTypes = new[] {
+                typeof(Byte),
+                typeof(Decimal),
+                typeof(Double),
+                typeof(Int16),
+                typeof(Int32),
+                typeof(Int64),
+                typeof(SByte),
+                typeof(Single),
+                typeof(UInt16),
+                typeof(UInt32),
+
+                typeof(Byte?),
+                typeof(Decimal?),
+                typeof(Double?),
+                typeof(Int16?),
+                typeof(Int32?),
+                typeof(Int64?),
+                typeof(SByte?),
+                typeof(Single?),
+                typeof(UInt16?),
+                typeof(UInt32?)
+            };
+
+            var guidDataTypes = new[] {
+                typeof(Guid),
+                typeof(Guid?)
+            };
+
+            var dateDataTypes = new[] {
+                typeof(DateTime),
+                typeof(DateTime?)
+            };
+
             var db = GetDb();
 
             var query = new Sql().Select("*").From(_typeInfo.TableName);
@@ -94,9 +129,39 @@ namespace UIOMatic.Data
                         if (columnAttri != null)
                             columnName = columnAttri.Name;
 
-                        query.Append("OR " + columnName + " like @0", "%" + searchTerm + "%");
-                        c++;
+                        // guid
+                        else if (guidDataTypes.Contains(property.PropertyType))
+                        {
+                            Guid searchGuid;
+                            if (Guid.TryParse(searchTerm, out searchGuid))
+                            {
+                                query.Append("OR " + columnName + " = @0", searchGuid);
+                            }
+                        }
+                        // number
+                        else if (numberDataTypes.Contains(property.PropertyType))
+                        {
+                            decimal searchNumber;
+                            if (decimal.TryParse(searchTerm, out searchNumber))
+                            {
+                                query.Append("OR " + columnName + " = @0", searchNumber);
+                            }
+                        }
+                        // date
+                        else if (dateDataTypes.Contains(property.PropertyType))
+                        {
+                            DateTime searchDate;
+                            if (DateTime.TryParse(searchTerm, out searchDate))
+                            {
+                                query.Append("OR " + columnName + " >=  @0 AND " + columnName + " < @1", searchDate.Date, searchDate.AddDays(1).Date);
+                            }
+                        }
+                        else if(property.PropertyType == typeof(string))
+                        {
+                            query.Append("OR " + columnName + " like @0", "%" + searchTerm + "%");
+                        }
 
+                        c++;
                     }
                 }
 
