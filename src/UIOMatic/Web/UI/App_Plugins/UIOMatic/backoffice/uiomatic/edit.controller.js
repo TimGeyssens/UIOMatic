@@ -39,7 +39,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
             $scope.type = response;
             $scope.itemDisplayName = response.displayNameSingular;
-            $scope.headerCaption = (hasId ? (readOnly ? "" : "Update ") : "Create ") + response.displayNameSingular;
+            $scope.headerCaption = (hasId ? (response.readOnly ? "" : "Update ") : "Create ") + response.displayNameSingular;
             $scope.readOnly = response.readOnly;
             $scope.fromList = $scope.fromList || response.renderType == 1;
             $scope.properties = response.editableProperties;

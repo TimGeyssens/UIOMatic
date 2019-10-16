@@ -3,6 +3,9 @@
 
         var searchTimeout;
 
+        $scope.dropdown = {};
+        $scope.dropdown.isOpen = false;
+
         $scope.typeAlias = $routeParams.id;
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
@@ -66,12 +69,14 @@
             $scope.predicate = response.sortColumn;
             $scope.reverse = response.sortOrder == "desc";
 
+
             // Pass extra meta data into filter properties
             $scope.filterProperties = response.listViewFilterProperties.map(function (itm) {
                 itm.typeAlias = $scope.typeAlias;
                 if (itm.config && itm.config.defaultValue) {
                     itm.value = itm.config.defaultValue;
                 }
+
                 return itm;
             });
 
@@ -125,8 +130,8 @@
                 var rowSelected = $scope.isRowSelected(row);
                 if ((doSelect && !rowSelected) || (!doSelect && rowSelected)) {
                     $scope.toggleSelection($scope.getObjectKey(row));
-                } 
-            });            
+                }
+            });
         }
 
         $scope.isRowSelected = function (row) {

@@ -41,13 +41,13 @@
 }
 
 .uiomatic_map .uiomatic_map_map {
-    width: 66.6%; 
+    width: 66.6%;
     height: 500px;
 }
 
-.uiomatic_map .uiomatic_map_map .uiomatic_map_search {
-    display: inline-block;
-}
+    .uiomatic_map .uiomatic_map_map .uiomatic_map_search {
+        display: inline-block;
+    }
 
 .uiomatic_map .uiomatic_map_search:focus {
     border-color: #4d90fe;
@@ -57,14 +57,14 @@
     Action Styles
 */
 .uiomatic__action-menu-container {
-    float: right; 
-    margin: 20px 20px 0 0; 
+    float: right;
+    margin: 20px 20px 0 0;
     position: relative;
 }
 
-.uiomatic__action-menu-container .action a {
-    cursor: pointer
-}
+    .uiomatic__action-menu-container .action a {
+        cursor: pointer
+    }
 
 /* 
     List View Styles
@@ -74,25 +74,26 @@
 }
 
 .uiomatic__filter-label {
-    line-height: 28px; 
-    border-left: 1px solid #ccc; 
-    font-size: 14px; 
-    font-weight: bold; 
-    margin-left: 10px; 
+    line-height: 28px;
+    /*border-left: 1px solid #ccc;*/
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
     padding-left: 10px;
 }
 
-.uiomatic__filter-label.readonly {
-    border-left: 0; 
-    margin-left: 0; 
-    padding-left: 0;
-}
+    .uiomatic__filter-label.readonly {
+        border-left: 0;
+        margin-left: 0;
+        padding-left: 0;
+    }
 
 .uiomatic .table .checkbox-column {
     width: 35px
 }
+
 .uiomatic .table .table__link {
-    font-weight: bold; 
+    font-weight: bold;
     cursor: pointer;
 }
 
@@ -121,21 +122,21 @@
 }
 
 @media (min-width: 800px) {
-  .uiomatic__type-summary {
-    width: 33%;
-  }
+    .uiomatic__type-summary {
+        width: 33%;
+    }
 }
 
 @media (min-width: 1100px) {
-  .uiomatic__type-summary {
-    width: 50%;
-  }
+    .uiomatic__type-summary {
+        width: 50%;
+    }
 }
 
 @media (min-width: 1200px) {
-  .uiomatic__type-summary {
-    width: 33%;
-  }
+    .uiomatic__type-summary {
+        width: 33%;
+    }
 }
 
 .uiomatic__type-summary-inr {
@@ -146,14 +147,14 @@
     border: 2px solid #f8f8f8;
 }
 
-.uiomatic__type-summary-inr:hover {
-    border-color: #2e8aea;
-    text-decoration:none !important;
-}
+    .uiomatic__type-summary-inr:hover {
+        border-color: #2e8aea;
+        text-decoration: none !important;
+    }
 
-.uiomatic__type-summary-inr.readonly:hover {
-    border-color: #f8f8f8;
-}
+    .uiomatic__type-summary-inr.readonly:hover {
+        border-color: #f8f8f8;
+    }
 
 .uiomatic__type-summary__icon {
     position: absolute;
@@ -192,17 +193,17 @@
     color: white;
 }
 
-.uiomatic__type-summary__toolbar a {
-    display: block;
-    font-size: 18px;
-    width: 28px;
-    line-height: 24px;
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    margin-right: -2px;
-}
+    .uiomatic__type-summary__toolbar a {
+        display: block;
+        font-size: 18px;
+        width: 28px;
+        line-height: 24px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        margin-right: -2px;
+    }
 
-.uiomatic__type-summary__toolbar a:hover {
-    text-decoration: none;
-}
+        .uiomatic__type-summary__toolbar a:hover {
+            text-decoration: none;
+        }
