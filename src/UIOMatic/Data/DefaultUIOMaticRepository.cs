@@ -94,6 +94,11 @@ namespace UIOMatic.Data
                 typeof(DateTime?)
             };
 
+            var boolDataTypes = new[] {
+                typeof(bool),
+                typeof(bool?)
+            };
+
             var db = GetDb();
 
             var query = new Sql().Select("*").From(_typeInfo.TableName);
@@ -137,8 +142,8 @@ namespace UIOMatic.Data
                                 query.Append("OR " + columnName + " = @0", searchGuid);
                             }
                         }
-                        // number
-                        else if (numberDataTypes.Contains(property.PropertyType))
+                        // number / boolean
+                        else if (numberDataTypes.Contains(property.PropertyType) || boolDataTypes.Contains(property.PropertyType))
                         {
                             decimal searchNumber;
                             if (decimal.TryParse(searchTerm, out searchNumber))
