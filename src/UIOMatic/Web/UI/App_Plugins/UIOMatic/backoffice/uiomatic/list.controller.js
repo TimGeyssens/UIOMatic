@@ -4,6 +4,7 @@
         var searchTimeout;
 
         $scope.dropdown = {};
+        $scope.currentSection = $routeParams.section || 'uiomatic';
         $scope.dropdown.isOpen = false;
 
         $scope.typeAlias = $routeParams.id;
@@ -210,11 +211,16 @@
 
         $scope.openAction = function (action) {
             editorService.open({
-                template: action.view,
-                show: true,
+                view: action.view,
                 dialogData: {
                     typeAlias: $scope.typeAlias,
                     config: action.config
+                },
+                submit: function () {
+                    editorService.close();
+                },
+                close: function () {
+                    editorService.close();
                 }
             });
         }
