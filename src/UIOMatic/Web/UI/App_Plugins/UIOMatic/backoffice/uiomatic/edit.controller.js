@@ -5,6 +5,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
         $scope.loaded = false;
         $scope.editing = false;
+        $scope.currentSection = $routeParams.section || 'uiomatic';
 
         var urlParts = $routeParams.id.split("?");
         var id = urlParts[0];
@@ -31,7 +32,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
         }
 
         $scope.queryString = qs;
-        $scope.returnUrl = qs["returnUrl"] || "/uiomatic/uiomatic/list/" + $scope.typeAlias;
+        $scope.returnUrl = qs["returnUrl"] || "/" + $scope.currentSection + "/uiomatic/list/" + $scope.typeAlias;
         $scope.fromList = !!qs["returnUrl"]; // Assumes a return URL means you've come from a list field view
         $scope.syncTree = !$scope.fromList; // Don't sync the tree if we are a nested type
 
@@ -129,7 +130,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                     } else {
                         uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
                             $scope.objectForm.$dirty = false;
-                            var redirectUrl = "/uiomatic/uiomatic/edit/" + response[$scope.type.primaryKeyColumnName] + "%3Fta=" + $scope.typeAlias;
+                            var redirectUrl = "/" + $scope.currentSection + "/uiomatic/edit/" + response[$scope.type.primaryKeyColumnName] + "%3Fta=" + $scope.typeAlias;
                             for (var k in $scope.queryString) {
                                 if ($scope.queryString.hasOwnProperty(k) && k != "ta") {
                                     redirectUrl += "%26" + encodeURIComponent(k) + "=" + encodeURIComponent(encodeURIComponent($scope.queryString[k]));
@@ -168,7 +169,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
         $scope.navigate = function (url) {
             // Because some JS seems to be translating any links starting '#'
             $location.url(url);
-        }
+        };
 
         $scope.$on("valuesLoaded", function () {
             $timeout(function () {
@@ -200,5 +201,5 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
             return input.filter(function (property) {
                 return property.key != namePropertyKey;
             });
-        }
-    });;
+        };
+    });

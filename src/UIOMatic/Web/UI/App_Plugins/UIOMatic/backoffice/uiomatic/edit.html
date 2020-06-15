@@ -42,21 +42,29 @@
 
         <umb-editor-container>
             <div class="tab-content form-horizontal">
+                <div ng-if="content.tabs !== null">
+                    <ng-form name="tabbedContentForm">
+                        <div class="umb-group-panel" data-app-anchor="{{group.id}}" data-element="group-{{group.id}}" ng-repeat="group in content.tabs track by group.label">
 
-                <umb-tab ng-repeat="tab in content.tabs | filter:tab != null" id="tab{{tab.id}}" rel="{{tab.label}}">
-                    <div class="umb-pane">
-                        <div ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: tab.label}">
-                            <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
-                                <div ng-include="property.view"></div>
-                            </umb-control-group>
+                            <div class="umb-group-panel__header">
+                                <div id="group-{{group.id}}">{{ group.label }}</div>
+                            </div>
+
+                            <div class="umb-group-panel__content">
+                                <div class="umb-property" ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: group.label}">
+                                    <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
+                                        <div ng-include="property.view"></div>
+                                    </umb-control-group>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                </umb-tab>
+                    </ng-form>
+                </div>
 
-                <div class="umb-group-panel" ng-if="content.tabs == null">
+                <div class="umb-group-panel" ng-if="content.tabs === null">
                     <div class="umb-group-panel__content">
-
-                        <div ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: tab.label}">
+                        <div class="umb-property" ng-repeat="property in properties | removeProperty:type.nameFieldKey">
                             <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
                                 <div ng-include="property.view"></div>
                             </umb-control-group>
