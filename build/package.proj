@@ -37,7 +37,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<VersionMajor>$(VersionNumber.Split('.')[0])</VersionMajor>
-		<VersionMinor>$(VersionNumber.Split('.')[1])<VersionMinor>
+		<VersionMinor>$(VersionNumber.Split('.')[1])</VersionMinor>
 		<VersionPatch>$(VersionNumber.Split('.')[2])</VersionPatch>
 	</PropertyGroup>
 	<PropertyGroup>
