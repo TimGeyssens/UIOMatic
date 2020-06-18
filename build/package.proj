@@ -36,12 +36,12 @@
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
 	<PropertyGroup>
-		<VersionMajor>$(VersionNumber.Split('.')[0])</VersionMajor>
-		<VersionMinor>$(VersionNumber.Split('.')[1])</VersionMinor>
-		<VersionPatch>$(VersionNumber.Split('.')[2])</VersionPatch>
+		<VersionMajor>$($(Version).Split('.')[0])</VersionMajor>
+		<VersionMinor>$($(Version).Split('.')[1])</VersionMinor>
+		<VersionPatch>$($(Version).Split('.')[2])</VersionPatch>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>$(VersionMajor).$(VersionMinor).$(VersionPatch)</Version>
+		<ReleaseVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)</ReleaseVersion>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -101,7 +101,7 @@
 			WorkingDirectory="$(BuildUmbDir)"
 			MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
 			PackageName="$(PackageName)"
-			PackageVersion="$(Version)"
+			PackageVersion="$(ReleaseVersion)"
 			AuthorName="$(AuthorName)"
 			AuthorUrl="$(AuthorUrl)"
 			Readme="$(Readme)"
@@ -123,7 +123,7 @@
 			Title="$(CoreNugetPackageName)"
 			Description="$(Readme)"
 			Summary="$(Readme)"
-			Version="$(Version)"
+			Version="$(ReleaseVersion)"
 			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
 			Authors="$(AuthorName)"
 			Owners="$(Owners)"
@@ -143,7 +143,7 @@
 			Title="$(NugetPackageName)"
 			Description="$(Readme)"
 			Summary="$(Readme)"
-			Version="$(Version)"
+			Version="$(ReleaseVersion)"
 			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
 			Authors="$(AuthorName)"
 			Owners="$(Owners)"
@@ -162,7 +162,7 @@
 			Namespace="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd"
 			XmlFileName="$(BuildNuGetDir)\package.nuspec"
 			XPath="/nu:package/nu:metadata/nu:dependencies/nu:dependency[@id='$(CorePackageId)']/@version"
-			Value="$(Version)" />
+			Value="$(ReleaseVersion)" />
 	</Target>
 	<!-- PACKAGE -->
 	<Target Name="Package" DependsOnTargets="ManifestNuGet">
@@ -178,14 +178,14 @@
 		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\Tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.core.nuspec"
 			BasePath="$(BuildNuGetDir)"
-			Version="$(Version)"
+			Version="$(ReleaseVersion)"
 			OutputDirectory="$(ArtifactsDir)"
 			Symbols="false"  />
 		<!-- NuGet -->
 		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\Tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
 			BasePath="$(BuildNuGetDir)"
-			Version="$(Version)"
+			Version="$(ReleaseVersion)"
 			OutputDirectory="$(ArtifactsDir)"
 			Symbols="false" />
 	</Target>
