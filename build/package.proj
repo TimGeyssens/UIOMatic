@@ -40,7 +40,7 @@
 		<VersionMinor Include="$(VersionNumber.Split('.')[1])" />
 		<VersionPatch Include="$(VersionNumber.Split('.')[2])" />
 		<Version Include="$(VersionMajor).$(VersionMinor).$(VersionPatch)" />
-	<PropertyGroup>
+	</PropertyGroup>
 	<PropertyGroup>
 		<Version>$(Version)</Version>
 		<ProjectName>UIOMatic</ProjectName>
