@@ -29,7 +29,7 @@
 		<CorePackageId>$(PackageId).Core</CorePackageId>
 		<Copyright>Tim Geyssens, Matt Brailsford and other contributors</Copyright>
 		<Owners>Tim Geyssens, Matt Brailsford and other contributors</Owners>
-		<Summary>Auto generate an integrated crud UI in Umbraco for a db table based on a petapoco poco</Summary>
+		<Summary>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Summary>
 		<IconUrl>https://raw.githubusercontent.com/TimGeyssens/UIOMatic/v2/docs/img/uiomatic.png</IconUrl>
 		<Tags>umbraco</Tags>
 		<Language>en-GB</Language>
