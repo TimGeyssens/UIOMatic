@@ -35,13 +35,9 @@
 		<Language>en-GB</Language>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
+	
 	<PropertyGroup>
-		<VersionMajor>$(Version.Split('.')[0])</VersionMajor>
-		<VersionMinor>$(Version.Split('.')[1])</VersionMinor>
-		<VersionPatch>$(Version.Split('.')[2])</VersionPatch>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ReleaseVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)</ReleaseVersion>
+		<ReleaseVersion>$(Version)</ReleaseVersion>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
