@@ -4,7 +4,7 @@ environment:
   patchversion: 9
 
 # version format
-version: '{majorversion}.{minorversion}.{patchversion}'
+version: {majorversion}.{minorversion}.{patchversion}
 
 image: Visual Studio 2017
 
@@ -15,7 +15,7 @@ skip_tags: true
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
-  assembly_version: '{version}{build}'
+  assembly_version: '{version}.{build}'
   assembly_file_version: '{version}.{build}'
 
 before_build:
