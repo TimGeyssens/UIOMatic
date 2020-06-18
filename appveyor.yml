@@ -7,11 +7,17 @@ image: Visual Studio 2017
 # Do not build on tags
 skip_tags: true
 
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+
 before_build:
   - ps: nuget restore src/UIOMatic.sln
 
 build_script:
-  - msbuild build/package.proj 
+  - msbuild build/package.proj /p:VersionNumber={version}
   
 artifacts:
   - path: artifacts\*.nupkg

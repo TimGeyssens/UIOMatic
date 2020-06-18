@@ -36,7 +36,7 @@
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.9</Version>
+		<Version>$(VersionNumber)</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
