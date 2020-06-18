@@ -36,7 +36,13 @@
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>$(VersionNumber)</Version>
+		<VersionMajor Include="$(VersionNumber.Split('.')[0])" />
+		<VersionMinor Include="$(VersionNumber.Split('.')[1])" />
+		<VersionPatch Include="$(VersionNumber.Split('.')[2])" />
+		<Version Include="$(VersionMajor).$(VersionMinor).$(VersionPatch)" />
+	<PropertyGroup>
+	<PropertyGroup>
+		<Version>$(Version)</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -56,19 +62,9 @@
 		<MakeDir Directories="$(BuildDir)" />
 		<MakeDir Directories="$(ArtifactsDir)" />
 	</Target>
-	<!-- UPDATE ASSEMBLEY VERSION -->
-	<Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean">
-		<ItemGroup>
-			<VersionMajor Include="$(Version.Split('.')[0])" />
-			<VersionMinor Include="$(Version.Split('.')[1])" />
-		</ItemGroup>
-		<AssemblyInfo CodeLanguage="CS"
-			OutputFile="$(ProjectDir)\Properties\VersionInfo.cs"
-			AssemblyVersion="@(VersionMajor).@(VersionMinor).*"
-			AssemblyInformationalVersion="$(Version)"/>
-	</Target>
+	
 	<!-- COMPILE -->
-	<Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
+	<Target Name="Compile" DependsOnTargets="Clean">
 		<MSBuild Projects="$(ProjectDir)\$(ProjectName).csproj" Properties="Configuration=$(BuildConfig)" />
 	</Target>
 	<!-- PREPARE FILES -->

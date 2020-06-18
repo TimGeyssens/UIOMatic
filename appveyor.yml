@@ -17,7 +17,7 @@ before_build:
   - ps: nuget restore src/UIOMatic.sln
 
 build_script:
-  - msbuild build/package.proj /p:VersionNumber={version}
+  - msbuild build/package.proj /p:VersionNumber='{version}'
   
 artifacts:
   - path: artifacts\*.nupkg
