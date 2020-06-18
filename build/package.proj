@@ -37,7 +37,7 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		
+    <Version>$(majorversion).$(minorversion).$(patchversion)</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
