@@ -235,7 +235,7 @@ namespace UIOMatic.Services
                             var pi = new UIOMaticEditablePropertyInfo
                             {
                                 Key = prop.Name,
-                                Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name : attri2.Name,
+                                Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name.ToSentenceCase() : attri2.Name,
                                 ColumnName = prop.GetColumnName(),
                                 Tab = attri2.Tab.IsNullOrWhiteSpace() ? "General" : attri2.Tab,
                                 TabOrder = attri2.TabOrder,
@@ -292,7 +292,7 @@ namespace UIOMatic.Services
                             var pi = new UIOMaticFilterPropertyInfo
                             {
                                 Key = prop.Name,
-                                Name = attri4.Name.IsNullOrWhiteSpace() ? prop.Name : attri4.Name,
+                                Name = attri4.Name.IsNullOrWhiteSpace() ? prop.Name.ToSentenceCase() : attri4.Name,
                                 ColumnName = prop.GetColumnName(),
                                 KeyPropertyName = keyProp.Name,
                                 KeyColumnName = keyProp.GetColumnName(),
