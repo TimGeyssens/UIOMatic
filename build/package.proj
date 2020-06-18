@@ -37,7 +37,7 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<ReleaseVersion>$(Version)</ReleaseVersion>
+		
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -87,25 +87,7 @@
 		<Copy SourceFiles="@(CoreNuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
 		<Copy SourceFiles="@(NugetReadmeFile)" DestinationFolder="$(BuildNuGetDir)" />
 	</Target>
-	<!-- MANIFEST UMBRACO 
-	<Target Name="ManifestUmbraco" DependsOnTargets="PrepareFiles">
-		<ItemGroup>
-			<UmbracoManifestFiles Include="$(BuildUmbDir)\**\*" Exclude="$(BuildUmbDir)\package.xml" />
-		</ItemGroup>
-		<ManifestUpdate
-			ManifestFile="$(BuildUmbDir)\package.xml"
-			WorkingDirectory="$(BuildUmbDir)"
-			MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
-			PackageName="$(PackageName)"
-			PackageVersion="$(ReleaseVersion)"
-			AuthorName="$(AuthorName)"
-			AuthorUrl="$(AuthorUrl)"
-			Readme="$(Readme)"
-			PackageLicenseName="$(PackageLicenseName)"
-			PackageLicenseUrl="$(PackageLicenseUrl)"
-			PackageUrl="$(ProjectUrl)"
-			Files="@(UmbracoManifestFiles)" />
-	</Target>-->
+	
 	<!-- MANIFEST FOR NUGET PACKAGE -->
 	<Target Name="ManifestNuGet" DependsOnTargets="PrepareFiles">
 		<ItemGroup>
@@ -119,7 +101,7 @@
 			Title="$(CoreNugetPackageName)"
 			Description="$(Readme)"
 			Summary="$(Readme)"
-			Version="$(ReleaseVersion)"
+			Version="$(Version)"
 			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
 			Authors="$(AuthorName)"
 			Owners="$(Owners)"
@@ -139,7 +121,7 @@
 			Title="$(NugetPackageName)"
 			Description="$(Readme)"
 			Summary="$(Readme)"
-			Version="$(ReleaseVersion)"
+			Version="$(Version)"
 			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
 			Authors="$(AuthorName)"
 			Owners="$(Owners)"
@@ -158,30 +140,26 @@
 			Namespace="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd"
 			XmlFileName="$(BuildNuGetDir)\package.nuspec"
 			XPath="/nu:package/nu:metadata/nu:dependencies/nu:dependency[@id='$(CorePackageId)']/@version"
-			Value="$(ReleaseVersion)" />
+			Value="$(Version)" />
 	</Target>
 	<!-- PACKAGE -->
 	<Target Name="Package" DependsOnTargets="ManifestNuGet">
 		<ItemGroup>
 			<UmbracoManifestFiles Include="$(BuildUmbDir)\**\*.*" />
 		</ItemGroup>
-		<!-- Umbraco 
-		<Package ManifestFile="$(BuildUmbDir)\package.xml"
-			WorkingDirectory="$(BuildUmbDir)"
-			OutputDirectory="$(ArtifactsDir)"
-			Files="@(UmbracoManifestFiles)" />-->
+	
 		<!-- NuGet Core -->
 		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\Tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.core.nuspec"
 			BasePath="$(BuildNuGetDir)"
-			Version="$(ReleaseVersion)"
+			Version="$(Version)"
 			OutputDirectory="$(ArtifactsDir)"
 			Symbols="false"  />
 		<!-- NuGet -->
 		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\Tools\NuGet.exe"
 			ManifestFile="$(BuildNuGetDir)\package.nuspec"
 			BasePath="$(BuildNuGetDir)"
-			Version="$(ReleaseVersion)"
+			Version="$(Version)"
 			OutputDirectory="$(ArtifactsDir)"
 			Symbols="false" />
 	</Target>

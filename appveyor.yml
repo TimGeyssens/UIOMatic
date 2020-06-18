@@ -1,6 +1,6 @@
 
 # version format
-version: 3.0.9
+version: 3.0.9.{build}
 
 # environment
 environment:
@@ -17,8 +17,8 @@ skip_tags: true
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
-  assembly_version: '{version}.{build}'
-  assembly_file_version: '{version}.{build}'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
 
 before_build:
   - ps: nuget restore src/UIOMatic.sln
