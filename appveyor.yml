@@ -1,8 +1,8 @@
 # version format
-majorversion: '3'
-minorversion: '0'
-patchversion: '9'
-version: '{majorversion}.{minorversion}.{patchversion}'
+majorversion: 3
+minorversion: 0
+patchversion: 9
+version: {majorversion}.{minorversion}.{patchversion}
 
 image: Visual Studio 2017
 
