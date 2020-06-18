@@ -408,8 +408,13 @@ namespace UIOMatic.Services
 
         private object CreateAndPopulateType(Type type, IDictionary<string, object> values)
         {
-            var json = JsonConvert.SerializeObject(values);
-            var obj = JsonConvert.DeserializeObject(json, type);
+            var settings =  new JsonSerializerSettings
+            {
+                ContractResolver = new UIOMatic.Serialization.UIOMaticSerializerContractResolver()
+            };
+
+            var json = JsonConvert.SerializeObject(values, settings);
+            var obj = JsonConvert.DeserializeObject(json, type,settings);
             return obj;
         }
 

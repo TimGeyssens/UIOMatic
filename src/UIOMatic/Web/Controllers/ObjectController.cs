@@ -11,6 +11,11 @@ using UIOMatic.Models;
 using Umbraco.Core;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
+using Newtonsoft.Json;
+using System.Text;
+using System.Web.Http.Results;
+using UIOMatic.Serialization;
+using Newtonsoft.Json.Serialization;
 
 namespace UIOMatic.Web.Controllers
 {
@@ -43,6 +48,8 @@ namespace UIOMatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
+           
+
             // Need a better approache than this as this is hacky and horrible
             // Probably want to switch to a HttpPost method and just pass a json body instead
             var filtersDict = (filters ?? "").Split('|')
@@ -50,7 +57,9 @@ namespace UIOMatic.Web.Controllers
                 .ToDictionary(x => x.First(), x => x.Last())
                 .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
                 .ToDictionary(x => x.Key, x => x.Value);
-             
+
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+
             return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
         [HttpGet]
@@ -66,6 +75,8 @@ namespace UIOMatic.Web.Controllers
                 .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
                 .ToDictionary(x => x.Key, x => x.Value);
 
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+
             return _service.GetPagedWithNodeId(t,nodeId,nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
 
@@ -74,6 +85,9 @@ namespace UIOMatic.Web.Controllers
         public UIOMaticTypeInfo GetTypeInfo(string typeAlias, bool includePropertyInfo)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+
             return _service.GetTypeInfo(t, includePropertyInfo);
         }
 
@@ -81,6 +95,9 @@ namespace UIOMatic.Web.Controllers
         public object GetById(string typeAlias, string id)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+
             return _service.GetById(t, id);
         }
 
@@ -88,12 +105,17 @@ namespace UIOMatic.Web.Controllers
         public object GetScaffold(string typeAlias)
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+
             return _service.GetScaffold(t);
         }
 
         [HttpGet]
         public object GetSummaryDashboardTypes()
         {
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+
             return Helper.GetUIOMaticTypes().Select(x => x.GetCustomAttribute<UIOMaticAttribute>(false))
                 .Where(x => x.ShowOnSummaryDashboard)
                 .Select(x => new
@@ -139,7 +161,11 @@ namespace UIOMatic.Web.Controllers
         public IEnumerable<ValidationResult> Validate(ObjectPostModel model) 
         {
             var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+
+            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+
             return _service.Validate(t, model.Value);
         }
+
     }
 }

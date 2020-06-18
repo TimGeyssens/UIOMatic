@@ -67,6 +67,7 @@
     <Compile Include="DeleteEventArgs.cs" />
     <Compile Include="QueryEventArgs.cs" />
     <Compile Include="Sections\SectionComposer.cs" />
+    <Compile Include="Serialization\UIOMaticSerializerContractResolver.cs" />
     <Compile Include="Services\UIOMaticObjectService.cs" />
     <Compile Include="Web\Controllers\FieldApiController.cs" />
     <Compile Include="Web\Controllers\ObjectController.cs" />
