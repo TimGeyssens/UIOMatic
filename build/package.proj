@@ -36,13 +36,12 @@
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
 	<PropertyGroup>
-		<VersionMajor Include="$(VersionNumber.Split('.')[0])" />
-		<VersionMinor Include="$(VersionNumber.Split('.')[1])" />
-		<VersionPatch Include="$(VersionNumber.Split('.')[2])" />
-		<Version Include="$(VersionMajor).$(VersionMinor).$(VersionPatch)" />
+		<VersionMajor>$(VersionNumber.Split('.')[0])</VersionMajor>
+		<VersionMinor>$(VersionNumber.Split('.')[1]<VersionMinor>
+		<VersionPatch>$(VersionNumber.Split('.')[2])</VersionPatch>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>$(Version)</Version>
+		<Version>$(VersionMajor).$(VersionMinor).$(VersionPatch)</Version>
 		<ProjectName>UIOMatic</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
