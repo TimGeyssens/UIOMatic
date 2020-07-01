@@ -20,14 +20,14 @@
                         $scope.property.config.foreignKeyColumn +
                         "|" +
                         filterValue,
-                        "").then(function(response) {
-                        $scope.items = response.items.map(function(itm) {
-                            return {
-                                value: itm[$scope.property.config.valueColumn],
-                                text: $interpolate($scope.property.config.textTemplate)(itm)
-                            }
+                        "").then(function (response) {
+                            $scope.items = response.items.map(function (itm) {
+                                return {
+                                    value: itm[$scope.property.config.valueColumn],
+                                    text: $interpolate($scope.property.config.textTemplate)(itm)
+                                }
+                            });
                         });
-                    });
                 } else {
                     $scope.items = [];
                 }
@@ -35,8 +35,8 @@
                 // All
                 uioMaticObjectResource
                     .getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(
-                        function(response) {
-                            $scope.items = response.map(function(itm) {
+                        function (response) {
+                            $scope.items = response.map(function (itm) {
                                 return {
                                     value: itm[$scope.property.config.valueColumn],
                                     text: $interpolate($scope.property.config.textTemplate)(itm)
