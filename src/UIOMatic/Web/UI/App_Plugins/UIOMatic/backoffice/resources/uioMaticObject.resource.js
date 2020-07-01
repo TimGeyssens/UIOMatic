@@ -1,6 +1,6 @@
 ﻿angular.module("umbraco.resources")
     .factory("uioMaticObjectResource", function ($http, umbRequestHelper) {
-        let ocBaseUrl = '/umbraco/backoffice/UIOMatic/object/';
+        let ocBaseUrl = Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl;
 	    return {
 	        getAll: function (type, sortColumn, sortOrder) {
 	            if (sortColumn == undefined)
