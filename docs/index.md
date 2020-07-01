@@ -72,6 +72,10 @@ The next additions to the class (attributes)
 
 will generate the following crud UI
 
+v8
+![](img/examplev8.png)
+
+v7
 ![](img/gettingstartedexample.png)
 
 
