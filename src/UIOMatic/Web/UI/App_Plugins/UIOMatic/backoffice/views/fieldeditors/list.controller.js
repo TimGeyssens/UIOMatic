@@ -1,7 +1,9 @@
 ﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.List",
     function ($scope, $location, uioMaticObjectResource, $routeParams) {
 
-        $scope.filterId = $routeParams.id.split("?")[0];
+        if ($routeParams.id.includes("?ta=")) {
+            $scope.filterId = $routeParams.id.split("?")[0];
+        }
         $scope.typeAlias = $scope.property.config.typeAlias;
         $scope.foreignKeyColumn = $scope.property.config.foreignKeyColumn;
 
