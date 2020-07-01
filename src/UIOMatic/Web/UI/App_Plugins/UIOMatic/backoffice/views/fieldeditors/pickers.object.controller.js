@@ -5,7 +5,7 @@
 
         $scope.openDialog = function () {
             editorService.open({
-                template: '/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.html',
+                view: '/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.html',
                 show: true,
                 callback: function (selectedIds) {
                     $scope.selectedIds = selectedIds;
