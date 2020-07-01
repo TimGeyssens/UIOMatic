@@ -12,6 +12,7 @@ UI-O-Matic can be installed from the [Nuget package repository](https://www.nuge
 co.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
 
 For Umbraco v7 use v2.latest of UI-O-Matic
+
 For Umbraco v8 use v3.latest of UI-O-Matic
 
 ![nuget install](img/nuget.png)
