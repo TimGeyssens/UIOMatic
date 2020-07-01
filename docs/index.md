@@ -1,6 +1,6 @@
 # ![ui-o-matic logo](img/uiomatic.png) #
 
-UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db table based on a [petapoco](http://www.toptensoftware.com/petapoco/) (the default ORM in Umbraco) poco.
+UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco v7 and v8 for a db table based on a [petapoco](http://www.toptensoftware.com/petapoco/) / [npoco](https://github.com/schotime/NPoco) (the default ORM in Umbraco) poco.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
 [![NuGet release](https://img.shields.io/nuget/v/Nibble.Umbraco.UIOMatic.svg)](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic)
@@ -10,6 +10,9 @@ UI-O-Matic allows you to auto generate an integrated crud UI in Umbraco for a db
 ## How can I install it? ##
 UI-O-Matic can be installed from the [Nuget package repository](https://www.nuget.org/packages/Nibble.Umbra
 co.UIOMatic/), or build manually from the [source-code](https://github.com/TimGeyssens/UIOMatic)
+
+For Umbraco v7 use v2.latest of UI-O-Matic
+For Umbraco v8 use v3.latest of UI-O-Matic
 
 ![nuget install](img/nuget.png)
 
@@ -26,7 +29,7 @@ If you have the following db table
     , [Picture] nvarchar(255) NOT NULL
     );
 
-And the following petapoco poco
+And the following petapoco/npoco poco
 
     [TableName("People")]
     public class Person
