@@ -49,7 +49,7 @@ This class
 
 Will generate the following UI
 
-![](docs/img/example.png?raw=true)
+![](docs/img/examplev8.png?raw=true)
 
 ## Documentation ##
 For the full documentation please go to [http://uiomatic.readthedocs.org/en/stable/](http://uiomatic.readthedocs.org/en/stable/)
