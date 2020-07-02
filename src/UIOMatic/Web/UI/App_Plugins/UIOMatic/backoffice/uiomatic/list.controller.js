@@ -47,7 +47,7 @@
             }).join("|");
         }
 
-        function fetchData() {
+        function fetchData(firstLoad) {
             
             $scope.loading = true;
             $scope.rows = 0;
@@ -64,6 +64,60 @@
                     $scope.totalItems = resp.totalItems;
                     $scope.loading = false;
                 });
+
+            if (firstLoad) {
+                loadState();
+            } else {
+                saveState();
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('uioMatic.ObjectListController.' + $scope.typeAlias, JSON.stringify({
+                itemsPerPage: $scope.itemsPerPage,
+                currentPage: $scope.currentPage,
+                searchTerm: $scope.searchTerm,
+                predicate: $scope.predicate,
+                reverse: $scope.reverse,
+                filtersStr: $scope.filtersStr,
+                initialFetch: $scope.initialFetch,
+                filterProperties: $scope.filterProperties.map((fp) => {
+                    return {
+                        key: fp.key,
+                        value: fp.value
+                    };
+                })
+            }));
+        }
+
+        function loadState() {
+            try {
+                var state = JSON.parse(localStorage.getItem('uioMatic.ObjectListController.' + $scope.typeAlias));
+                $scope.itemsPerPage = state.itemsPerPage;
+                $scope.currentPage = state.currentPage;
+                $scope.searchTerm = state.searchTerm;
+                $scope.searchFilter = state.searchTerm;
+                $scope.predicate = state.predicate;
+                $scope.reverse = state.reverse;
+                $scope.filtersStr = state.filtersStr;
+                $scope.initialFetch = state.initialFetch;
+
+                if (state.filterProperties) {
+                    state.filterProperties.forEach(function (savedFp) {
+
+                        var filter = $scope.filterProperties.find((fp) => {
+                            return fp.key === savedFp.key
+                        });
+
+                        if (filter) {
+                            filter.value = savedFp.value;
+                        }
+                    });
+                }
+            } catch (e) {
+                console.warn("ui-o-matic list state restore failed => " + e);
+              
+            }
         }
 
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
@@ -94,7 +148,7 @@
             // Sync the tree
             navigationService.syncTree({ tree: 'uiomatic', path: response.path, forceReload: false, activate: true });
 
-            fetchData();
+            fetchData(true);
 
             startFilterWatch();
         });
