@@ -53,6 +53,12 @@
             $scope.rows = 0;
             $scope.totalPages = 0;
 
+            if (firstLoad) {
+                loadState();
+            } else {
+                saveState();
+            }
+
             uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage,
                 $scope.initialFetch ? "" : $scope.predicate,
                 $scope.initialFetch ? "" : ($scope.reverse ? "desc" : "asc"),
@@ -65,11 +71,7 @@
                     $scope.loading = false;
                 });
 
-            if (firstLoad) {
-                loadState();
-            } else {
-                saveState();
-            }
+          
         }
 
         function saveState() {
