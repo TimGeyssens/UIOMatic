@@ -1,10 +1,9 @@
 # <img src="docs/img/uiomatic.png?raw=true" width="300"> #
 
 [![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
-[![Documentation Status](https://readthedocs.org/projects/uiomatic/badge/?version=stable)](http://uiomatic.readthedocs.org/en/stable/)
 [![NuGet release](https://img.shields.io/nuget/v/Nibble.Umbraco.UIOMatic.svg)](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic)
 [![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/developer-tools/ui-o-matic/)
-[![Chat on Gitter](https://img.shields.io/badge/gitter-join_chat-green.svg)](https://gitter.im/TimGeyssens/UIOMatic)
+
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [npoco ](<https://github.com/schotime/NPoco>)poco**
 
@@ -52,7 +51,7 @@ Will generate the following UI
 ![](docs/img/examplev8.png?raw=true)
 
 ## Documentation ##
-For the full documentation please go to [http://uiomatic.readthedocs.org/en/stable/](http://uiomatic.readthedocs.org/en/stable/)
+For the full documentation please go to [https://timgeyssens.gitbook.io/ui-o-matic/](https://timgeyssens.gitbook.io/ui-o-matic//)
 ## The Team ##
 
 * [Tim Geyssens](https://github.com/TimGeyssens)
