@@ -16,17 +16,18 @@ using System.Text;
 using System.Web.Http.Results;
 using UIOMatic.Serialization;
 using Newtonsoft.Json.Serialization;
+using UIOMatic.ContentApps;
 
 namespace UIOMatic.Web.Controllers
 {
     [PluginController("UIOMatic")]
     public class ObjectController : UmbracoAuthorizedJsonController
     {
-        private IUIOMaticObjectService _service;
+        private IUIOMaticObjectService _service;        
 
         public ObjectController()
         {
-            _service = UIOMaticObjectService.Instance;
+            _service = UIOMaticObjectService.Instance;            
         }
 
         [HttpGet]
