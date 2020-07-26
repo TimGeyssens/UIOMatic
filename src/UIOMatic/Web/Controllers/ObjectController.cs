@@ -23,11 +23,13 @@ namespace UIOMatic.Web.Controllers
     [PluginController("UIOMatic")]
     public class ObjectController : UmbracoAuthorizedJsonController
     {
-        private IUIOMaticObjectService _service;        
+        private IUIOMaticObjectService _service;
+        private readonly UiomaticContentAppFactoryCollection _contentAppsFactoryCollection;
 
-        public ObjectController()
+        public ObjectController(UiomaticContentAppFactoryCollection contentAppsFactoryCollection)
         {
-            _service = UIOMaticObjectService.Instance;            
+            _service = UIOMaticObjectService.Instance;
+            _contentAppsFactoryCollection = contentAppsFactoryCollection;
         }
 
         [HttpGet]
@@ -89,7 +91,10 @@ namespace UIOMatic.Web.Controllers
 
             Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
-            return _service.GetTypeInfo(t, includePropertyInfo);
+            var info = _service.GetTypeInfo(t, includePropertyInfo);
+            info.Apps = _contentAppsFactoryCollection.GetContentAppsFor(t);
+
+            return info;
         }
 
         [HttpGet]

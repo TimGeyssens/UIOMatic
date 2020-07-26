@@ -14,6 +14,7 @@ using Umbraco.Core.Persistence;
 using System.ComponentModel.DataAnnotations;
 using NPoco;
 using UIOMatic.ContentApps;
+using Umbraco.Core.Composing;
 
 namespace UIOMatic.Services
 {
@@ -22,12 +23,7 @@ namespace UIOMatic.Services
 
         
     {
-        private readonly UiomaticContentAppFactoryCollection _contentApps;
-
-        public NPocoObjectService(UiomaticContentAppFactoryCollection contentApps)
-        {
-            _contentApps = contentApps;
-        }
+    
 
         public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
         {
@@ -65,9 +61,7 @@ namespace UIOMatic.Services
         {
             var typeInfo = GetTypeInfo(type);
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
-
-            
+            var repo = Helper.GetRepository(attri, typeInfo);            
 
             return repo.Get(id);
         }
