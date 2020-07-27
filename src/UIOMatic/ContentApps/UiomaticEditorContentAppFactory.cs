@@ -14,7 +14,7 @@ namespace UIOMatic.ContentApps
                 Alias = "uiomaticContent",
                 Name = "Content",
                 Icon = Umbraco.Core.Constants.Icons.Content,
-                View = "/App_Plugins/UIOMatic/backoffice/uiomatic/edit2.html",
+                View = "/App_Plugins/UIOMatic/backoffice/apps/uiomaticContent.html",
                 Weight = Weight
             };
         }

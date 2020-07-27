@@ -1,11 +1,11 @@
-﻿var app = angular.module("umbraco");
-
-angular.module("umbraco").controller("uioMatic.ObjectEditController",
-    function ($scope, $routeParams, $location, $timeout, uioMaticObjectResource, notificationsService, navigationService) {
+﻿angular.module("umbraco").controller("uioMatic.ObjectEditController",
+    function ($scope, $routeParams, $location, $timeout, editorState, uioMaticObjectResource, notificationsService, navigationService) {
 
         $scope.loaded = false;
         $scope.editing = false;
         $scope.currentSection = $routeParams.section || 'uiomatic';
+        $scope.activeApp = null;
+
 
         var urlParts = $routeParams.id.split("?");
         var id = urlParts[0];
@@ -48,7 +48,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                 ? _.indexOf(_.pluck($scope.properties, "key"), $scope.type.nameFieldKey)
                 : -1;
 
-
+            editorState.set = response;
             var tabsArr = [];
 
             // Build items path
@@ -109,6 +109,53 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                 });
             }
         });
+
+        function initApps() {
+
+            // we need to check wether an app is present in the current data, if not we will present the default app.
+            var isAppPresent = false;
+
+            // on first init, we dont have any apps. but if we are re-initializing, we do, but ...
+            if ($scope.activeApp) {
+
+                _.forEach($scope.type.apps, function (app) {
+                    if (app.alias === $scope.activeApp.alias) {
+                        isAppPresent = true;
+                        $scope.appChanged(app);
+                    }
+                });
+
+                if (isAppPresent === false) {
+                    // active app does not exist anymore.
+                    $scope.activeApp = null;
+                }
+            }
+
+            // if we still dont have a app, lets show the first one:
+            if ($scope.activeApp === null && $scope.type.apps.length) {
+                $scope.appChanged($scope.type.apps[0]);
+            }
+        }
+
+
+        /**
+         * Call back when a content app changes
+         * @param {any} app
+         */
+        $scope.appChanged = function (activeApp) {
+
+            $scope.activeApp = activeApp;
+
+            _.forEach($scope.type.apps, function (app) {
+                app.active = false;
+                if (app.alias === $scope.activeApp.alias) {
+                    app.active = true;
+                }
+            });
+
+            $scope.$broadcast("editors.apps.appChanged", { app: activeApp });
+        };
+
 
         $scope.save = function (object) {
 
@@ -171,7 +218,11 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
             $location.url(url);
         };
 
+
         $scope.$on("valuesLoaded", function () {
+
+            initApps();
+
             $timeout(function () {
                 if ($scope.content && $scope.content.tabs.length > 1 && $scope.queryString["tab"]) {
                     $("a[href='#" + $scope.queryString["tab"] + "']").trigger("click");
@@ -192,6 +243,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                 }
             }
         };
+
+
 
 
     }).filter("removeProperty", function () {
