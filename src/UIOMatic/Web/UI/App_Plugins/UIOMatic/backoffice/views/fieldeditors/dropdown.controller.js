@@ -27,6 +27,7 @@
                                     text: $interpolate($scope.property.config.textTemplate)(itm)
                                 }
                             });
+                            $scope.trackedBy = $scope.property.config.foreignKeyValueAlias;
                         });
                 } else {
                     $scope.items = [];
@@ -42,6 +43,7 @@
                                     text: $interpolate($scope.property.config.textTemplate)(itm)
                                 }
                             });
+                            $scope.trackedBy = $scope.property.config.valueColumn;
                         });
             }
         }
