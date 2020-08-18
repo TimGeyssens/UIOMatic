@@ -1,5 +1,6 @@
 ﻿<div ng-controller="UIOMatic.FieldEditors.Dropdown">
-    <select ng-model="property.value" ng-options="item.value as item.text for item in items track by item[trackedBy]" ng-change="onChange()">
+    <select name="select" id="" ng-model="property.value">
         <option value="">---Please select---</option>
-    </select><br />
+        <option ng-repeat="item in items track by item.value" value="{{item.value}}">{{item.text}}</option>
+    </select>
 </div>
