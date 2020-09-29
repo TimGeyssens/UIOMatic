@@ -53,7 +53,7 @@
             $scope.rows = 0;
             $scope.totalPages = 0;
 
-            if (!firstLoad) {
+            if (firstLoad) {
                 loadState();
             } else {
                 saveState();
