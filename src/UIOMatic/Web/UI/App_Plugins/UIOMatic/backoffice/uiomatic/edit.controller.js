@@ -5,6 +5,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
         $scope.loaded = false;
         $scope.editing = false;
+        $scope.saveButtonState = "init";
         $scope.currentSection = $routeParams.section || 'uiomatic';
 
         var urlParts = $routeParams.id.split("?");
@@ -19,7 +20,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
             }
         }
 
-        // If we have a ta querystring, it must be an edit 
+        // If we have a ta querystring, it must be an edit
         // and the first part of the URL must be the ID
         var hasId = !!qs["ta"];
 
@@ -112,6 +113,8 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
 
         $scope.save = function (object) {
 
+            $scope.saveButtonState = "busy";
+
             angular.forEach($scope.properties, function (property) {
                 var key = property.key;
                 var value = $scope.queryString[property.columnName] || property.value;
@@ -126,6 +129,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                     if (resp.length > 0) {
                         angular.forEach(resp, function (error) {
                             notificationsService.error("Failed to create " + $scope.itemDisplayName, error.ErrorMessage);
+                            $scope.saveButtonState = "error";
                         });
                     } else {
                         uioMaticObjectResource.create($scope.typeAlias, object).then(function (response) {
@@ -138,6 +142,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                             };
                             $location.url(redirectUrl);
                             notificationsService.success("Success", $scope.itemDisplayName + " has been created");
+                            $scope.saveButtonState = "success";
                         });
                     }
 
@@ -146,6 +151,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                     if (resp.length > 0) {
                         angular.forEach(resp, function (error) {
                             notificationsService.error("Failed to update " + $scope.itemDisplayName, error.ErrorMessage);
+                            $scope.saveButtonState = "error";
                         });
                     } else {
                         uioMaticObjectResource.update($scope.typeAlias, object).then(function () {
@@ -156,6 +162,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                                 navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: true, activate: true });
                             }
                             notificationsService.success("Success", $scope.itemDisplayName + " has been saved");
+                            $scope.saveButtonState = "success";
                         });
                     }
 
