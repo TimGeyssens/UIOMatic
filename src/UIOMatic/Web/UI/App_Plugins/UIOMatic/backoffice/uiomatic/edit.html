@@ -86,12 +86,19 @@
                 </div>
 
                 <div class="btn-group" ng-hide="readOnly">
-                    <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="editing">
-                        <localize key="buttons_save">Save</localize>
-                    </button>
-                    <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="editing">
-                        Create
-                    </button>
+                    <umb-button type="submit"
+                                data-hotkey="ctrl+s"
+                                button-style="primary"
+                                state="saveButtonState"
+                                label-key="buttons_save"
+                                label="Save"
+                                ng-show="editing"></umb-button>
+                    <umb-button type="submit"
+                                data-hotkey="ctrl+s"
+                                button-style="primary"
+                                state="saveButtonState"
+                                label="Create"
+                                ng-hide="editing"></umb-button>
                 </div>
             </umb-editor-footer-content-right>
 
