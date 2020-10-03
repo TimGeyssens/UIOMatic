@@ -50,7 +50,8 @@
 
             editorState.set({                
                 qs,                
-                type: response
+                type: response,
+                id: $scope.id
             });
 
             var tabsArr = [];
