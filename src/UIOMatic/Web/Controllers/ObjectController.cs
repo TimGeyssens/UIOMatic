@@ -16,6 +16,7 @@ using System.Text;
 using System.Web.Http.Results;
 using UIOMatic.Serialization;
 using Newtonsoft.Json.Serialization;
+using UIOMatic.ContentApps;
 
 namespace UIOMatic.Web.Controllers
 {
@@ -23,10 +24,12 @@ namespace UIOMatic.Web.Controllers
     public class ObjectController : UmbracoAuthorizedJsonController
     {
         private IUIOMaticObjectService _service;
+        private readonly UiomaticContentAppFactoryCollection _contentAppsFactoryCollection;
 
-        public ObjectController()
+        public ObjectController(UiomaticContentAppFactoryCollection contentAppsFactoryCollection)
         {
             _service = UIOMaticObjectService.Instance;
+            _contentAppsFactoryCollection = contentAppsFactoryCollection;
         }
 
         [HttpGet]
@@ -88,7 +91,10 @@ namespace UIOMatic.Web.Controllers
 
             Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
-            return _service.GetTypeInfo(t, includePropertyInfo);
+            var info = _service.GetTypeInfo(t, includePropertyInfo);
+            info.Apps = _contentAppsFactoryCollection.GetContentAppsFor(t);
+
+            return info;
         }
 
         [HttpGet]

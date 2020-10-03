@@ -45,6 +45,10 @@
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ContentApps\ContentAppsComposer.cs" />
+    <Compile Include="ContentApps\IUiomaticContentAppFactory.cs" />
+    <Compile Include="ContentApps\UiomaticContentAppsFactoryCollection.cs" />
+    <Compile Include="ContentApps\UiomaticEditorContentAppFactory.cs" />
     <Compile Include="Data\AbstractUIOMaticRepository.cs" />
     <Compile Include="Data\DefaultUIOMaticRepository.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />
