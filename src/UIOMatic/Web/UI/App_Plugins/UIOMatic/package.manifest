@@ -196,6 +196,7 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/list.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/rte.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/map.controller.js',
+		'~/App_Plugins/UIOMatic/backoffice/views/fieldeditors/link.controller.js',
 
 		'~/App_Plugins/UIOMatic/backoffice/views/fieldfilters/dropdown.controller.js',
 

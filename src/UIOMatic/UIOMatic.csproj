@@ -90,6 +90,8 @@
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\datetimeoffset.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\date.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\label.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\link.controller.js" />
+    <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\link.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\pickers.object.controller.js" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldeditors\pickers.object.html" />
     <Content Include="Web\UI\App_Plugins\UIOMatic\backoffice\views\fieldviews\label.html" />
