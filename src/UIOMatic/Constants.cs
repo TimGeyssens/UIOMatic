@@ -31,6 +31,7 @@ namespace UIOMatic
             public const string Rte = "rte";
             public const string Textarea = "textarea";
             public const string Textfield = "textfield";
+            public const string Link = "link";
 
             public static readonly IReadOnlyDictionary<string, string> ViewPaths = new Dictionary<string, string>
             {
@@ -55,7 +56,8 @@ namespace UIOMatic
                 { "radiobuttonlist", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/radiobuttonlist.html"},
                 { "rte", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/rte.html"},
                 { "textarea", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/textarea.html"},
-                { "textfield", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/textfield.html"}
+                { "textfield", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/textfield.html"},
+                { "link", "~/app_plugins/uiomatic/backoffice/views/fieldeditors/link.html"}
             };
         }
 
