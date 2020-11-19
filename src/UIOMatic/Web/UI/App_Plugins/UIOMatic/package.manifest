@@ -94,12 +94,7 @@
 						label: "Text template",
 						description: "Enter the text template, ie, '{{FirstName}} {{LastName}}'",
 						key: "textTemplate",
-						view: "requiredfield",
-						validation: [
-							{
-								type: "Required" 
-							}                        
-						]
+						view: "textstring"
 					}
 				]
 			}
@@ -130,12 +125,8 @@
                     label: "Text template",
 					description: "Enter the text template, ie, '{{FirstName}} {{LastName}}'",
 					key: "textTemplate",
-                    view: "requiredfield",
-                    validation: [
-                        {
-                            type: "Required" 
-                        }                        
-                    ]
+                    view: "textstring"
+                   
                 },
 				{
                     label: "Column to sort on",
