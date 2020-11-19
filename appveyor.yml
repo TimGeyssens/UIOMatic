@@ -1,12 +1,12 @@
 
 # version format
-version: 3.1.0.{build}
+version: 3.1.1.{build}
 
 # environment
 environment:
   majorversion: 3
   minorversion: 1
-  patchversion: 0
+  patchversion: 1
 
 image: Visual Studio 2017
 
