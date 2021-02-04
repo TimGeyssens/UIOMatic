@@ -9,8 +9,8 @@ Also excluding the right to copy, modify, merge, publish, distribute,
 sublicense, and/or sell copies of the Software.
 
 Companies that have paying partnerships with Umbraco HQ can ony use/deal in the 
-Software if a license fee is agreed upon. If exeptions are found, a 100% Umbraco
-Cold Partnership fee will be charged immediately.
+Software if a license fee is agreed upon. If exceptions are found, a 100% Umbraco
+Gold Partnership fee will be charged immediately.
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
