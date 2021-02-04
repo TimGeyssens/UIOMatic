@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
 [![NuGet release](https://img.shields.io/nuget/v/Nibble.Umbraco.UIOMatic.svg)](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic)
 
-Please be aware of the [License Model](](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md) before using this package since additional charges might apply if you are an Umbraco Gold Partner.
+Please be aware of the [License Model](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md) before using this package since additional charges might apply if you are an Umbraco Gold Partner.
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [npoco ](<https://github.com/schotime/NPoco>)poco**
 
