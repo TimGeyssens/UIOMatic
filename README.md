@@ -50,6 +50,9 @@ Will generate the following UI
 
 ![](docs/img/examplev8.png?raw=true)
 
+## License ##
+Important before using please make sure you read the license: since charges might apply [AholeCloud](License.MD)
+
 ## Documentation ##
 For the full documentation please go to [https://timgeyssens.gitbook.io/ui-o-matic/](https://timgeyssens.gitbook.io/ui-o-matic//)
 ## The Team ##
