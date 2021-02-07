@@ -58,5 +58,4 @@ For the full documentation please go to [https://timgeyssens.gitbook.io/ui-o-mat
 ## The Team ##
 
 * [Tim Geyssens](https://github.com/TimGeyssens)
-* [Matt Brailsford](https://github.com/mattbrailsford)
 * [Other Contributors](https://github.com/TimGeyssens/UIOMatic/graphs/contributors)
