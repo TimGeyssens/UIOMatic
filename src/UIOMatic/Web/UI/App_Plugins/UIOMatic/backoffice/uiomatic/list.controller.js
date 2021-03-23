@@ -161,6 +161,7 @@
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
             $scope.currentPage = 1;
+            saveState();
             fetchData();
         };
 
@@ -215,6 +216,7 @@
         $scope.prevPage = function () {
             if ($scope.currentPage > 1) {
                 $scope.currentPage--;
+                saveState();
                 fetchData();
             }
         };
@@ -222,12 +224,14 @@
         $scope.nextPage = function () {
             if ($scope.currentPage < $scope.totalPages) {
                 $scope.currentPage++;
+                saveState();
                 fetchData();
             }
         };
 
         $scope.setPage = function (pageNumber) {
             $scope.currentPage = pageNumber;
+            saveState();
             fetchData();
         };
 
@@ -238,6 +242,7 @@
             searchTimeout = $timeout(function () {
                 $scope.searchTerm = searchFilter;
                 $scope.currentPage = 1;
+                saveState();
                 fetchData();
                 searchTimeout = null;
             }, 1000);

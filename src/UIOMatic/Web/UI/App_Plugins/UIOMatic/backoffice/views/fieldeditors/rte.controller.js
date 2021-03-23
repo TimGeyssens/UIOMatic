@@ -18,9 +18,9 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
         };
 
         $scope.$watch('property', function () {
-            if ($scope.property != undefined) {
+            if ($scope.property != undefined && $scope.properties != undefined) {
                 var result = $.grep($scope.properties, function (e) { return e.key === rowProps.key; });
-                if (result != null && result.length > 0) {
+                if (result != null && result != undefined && result.length > 0) {
                     result[0].value = $scope.property.value;
                 }
             }
@@ -28,10 +28,11 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
     }
 
     if ($scope.valuesLoaded) {
-            init();
+        init();
     } else {
-       $scope.$on('valuesLoaded', function () {
-           init();
+        $scope.$on('valuesLoaded', function () {
+            init();
+            $scope.valuesLoaded = true;
         });
     }
 });
