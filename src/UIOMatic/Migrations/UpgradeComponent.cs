@@ -46,13 +46,17 @@ namespace UIOMatic.Migrations
             pingplan.From(string.Empty)
                 .To<InstancePing>("state-1");
 
-        
 
-            var upgrader = new Upgrader(plan);
-            upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+
+            try
+            {
+                var upgrader = new Upgrader(plan);
+                upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+            }
+            catch { }
 
             var upgraderping = new Upgrader(pingplan);
-            upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+            upgraderping.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
 
 
         }
