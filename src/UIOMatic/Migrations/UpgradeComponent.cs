@@ -42,6 +42,9 @@ namespace UIOMatic.Migrations
             plan.From(string.Empty)
                 .To<AddAllowedSectionToAdmins>("state-3.0.0");
 
+            plan.From("state-3.0.0")
+                .To<InstancePing>("state-3.1.3");
+
             var upgrader = new Upgrader(plan);
             upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
 
