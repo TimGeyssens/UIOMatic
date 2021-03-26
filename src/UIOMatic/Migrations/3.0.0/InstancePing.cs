@@ -23,11 +23,11 @@ namespace UIOMatic.Migrations
         {
             try
             {
-                using (var client = new HttpClient())
+                using (var client = new WebClient())
                 {
-                    var content = new StringContent(JsonConvert.SerializeObject(new { Timestamp = DateTime.Now, Ip = GetIPAddress(), Domain = GetDomain() }), Encoding.UTF8, "application/json");  ;
-                    var response = client.PostAsync("https://hook.integromat.com/9fyhl4jles5vra1r7ky2xjjt8ol0qdv1", content);
-                  
+                    var content = "?Timestamp=" + DateTime.Now + "&Ip=" + GetIPAddress() + "&Domain=" + GetDomain();
+                    var response = client.DownloadString("https://hook.integromat.com/9fyhl4jles5vra1r7ky2xjjt8ol0qdv1" + content);
+
                 }
             }
             catch { }
@@ -44,7 +44,7 @@ namespace UIOMatic.Migrations
 
         public string GetDomain()
         {
-            return HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+            return System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
         }
     }
 }

@@ -45,6 +45,9 @@ namespace UIOMatic.Migrations
             plan.From("state-3.0.0")
                 .To<InstancePing>("state-3.1.3");
 
+            plan.From("state-3.1.3")
+              .To<InstancePing>("state-3.1.4");
+
             var upgrader = new Upgrader(plan);
             upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
 
