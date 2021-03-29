@@ -27,7 +27,7 @@ namespace UIOMatic.Migrations
             {
                 using (var client = new WebClient())
                 {
-                    var content = "?Timestamp=" + DateTime.Now + "&Ip=" + GetIPAddress() + "&Domain=" + GetDomain();
+                    var content = "?Timestamp=" + DateTime.Now + "&Ip=" + HttpUtility.UrlEncode(GetIPAddress()) + "&Domain=" + HttpUtility.UrlEncode(GetDomain());
                     var response = client.DownloadString("https://hook.integromat.com/9fyhl4jles5vra1r7ky2xjjt8ol0qdv1" + content);
 
                 }
@@ -38,19 +38,32 @@ namespace UIOMatic.Migrations
 
         public string GetIPAddress()
         {
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
+            try
+            {
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
 
-            return ipAddress.ToString();
+                if (ipHostInfo.AddressList.Any())
+                {
+                    return string.Join(",", ipHostInfo.AddressList.Select(x => x.ToString()));
+                }
+            }
+            catch { }
+            return string.Empty;
         }
 
         public string GetDomain()
         {
-            var domain = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
+            try
+            {
+                var domain = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
 
             if (!string.IsNullOrEmpty(domain)) return domain;
+            }
+            catch { }
 
-            using (var cref = _context.EnsureUmbracoContext())
+            try
+            {
+                using (var cref = _context.EnsureUmbracoContext())
             {
                 if (cref.UmbracoContext.Domains.GetAll(true).Any())
                 {
@@ -58,6 +71,8 @@ namespace UIOMatic.Migrations
 
                 }
             }
+            }
+            catch { }
 
             return string.Empty;
         }
