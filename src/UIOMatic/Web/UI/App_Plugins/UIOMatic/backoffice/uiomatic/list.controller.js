@@ -1,5 +1,13 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectListController",
-    function ($scope, $routeParams, $location, $timeout, uioMaticUtilityService, uioMaticObjectResource, navigationService, editorService) {
+    function ($scope, $routeParams, $location, $timeout, uioMaticUtilityService, uioMaticObjectResource, navigationService, editorService, localizationService) {
+
+        var localizations = {
+            confirm: 'Are you sure you want to delete'
+        }
+
+        localizationService.localizeMany(["list_confirm"]).then(function (data) {
+            localizations.confirm = data[0];
+        });
 
         var searchTimeout;
 
@@ -169,7 +177,7 @@
         }
 
         $scope.delete = function (object) {
-            if (confirm("Are you sure you want to delete " + $scope.selectedIds.length + " object" + ($scope.selectedIds.length > 1 ? "s" : "") + "?")) {
+            if (confirm(localizations.confirm + $scope.selectedIds.length + " object" + ($scope.selectedIds.length > 1 ? "s" : "") + "?")) {
                 $scope.actionInProgress = true;
                 var keyPropName = $scope.primaryKeyColumnName;
                 uioMaticObjectResource.deleteByIds($scope.typeAlias, $scope.selectedIds).then(function () {
