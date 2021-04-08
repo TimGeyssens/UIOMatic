@@ -94,12 +94,7 @@
 						label: "Text template",
 						description: "Enter the text template, ie, '{{FirstName}} {{LastName}}'",
 						key: "textTemplate",
-						view: "requiredfield",
-						validation: [
-							{
-								type: "Required" 
-							}                        
-						]
+						view: "textstring"
 					}
 				]
 			}
@@ -130,12 +125,8 @@
                     label: "Text template",
 					description: "Enter the text template, ie, '{{FirstName}} {{LastName}}'",
 					key: "textTemplate",
-                    view: "requiredfield",
-                    validation: [
-                        {
-                            type: "Required" 
-                        }                        
-                    ]
+                    view: "textstring"
+                   
                 },
 				{
                     label: "Column to sort on",
@@ -209,7 +200,9 @@
 		'~/App_Plugins/UIOMatic/backoffice/views/propertyeditors/pickers.column.controller.js',
 		'~/App_Plugins/UIOMatic/backoffice/views/dialogs/objectsearcher.controller.js',
 			
-		'~/App_Plugins/UIOMatic/backoffice/views/dashboards/summarydashboard.controller.js',		
+		'~/App_Plugins/UIOMatic/backoffice/views/dashboards/summarydashboard.controller.js',	
+		
+		'~/App_Plugins/UIOMatic/backoffice/apps/uiomaticContent.controller.js'
     ],
     css: [
 		'~/App_Plugins/UIOMatic/backoffice/assets/css/uiomatic.css',

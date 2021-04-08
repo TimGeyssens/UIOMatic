@@ -21,16 +21,26 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <umb-editor-navigation data-element="editor-sub-views"
+                                               navigation="type.apps"
+                                               on-select="selectNavigationItem(item)">
+                        </umb-editor-navigation>
+
+                    </div>
                 </div>
+
             </div>
         </div>
+
         <div ng-if="type.nameFieldIndex == -1">
 
             <umb-editor-header name="headerCaption"
                                name-locked="headerCaption"
                                hide-icon="true"
                                hide-description="true"
-                               hide-alias="true">
+                               hide-alias="true"
+                               navigation="type.apps">
             </umb-editor-header>
 
 
@@ -41,39 +51,13 @@
         <!--</umb-header>-->
 
         <umb-editor-container>
-            <div class="tab-content form-horizontal">
-                <div ng-if="content">
-                    <ng-form name="tabbedContentForm">
-                        <div class="umb-group-panel" data-app-anchor="{{group.id}}" data-element="group-{{group.id}}" ng-repeat="group in content.tabs track by group.label">
-
-                            <div class="umb-group-panel__header">
-                                <div id="group-{{group.id}}">{{ group.label }}</div>
-                            </div>
-
-                            <div class="umb-group-panel__content">
-                                <div class="umb-property" ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: group.label}">
-                                    <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
-                                        <div ng-include="property.view"></div>
-                                    </umb-control-group>
-                                </div>
-                            </div>
-
-                        </div>
-                    </ng-form>
-                </div>
-
-                <div class="umb-group-panel" ng-if="!content">
-                    <div class="umb-group-panel__content">
-                        <div class="umb-property" ng-repeat="property in properties | removeProperty:type.nameFieldKey">
-                            <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
-                                <div ng-include="property.view"></div>
-                            </umb-control-group>
-                        </div>
-                    </div>
-                </div>
 
 
-            </div>
+            <umb-editor-sub-views sub-views="type.apps"
+                                  model="type">
+            </umb-editor-sub-views>
+
+       
         </umb-editor-container>
 
         <umb-editor-footer>
@@ -86,12 +70,19 @@
                 </div>
 
                 <div class="btn-group" ng-hide="readOnly">
-                    <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-show="editing">
-                        <localize key="buttons_save">Save</localize>
-                    </button>
-                    <button type="submit" data-hotkey="ctrl+s" class="btn btn-success" ng-hide="editing">
-                        Create
-                    </button>
+                    <umb-button type="submit"
+                                data-hotkey="ctrl+s"
+                                button-style="primary"
+                                state="saveButtonState"
+                                label-key="buttons_save"
+                                label="Save"
+                                ng-show="editing"></umb-button>
+                    <umb-button type="submit"
+                                data-hotkey="ctrl+s"
+                                button-style="primary"
+                                state="saveButtonState"
+                                label="Create"
+                                ng-hide="editing"></umb-button>
                 </div>
             </umb-editor-footer-content-right>
 

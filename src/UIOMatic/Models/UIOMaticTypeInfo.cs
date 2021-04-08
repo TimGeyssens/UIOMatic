@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UIOMatic.Enums;
+using Umbraco.Core.Models.ContentEditing;
 
 namespace UIOMatic.Models
 {
@@ -74,6 +76,9 @@ namespace UIOMatic.Models
 
         [JsonProperty("sortOrder")]
         public string SortOrder { get; set; }
+
+        [JsonProperty("apps")]
+        public IEnumerable<ContentApp> Apps { get; set; }
 
     }
 }

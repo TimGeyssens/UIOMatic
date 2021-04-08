@@ -2,8 +2,8 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
 [![NuGet release](https://img.shields.io/nuget/v/Nibble.Umbraco.UIOMatic.svg)](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic)
-[![Our Umbraco project page](https://img.shields.io/badge/our-umbraco-orange.svg)](https://our.umbraco.org/projects/developer-tools/ui-o-matic/)
 
+Please be aware of the [License Model](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md) before using this package since additional charges might apply if you are an Umbraco Gold Partner. And it is prohibited to use the Software on the Cloud offering of Umbraco.
 
 **Auto generate an integrated crud UI in Umbraco for a db table based on a [npoco ](<https://github.com/schotime/NPoco>)poco**
 
@@ -50,10 +50,12 @@ Will generate the following UI
 
 ![](docs/img/examplev8.png?raw=true)
 
+## License ##
+Important before using please make sure you read the license: since charges might apply [AholeCloud](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md)
+
 ## Documentation ##
 For the full documentation please go to [https://timgeyssens.gitbook.io/ui-o-matic/](https://timgeyssens.gitbook.io/ui-o-matic//)
 ## The Team ##
 
 * [Tim Geyssens](https://github.com/TimGeyssens)
-* [Matt Brailsford](https://github.com/mattbrailsford)
 * [Other Contributors](https://github.com/TimGeyssens/UIOMatic/graphs/contributors)

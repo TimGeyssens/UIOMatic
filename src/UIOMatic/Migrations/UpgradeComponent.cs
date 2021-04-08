@@ -38,12 +38,30 @@ namespace UIOMatic.Migrations
         }
         public void Initialize()
         {
-            var plan = new MigrationPlan("UIOMatic");
-            plan.From(string.Empty)
-                .To<AddAllowedSectionToAdmins>("state-3.0.0");
 
-            var upgrader = new Upgrader(plan);
-            upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+
+
+
+            var pingplan = new MigrationPlan("UIOMaticPing");
+            pingplan.From(string.Empty)
+                .To<InstancePing>("state-1");
+
+            var upgraderping = new Upgrader(pingplan);
+            upgraderping.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+
+            try
+            {
+                var plan = new MigrationPlan("UIOMatic");
+                plan.From(string.Empty)
+                    .To<AddAllowedSectionToAdmins>("state-3.0.0");
+
+                var upgrader = new Upgrader(plan);
+                upgrader.Execute(_scopeProvider, _migrationBuilder, _keyValueService, _logger);
+            }
+            catch { }
+
+           
+
 
         }
 

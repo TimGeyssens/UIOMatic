@@ -1,12 +1,12 @@
 
 # version format
-version: 3.0.15.{build}
+version: 3.1.8.{build}
 
 # environment
 environment:
   majorversion: 3
-  minorversion: 0
-  patchversion: 15
+  minorversion: 1
+  patchversion: 8
 
 image: Visual Studio 2017
 
@@ -33,5 +33,5 @@ deploy:
   provider: NuGet
   server:
   api_key:
-    secure: cRKDqHqagUzMgXLZ971fBXwpacf44O7jsIk7hfeLNo75kShTMknWjQfWLGxgKIPt
+    secure: 4jHyrS2m4z87rUk/DfcaiPIx6GexMZMAK4VY12ZWyP0X2REahhSExcuUEpaqO8ya
   artifact: /.*\.nupkg/

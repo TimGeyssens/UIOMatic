@@ -1,7 +1,5 @@
-﻿var app = angular.module("umbraco");
-
-angular.module("umbraco").controller("uioMatic.ObjectEditController",
-    function ($scope, $routeParams, $location, $timeout, uioMaticObjectResource, notificationsService, navigationService, localizationService) {
+﻿angular.module("umbraco").controller("uioMatic.ObjectEditController",
+    function ($scope, $routeParams, $location, $timeout, editorState, uioMaticObjectResource, notificationsService, navigationService, localizationService) {
 
         var localizations = {
             failedcreate: 'Failed to create',
@@ -69,10 +67,10 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
             $scope.properties = response.editableProperties;
             $scope.type.nameFieldIndex = $scope.type.nameFieldKey.length > 0
                 ? _.indexOf(_.pluck($scope.properties, "key"), $scope.type.nameFieldKey)
-                : -1;
+                : -1;            
 
-            editorState.set({
-                qs,
+            editorState.set({                
+                qs,                
                 type: response,
                 id: $scope.id
             });
@@ -89,7 +87,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                 navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: false, activate: true });
             }
 
-
+          
             if (!hasId) {
                 uioMaticObjectResource.getScaffold($scope.typeAlias).then(function (response) {
                     $scope.object = response;
@@ -158,7 +156,7 @@ angular.module("umbraco").controller("uioMatic.ObjectEditController",
                 }
             });
 
-            $scope.$broadcast("editors.apps.appChanged", { app: activeApp });
+            $scope.$broadcast("editors.apps.appChanged", { app: activeApp });            
         };
 
 

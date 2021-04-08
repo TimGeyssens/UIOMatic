@@ -61,10 +61,11 @@
             $scope.rows = 0;
             $scope.totalPages = 0;
 
-            if (!firstLoad) {
-                loadState();
-            } else {
+            if (firstLoad) {
                 saveState();
+
+            } else {
+                loadState();
             }
 
             uioMaticObjectResource.getPaged($scope.typeAlias, $scope.itemsPerPage, $scope.currentPage,

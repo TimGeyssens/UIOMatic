@@ -45,6 +45,10 @@
     <Compile Include="Attributes\UIOMaticFieldAttribute.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ContentApps\ContentAppsComposer.cs" />
+    <Compile Include="ContentApps\IUiomaticContentAppFactory.cs" />
+    <Compile Include="ContentApps\UiomaticContentAppsFactoryCollection.cs" />
+    <Compile Include="ContentApps\UiomaticEditorContentAppFactory.cs" />
     <Compile Include="Data\AbstractUIOMaticRepository.cs" />
     <Compile Include="Data\DefaultUIOMaticRepository.cs" />
     <Compile Include="Enums\UIOMaticRenderType.cs" />
@@ -57,6 +61,7 @@
     <Compile Include="Interfaces\IUIOMaticObjectService.cs" />
     <Compile Include="Interfaces\IUIOMaticRepository.cs" />
     <Compile Include="Migrations\3.0.0\AddAllowedSectionToAdmins.cs" />
+    <Compile Include="Migrations\3.0.0\InstancePing.cs" />
     <Compile Include="Migrations\UpgradeComponent.cs" />
     <Compile Include="Models\UIOMaticActionInfo.cs" />
     <Compile Include="Models\UIOMaticPagedResult.cs" />
