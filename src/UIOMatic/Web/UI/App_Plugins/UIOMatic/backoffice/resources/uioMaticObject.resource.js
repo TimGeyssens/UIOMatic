@@ -1,6 +1,53 @@
 ﻿angular.module("umbraco.resources")
-    .factory("uioMaticObjectResource", function ($http, umbRequestHelper) {
-        let ocBaseUrl = Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl;
+	.factory("uioMaticObjectResource", function ($http, umbRequestHelper, localizationService) {
+		let ocBaseUrl = Umbraco.Sys.ServerVariables.uioMatic.ocBaseUrl;
+
+		var localizations = {
+			failedall: 'Failed to get all',
+			failedfilter: 'Failed to retrieve filter lookups',
+			failedpaged: 'Failed to get paged',
+			failedprops: 'Failed to get all properties',
+			failedbyid: 'Failed to get by id',
+			failedscaffold: 'Failed to get scaffold',
+			failedtypeinfo: 'Failed to get type info',
+			failedcreate: 'Failed to create entity',
+			failedupdate: 'Failed to update entity',
+			faileddelete: 'Failed to delete',
+			failedvalidate: 'Failed to validate',
+			failedsummary: 'Failed to get summary dashboard types',
+			failedtotalcount: 'Failed to get total record count'
+		}
+
+		localizationService.localizeMany([
+			"resource_failedall",
+			"resource_failedfilter",
+			"resource_failedpaged",
+			"resource_failedprops",
+			"resource_failedbyid",
+			"resource_failedscaffold",
+			"resource_failedtypeinfo",
+			"resource_failedcreate",
+			"resource_failedupdate",
+			"resource_faileddelete",
+			"resource_failedvalidate",
+			"resource_failedsummary",
+			"resource_failedtotalcount"
+		]).then(function (data) {
+			localizations.failedall = data[0];
+			localizations.failedfilter = data[1];
+			localizations.failedpaged = data[2];
+			localizations.failedprops = data[3];
+			localizations.failedbyid = data[4];
+			localizations.failedscaffold = data[5];
+			localizations.failedtypeinfo = data[6];
+			localizations.failedcreate = data[7];
+			localizations.failedupdate = data[8];
+			localizations.faileddelete = data[9];
+			localizations.failedvalidate = data[10];
+			localizations.failedsummary = data[11];
+			localizations.failedtotalcount = data[12];
+		});
+
 	    return {
 	        getAll: function (type, sortColumn, sortOrder) {
 	            if (sortColumn == undefined)
@@ -9,7 +56,7 @@
 	                sortOrder = "";
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetAll?typeAlias=" + type + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder),
-                    'Failed to get all'
+					localizations.failedall
                 );
 	        },
 	        getFilterLookup: function (type, keyPropertyName, valuePropertyName) {
@@ -19,7 +66,7 @@
 	                valuePropertyName = "";
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetFilterLookup?typeAlias=" + type + "&keyPropertyName=" + keyPropertyName + "&valuePropertyName=" + valuePropertyName),
-                    'Failed to retrieve filter lookups'
+					localizations.failedfilter
                 );
 	        },
 	        getPaged: function(type, itemsPerPage, pageNumber, sortColumn, sortOrder, filters, searchTerm) {
@@ -31,7 +78,7 @@
 	                filters = "";
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetPaged?typeAlias=" + type + "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + encodeURIComponent(searchTerm)),
-                    'Failed to get paged'
+					localizations.failedpaged
                 );
 	        },
 	        getPagedWithNodeId: function(type,nodeId, nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filters, searchTerm) {
@@ -43,31 +90,31 @@
 	                filters = "";
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetPagedWithNodeId?typeAlias=" + type + "&nodeId="+nodeId+ "&nodeIdField="+nodeIdField+ "&itemsPerPage=" + itemsPerPage + "&pageNumber=" + pageNumber + "&sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&filters=" + filters + "&searchTerm=" + searchTerm),
-                    'Failed to get paged'
+					localizations.failedpaged
                 );
 	        },
 	        getAllProperties: function (type) {
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetAllProperties?typeAlias=" + type),
-                    'Failed to get all properties'
+					localizations.failedprops
                 );
 	        },
 	        getById: function (type, id) {
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetById?typeAlias=" + type + "&id=" + id),
-                    'Failed to get by id'
+					localizations.failedbyid
                 );
 	        },
 	        getScaffold: function (type) {
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetScaffold?typeAlias=" + type),
-                    'Failed to get scaffold'
+					localizations.failedscaffold
                 );
 	        },
 	        getTypeInfo: function(type, includePropertyInfo) {
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetTypeInfo?typeAlias=" + type + "&includePropertyInfo=" + includePropertyInfo),
-                    'Failed to get type info'
+					localizations.failedtypeinfo
                 );
 	        },
 	        create: function (type, object) {
@@ -77,7 +124,7 @@
 	            };
 	            return umbRequestHelper.resourcePromise(
                     $http.post(ocBaseUrl + "Create", angular.toJson(item)),
-                    'Failed to create entity'
+					localizations.failedcreate
                 );
 	        },
 	        update: function (type, object) {
@@ -87,13 +134,13 @@
 	            };
 	            return umbRequestHelper.resourcePromise(
                     $http.post(ocBaseUrl + "Update", angular.toJson(item)),
-                    'Failed to update entity'
+					localizations.failedupdate
                 );
 	        },
 	        deleteByIds: function (type, idsArr) {
 	            return umbRequestHelper.resourcePromise(
                     $http.delete(ocBaseUrl + "DeleteByIds?typeAlias=" + type + "&ids=" + idsArr.join(',')),
-                    'Failed to delete'
+					localizations.faileddelete
                 );
 	        },
 	        validate: function (type, object) {
@@ -103,19 +150,19 @@
 	            };
                 return umbRequestHelper.resourcePromise(
                     $http.post(ocBaseUrl + "Validate", angular.toJson(item)),
-                    'Failed to validate'
+					localizations.failedvalidate
                 );
 	        },
 	        getSummaryDashboardTypes: function () {
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetSummaryDashboardTypes"),
-                    'Failed to get summary dashboard types'
+					localization.failedsummary
                 );
 	        },
 	        getTotalRecordCount: function (type) {
 	            return umbRequestHelper.resourcePromise(
-                    $http.get(ocBaseUrl + "GetTotalRecordCount?typeAlias=" + type),
-                    'Failed to get total record count'
+					$http.get(ocBaseUrl + "GetTotalRecordCount?typeAlias=" + type),
+					localization.failedtotalcount
                 );
 	        }
 	    };

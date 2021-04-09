@@ -6,4 +6,34 @@
   <area alias="treeHeaders">
     <key alias="uiomatic">UI-O-Matic</key>
   </area>
+  <area alias="edit">
+    <key alias="failedcreate">Failed to create</key>
+    <key alias="failedupdate">Failed to update</key>
+    <key alias="success">Success</key>
+    <key alias="created">has been created</key>
+    <key alias="saved">has been saved</key>
+    <key alias="update">Update</key>
+    <key alias="create">Create</key>
+  </area>
+  <area alias="list">
+    <key alias="confirm">Are you sure you want to delete</key>
+  </area>
+  <area alias="resource">
+    <key alias="failed">Failed to get all users</key>
+    <key alias="failedall">Failed to get all</key>
+    <key alias="failedfilter">Failed to retrieve filter lookups</key>
+    <key alias="failedpaged">Failed to get paged</key>
+    <key alias="failedprops">Failed to get all properties</key>
+    <key alias="failedbyid">Failed to get by id</key>
+    <key alias="failedscaffold">Failed to get scaffold</key>
+    <key alias="failedtypeinfo">Failed to get type info</key>
+    <key alias="failedcreate">Failed to create entity</key>
+    <key alias="failedupdate">Failed to update entity</key>
+    <key alias="faileddelete">Failed to delete</key>
+    <key alias="failedvalidate">Failed to validate</key>
+    <key alias="failedsummary">Failed to get summary dashboard types</key>
+    <key alias="failedtotalcount">Failed to get total record count</key>
+    <key alias="failedtypes">Failed to get all types</key>
+    <key alias="failedcolumns">Failed to get all columns</key>
+  </area>
 </language>

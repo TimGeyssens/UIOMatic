@@ -1,5 +1,25 @@
 ﻿angular.module("umbraco").controller("uioMatic.ObjectEditController",
-    function ($scope, $routeParams, $location, $timeout, editorState, uioMaticObjectResource, notificationsService, navigationService) {
+    function ($scope, $routeParams, $location, $timeout, editorState, uioMaticObjectResource, notificationsService, navigationService, localizationService) {
+
+        var localizations = {
+            failedcreate: 'Failed to create',
+            failedupdate: 'Failed to update',
+            success: 'Success',
+            created: 'has been created',
+            saved: 'has been saved',
+            update: 'Update',
+            create: 'Create'
+        }
+
+        localizationService.localizeMany(["edit_failedcreate", "edit_failedupdate", "edit_success", "edit_created", "edit_saved", "edit_update", "edit_create"]).then(function (data) {
+            localizations.failedcreate = data[0];
+            localizations.failedupdate = data[1];
+            localizations.success = data[2];
+            localizations.created = data[3];
+            localizations.saved = data[4];
+            localizations.update = data[5];
+            localizations.create = data[6];
+        });
 
         $scope.loaded = false;
         $scope.editing = false;
@@ -41,7 +61,7 @@
         uioMaticObjectResource.getTypeInfo($scope.typeAlias, true).then(function (response) {
             $scope.type = response;
             $scope.itemDisplayName = response.displayNameSingular;
-            $scope.headerCaption = (hasId ? (response.readOnly ? "" : "Update ") : "Create ") + response.displayNameSingular;
+            $scope.headerCaption = (hasId ? (response.readOnly ? "" : localizations.update + " ") : localizations.create + " ") + response.displayNameSingular;
             $scope.readOnly = response.readOnly;
             $scope.fromList = $scope.fromList || response.renderType == 1;
             $scope.properties = response.editableProperties;
@@ -157,7 +177,7 @@
 
                     if (resp.length > 0) {
                         angular.forEach(resp, function (error) {
-                            notificationsService.error("Failed to create " + $scope.itemDisplayName, error.ErrorMessage);
+                            notificationsService.error(localizations.failedcreate + " " + $scope.itemDisplayName, error.ErrorMessage);
                             $scope.saveButtonState = "error";
                         });
                     } else {
@@ -170,7 +190,7 @@
                                 }
                             };
                             $location.url(redirectUrl);
-                            notificationsService.success("Success", $scope.itemDisplayName + " has been created");
+                            notificationsService.success(localizations.success, $scope.itemDisplayName + " " + localizations.created);
                             $scope.saveButtonState = "success";
                         });
                     }
@@ -179,7 +199,7 @@
 
                     if (resp.length > 0) {
                         angular.forEach(resp, function (error) {
-                            notificationsService.error("Failed to update " + $scope.itemDisplayName, error.ErrorMessage);
+                            notificationsService.error(localizations.failedupdate + " " + $scope.itemDisplayName, error.ErrorMessage);
                             $scope.saveButtonState = "error";
                         });
                     } else {
@@ -190,7 +210,7 @@
                             if ($scope.syncTree) {
                                 navigationService.syncTree({ tree: 'uiomatic', path: $scope.path, forceReload: true, activate: true });
                             }
-                            notificationsService.success("Success", $scope.itemDisplayName + " has been saved");
+                            notificationsService.success(localizations.success, $scope.itemDisplayName + " " + localizations.saved);
                             $scope.saveButtonState = "success";
                         });
                     }
