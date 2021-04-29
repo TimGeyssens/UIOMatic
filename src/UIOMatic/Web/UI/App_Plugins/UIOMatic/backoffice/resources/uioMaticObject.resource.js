@@ -156,13 +156,13 @@
 	        getSummaryDashboardTypes: function () {
 	            return umbRequestHelper.resourcePromise(
                     $http.get(ocBaseUrl + "GetSummaryDashboardTypes"),
-					localization.failedsummary
+					localizations.failedsummary
                 );
 	        },
 	        getTotalRecordCount: function (type) {
 	            return umbRequestHelper.resourcePromise(
 					$http.get(ocBaseUrl + "GetTotalRecordCount?typeAlias=" + type),
-					localization.failedtotalcount
+					localizations.failedtotalcount
                 );
 	        }
 	    };
