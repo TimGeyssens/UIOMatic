@@ -4,7 +4,7 @@
     <package>
       <name></name>
       <version>0.0</version>
-      <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
+      <license url="https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md">AholeCloud license</license>
       <url></url>
       <requirements>
         <major>7</major>
