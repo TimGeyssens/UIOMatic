@@ -17,8 +17,8 @@
 		<Readme>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Readme>
 		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
-		<PackageLicenseName>MIT license</PackageLicenseName>
-		<PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
+		<PackageLicenseName>AholeCloud license</PackageLicenseName>
+		<PackageLicenseUrl>https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md</PackageLicenseUrl>
 		<ProjectUrl>https://github.com/TimGeyssens/UIOMatic</ProjectUrl>
 	</PropertyGroup>
 	<!-- NUGET ONLY PROPERTIES -->
