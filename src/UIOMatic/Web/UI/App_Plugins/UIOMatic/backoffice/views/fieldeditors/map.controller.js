@@ -100,10 +100,13 @@
 	        }
 	    }
 
-	    if ($scope.valuesLoaded) {
+        var appScope = $scope;
+        while (typeof appScope === 'object' && typeof appScope.activeApp === 'undefined') appScope = appScope.$parent;
+
+	    if (appScope.valuesLoaded) {
 	        init();
 	    } else {
-	        var unsubscribe = $scope.$on('valuesLoaded', function () {
+	        var unsubscribe = appScope.$on('valuesLoaded', function () {
 	            init();
 	            unsubscribe();
 	        });

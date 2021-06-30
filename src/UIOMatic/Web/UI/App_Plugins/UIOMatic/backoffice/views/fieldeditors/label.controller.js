@@ -9,10 +9,13 @@
             }
         }
 
-        if ($scope.valuesLoaded || $scope.property.view.indexOf("fieldviews") > -1) {
+        var appScope = $scope;
+        while (typeof appScope === 'object' && typeof appScope.activeApp === 'undefined') appScope = appScope.$parent;
+
+        if (appScope.valuesLoaded || $scope.property.view.indexOf("fieldviews") > -1) {
             init();
         } else {
-            var unsubscribe = $scope.$on('valuesLoaded', function () {
+            var unsubscribe = appScope.$on('valuesLoaded', function () {
                 init();
                 unsubscribe();
             });

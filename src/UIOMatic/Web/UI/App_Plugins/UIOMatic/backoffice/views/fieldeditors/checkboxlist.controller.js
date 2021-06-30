@@ -40,11 +40,14 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.Checkboxlist",
             $scope.property.value = val.join($scope.delimiter);
         }
 
-        if ($scope.valuesLoaded) {
+        var appScope = $scope;
+        while (typeof appScope === 'object' && typeof appScope.activeApp === 'undefined') appScope = appScope.$parent;
+
+        if (appScope.valuesLoaded) {
             updateSelected();
             init();
         } else {
-            var unsubscribe = $scope.$on('valuesLoaded', function () {
+            var unsubscribe = appScope.$on('valuesLoaded', function () {
                 updateSelected();
                 init();
                 unsubscribe();
