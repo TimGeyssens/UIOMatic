@@ -58,7 +58,7 @@
         }
 
         var appScope = $scope;
-        while (typeof appScope === 'object' && typeof appScope.activeApp === 'undefined') appScope = appScope.$parent;
+        while (appScope && typeof appScope === 'object' && typeof appScope.currentSection === 'undefined') appScope = appScope.$parent;
 
         if (appScope.valuesLoaded) {
             init();
