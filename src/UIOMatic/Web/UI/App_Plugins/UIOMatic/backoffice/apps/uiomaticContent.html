@@ -8,7 +8,7 @@
                 </div>
 
                 <div class="umb-group-panel__content">
-                    <div class="umb-property" ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: group.label}">
+                    <div class="umb-property" ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: group.label}:true">
                         <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
                             <div ng-include="property.view"></div>
                         </umb-control-group>
