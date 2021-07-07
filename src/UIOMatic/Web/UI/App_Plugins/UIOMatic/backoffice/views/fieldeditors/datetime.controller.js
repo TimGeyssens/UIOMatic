@@ -126,11 +126,13 @@
             });
         }
 
+        var appScope = $scope;
+        while (appScope && typeof appScope === 'object' && typeof appScope.currentSection === 'undefined') appScope = appScope.$parent;
 
-        if ($scope.valuesLoaded) {
+        if (appScope.valuesLoaded) {
             init();
         } else {
-            var unsubscribe = $scope.$on('valuesLoaded', function () {
+            var unsubscribe = appScope.$on('valuesLoaded', function () {
                 init();
                 unsubscribe();
             });

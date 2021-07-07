@@ -27,10 +27,13 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
         }, true);
     }
 
-    if ($scope.valuesLoaded) {
+    var appScope = $scope;
+    while (appScope && typeof appScope === 'object' && typeof appScope.currentSection === 'undefined') appScope = appScope.$parent;
+
+    if (appScope.valuesLoaded) {
         init();
     } else {
-        $scope.$on('valuesLoaded', function () {
+        appScope.$on('valuesLoaded', function () {
             init();
             $scope.valuesLoaded = true;
         });
