@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Umbraco.Web.Models.Trees;
 
 namespace UIOMatic.Attributes
 {
@@ -14,6 +16,11 @@ namespace UIOMatic.Attributes
         public string ParentAlias { get; set; }
 
         public int Order { get; set; }
+
+        /// <summary>
+        /// An optional function that takes the tree ID as an argument, and returns the menus that should be associated with that node
+        /// </summary>
+        public Func<string, IEnumerable<MenuItem>> MenuItems { get; set; }
 
         public UIOMaticFolderAttribute(string alias, string folderName)
         {
