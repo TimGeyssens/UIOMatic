@@ -179,9 +179,6 @@ namespace UIOMatic.Web.Controllers
                             {
                                 menu.Items.Add(new RefreshNode(refreshText, true));
                             }
-
-                            var menus = attri.MenuItems?.Invoke(id);
-                            if (menus != null) menu.Items.AddRange(menus);
                         }
                     }
                 }
