@@ -7,27 +7,44 @@ using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
-using Umbraco.Core;
-using Umbraco.Core.Cache;
-using Umbraco.Core.Logging;
+using Umbraco.Extensions;
+using Umbraco.Cms.Core.Cache;
+using Umbraco.Cms.Core.Hosting;
+using Umbraco.Cms.Core.Scoping;
 
 namespace UIOMatic
 {
-    public class Helper
+    public class UIOMaticHelper : IUIOMaticHelper
     {
-        public static IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
+
+
+        private readonly AppCaches _appCaches;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IScopeProvider _scopeProvider;
+
+        public UIOMaticHelper(AppCaches appCaches, 
+            IHostingEnvironment hostingEnvironment,
+            IScopeProvider scopeProvider)
         {
-            return typeof(DefaultUIOMaticRepository).IsAssignableFrom(attr.RepositoryType)
-                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo)
-                : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType);
+            _appCaches = appCaches;
+            _hostingEnvironment = hostingEnvironment;
+            _scopeProvider = scopeProvider;
         }
 
-        public static IEnumerable<Type> GetUIOMaticTypes()
+
+        public  IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
+        {
+            return typeof(DefaultUIOMaticRepository).IsAssignableFrom(attr.RepositoryType)
+                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo, _scopeProvider)
+                : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, _scopeProvider);
+        }
+
+        public  IEnumerable<Type> GetUIOMaticTypes()
         {
             return GetUIOMaticFolderTypes().Where(x => x.HasAttribute<UIOMaticAttribute>());
         }
 
-        public static IEnumerable<Type> GetUIOMaticFolderTypes()
+        public  IEnumerable<Type> GetUIOMaticFolderTypes()
         {
             var cachedItems = GetLocalCacheItem<IEnumerable<Type>>("UIOMaticFolderTypes");
 
@@ -48,7 +65,7 @@ namespace UIOMatic
             return cachedItems;
         }
 
-        private static IEnumerable<Type> EnsureUIOMaticTypes()
+        private  IEnumerable<Type> EnsureUIOMaticTypes()
         {
             var allTypes = new List<Type>();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -93,7 +110,7 @@ namespace UIOMatic
             return typesWithMyAttribute;
         }
 
-        public static Type GetUIOMaticTypeByAlias(string typeAlias, bool includeFolders = false, bool throwNullError = false)
+        public  Type GetUIOMaticTypeByAlias(string typeAlias, bool includeFolders = false, bool throwNullError = false)
         {
             var t = (includeFolders ? GetUIOMaticFolderTypes() : GetUIOMaticTypes()).FirstOrDefault(x => {
                 var attr = x.GetCustomAttribute<UIOMaticFolderAttribute>(true);  // UIOMaticFolderAttribute is the base type for all UIOMatic entities
@@ -110,17 +127,23 @@ namespace UIOMatic
             return t;
         }
 
-        private static T GetLocalCacheItem<T>(string cacheKey)
+        private T GetLocalCacheItem<T>(string cacheKey)
         {
-            var runtimeCache = Umbraco.Web.Composing.Current.AppCaches.RuntimeCache;
-            var cachedItem = runtimeCache.GetCacheItem<T>(cacheKey);
+            var cachedItem = _appCaches.RuntimeCache.GetCacheItem<T>(cacheKey);
             return cachedItem;
         }
 
-        private static void InsertLocalCacheItem<T>(string cacheKey, Func<T> getCacheItem)
+        private void InsertLocalCacheItem<T>(string cacheKey, Func<T> getCacheItem)
         {
-            var runtimeCache = Umbraco.Web.Composing.Current.AppCaches.RuntimeCache;
-            runtimeCache.InsertCacheItem<T>(cacheKey, getCacheItem);
+             _appCaches.RuntimeCache.InsertCacheItem<T>(cacheKey, getCacheItem);
         }
+    }
+
+    public interface IUIOMaticHelper
+    {
+        IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo);
+        IEnumerable<Type> GetUIOMaticTypes();
+        IEnumerable<Type> GetUIOMaticFolderTypes();
+        Type GetUIOMaticTypeByAlias(string typeAlias, bool includeFolders = false, bool throwNullError = false);
     }
 }

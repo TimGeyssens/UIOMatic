@@ -1,10 +1,9 @@
 ﻿using System;
-using Umbraco.Core.Models.ContentEditing;
+using Umbraco.Cms.Core.Models.ContentEditing;
 
 namespace UIOMatic.ContentApps
 {
-    public interface IUiomaticContentAppFactory
+    public interface IUiomaticContentAppFactory  : IContentAppFactory
     {
-        ContentApp GetContentAppFor(Type type);
     }
 }

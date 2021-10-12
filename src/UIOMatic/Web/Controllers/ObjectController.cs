@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web.Mvc;
 using UIOMatic.Attributes;
 using UIOMatic.Services;
 using UIOMatic.Web.PostModels;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
-using Umbraco.Core;
-using Umbraco.Web.Editors;
-using Umbraco.Web.Mvc;
-using Newtonsoft.Json;
-using System.Text;
-using System.Web.Http.Results;
 using UIOMatic.Serialization;
 using Newtonsoft.Json.Serialization;
 using UIOMatic.ContentApps;
+using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Cms.Web.BackOffice.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using Umbraco.Extensions;
+using Umbraco.Cms.Core.Models.Membership;
 
 namespace UIOMatic.Web.Controllers
 {
@@ -25,11 +23,18 @@ namespace UIOMatic.Web.Controllers
     {
         private IUIOMaticObjectService _service;
         private readonly UiomaticContentAppFactoryCollection _contentAppsFactoryCollection;
+        private readonly IEnumerable<IReadOnlyUserGroup> _usergroups;
+        private readonly IUIOMaticHelper Helper;
 
-        public ObjectController(UiomaticContentAppFactoryCollection contentAppsFactoryCollection)
+
+        public ObjectController(UiomaticContentAppFactoryCollection contentAppsFactoryCollection, 
+            IEnumerable<IReadOnlyUserGroup> usergroups,
+            IUIOMaticHelper helper)
         {
             _service = UIOMaticObjectService.Instance;
             _contentAppsFactoryCollection = contentAppsFactoryCollection;
+            _usergroups = usergroups;
+            Helper = helper;
         }
 
         [HttpGet]
@@ -61,7 +66,7 @@ namespace UIOMatic.Web.Controllers
                 .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
                 .ToDictionary(x => x.Key, x => x.Value);
 
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+            //Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
 
             return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
@@ -78,7 +83,7 @@ namespace UIOMatic.Web.Controllers
                 .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
                 .ToDictionary(x => x.Key, x => x.Value);
 
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
 
             return _service.GetPagedWithNodeId(t,nodeId,nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
         }
@@ -89,10 +94,10 @@ namespace UIOMatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            //Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
             var info = _service.GetTypeInfo(t, includePropertyInfo);
-            info.Apps = _contentAppsFactoryCollection.GetContentAppsFor(t);
+            info.Apps = _contentAppsFactoryCollection.GetContentAppsFor(t, _usergroups);
 
             return info;
         }
@@ -102,7 +107,7 @@ namespace UIOMatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+            //Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
 
             return _service.GetById(t, id);
         }
@@ -112,7 +117,7 @@ namespace UIOMatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
+           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
 
             return _service.GetScaffold(t);
         }
@@ -120,7 +125,7 @@ namespace UIOMatic.Web.Controllers
         [HttpGet]
         public object GetSummaryDashboardTypes()
         {
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
             return Helper.GetUIOMaticTypes().Select(x => x.GetCustomAttribute<UIOMaticAttribute>(false))
                 .Where(x => x.ShowOnSummaryDashboard)
@@ -168,7 +173,7 @@ namespace UIOMatic.Web.Controllers
         {
             var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
 
-            Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
             return _service.Validate(t, model.Value);
         }

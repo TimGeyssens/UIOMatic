@@ -2,8 +2,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Umbraco.Core.Persistence;
-using Umbraco.Core.Persistence.DatabaseAnnotations;
+using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace UIOMatic.Extensions
 {

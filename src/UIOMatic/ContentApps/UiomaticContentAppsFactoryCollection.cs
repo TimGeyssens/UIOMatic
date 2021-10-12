@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Umbraco.Core;
-using Umbraco.Core.Composing;
-using Umbraco.Core.Logging;
-using Umbraco.Core.Models.ContentEditing;
-using Umbraco.Web.ContentApps;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Models.ContentEditing;
+using Umbraco.Cms.Core.Models.Membership;
+using Umbraco.Extensions;
 
 namespace UIOMatic.ContentApps
 {
@@ -19,16 +20,16 @@ namespace UIOMatic.ContentApps
     {
         private readonly ILogger _logger;
 
-        public UiomaticContentAppFactoryCollection(IEnumerable<IUiomaticContentAppFactory> items, ILogger logger)
+        public UiomaticContentAppFactoryCollection(Func<IEnumerable<IUiomaticContentAppFactory>> items, ILogger logger)
             : base(items)
         {
             _logger = logger;
         }
 
 
-        public IEnumerable<ContentApp> GetContentAppsFor(Type type)
+        public IEnumerable<ContentApp> GetContentAppsFor(Type type, IEnumerable<IReadOnlyUserGroup> userGroups)
         {
-            var apps = this.Select(x => x.GetContentAppFor(type)).WhereNotNull().OrderBy(x => x.Weight).ToList();
+            var apps = this.Select(x => x.GetContentAppFor(type, userGroups)).WhereNotNull().OrderBy(x => x.Weight).ToList();
 
             var aliases = new HashSet<string>();
             List<string> dups = null;
@@ -46,19 +47,15 @@ namespace UIOMatic.ContentApps
                 // dying is not user-friendly, so let's write to log instead, and wish people read logs...
 
                 //throw new InvalidOperationException($"Duplicate content app aliases found: {string.Join(",", dups)}");
-                _logger.Warn<UiomaticContentAppFactoryCollection>("Duplicate content app aliases found: {DuplicateAliases}", string.Join(",", dups));
+                _logger.Information($"Duplicate content app aliases found: {string.Join(",", dups)}");
             }
 
             return apps;
         }
-
-
     }
     public static class WebCompositionExtensions
     {
-        public static UiomaticContentAppsFactoryCollectionsBuilder UiomaticContentApps(this Composition composition)
-            => composition.WithCollectionBuilder<UiomaticContentAppsFactoryCollectionsBuilder>();
+        public static UiomaticContentAppsFactoryCollectionsBuilder UiomaticContentApps(this IUmbracoBuilder builder)
+            => builder.WithCollectionBuilder<UiomaticContentAppsFactoryCollectionsBuilder>();
     }
-
-
 }

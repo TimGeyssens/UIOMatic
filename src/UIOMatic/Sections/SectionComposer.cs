@@ -1,16 +1,14 @@
-﻿
-using Umbraco.Core.Composing;
-using Umbraco.Core.Models.Sections;
-using Umbraco.Web;
-using Umbraco.Web.Models.Trees;
+﻿using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Sections;
 
 namespace UIOMatic.Sections
 {
-    public class SectionComposer : IUserComposer
+    public class SectionComposer : IComposer
     {
-        public void Compose(Composition composition)
+        public void Compose(IUmbracoBuilder builder)
         {
-            composition.Sections().Append<UIOMaticSection>();
+            builder.Sections().Append<UIOMaticSection>();
         }
     }
 

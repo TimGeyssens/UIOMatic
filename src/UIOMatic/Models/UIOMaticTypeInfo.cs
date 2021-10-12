@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UIOMatic.Enums;
-using Umbraco.Core.Models.ContentEditing;
+using Umbraco.Cms.Core.Models.ContentEditing;
 
 namespace UIOMatic.Models
 {
