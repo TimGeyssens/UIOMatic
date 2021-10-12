@@ -1,0 +1,27 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <UIOMaticContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\UIOMatic\**\*.*</UIOMaticContentFilesPath>
+    </PropertyGroup>
+
+    <Target Name="CopyUIOMaticAssets" BeforeTargets="Build">
+        <ItemGroup>
+            <UIOMaticContentFiles Include="$(UIOMaticContentFilesPath)" />
+        </ItemGroup>
+        <Message Text="Copying UIOMatic files: $(UIOMaticContentFilesPath) - #@(UIOMaticContentFiles->Count()) files"  Importance="high" />
+        <Copy
+            SourceFiles="@(UIOMaticContentFiles)"
+            DestinationFiles="@(UIOMaticContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\UIOMatic\%(RecursiveDir)%(Filename)%(Extension)')"
+            SkipUnchangedFiles="true" />
+
+    </Target>
+
+    <Target Name="ClearUIOMaticAssets" BeforeTargets="Clean">
+        <ItemGroup>
+            <UIOMaticDir Include="$(MSBuildProjectDirectory)\App_Plugins\UIOMatic\" />
+        </ItemGroup>
+        <Message Text="Clear old UIOMatic data"  Importance="high" />
+        <RemoveDir Directories="@(UIOMaticDir)"  />
+    </Target>
+
+</Project>

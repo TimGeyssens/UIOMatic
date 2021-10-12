@@ -6,10 +6,10 @@ using UIOMatic.Interfaces;
 using UIOMatic.Services;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
-using Umbraco.Core;
-using Umbraco.Core.Persistence;
 using NPoco;
 using System.Configuration;
+using Umbraco.Extensions;
+using Umbraco.Cms.Core.Scoping;
 
 namespace UIOMatic.Data
 {
@@ -17,38 +17,48 @@ namespace UIOMatic.Data
     {
         private UIOMaticAttribute _config;
         private UIOMaticTypeInfo _typeInfo;
-        
-        public DefaultUIOMaticRepository(UIOMaticAttribute config, UIOMaticTypeInfo typeInfo)
+        private readonly IScopeProvider _scopeProvider;
+
+        public DefaultUIOMaticRepository(UIOMaticAttribute config,
+            UIOMaticTypeInfo typeInfo,
+            IScopeProvider scopeProvider) : this(scopeProvider)
         {
             _config = config;
             _typeInfo = typeInfo;
         }
 
+        public DefaultUIOMaticRepository(IScopeProvider scopeProvider)
+        {
+            _scopeProvider = scopeProvider;
+        }
+
         public virtual IEnumerable<object> GetAll(string sortColumn = "", string sortOrder = "")
         {
-            var db = GetDb();
-            
-            var query = new Sql().Select("*").From(_typeInfo.TableName);
 
-            var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "",null);
-            UIOMaticObjectService.OnBuildingQuery(a1);
-            query = a1.Query;
-
-            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
             {
-                query.Append("WHERE " + this._config.DeletedColumnName + " = 0");
+                var query = new Sql().Select("*").From(_typeInfo.TableName);
+
+                var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "", null);
+                UIOMaticObjectService.OnBuildingQuery(a1);
+                query = a1.Query;
+
+                if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+                {
+                    query.Append("WHERE " + this._config.DeletedColumnName + " = 0");
+                }
+
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+                {
+                    query.OrderBy(sortColumn + " " + sortOrder);
+                }
+
+                var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "", null);
+                UIOMaticObjectService.OnBuiltQuery(a2);
+                query = a2.Query;
+
+                return scope.Database.Fetch(_typeInfo.Type, query);
             }
-
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-            {
-                query.OrderBy(sortColumn + " " + sortOrder);
-            }
-
-            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "",null);
-            UIOMaticObjectService.OnBuiltQuery(a2);
-            query = a2.Query;
-
-            return db.Fetch(_typeInfo.Type, query);
         }
 
         public virtual UIOMaticPagedResult GetPaged(
@@ -99,208 +109,219 @@ namespace UIOMatic.Data
                 typeof(bool?)
             };
 
-            var db = GetDb();
-
-            var query = new Sql().Select("*").From(_typeInfo.TableName);
-
-            var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
-            UIOMaticObjectService.OnBuildingQuery(a1);
-            query = a1.Query;
-
-            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
             {
-                query.Append("WHERE " + this._config.DeletedColumnName + " = 0");
-            }
-            else
-            {
-                query.Append("WHERE 1=1");
-            }
 
-            // Filter by search term
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                query.Append("AND (1=0");
+                var query = new Sql().Select("*").From(_typeInfo.TableName);
 
-                var c = 0;
-                foreach (var property in _typeInfo.Type.GetProperties())
+                var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
+                UIOMaticObjectService.OnBuildingQuery(a1);
+                query = a1.Query;
+
+                if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
                 {
-                    var attris = property.GetCustomAttributes(true);
-                    if (attris.All(x => x.GetType() != typeof(IgnoreAttribute)))
+                    query.Append("WHERE " + this._config.DeletedColumnName + " = 0");
+                }
+                else
+                {
+                    query.Append("WHERE 1=1");
+                }
+
+                // Filter by search term
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    query.Append("AND (1=0");
+
+                    var c = 0;
+                    foreach (var property in _typeInfo.Type.GetProperties())
                     {
-                        var columnName = property.Name;
+                        var attris = property.GetCustomAttributes(true);
+                        if (attris.All(x => x.GetType() != typeof(IgnoreAttribute)))
+                        {
+                            var columnName = property.Name;
 
-                        var columnAttri = attris.FirstOrDefault(x => x.GetType() == typeof(ColumnAttribute)) as ColumnAttribute;
-                        if (columnAttri != null)
-                            columnName = columnAttri.Name;
+                            var columnAttri = attris.FirstOrDefault(x => x.GetType() == typeof(ColumnAttribute)) as ColumnAttribute;
+                            if (columnAttri != null)
+                                columnName = columnAttri.Name;
 
-                        // guid
-                        else if (guidDataTypes.Contains(property.PropertyType))
-                        {
-                            Guid searchGuid;
-                            if (Guid.TryParse(searchTerm, out searchGuid))
+                            // guid
+                            else if (guidDataTypes.Contains(property.PropertyType))
                             {
-                                query.Append("OR " + columnName + " = @0", searchGuid);
+                                Guid searchGuid;
+                                if (Guid.TryParse(searchTerm, out searchGuid))
+                                {
+                                    query.Append("OR " + columnName + " = @0", searchGuid);
+                                }
                             }
-                        }
-                        // number / boolean
-                        else if (numberDataTypes.Contains(property.PropertyType) || boolDataTypes.Contains(property.PropertyType))
-                        {
-                            decimal searchNumber;
-                            if (decimal.TryParse(searchTerm, out searchNumber))
+                            // number / boolean
+                            else if (numberDataTypes.Contains(property.PropertyType) || boolDataTypes.Contains(property.PropertyType))
                             {
-                                query.Append("OR " + columnName + " = @0", searchNumber);
+                                decimal searchNumber;
+                                if (decimal.TryParse(searchTerm, out searchNumber))
+                                {
+                                    query.Append("OR " + columnName + " = @0", searchNumber);
+                                }
                             }
-                        }
-                        // date
-                        else if (dateDataTypes.Contains(property.PropertyType))
-                        {
-                            DateTime searchDate;
-                            if (DateTime.TryParse(searchTerm, out searchDate))
+                            // date
+                            else if (dateDataTypes.Contains(property.PropertyType))
                             {
-                                query.Append("OR " + columnName + " >=  @0 AND " + columnName + " < @1", searchDate.Date, searchDate.AddDays(1).Date);
+                                DateTime searchDate;
+                                if (DateTime.TryParse(searchTerm, out searchDate))
+                                {
+                                    query.Append("OR " + columnName + " >=  @0 AND " + columnName + " < @1", searchDate.Date, searchDate.AddDays(1).Date);
+                                }
                             }
-                        }
-                        else if(property.PropertyType == typeof(string))
-                        {
-                            query.Append("OR " + columnName + " like @0", "%" + searchTerm + "%");
-                        }
+                            else if (property.PropertyType == typeof(string))
+                            {
+                                query.Append("OR " + columnName + " like @0", "%" + searchTerm + "%");
+                            }
 
-                        c++;
+                            c++;
+                        }
+                    }
+
+                    query.Append(")");
+                }
+
+                if (filters != null && filters.Any())
+                {
+                    foreach (var filter in filters)
+                    {
+                        query.Append("AND " + filter.Key + " = @0", filter.Value);
                     }
                 }
 
-                query.Append(")");
-            }
-
-            if (filters != null && filters.Any())
-            {
-                foreach (var filter in filters)
+                // Sort
+                // BUG: There is a bug in the peta poco version used that errors if sort column is wrapped in [] so need to make sure it's not
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
                 {
-                    query.Append("AND " + filter.Key + " = @0", filter.Value);
+                    query.OrderBy(sortColumn + " " + sortOrder);
                 }
-            }
+                else if (!string.IsNullOrEmpty(_config.SortColumn) && !string.IsNullOrEmpty(_config.SortOrder))
+                {
+                    query.OrderBy(_config.SortColumn + " " + _config.SortOrder);
+                }
+                else
+                {
+                    var primaryKeyColum = _typeInfo.Type.GetPrimaryKeyName();
+                    query.OrderBy(primaryKeyColum + " asc");
+                }
 
-            // Sort
-            // BUG: There is a bug in the peta poco version used that errors if sort column is wrapped in [] so need to make sure it's not
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-            {
-                query.OrderBy(sortColumn + " " + sortOrder);
-            }
-            else if (!string.IsNullOrEmpty(_config.SortColumn) && !string.IsNullOrEmpty(_config.SortOrder))
-            {
-                query.OrderBy(_config.SortColumn + " " + _config.SortOrder);
-            }
-            else
-            {
-                var primaryKeyColum = _typeInfo.Type.GetPrimaryKeyName();
-                query.OrderBy(primaryKeyColum + " asc");
-            }
+                var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
+                UIOMaticObjectService.OnBuiltQuery(a2);
+                query = a2.Query;
 
-            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
-            UIOMaticObjectService.OnBuiltQuery(a2);
-            query = a2.Query;
 
-            var p = db.Page(_typeInfo.Type, pageNumber, itemsPerPage, query);
+                var p = scope.Database.Page<object>(pageNumber, itemsPerPage, query.SQL);
 
-            return new UIOMaticPagedResult
-            {
-                CurrentPage = p.CurrentPage,
-                ItemsPerPage = p.ItemsPerPage,
-                TotalItems = p.TotalItems,
-                TotalPages = p.TotalPages,
-                Items = p.Items
-            };
+                return new UIOMaticPagedResult
+                {
+                    CurrentPage = p.CurrentPage,
+                    ItemsPerPage = p.ItemsPerPage,
+                    TotalItems = p.TotalItems,
+                    TotalPages = p.TotalPages,
+                    Items = p.Items
+                };
+            }
         }
 
         public virtual object Get(string id)
         {
-            var db = GetDb();
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
+            {
 
-            return db.SingleOrDefault(_typeInfo.Type, id);
+                var query = new Sql().Select("*").From(_typeInfo.TableName);
+                var table = NPoco.TableInfo.FromPoco(_typeInfo.Type);
+                query.Append("WHERE " + table.PrimaryKey + " = " + id);
+
+                return scope.Database.Query(_typeInfo.Type, query.SQL).FirstOrDefault();
+            }
         }
 
         public virtual object Create(object entity)
         {
-            var db = GetDb();
-
-            if (!this._typeInfo.DateCreatedFieldKey.IsNullOrWhiteSpace())
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
             {
-                entity.SetPropertyValue(this._typeInfo.DateCreatedFieldKey, DateTime.Now);
+
+                if (!this._typeInfo.DateCreatedFieldKey.IsNullOrWhiteSpace())
+                {
+                    entity.SetPropertyValue(this._typeInfo.DateCreatedFieldKey, DateTime.Now);
+                }
+
+                if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
+                {
+                    entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
+                }
+
+                if (_typeInfo.AutoIncrementPrimaryKey)
+                    scope.Database.Insert(_typeInfo.TableName, _typeInfo.PrimaryKeyColumnName, true, entity);
+                else
+                    scope.Database.Insert(entity);
+
+                return entity;
             }
-
-            if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
-            {
-                entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
-            }
-
-            if (_typeInfo.AutoIncrementPrimaryKey)
-                db.Insert(_typeInfo.TableName, _typeInfo.PrimaryKeyColumnName, true, entity);
-            else
-                db.Insert(entity);
-
-            return entity;
         }
 
         public virtual object Update(object entity)
         {
-            var db = GetDb();
-             
-            if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
             {
-                entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
+
+                if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
+                {
+                    entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
+                }
+
+                scope.Database.Update(entity);
+
+                return entity;
             }
-
-            db.Update(entity);
-
-            return entity;
         }
 
         public virtual void Delete(string[] ids)
         {
-            var db = GetDb();
-
-            if (this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
             {
-                var sql = string.Format(
-                    "DELETE FROM {0} WHERE {1} IN ({2})",
-                    _typeInfo.TableName,
-                    _typeInfo.PrimaryKeyColumnName,
-                    string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
 
-                db.Execute(sql);
-            }
-            else
-            {
-                var sql = string.Format(
-                    "UPDATE {0} SET {1} = 1 WHERE {2} IN ({3})",
-                    _typeInfo.TableName,
-                    this._config.DeletedColumnName,
-                    _typeInfo.PrimaryKeyColumnName,
-                    string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
+                if (this._config.DeletedColumnName.IsNullOrWhiteSpace())
+                {
+                    var sql = string.Format(
+                        "DELETE FROM {0} WHERE {1} IN ({2})",
+                        _typeInfo.TableName,
+                        _typeInfo.PrimaryKeyColumnName,
+                        string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
 
-                db.Execute(sql);
+                    scope.Database.Execute(sql);
+                }
+                else
+                {
+                    var sql = string.Format(
+                        "UPDATE {0} SET {1} = 1 WHERE {2} IN ({3})",
+                        _typeInfo.TableName,
+                        this._config.DeletedColumnName,
+                        _typeInfo.PrimaryKeyColumnName,
+                        string.Join(",", ids.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => "'" + x + "'")));
+
+                    scope.Database.Execute(sql);
+                }
             }
         }
 
         public virtual long GetTotalRecordCount()
         {
-            var db = GetDb();
-
-            var sql = string.Format("SELECT COUNT(1) FROM {0}", _typeInfo.TableName);
-
-            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true))
             {
-                sql += string.Format(" WHERE {0} = 0", this._config.DeletedColumnName);
+
+                var sql = string.Format("SELECT COUNT(1) FROM {0}", _typeInfo.TableName);
+
+                if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
+                {
+                    sql += string.Format(" WHERE {0} = 0", this._config.DeletedColumnName);
+                }
+
+                return scope.Database.ExecuteScalar<long>(sql);
             }
-
-            return db.ExecuteScalar<long>(sql);
         }
 
-        public virtual Database GetDb()
-        {
-            return !string.IsNullOrEmpty(_config.ConnectionStringName)
-                ? new Database(_config.ConnectionStringName)
-                : new Database(Umbraco.Core.Constants.System.UmbracoConnectionName);
-        }
     }
 }

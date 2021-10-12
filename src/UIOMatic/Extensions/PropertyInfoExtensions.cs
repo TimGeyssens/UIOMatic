@@ -1,7 +1,6 @@
 ﻿using NPoco;
 using System.Reflection;
-using Umbraco.Core;
-using Umbraco.Core.Persistence;
+using Umbraco.Extensions;
 
 namespace UIOMatic.Extensions
 {

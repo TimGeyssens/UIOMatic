@@ -1,18 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UIOMatic.Services;
-using UIOMatic;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
-using Umbraco.Web.Editors;
-using Umbraco.Web.Mvc;
+using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Cms.Web.BackOffice.Controllers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UIOMatic.Web.Controllers
 {
     [PluginController("UIOMatic")]
     public class PropertyEditorsApiController: UmbracoAuthorizedJsonController
     {
+
+        private IHttpContextAccessor httpContextAccessor;
+        public IHttpContextAccessor HttpContextAccessor => httpContextAccessor ??= HttpContext.RequestServices.GetService<IHttpContextAccessor>();
+        
+        private IUIOMaticHelper helper;
+        public IUIOMaticHelper Helper => helper ??= HttpContext.RequestServices.GetService<IUIOMaticHelper>();
+
+
+
         private IUIOMaticObjectService _service;
 
         public PropertyEditorsApiController()

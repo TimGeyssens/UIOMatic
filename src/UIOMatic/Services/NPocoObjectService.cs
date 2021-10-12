@@ -8,22 +8,32 @@ using UIOMatic.Extensions;
 using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
-using Umbraco.Core;
-using Umbraco.Core.IO;
-using Umbraco.Core.Persistence;
 using System.ComponentModel.DataAnnotations;
 using NPoco;
-using UIOMatic.ContentApps;
-using Umbraco.Core.Composing;
+using Umbraco.Extensions;
+using Umbraco.Cms.Core.Cache;
+using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Hosting;
 
 namespace UIOMatic.Services
 {
     
     public class NPocoObjectService : IUIOMaticObjectService
-
-        
     {
-    
+
+        private readonly AppCaches _appCaches;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IUIOMaticHelper Helper;
+
+
+        public NPocoObjectService(AppCaches appCaches, 
+            IHostingEnvironment hostingEnvironment,
+            IUIOMaticHelper helper)
+        {
+            _appCaches = appCaches;
+            _hostingEnvironment = hostingEnvironment;
+            Helper = helper;
+        }
 
         public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
         {
@@ -190,7 +200,7 @@ namespace UIOMatic.Services
         {
           
             // Types shouldn't change without an app pool recycle so might as well cache these
-            return (UIOMaticTypeInfo)Umbraco.Web.Composing.Current.AppCaches.RuntimeCache.Get("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
+            return (UIOMaticTypeInfo)_appCaches.RuntimeCache.Get("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
             {
                 var attri = type.GetCustomAttribute<UIOMaticAttribute>();
 
@@ -246,7 +256,7 @@ namespace UIOMatic.Services
                                 Tab = attri2.Tab.IsNullOrWhiteSpace() ? "General" : attri2.Tab,
                                 TabOrder = attri2.TabOrder,
                                 Description = attri2.Description,
-                                View = IOHelper.ResolveUrl(view),
+                                View = _hostingEnvironment.ToAbsolute(view),
                                 Type = prop.PropertyType.ToString(),
                                 Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)JsonConvert.DeserializeObject(attri2.Config),
                                 Order = attri2.Order
@@ -278,7 +288,7 @@ namespace UIOMatic.Services
                                 Key = prop.Name,
                                 Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
                                 ColumnName = prop.GetColumnName(),
-                                View = IOHelper.ResolveUrl(view),
+                                View = _hostingEnvironment.ToAbsolute(view),
                                 Type = prop.PropertyType.ToString(),
                                 Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config),
                                 Order = attri3.Order
@@ -302,7 +312,7 @@ namespace UIOMatic.Services
                                 ColumnName = prop.GetColumnName(),
                                 KeyPropertyName = keyProp.Name,
                                 KeyColumnName = keyProp.GetColumnName(),
-                                View = IOHelper.ResolveUrl(view),
+                                View = _hostingEnvironment.ToAbsolute(view),
                                 Type = prop.PropertyType.ToString(),
                                 Config = attri4.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri4.Config),
                                 Order = attri4.Order
@@ -364,7 +374,7 @@ namespace UIOMatic.Services
                             {
                                 Alias = attri5.Alias,
                                 Name = attri5.Name,
-                                View = IOHelper.ResolveUrl(attri5.View),
+                                View = _hostingEnvironment.ToAbsolute(attri5.View),
                                 Icon = attri5.Icon,
                                 Config = attri5.Config.IsNullOrWhiteSpace() ? null : (JObject)JsonConvert.DeserializeObject(attri5.Config),
 

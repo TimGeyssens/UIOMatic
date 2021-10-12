@@ -1,10 +1,12 @@
 ﻿using System;
 using UIOMatic;
 using UIOMatic.Interfaces;
+using Umbraco.Cms.Core.Cache;
+using Umbraco.Cms.Core.Hosting;
 
 namespace UIOMatic.Services
 {
-    public class UIOMaticObjectService
+    public class UIOMaticObjectService 
     {
         public static event EventHandler<QueryEventArgs> BuildingQuery;
         public static event EventHandler<QueryEventArgs> BuiltQuery;
@@ -20,8 +22,18 @@ namespace UIOMatic.Services
         public static event EventHandler<DeleteEventArgs> DeletingObjects;
         public static event EventHandler<DeleteEventArgs> DeletedObjects;
 
-        private static Lazy<IUIOMaticObjectService> _instance = new Lazy<IUIOMaticObjectService>(() => (IUIOMaticObjectService)Activator.CreateInstance(Config.DefaultObjectServiceType, null));
+        private static Lazy<IUIOMaticObjectService> _instance = 
+            new Lazy<IUIOMaticObjectService>(() =>
 
+             new NPocoObjectService(ServiceLocator.ServiceProvider.GetService<AppCaches>(),
+                 ServiceLocator.ServiceProvider.GetService<IHostingEnvironment>(),
+                 ServiceLocator.ServiceProvider.GetService<IUIOMaticHelper>())
+            //(IUIOMaticObjectService)Activator.CreateInstance(ServiceLocator.ServiceProvider.GetService<IUIOMaticConfiguration>().DefaultObjectServiceType ?? typeof(UIOMaticConfiguration), null));
+            );
+       
+                          
+                
+       
         private UIOMaticObjectService()
         { }
 
