@@ -1,6 +1,6 @@
 # <img src="docs/img/uiomatic.png?raw=true" width="300"> #
 
-[![Build status](https://ci.appveyor.com/api/projects/status/94932v6vx6mp2g57?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic)
+[![Build status](https://ci.appveyor.com/api/projects/status/48f75yfhb4htigw7?svg=true)](https://ci.appveyor.com/project/TimGeyssens/uiomatic-dotnetcore)
 [![NuGet release](https://img.shields.io/nuget/v/Nibble.Umbraco.UIOMatic.svg)](https://www.nuget.org/packages/Nibble.Umbraco.UIOMatic)
 
 Please be aware of the [License Model](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md) before using this package since additional charges might apply if you are an Umbraco Gold Partner. And it is prohibited to use the Software on the Cloud offering of Umbraco.
