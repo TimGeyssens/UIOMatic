@@ -71,7 +71,7 @@
 			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).dll" />
 			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).pdb" />
 			<SrcFiles Include="$(ProjectDir)\**\*.cs" Exclude="$(ProjectDir)\obj\**"/>
-			<PluginFiles Include="$(ProjectDir)\App_Plugins\IOMatic\**\*.*" />
+			<PluginFiles Include="$(ProjectDir)\App_Plugins\UIOMatic\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 			<CoreNuSpecFile Include="$(MSBuildProjectDirectory)\package.core.nuspec" />
