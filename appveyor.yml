@@ -21,7 +21,7 @@ assembly_info:
   assembly_file_version: '{version}'
 
 before_build:
-  - appveyor-retry dotnet restore -v Minimal
+  - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
 
 build_script:
   - msbuild build/package.proj 
