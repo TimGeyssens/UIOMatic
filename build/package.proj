@@ -68,8 +68,8 @@
 	<!-- PREPARE FILES -->
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
-			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\\$(ProjectName).dll" />
-			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\$(ProjectName).pdb" />
+			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).dll" />
+			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).pdb" />
 			<SrcFiles Include="$(ProjectDir)\**\*.cs" Exclude="$(ProjectDir)\obj\**"/>
 			<PluginFiles Include="$(ProjectDir)\Web\UI\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
