@@ -1,12 +1,12 @@
 
 # version format
-version: 4.0.2.{build}
+version: 4.0.3.{build}
 
 # environment
 environment:
   majorversion: 4
   minorversion: 0
-  patchversion: 2
+  patchversion: 3
 
 image: Visual Studio 2019
 
