@@ -17,7 +17,7 @@
     <tags></tags>
     <dependencies>
       <dependency id="Umbraco.Cms.Core" version="9.0.0" />
-      <dependency id="Umbraco.Cms" version="9.0.0" />
+      <dependency id="Umbraco.Cms.Web.Common" version="9.0.0" />
     </dependencies>
   </metadata>
   <files />
