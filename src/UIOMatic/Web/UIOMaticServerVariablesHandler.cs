@@ -57,8 +57,12 @@ namespace UIOMatic.Web
             {
                 { "ocBaseUrl", linkGenerator.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.Create(null)) },
                 { "pecBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller => controller.GetAllTypes())},
-                 { "fcBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<FieldApiController>(controller => controller.GetAllUsers())},
-                { "settings", Config.Settings }
+                { "fcBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<FieldApiController>(controller => controller.GetAllUsers())},
+                { "settings", Config!=null  ? Config.Settings :   new Dictionary<string, string>() {
+                        { "defaultListViewPageSize", "10" },
+                        { "rteFieldEditorButtons", "\"preview\", \"|\", \"undo\", \"redo\", \"|\", \"copy\", \"cut\", \"paste\", \"|\", \"bold\", \"italic\", \"|\", \"link\", \"unlink\"" }
+                    }
+                }
             });
         }       
     }
