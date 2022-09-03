@@ -17,14 +17,17 @@ namespace UIOMatic.Data
     {
         private UIOMaticAttribute _config;
         private UIOMaticTypeInfo _typeInfo;
+        private readonly UIOMaticObjectService _uioMaticObjectService;
         private readonly IScopeProvider _scopeProvider;
 
         public DefaultUIOMaticRepository(UIOMaticAttribute config,
             UIOMaticTypeInfo typeInfo,
-            IScopeProvider scopeProvider) : this(scopeProvider)
+            IScopeProvider scopeProvider,
+            UIOMaticObjectService uioMaticObjectService) : this(scopeProvider)
         {
             _config = config;
             _typeInfo = typeInfo;
+            _uioMaticObjectService = uioMaticObjectService;
         }
 
         public DefaultUIOMaticRepository(IScopeProvider scopeProvider)
@@ -40,7 +43,7 @@ namespace UIOMatic.Data
                 var query = new Sql().Select("*").From(_typeInfo.TableName);
 
                 var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "", null);
-                UIOMaticObjectService.OnBuildingQuery(a1);
+                _uioMaticObjectService.OnBuildingQuery(a1);
                 query = a1.Query;
 
                 if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
@@ -54,7 +57,7 @@ namespace UIOMatic.Data
                 }
 
                 var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, "", null);
-                UIOMaticObjectService.OnBuiltQuery(a2);
+                _uioMaticObjectService.OnBuiltQuery(a2);
                 query = a2.Query;
 
                 return scope.Database.Fetch(_typeInfo.Type, query);
@@ -115,7 +118,7 @@ namespace UIOMatic.Data
                 var query = new Sql().Select("*").From(_typeInfo.TableName);
 
                 var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
-                UIOMaticObjectService.OnBuildingQuery(a1);
+                _uioMaticObjectService.OnBuildingQuery(a1);
                 query = a1.Query;
 
                 if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
@@ -208,7 +211,7 @@ namespace UIOMatic.Data
                 }
 
                 var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
-                UIOMaticObjectService.OnBuiltQuery(a2);
+                _uioMaticObjectService.OnBuiltQuery(a2);
                 query = a2.Query;
 
 

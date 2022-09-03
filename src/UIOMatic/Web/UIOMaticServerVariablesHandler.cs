@@ -40,26 +40,32 @@ namespace UIOMatic.Web
 
         public void Handle(ServerVariablesParsingNotification notification)
         {
-            ////old: to do:config
-            //var settingDictionary = new Dictionary<string, object>();
-
-            //foreach (var setting in Config.Settings)
-            //    settingDictionary.Add(setting.Key, setting.Value);
-
-            //mainDictionary.Add("settings", settingDictionary);
-
-            //if (!e.Keys.Contains("uioMatic"))
-            //{
-            //    e.Add("uioMatic", mainDictionary);
-            //}
-
-            notification.ServerVariables.Add("uioMatic", new Dictionary<string, object>
+            var mainDictionary = new Dictionary<string, object>
             {
-                { "ocBaseUrl", linkGenerator.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.Create(null)) },
-                { "pecBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller => controller.GetAllTypes())},
-                 { "fcBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<FieldApiController>(controller => controller.GetAllUsers())},
-                { "settings", Config.Settings }
-            });
+                {
+                    "ocBaseUrl",
+                    linkGenerator.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.Create(null))
+                },
+                {
+                    "pecBaseUrl",
+                    linkGenerator.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller =>
+                        controller.GetAllTypes())
+                },
+                {
+                    "fcBaseUrl",
+                    linkGenerator.GetUmbracoApiServiceBaseUrl<FieldApiController>(
+                        controller => controller.GetAllUsers())
+                }
+            };
+
+            var settingDictionary = new Dictionary<string, object>();
+
+            foreach (var setting in Config?.Settings ?? new Dictionary<string, string>())
+                settingDictionary.Add(setting.Key, setting.Value);
+
+            mainDictionary.Add("settings", settingDictionary);
+
+            notification.ServerVariables.TryAdd("uioMatic", mainDictionary);
         }       
     }
 }

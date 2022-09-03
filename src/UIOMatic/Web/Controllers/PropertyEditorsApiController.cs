@@ -13,31 +13,25 @@ namespace UIOMatic.Web.Controllers
     [PluginController("UIOMatic")]
     public class PropertyEditorsApiController: UmbracoAuthorizedJsonController
     {
+        private readonly IUIOMaticHelper _helper;
+        private readonly IUIOMaticObjectService _service;
 
-        private IHttpContextAccessor httpContextAccessor;
-        public IHttpContextAccessor HttpContextAccessor => httpContextAccessor ??= HttpContext.RequestServices.GetService<IHttpContextAccessor>();
-        
-        private IUIOMaticHelper helper;
-        public IUIOMaticHelper Helper => helper ??= HttpContext.RequestServices.GetService<IUIOMaticHelper>();
-
-
-
-        private IUIOMaticObjectService _service;
-
-        public PropertyEditorsApiController()
+        public PropertyEditorsApiController(IUIOMaticObjectService uioMaticObjectService,
+            IUIOMaticHelper helper)
         {
-            _service = UIOMaticObjectService.Instance;
+            _service = uioMaticObjectService;
+            _helper = helper;
         }
 
         public IEnumerable<UIOMaticTypeInfo> GetAllTypes()
         {
-            var types = Helper.GetUIOMaticTypes();
+            var types = _helper.GetUIOMaticTypes();
             return types.Select(x => _service.GetTypeInfo(x));
         }
 
         public IEnumerable<string> GetAllColumns(string typeAlias)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
             return _service.GetAllColumns(t);
         }
     }

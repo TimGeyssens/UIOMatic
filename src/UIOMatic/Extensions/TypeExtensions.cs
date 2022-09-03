@@ -8,13 +8,6 @@ namespace UIOMatic.Extensions
 {
     internal static class TypeExtensions
     {
-        public static string GetTableName(this Type type)
-        {
-            var attr = type.GetCustomAttribute<TableNameAttribute>(false);
-            var name = attr != null ? attr.Value.Trim('[',']') : type.Name;
-            return name;
-        }
-
         public static string GetPrimaryKeyName(this Type type)
         {
             var attr = type.GetCustomAttribute<PrimaryKeyAttribute>(true);

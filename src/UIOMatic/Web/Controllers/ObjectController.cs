@@ -29,9 +29,10 @@ namespace UIOMatic.Web.Controllers
 
         public ObjectController(UiomaticContentAppFactoryCollection contentAppsFactoryCollection, 
             IEnumerable<IReadOnlyUserGroup> usergroups,
-            IUIOMaticHelper helper)
+            IUIOMaticHelper helper,
+            IUIOMaticObjectService uioMaticObjectService)
         {
-            _service = UIOMaticObjectService.Instance;
+            _service = uioMaticObjectService;
             _contentAppsFactoryCollection = contentAppsFactoryCollection;
             _usergroups = usergroups;
             Helper = helper;
