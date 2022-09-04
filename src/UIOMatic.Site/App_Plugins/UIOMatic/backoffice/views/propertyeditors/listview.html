@@ -1,0 +1,89 @@
+﻿<div ng-controller="UIOMatic.PropertyEditors.ListView">
+   
+        <div class="umb-panel-body umb-scrollable row-fluid">
+            <div class="tab-content form-horizontal">
+                <div class="umb-pane">
+
+                    <div class="umb-sub-header">
+                        <div class="btn-group" ng-hide="readOnly || hideCreate">
+                            <a class="btn" ng-click="addItem()">
+                                <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
+                            </a>
+                        </div>
+                        <div class="btn-group" ng-show="(!readonly && isAnythingSelected() && !hideDelete)">
+                            <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
+                                <localize key="actions_delete">Delete</localize>
+                            </a>
+                        </div>
+                     
+                        
+                        <form class="form-search pull-right ng-pristine ng-valid" novalidate="" ng-hide="hideSearch">
+                            <div class="inner-addon left-addon">
+                                <i class="icon icon-search"></i>
+                                <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="Type to search..." ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="umb-listview">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td class="checkbox-column" ng-hide="readOnly"></td>
+                                    <td ng-repeat="prop in properties">
+                                        <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
+                                        <i class="icon" ng-class="{'icon-navigation-up': !reverse, 'icon-navigation-down': reverse}" ng-show="predicate == prop.columnName"></i>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
+                                    <td class="checkbox-column" ng-hide="readOnly || hideDelete">
+                                        <i class="icon icon-edit"></i>
+                                        <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
+                                    </td>
+                                    <td ng-show="hideDelete">
+                                    
+                                    </td>
+                                    <td ng-repeat="prop in properties">
+                                        <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], view:prop.view, config:prop.config}">
+                                            <!-- Fake property object so we can reuse views -->
+                                            <a class="table__link" ng-click="editItem(getObjectKey(row))" ng-switch-when="true"> 
+                                                <span ng-include="prop.view"></span>
+                                            </a>
+                                            <span ng-switch-when="false">
+                                                <span ng-include="prop.view"></span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot ng-if="legacyPagination && totalPages > 1">
+                                <tr>
+                                    <th colspan="{{properties.length + 1}}">
+                                        <div class="pagination-right">
+                                            <uiomatic-pagination page-number="currentPage"
+                                                                 total-pages="totalPages"
+                                                                 on-next="nextPage"
+                                                                 on-prev="prevPage"
+                                                                 on-go-to-page="setPage">
+                                            </uiomatic-pagination>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div ng-if="!legacyPagination && totalPages > 1" class="text-center">
+                            <umb-pagination page-number="currentPage"
+                                            total-pages="totalPages"
+                                            on-next="nextPage"
+                                            on-prev="prevPage"
+                                            on-go-to-page="setPage">
+                            </umb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+   
+</div>

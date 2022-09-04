@@ -1,0 +1,10 @@
+﻿<div ng-controller="UIOMatic.FieldEditors.Checkboxlist">
+    <div ng-repeat="item in items">
+        <label>
+            <input type="checkbox"
+                   ng-model="item.selected"
+                   ng-change="setValue()"
+                   value="{{item.value}}"> {{item.text}}
+        </label>
+    </div>
+</div>

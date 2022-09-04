@@ -1,0 +1,11 @@
+﻿<div ng-controller="UIOMatic.FieldEditors.Pickers.UsersController">
+
+    <select size="10" multiple ng-multiple="true" ng-model="selectedUsers" ng-options="u.Name for u in users"></select>
+    
+    <a class="btn" ng-click="addUsersToSelection()">>></a>
+    <a class="btn" ng-click="removeUsersFromSelection()"><<</a>
+
+    <select size="10" multiple ng-multiple="true" ng-model="selectedUsers2" ng-options="u.Name for u in users2"></select>
+    <br/>
+    <input type="hidden" ng-model="property.value"/>
+</div>

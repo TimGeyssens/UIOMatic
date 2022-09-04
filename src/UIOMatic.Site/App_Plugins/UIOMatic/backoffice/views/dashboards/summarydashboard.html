@@ -1,0 +1,17 @@
+﻿<div ng-controller="UIOMatic.Dashboards.SummaryDashboardController" class="uiomatic__summary-dashboard">
+    <div ng-repeat="type in types" class="uiomatic__type-summary">
+        <div class="uiomatic__type-summary-inr"
+             ng-class="{ readonly:type.readOnly || type.renderType != 'List' }">
+
+            <i class="uiomatic__type-summary__icon icon {{type.folderIcon}}"></i>
+            <h1 class="uiomatic__type-summary__record-count">{{type.recordCount}}</h1>
+            <p ng-if="type.recordCount != 1" class="uiomatic__type-summary__type-name">{{type.namePlural}}</p>
+            <p ng-if="type.recordCount == 1" class="uiomatic__type-summary__type-name">{{type.nameSingular}}</p>
+
+            <div class="uiomatic__type-summary__toolbar">
+                <a ng-if="!type.readOnly" ng-href="#/uiomatic/uiomatic/edit/{{type.alias}}" title="Add"><i class="icon icon-add"></i></a>
+                <a ng-if="type.renderType == 'List'" href="" title="View List" ng-href="#/uiomatic/uiomatic/list/{{type.alias}}"><i class="icon icon-eye"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

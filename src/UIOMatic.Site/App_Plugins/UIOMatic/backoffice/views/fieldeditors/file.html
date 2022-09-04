@@ -1,0 +1,10 @@
+﻿<div ng-controller="UIOMatic.FieldEditors.File">
+    <div ng-if="property.value">
+        <div ng-if="isPicture(property.value)">
+            <img ng-src="{{property.value}}?width=200&height=200&mode=min" />
+        </div>
+        <small>{{property.value}}</small><br /><br />
+    </div>
+    <a href="" ng-click="openMediaPicker()" class="btn">Pick</a>
+    <a href="" ng-click="property.value=''" ng-if="property.value" class="btn">Clear</a>
+</div>

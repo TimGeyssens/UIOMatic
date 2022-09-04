@@ -1,0 +1,15 @@
+﻿<div class="umb-property-editor umb-datepicker" ng-controller="UIOMatic.FieldEditors.Date">
+
+    <div class="input-append date datepicker" id="datepicker{{property.name}}">
+        <input name="datepicker" data-format="{{config.format}}" type="text"
+               ng-model="datetimePickerValue" />
+        <span class="add-on">
+            <i class="icon-calendar"></i>
+        </span>
+    </div>
+
+    <p ng-show="hasDatetimePickerValue === true">
+        <a href ng-click="clearDate()"><i class="icon-delete"></i><small><localize key="content_removeDate">Clear date</localize></small></a>
+    </p>
+
+</div>

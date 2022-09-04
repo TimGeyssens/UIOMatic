@@ -1,0 +1,26 @@
+﻿<div class="umb-pane" ng-controller="uioMatic.ObjectDeleteController">
+    <p>
+        Are you sure you want to delete {{currentNode.name}} ?
+    </p>
+
+
+    <div>
+
+
+        <div class="umb-pane btn-toolbar umb-btn-toolbar">
+            <div class="control-group umb-control-group">
+                <umb-button type="button"
+                            action="cancelDelete()"
+                            button-style="link"
+                            label-key="general_cancel"
+                            label="Cancel"></umb-button>
+                <umb-button type="button"
+                            action="delete(currentNode.parentId, currentNode.id.split('?')[0])"
+                            button-style="primary"
+                            label-key="general_ok"
+                            state="deleteButtonState"
+                            label="OK"></umb-button>
+            </div>
+        </div>
+    </div>
+</div>

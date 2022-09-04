@@ -25,7 +25,7 @@
         </Content>
         <None Include="build\**\*.*">
             <Pack>True</Pack>
-            <PackagePath>buildTransitive</PackagePath>
+            <PackagePath>build</PackagePath>
         </None>
     </ItemGroup>
 </Project>

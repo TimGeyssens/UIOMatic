@@ -1,0 +1,6 @@
+﻿<div ng-controller="UIOMatic.FieldEditors.Dropdown">
+    <select name="select" id="" ng-model="property.value">
+        <option value="">---Please select---</option>
+        <option ng-repeat="item in items track by item.value" value="{{item.value}}">{{item.text}}</option>
+    </select>
+</div>

@@ -1,0 +1,49 @@
+﻿<div class="umb-listview" ng-controller="UIOMatic.FieldEditors.List">
+
+    <div class="umb-sub-header" ng-show="canEdit">
+        
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" ng-click="navigate('/uiomatic/uiomatic/edit/' + typeAlias + '%3F' + foreignKeyColumn + '=' + filterId  + '%26returnUrl=' + getReturnUrl())">
+                <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
+            </a>
+        </div>
+
+        <div class="btn-group" ng-show="isAnythingSelected()">
+            <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
+                <localize key="actions_delete">Delete</localize>
+            </a>
+        </div>
+
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td class="checkbox-column" ng-show="canEdit"></td>
+                <td ng-repeat="prop in properties">
+                    <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
+                    <i class="icon" ng-class="{'icon-navigation-up': reverse, 'icon-navigation-down': !reverse}" ng-show="predicate == prop.columnName"></i>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
+                <td class="checkbox-column" ng-hide="readOnly">
+                    <i class="icon icon-edit"></i>
+                    <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
+                </td>
+                <td ng-repeat="prop in properties">
+                    <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], view:prop.view, config:prop.config}">
+                        <!-- Fake property object so we can reuse views -->
+                        <a class="table__link" ng-click="navigate('/uiomatic/uiomatic/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias + '%26' + foreignKeyColumn + '=' + filterId + '%26returnUrl=' + getReturnUrl())" ng-switch-when="true">
+                            <span ng-include="prop.view"></span>
+                        </a>
+                        <span ng-switch-when="false">
+                            <span ng-include="prop.view"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

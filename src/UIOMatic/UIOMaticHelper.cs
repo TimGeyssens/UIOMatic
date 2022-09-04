@@ -7,6 +7,7 @@ using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
+using UIOMatic.Services;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Hosting;
@@ -21,21 +22,24 @@ namespace UIOMatic
         private readonly AppCaches _appCaches;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IScopeProvider _scopeProvider;
+        private readonly UIOMaticObjectService _uioMaticObjectService;
 
         public UIOMaticHelper(AppCaches appCaches, 
             IHostingEnvironment hostingEnvironment,
-            IScopeProvider scopeProvider)
+            IScopeProvider scopeProvider,
+            UIOMaticObjectService uioMaticObjectService)
         {
             _appCaches = appCaches;
             _hostingEnvironment = hostingEnvironment;
             _scopeProvider = scopeProvider;
+            _uioMaticObjectService = uioMaticObjectService;
         }
 
 
         public  IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
         {
             return typeof(DefaultUIOMaticRepository).IsAssignableFrom(attr.RepositoryType)
-                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo, _scopeProvider)
+                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo, _scopeProvider, _uioMaticObjectService)
                 : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, _scopeProvider);
         }
 
