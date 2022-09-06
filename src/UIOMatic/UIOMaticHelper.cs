@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using UIOMatic.Data;
 using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
@@ -17,22 +18,23 @@ namespace UIOMatic
 {
     public class UIOMaticHelper : IUIOMaticHelper
     {
-
-
         private readonly AppCaches _appCaches;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IScopeProvider _scopeProvider;
         private readonly UIOMaticObjectService _uioMaticObjectService;
+        private readonly ILogger<IUIOMaticHelper> _logger;
 
         public UIOMaticHelper(AppCaches appCaches, 
             IHostingEnvironment hostingEnvironment,
             IScopeProvider scopeProvider,
-            UIOMaticObjectService uioMaticObjectService)
+            UIOMaticObjectService uioMaticObjectService,
+            ILogger<IUIOMaticHelper> logger)
         {
             _appCaches = appCaches;
             _hostingEnvironment = hostingEnvironment;
             _scopeProvider = scopeProvider;
             _uioMaticObjectService = uioMaticObjectService;
+            _logger = logger;
         }
 
 
@@ -58,12 +60,12 @@ namespace UIOMatic
                 var UIOMaticTypes = EnsureUIOMaticTypes();
                 InsertLocalCacheItem("UIOMaticFolderTypes", () => UIOMaticTypes);
                 cachedItems = UIOMaticTypes;
-                //LogHelper.Debug<Helper>(string.Format("UIOMaticFolderTypes added to cache and returned from runtime with {0} items", cachedItems.Count()));
+                _logger.LogDebug(string.Format("UIOMaticFolderTypes added to cache and returned from runtime with {0} items", cachedItems.Count()));
 
             }
             else
             {
-                //LogHelper.Debug<Helper>(string.Format("UIOMaticFolderTypes returned directly from cache with {0} items", cachedItems.Count()));
+                _logger.LogDebug(string.Format("UIOMaticFolderTypes returned directly from cache with {0} items", cachedItems.Count()));
             }
 
             return cachedItems;

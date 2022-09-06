@@ -1,12 +1,11 @@
-﻿using NPoco;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using NPoco;
 using UIOMatic.Attributes;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
-namespace UIOMatic
+namespace UIOMatic.Site.ExampleCode
 {
-    //Should only be used when testing the package, otherwise it'll show up for other users
-    /*[UIOMatic("people", "People", "Person", FolderIcon = "icon-users", ItemIcon = "icon-user", RenderType =Enums.UIOMaticRenderType.List, ShowOnSummaryDashboard = true)]*/
+    [UIOMatic("people", "People", "Person", FolderIcon = "icon-users", ItemIcon = "icon-user", RenderType =Enums.UIOMaticRenderType.List, ShowOnSummaryDashboard = true)]
     [TableName("People")]
     public class Person
     {

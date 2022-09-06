@@ -21,11 +21,7 @@ namespace UIOMatic.Startup
             builder.Services.AddSingleton<UIOMaticObjectService>();
             builder.Services.AddSingleton<IUIOMaticObjectService, NPocoObjectService>();
 
-            builder.Services.AddSingleton<IUIOMaticConfiguration, UIOMaticConfiguration>
-            ((factory) =>
-                builder.Config
-                    .GetSection("UIOMatic")
-                    .Get<UIOMaticConfiguration>());
+            builder.Services.Configure<UIOMaticConfiguration>(builder.Config.GetSection("UIOMatic"));
             
             builder.UiomaticContentApps().Append<UiomaticEditorContentAppFactory>();
         }

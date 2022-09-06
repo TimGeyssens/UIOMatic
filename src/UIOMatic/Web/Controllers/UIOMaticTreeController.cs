@@ -7,6 +7,7 @@ using UIOMatic.Enums;
 using UIOMatic.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core;
@@ -23,7 +24,6 @@ using Umbraco.Cms.Web.Common.ModelBinders;
 
 namespace UIOMatic.Web.Controllers
 {
-    //[UmbracoTreeAuthorize("uiomatic")]
     [Tree(Constants.SectionAlias, Constants.TreeAlias, TreeTitle = "UI-O-Matic", SortOrder = 1)]
     [PluginController("UIOMatic")]
     public class UIOMaticTreeController : TreeController
