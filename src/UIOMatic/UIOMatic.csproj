@@ -13,7 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-        <PackageReference Include="Umbraco.Cms.Core" Version="9.0.0" />
+        <PackageReference Include="Umbraco.Cms.Core" Version="9.2.0" />
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />
     </ItemGroup>
