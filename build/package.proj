@@ -68,8 +68,8 @@
 	<!-- PREPARE FILES -->
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
-			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).dll" />
-			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).pdb" />
+			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net6.0\$(ProjectName).dll" />
+			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net6.0\$(ProjectName).pdb" />
 			<SrcFiles Include="$(ProjectDir)\**\*.cs" Exclude="$(ProjectDir)\obj\**"/>
 			<PluginFiles Include="$(ProjectDir)\App_Plugins\UIOMatic\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
@@ -82,8 +82,8 @@
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildUmbDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<!-- Nuget -->
-		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net5.0" />
-		<Copy SourceFiles="@(PdbFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net5.0" />
+		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net6.0" />
+		<Copy SourceFiles="@(PdbFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net6.0" />
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\content\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
