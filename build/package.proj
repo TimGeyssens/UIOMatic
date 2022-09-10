@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
 	<PropertyGroup>
-  		<TargetFrameworks>netcoreapp3.1;net462</TargetFrameworks>
+  		<TargetFrameworks>net6.0</TargetFrameworks>
 	</PropertyGroup>
 	<!-- IMPORTS -->
 	<PropertyGroup>
@@ -16,7 +16,7 @@
 	<!-- SHARED PROPERTIES -->
 	<PropertyGroup>
 		<PackageName>UIOMatic</PackageName>
-		<MinUmbracoVersion>9.0.0</MinUmbracoVersion>
+		<MinUmbracoVersion>10.0.0</MinUmbracoVersion>
 		<Readme>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Readme>
 		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
