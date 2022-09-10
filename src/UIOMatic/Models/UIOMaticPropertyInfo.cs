@@ -55,7 +55,7 @@ namespace UIOMatic.Models
         [JsonProperty("key")]
         public string Key { get; set; }
 
-        [JsonProperty("name")]
+        [JsonProperty("label")]
         public string Name { get; set; }
 
         [JsonProperty("columnName")]

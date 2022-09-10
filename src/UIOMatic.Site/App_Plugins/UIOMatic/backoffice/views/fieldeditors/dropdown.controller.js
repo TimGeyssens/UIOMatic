@@ -3,28 +3,28 @@
 
         function init() {
             load();
-            $rootScope.$broadcast('dropdownChanged', $scope.property);
+            $rootScope.$broadcast('dropdownChanged', $scope.model);
         }
 
         function load(value) {
 
-            if ($scope.property.config.foreignKeyColumn) {
+            if ($scope.model.config.foreignKeyColumn) {
                 // foreignKey Filter
-                var filterValue = (value || $scope.$parent.object[$scope.property.config.foreignKeyValueAlias]);
+                var filterValue = (value || $scope.$parent.object[$scope.model.config.foreignKeyValueAlias]);
                 if (filterValue) {
-                    uioMaticObjectResource.getPaged($scope.property.config.typeAlias,
+                    uioMaticObjectResource.getPaged($scope.model.config.typeAlias,
                         1000,
                         1,
-                        $scope.property.config.sortColumn,
+                        $scope.model.config.sortColumn,
                         "asc",
-                        $scope.property.config.foreignKeyColumn +
+                        $scope.model.config.foreignKeyColumn +
                         "|" +
                         filterValue,
                         "").then(function (response) {
                             $scope.items = response.items.map(function (itm) {
                                 return {
-                                    value: itm[$scope.property.config.valueColumn],
-                                    text: $interpolate($scope.property.config.textTemplate)(itm)
+                                    value: itm[$scope.model.config.valueColumn],
+                                    text: $interpolate($scope.model.config.textTemplate)(itm)
                                 }
                             });
                         });
@@ -34,12 +34,12 @@
             } else {
                 // All
                 uioMaticObjectResource
-                    .getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(
+                    .getAll($scope.model.config.typeAlias, $scope.model.config.sortColumn, "asc").then(
                         function (response) {
                             $scope.items = response.map(function (itm) {
                                 return {
-                                    value: itm[$scope.property.config.valueColumn],
-                                    text: $interpolate($scope.property.config.textTemplate)(itm)
+                                    value: itm[$scope.model.config.valueColumn],
+                                    text: $interpolate($scope.model.config.textTemplate)(itm)
                                 }
                             });
                         });
@@ -48,13 +48,13 @@
 
         // TODO: There has to be a better way to do this....
         var unregisterEventListner = $rootScope.$on('dropdownChanged', function (event, data) {
-            if (data.key === $scope.property.config.foreignKeyValueAlias) {
+            if (data.key === $scope.model.config.foreignKeyValueAlias) {
                 load(data.value);
             }
         });
 
         $scope.onChange = function () {
-            $rootScope.$broadcast('dropdownChanged', $scope.property);
+            $rootScope.$broadcast('dropdownChanged', $scope.model);
         }
 
         var appScope = $scope;

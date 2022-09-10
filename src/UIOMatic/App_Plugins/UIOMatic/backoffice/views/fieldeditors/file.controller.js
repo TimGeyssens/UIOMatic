@@ -14,7 +14,7 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.File",
 	    };
 
 	    function populateFile(item) {
-            $scope.property.value = item.image;
+            $scope.model.value = item.image;
 	    }
 
         $scope.isPicture = function(path) {

@@ -2,18 +2,18 @@
     function ($scope, $interpolate, uioMaticObjectResource) {
 
         function init() {
-            uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
+            uioMaticObjectResource.getAll($scope.model.config.typeAlias, $scope.model.config.sortColumn, "asc").then(function (response) {
                 $scope.items = response.map(function(itm) {
                     return {
-                        value: itm[$scope.property.config.valueColumn],
-                        text: $interpolate($scope.property.config.textTemplate)(itm)
+                        value: itm[$scope.model.config.valueColumn],
+                        text: $interpolate($scope.model.config.textTemplate)(itm)
                     }
                 });
             });
         }
 
         $scope.setValue = function (val) {
-            $scope.property.value = val;
+            $scope.model.value = val;
         }
 
         var appScope = $scope;

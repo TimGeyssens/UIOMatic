@@ -1,7 +1,7 @@
 ﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Pickers.ObjectController",
     function ($scope, $routeParams, $interpolate, $http, editorService, uioMaticObjectResource) {
 
-        $scope.maxItems = $scope.property.config.maxItems || 0;
+        $scope.maxItems = $scope.model.config.maxItems || 0;
 
         $scope.openDialog = function () {
             editorService.open({
@@ -13,8 +13,8 @@
                 },
                 dialogData: {
                     maxItems: $scope.maxItems > 0 ? $scope.maxItems - $scope.selectedIds.length : 0,
-                    typeAlias: $scope.property.config.typeAlias,
-                    textTemplate: $scope.property.config.textTemplate,
+                    typeAlias: $scope.model.config.typeAlias,
+                    textTemplate: $scope.model.config.textTemplate,
                     selectedIds: $scope.selectedIds
                 }
             });
@@ -29,10 +29,10 @@
             $scope.items = [];
             if ($scope.selectedIds.length > 0) {
                 angular.forEach($scope.selectedIds, function (id, idx) {
-                    uioMaticObjectResource.getById($scope.property.config.typeAlias, id).then(function (resp) {
+                    uioMaticObjectResource.getById($scope.model.config.typeAlias, id).then(function (resp) {
                         $scope.items.splice(idx, 0, {
                             id: id,
-                            text: $interpolate($scope.property.config.textTemplate)(resp)
+                            text: $interpolate($scope.model.config.textTemplate)(resp)
                         });
                     });
                 });
@@ -40,12 +40,12 @@
         }
 
         function init() {
-            $scope.selectedIds = $scope.property.value ? $scope.property.value.toString().split(',') : [];
+            $scope.selectedIds = $scope.model.value ? $scope.model.value.toString().split(',') : [];
 
             getFullDetails();
 
             $scope.$watch("selectedIds", function () {
-                $scope.property.value = $scope.selectedIds ? $scope.selectedIds.join() : undefined;
+                $scope.model.value = $scope.selectedIds ? $scope.selectedIds.join() : undefined;
             }, true);
 
             // Watch items for sorting

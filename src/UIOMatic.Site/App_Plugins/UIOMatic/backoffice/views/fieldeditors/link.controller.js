@@ -9,8 +9,8 @@
         }
 
         function load(value) {
-            if ($scope.property.config.URL && $scope.property.config.URL.match(urlRegex)) {
-                $scope.labelValue = $scope.property.config.URL
+            if ($scope.model.config.URL && $scope.model.config.URL.match(urlRegex)) {
+                $scope.labelValue = $scope.model.config.URL
             }
         }
 

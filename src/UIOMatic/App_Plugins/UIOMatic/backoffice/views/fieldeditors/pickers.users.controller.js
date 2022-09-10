@@ -11,7 +11,7 @@
                 $scope.selectedUsers2 = [];
                 $scope.users2 = [];
 
-                var ids = $scope.property.value.split(",");
+                var ids = $scope.model.value.split(",");
 
                 angular.forEach(ids, function (value) {
 
@@ -52,7 +52,7 @@
                     index = $scope.userIds.indexOf(value.Id);
                     $scope.userIds.splice(index, 1);
                         
-                    $scope.property.value = $scope.userIds.join();
+                    $scope.model.value = $scope.userIds.join();
                 }
 
             });
@@ -68,7 +68,7 @@
 
                     $scope.userIds.push(value.Id);
 
-                    $scope.property.value = $scope.userIds.join();
+                    $scope.model.value = $scope.userIds.join();
                 }
 
             });

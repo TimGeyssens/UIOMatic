@@ -4,12 +4,12 @@
         if ($routeParams.id.includes("?ta=")) {
             $scope.filterId = $routeParams.id.split("?")[0];
         }
-        $scope.typeAlias = $scope.property.config.typeAlias;
-        $scope.foreignKeyColumn = $scope.property.config.foreignKeyColumn;
+        $scope.typeAlias = $scope.model.config.typeAlias;
+        $scope.foreignKeyColumn = $scope.model.config.foreignKeyColumn;
 
         $scope.selectedIds = [];
         $scope.actionInProgress = false;
-        $scope.canEdit = $scope.property.config.canEdit != undefined ? $scope.property.config.canEdit : true;
+        $scope.canEdit = $scope.model.config.canEdit != undefined ? $scope.model.config.canEdit : true;
 
         $scope.reverse = false;
         $scope.initialFetch = true;

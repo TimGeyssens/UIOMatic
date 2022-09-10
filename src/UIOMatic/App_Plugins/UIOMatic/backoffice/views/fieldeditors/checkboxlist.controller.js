@@ -3,25 +3,25 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.Checkboxlist",
 
         $scope.delimiter = ",";
 
-        if ($scope.property.config.delimiter)
-            $scope.delimiter = $scope.property.config.delimiter;
+        if ($scope.model.config.delimiter)
+            $scope.delimiter = $scope.model.config.delimiter;
 
         $scope.selectedValues = [];
 
         function updateSelected() {
-            if ($scope.property.value) {
-                $scope.selectedValues = $scope.property.value.toString().split($scope.delimiter);
+            if ($scope.model.value) {
+                $scope.selectedValues = $scope.model.value.toString().split($scope.delimiter);
             }
         }
 
         updateSelected();
 
         function init() {
-            uioMaticObjectResource.getAll($scope.property.config.typeAlias, $scope.property.config.sortColumn, "asc").then(function (response) {
+            uioMaticObjectResource.getAll($scope.model.config.typeAlias, $scope.model.config.sortColumn, "asc").then(function (response) {
                 $scope.items = response.map(function(itm) {
                     var item = {
-                        value: itm[$scope.property.config.valueColumn],
-                        text: $interpolate($scope.property.config.textTemplate)(itm)
+                        value: itm[$scope.model.config.valueColumn],
+                        text: $interpolate($scope.model.config.textTemplate)(itm)
                     }
                     item.selected = _.indexOf($scope.selectedValues, item.value.toString()) > -1;
                     return item;
@@ -37,7 +37,7 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.Checkboxlist",
                     val.push(itm.value);
             });
 
-            $scope.property.value = val.join($scope.delimiter);
+            $scope.model.value = val.join($scope.delimiter);
         }
 
         var appScope = $scope;

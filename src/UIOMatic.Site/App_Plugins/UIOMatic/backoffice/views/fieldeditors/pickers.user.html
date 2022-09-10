@@ -1,8 +1,8 @@
 ﻿<div ng-controller="UIOMatic.FieldEditors.Pickers.UserController">
-    <select ng-model="property.value" >
+    <select ng-model="model.value" >
 
         <option value="">---Please select---</option>
-        <option ng-selected="{{u.Id == property.value}}"
+        <option ng-selected="{{u.Id == model.value}}"
                 ng-repeat="u in users"
                 value="{{u.Id}}">
             {{u.Name}}

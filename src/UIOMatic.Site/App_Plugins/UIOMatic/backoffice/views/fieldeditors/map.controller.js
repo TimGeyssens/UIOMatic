@@ -3,7 +3,7 @@
 
 	    var map, marker, input, tabLinkSelector, markerZoom = 15;
 
-	    $scope.config = $scope.property.config;
+		$scope.config = $scope.model.config;
 	    $scope.center = $scope.config.center;
 
 	    $scope.setValue = function (lat, lng) {
@@ -25,7 +25,7 @@
 	            marker.setMap(map);
 	            marker.setPosition(val);
 	        }
-	        $scope.property.value = ($scope.property.type === "System.String") ? JSON.stringify(val) : val;
+			$scope.model.value = ($scope.model.type === "System.String") ? JSON.stringify(val) : val;
 	    }
 
 	    $scope.clearValue = function () {
@@ -34,23 +34,23 @@
 	        }
 	        map.setCenter($scope.center);
 	        map.setZoom($scope.center.zoom);
-	        $scope.property.value = "";
+			$scope.model.value = "";
 	    }
 
 	    $scope.initMap = function () {
 
 	        var value, startPos = $scope.center || { lat: 55.37805, lng: -3.4359, zoom: 5 };
-	        if ($scope.property.value) {
-	            startPos = value = ($scope.property.type === "System.String" && typeof $scope.property.value === "string") ? JSON.parse($scope.property.value) : $scope.property.value;
+			if ($scope.model.value) {
+				startPos = value = ($scope.model.type === "System.String" && typeof $scope.model.value === "string") ? JSON.parse($scope.model.value) : $scope.model.value;
 	            startPos.zoom = markerZoom;
 	        }
 
-	        map = new google.maps.Map(document.getElementsByClassName($scope.property.key.toLowerCase() + "_map")[0], {
+			map = new google.maps.Map(document.getElementsByClassName($scope.model.key.toLowerCase() + "_map")[0], {
 	            center: startPos,
 	            zoom: startPos.zoom
 	        });
 
-	        input = document.getElementsByClassName($scope.property.key.toLowerCase() + "_search")[0];
+			input = document.getElementsByClassName($scope.model.key.toLowerCase() + "_search")[0];
 	        google.maps.event.addDomListener(input, 'keydown', function (e) {
 	            if (e.keyCode == 13) {
 	                e.preventDefault();
@@ -80,7 +80,7 @@
 	            $scope.setValue(value.lat, value.lng);
 	        }
 
-	        tabLinkSelector = 'a[data-toggle="tab"]:contains("' + ($scope.property.tab == "" ? "General" : $scope.property.tab) + '")';
+			tabLinkSelector = 'a[data-toggle="tab"]:contains("' + ($scope.model.tab == "" ? "General" : $scope.model.tab) + '")';
 	        $(tabLinkSelector).on('shown', function (e) {
 	            var center = map.getCenter();
 	            google.maps.event.trigger(map, 'resize');

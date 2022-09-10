@@ -21,9 +21,9 @@
             }
         };
 
-        $scope.config = angular.extend(config, $scope.property.config);
+        $scope.config = angular.extend(config, $scope.model.config);
 
-        if ($scope.property.view.endsWith("date.html")) {
+        if ($scope.model.view.endsWith("date.html")) {
             $scope.config.pickTime = false;
         }
 
@@ -60,28 +60,28 @@
             if ($scope.hasDatetimePickerValue) {
                 var elementData = $element.find("div:first").data().DateTimePicker;
                 if ($scope.config.storeUtc) {
-                    $scope.property.value = elementData.getDate().utc().format(DATE_TIME_FORMAT);
+                    $scope.model.value = elementData.getDate().utc().format(DATE_TIME_FORMAT);
                 } else {
-                    $scope.property.value = elementData.getDate().format(DATE_TIME_FORMAT);
+                    $scope.model.value = elementData.getDate().format(DATE_TIME_FORMAT);
                     if ($scope.config.storeUtcOffset) {
-                        $scope.property.value += $scope.offset;
+                        $scope.model.value += $scope.offset;
                     }
                 }
             }
             else {
-                if ($scope.property.type === "System.DateTime") {
-                    $scope.property.value = DATE_TIME_MIN.replace('T', ' ');
-                } else if ($scope.property.type === "System.DateTimeOffset") {
-                    $scope.property.value = DATE_TIME_OFFSET_MIN.replace('T', ' ');
+                if ($scope.model.type === "System.DateTime") {
+                    $scope.model.value = DATE_TIME_MIN.replace('T', ' ');
+                } else if ($scope.model.type === "System.DateTimeOffset") {
+                    $scope.model.value = DATE_TIME_OFFSET_MIN.replace('T', ' ');
                 } else {
-                    $scope.property.value = null;
+                    $scope.model.value = null;
                 }
             }
         }
 
         function init() {
 
-            var initValue = $scope.property.value;
+            var initValue = $scope.model.value;
             if (initValue === DATE_TIME_MIN)
                 initValue = null;
 

@@ -21,7 +21,7 @@ angular.module("umbraco").controller("UIOMatic.FieldEditors.RTE", function ($sco
             if ($scope.property != undefined && $scope.properties != undefined) {
                 var result = $.grep($scope.properties, function (e) { return e.key === rowProps.key; });
                 if (result != null && result != undefined && result.length > 0) {
-                    result[0].value = $scope.property.value;
+                    result[0].value = $scope.model.value;
                 }
             }
         }, true);
