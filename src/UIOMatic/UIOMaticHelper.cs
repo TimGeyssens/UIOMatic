@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using UIOMatic.Data;
 using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
 using UIOMatic.Attributes;
 using UIOMatic.Models;
+using UIOMatic.Services;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Hosting;
@@ -16,26 +18,30 @@ namespace UIOMatic
 {
     public class UIOMaticHelper : IUIOMaticHelper
     {
-
-
         private readonly AppCaches _appCaches;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IScopeProvider _scopeProvider;
+        private readonly UIOMaticObjectService _uioMaticObjectService;
+        private readonly ILogger<IUIOMaticHelper> _logger;
 
         public UIOMaticHelper(AppCaches appCaches, 
             IHostingEnvironment hostingEnvironment,
-            IScopeProvider scopeProvider)
+            IScopeProvider scopeProvider,
+            UIOMaticObjectService uioMaticObjectService,
+            ILogger<IUIOMaticHelper> logger)
         {
             _appCaches = appCaches;
             _hostingEnvironment = hostingEnvironment;
             _scopeProvider = scopeProvider;
+            _uioMaticObjectService = uioMaticObjectService;
+            _logger = logger;
         }
 
 
         public  IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
         {
             return typeof(DefaultUIOMaticRepository).IsAssignableFrom(attr.RepositoryType)
-                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo, _scopeProvider)
+                ? (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, attr, typeInfo, _scopeProvider, _uioMaticObjectService)
                 : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, _scopeProvider);
         }
 
@@ -54,12 +60,12 @@ namespace UIOMatic
                 var UIOMaticTypes = EnsureUIOMaticTypes();
                 InsertLocalCacheItem("UIOMaticFolderTypes", () => UIOMaticTypes);
                 cachedItems = UIOMaticTypes;
-                //LogHelper.Debug<Helper>(string.Format("UIOMaticFolderTypes added to cache and returned from runtime with {0} items", cachedItems.Count()));
+                _logger.LogDebug(string.Format("UIOMaticFolderTypes added to cache and returned from runtime with {0} items", cachedItems.Count()));
 
             }
             else
             {
-                //LogHelper.Debug<Helper>(string.Format("UIOMaticFolderTypes returned directly from cache with {0} items", cachedItems.Count()));
+                _logger.LogDebug(string.Format("UIOMaticFolderTypes returned directly from cache with {0} items", cachedItems.Count()));
             }
 
             return cachedItems;

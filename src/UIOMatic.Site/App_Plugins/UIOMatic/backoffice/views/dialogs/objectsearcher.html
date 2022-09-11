@@ -1,0 +1,65 @@
+﻿<div ng-controller="UIOMatic.PropertyEditors.Dialogs.Searcher as vm" class="uiomatic">
+    <div class="umb-editor-header">
+        <div class="flex items-center" style="height: 100%;" ng-hide="loading" aria-hidden="false">
+            <div class="flex items-center" style="flex: 1;">
+                <div id="nameField" class="umb-editor-header__name-and-description">
+                    <div class="umb-panel-header-name ng-binding ng-scope" title="">{{model.dialogData.label}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="umb-editor-container umb-panel-body with-footer">
+        <div class="umb-pane">
+            <div class="umb-box">
+                <div class="umb-box-content">
+                    <div class="umb-control-group">
+                        <form class="form-search" novalidate="">
+                            <i class="icon icon-search"></i>
+                            <input type="text" class="umb-search-field search-query -full-width-input" localize="placeholder" placeholder="@placeholders_search" ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
+                        </form>
+                    </div>
+
+
+                    <ul class="umb-tree">
+                        <li ng-repeat="item in items" ng-class="{'umb-tree-node-checked':isSelected(item)}" class="umb-tree-item">
+                            <div class="umb-tree-item__inner">
+                                <i class="icon umb-tree-icon sprTree {{itemIcon}}" ng-click="toggleSelection(item)" title="#"></i>
+
+                                <a class="umb-tree-item__label umb-outline" href="#" ng-click="toggleSelection(item)" prevent-default>{{item.text}}</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="pagination-center block" ng-if="totalPages > 1">
+                        <uiomatic-pagination page-size="3"
+                                             page-number="currentPage"
+                                             total-pages="totalPages"
+                                             on-next="nextPage"
+                                             on-prev="prevPage"
+                                             on-go-to-page="setPage">
+                        </uiomatic-pagination>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <umb-editor-footer>
+        <umb-editor-footer-content-right>
+            <umb-button type="button"
+                        button-style="link"
+                        label-key="general_close"
+                        shortcut="esc"
+                        action="vm.close()">
+            </umb-button>
+            <umb-button type="button"
+                        button-style="action"
+                        label-key="general_submit"
+                        action="vm.submit()">
+            </umb-button>
+        </umb-editor-footer-content-right>
+    </umb-editor-footer>
+</div>

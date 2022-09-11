@@ -1,0 +1,22 @@
+﻿<div ng-controller="UIOMatic.FieldEditors.Pickers.ObjectController">
+
+    <ul class="unstyled list-icons" ui-sortable ng-model="items">
+        <li ng-repeat="item in items">
+            <i class="icon icon-navigation handle"></i>
+            <a href="#" prevent-default ng-click="remove($index)">
+                <i class="icon icon-delete red hover-show" style="margin-left: -5px;"></i>
+                {{item.text}}
+            </a>
+        </li>
+    </ul>
+
+    <ul class="unstyled list-icons" ng-show="maxItems == 0 || items.length < maxItems">
+        <li>
+            <i class="icon icon-add blue"></i>
+            <a href="#" ng-click="openDialog()" prevent-default>
+                <localize key="general_add">Add</localize>
+            </a>
+        </li>
+    </ul>
+
+</div>

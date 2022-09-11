@@ -1,65 +1,55 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UIOMatic.Web.Controllers;
-using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
-using Umbraco.Cms.Core.Routing;
 using Umbraco.Extensions;
 
 namespace UIOMatic.Web
 {
     public class UIOMaticServerVariablesHandler : INotificationHandler<ServerVariablesParsingNotification>
     {
+        private LinkGenerator _linkGenerator;
+        private UIOMaticConfiguration _config;
 
-        private LinkGenerator linkGenerator;
-        private UriUtility uriUtility;
-
-        private readonly IUIOMaticConfiguration Config;
-
-        private string umbracoMvcArea;
-
-        public UIOMaticServerVariablesHandler(LinkGenerator linkGenerator, UriUtility uriUtility,
-            IOptions<GlobalSettings> globalSettings,
-            Umbraco.Cms.Core.Hosting.IHostingEnvironment hostingEnvironment,
-            IUIOMaticConfiguration config)
+        public UIOMaticServerVariablesHandler(LinkGenerator linkGenerator,
+            IOptionsMonitor<UIOMaticConfiguration> configOptions)
         {
-            this.linkGenerator = linkGenerator;
-            this.uriUtility = uriUtility;
-            Config = config;
+            _linkGenerator = linkGenerator;
 
-             umbracoMvcArea = globalSettings.Value.GetUmbracoMvcArea(hostingEnvironment);
-
+            _config = configOptions.CurrentValue;
+            configOptions.OnChange(newValue => _config = newValue);
         }
 
         public void Handle(ServerVariablesParsingNotification notification)
         {
-            ////old: to do:config
-            //var settingDictionary = new Dictionary<string, object>();
-
-            //foreach (var setting in Config.Settings)
-            //    settingDictionary.Add(setting.Key, setting.Value);
-
-            //mainDictionary.Add("settings", settingDictionary);
-
-            //if (!e.Keys.Contains("uioMatic"))
-            //{
-            //    e.Add("uioMatic", mainDictionary);
-            //}
-
-            notification.ServerVariables.Add("uioMatic", new Dictionary<string, object>
+            var mainDictionary = new Dictionary<string, object>
             {
-                { "ocBaseUrl", linkGenerator.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.Create(null)) },
-                { "pecBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller => controller.GetAllTypes())},
-                 { "fcBaseUrl",  linkGenerator.GetUmbracoApiServiceBaseUrl<FieldApiController>(controller => controller.GetAllUsers())},
-                { "settings", Config.Settings }
-            });
-        }       
+                {
+                    "ocBaseUrl",
+                    _linkGenerator.GetUmbracoApiServiceBaseUrl<ObjectController>(controller => controller.Create(null))
+                },
+                {
+                    "pecBaseUrl",
+                    _linkGenerator.GetUmbracoApiServiceBaseUrl<PropertyEditorsApiController>(controller =>
+                        controller.GetAllTypes())
+                },
+                {
+                    "fcBaseUrl",
+                    _linkGenerator.GetUmbracoApiServiceBaseUrl<FieldApiController>(
+                        controller => controller.GetAllUsers())
+                }
+            };
+
+            var settingDictionary = new Dictionary<string, object>();
+
+            settingDictionary.Add("defaultListViewPageSize", _config.DefaultListViewPageSize);
+            settingDictionary.Add("rteFieldEditorButtons", _config.RteFieldEditorButtons);
+
+            mainDictionary.Add("settings", settingDictionary);
+
+            notification.ServerVariables.TryAdd("uioMatic", mainDictionary);
+        }
     }
 }

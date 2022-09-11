@@ -1,0 +1,209 @@
+﻿/*
+    Input Styles
+*/
+.uiomatic .umb-textstring {
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.uiomatic .datepicker {
+    position: relative;
+}
+
+.block {
+    display: block;
+}
+
+/*
+    Map Styles
+*/
+.uiomatic_map .uiomatic_map_controls {
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 36px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.uiomatic_map .uiomatic_map_search {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 300px;
+    display: none;
+}
+
+.uiomatic_map .uiomatic_map_map {
+    width: 66.6%;
+    height: 500px;
+}
+
+    .uiomatic_map .uiomatic_map_map .uiomatic_map_search {
+        display: inline-block;
+    }
+
+.uiomatic_map .uiomatic_map_search:focus {
+    border-color: #4d90fe;
+}
+
+/*
+    Action Styles
+*/
+.uiomatic__action-menu-container {
+    float: right;
+    margin: 20px 20px 0 0;
+    position: relative;
+}
+
+    .uiomatic__action-menu-container .action a {
+        cursor: pointer
+    }
+
+/* 
+    List View Styles
+*/
+.uiomatic .tab-content {
+    padding-bottom: 90px;
+}
+
+.uiomatic__filter-label {
+    line-height: 28px;
+    /*border-left: 1px solid #ccc;*/
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+    padding-left: 10px;
+}
+
+    .uiomatic__filter-label.readonly {
+        border-left: 0;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+.uiomatic .table .checkbox-column {
+    width: 35px
+}
+
+.uiomatic .table .table__link {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 
+    Object Searcher Styles
+*/
+
+.uiomatic__object-searcher__list {
+    list-style-type: none;
+}
+
+/*
+    Type Summary Styles
+*/
+.uiomatic__summary-dashboard {
+    position: relative;
+}
+
+.uiomatic__type-summary {
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    max-width: 320px;
+    padding: 0 10px 20px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 800px) {
+    .uiomatic__type-summary {
+        width: 33%;
+    }
+}
+
+@media (min-width: 1100px) {
+    .uiomatic__type-summary {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .uiomatic__type-summary {
+        width: 33%;
+    }
+}
+
+.uiomatic__type-summary-inr {
+    position: relative;
+    display: block;
+    background-color: #f8f8f8;
+    padding: 15px 45px 15px 90px;
+    border: 2px solid #f8f8f8;
+}
+
+    .uiomatic__type-summary-inr:hover {
+        border-color: #2e8aea;
+        text-decoration: none !important;
+    }
+
+    .uiomatic__type-summary-inr.readonly:hover {
+        border-color: #f8f8f8;
+    }
+
+.uiomatic__type-summary__icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    font-size: 50px;
+    line-height: 50px;
+    width: 80px;
+    margin-top: -25px;
+    color: #2e8aea;
+}
+
+.uiomatic__type-summary__record-count {
+    margin: 0;
+    font-size: 40px;
+    display: inline-block;
+}
+
+.uiomatic__type-summary__type-name {
+    margin: 0;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.uiomatic__type-summary-inr:hover .uiomatic__type-summary__toolbar {
+    display: block;
+}
+
+.uiomatic__type-summary__toolbar {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: #2e8aea;
+    color: white;
+}
+
+    .uiomatic__type-summary__toolbar a {
+        display: block;
+        font-size: 18px;
+        width: 28px;
+        line-height: 24px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        margin-right: -2px;
+    }
+
+        .uiomatic__type-summary__toolbar a:hover {
+            text-decoration: none;
+        }

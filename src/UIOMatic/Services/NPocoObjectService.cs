@@ -24,15 +24,18 @@ namespace UIOMatic.Services
         private readonly AppCaches _appCaches;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IUIOMaticHelper Helper;
+        private readonly UIOMaticObjectService _uioMaticObjectService;
 
 
         public NPocoObjectService(AppCaches appCaches, 
             IHostingEnvironment hostingEnvironment,
-            IUIOMaticHelper helper)
+            IUIOMaticHelper helper,
+            UIOMaticObjectService uioMaticObjectService)
         {
             _appCaches = appCaches;
             _hostingEnvironment = hostingEnvironment;
             Helper = helper;
+            _uioMaticObjectService = uioMaticObjectService;
         }
 
         public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
@@ -85,13 +88,13 @@ namespace UIOMatic.Services
             var repo = Helper.GetRepository(attri, typeInfo);
             
             var a1 = new ObjectEventArgs(typeInfo.Type, obj);
-            UIOMaticObjectService.OnCreatingObject(a1);
+            _uioMaticObjectService.OnCreatingObject(a1);
             obj = a1.Object;
 
             obj = repo.Create(obj);
 
             var a2 = new ObjectEventArgs(typeInfo.Type, obj);
-            UIOMaticObjectService.OnCreatedObject(a2);
+            _uioMaticObjectService.OnCreatedObject(a2);
 
             return a2.Object;
         }
@@ -105,13 +108,13 @@ namespace UIOMatic.Services
             var repo = Helper.GetRepository(attri, typeInfo);
 
             var a1 = new ObjectEventArgs(typeInfo.Type, obj);
-            UIOMaticObjectService.OnUpdatingObject(a1);
+            _uioMaticObjectService.OnUpdatingObject(a1);
             obj = a1.Object;
 
             obj = repo.Update(obj);
 
             var a2 = new ObjectEventArgs(typeInfo.Type, obj);
-            UIOMaticObjectService.OnUpdatedObject(a2);
+            _uioMaticObjectService.OnUpdatedObject(a2);
 
             return a2.Object;
         }
@@ -123,13 +126,13 @@ namespace UIOMatic.Services
             var repo = Helper.GetRepository(attri, typeInfo);
             
             var a1 = new DeleteEventArgs(typeInfo.Type, ids);
-            UIOMaticObjectService.OnDeletingObjects(a1);
+            _uioMaticObjectService.OnDeletingObjects(a1);
             ids = a1.Ids;
 
             repo.Delete(ids);
             
             var a2 = new DeleteEventArgs(typeInfo.Type, ids);
-            UIOMaticObjectService.OnDeletedObjects(a2);
+            _uioMaticObjectService.OnDeletedObjects(a2);
 
             return a2.Ids;
         }
@@ -417,7 +420,7 @@ namespace UIOMatic.Services
             var obj = Activator.CreateInstance(type);
 
             var a1 = new ObjectEventArgs(type, obj);
-            UIOMaticObjectService.OnScaffoldingObject(a1);
+            _uioMaticObjectService.OnScaffoldingObject(a1);
 
             return a1.Object;
         }

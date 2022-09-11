@@ -1,36 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
-using UIOMatic.Services;
-
-
-namespace UIOMatic
+﻿namespace UIOMatic
 {
-    public class UIOMaticConfiguration : IUIOMaticConfiguration
+    public class UIOMaticConfiguration
     {
-        public string PluginFolder => "~/App_plugins/UIOMatic";
+        public int DefaultListViewPageSize { get; set; } = 10;
 
-       
-        public Dictionary<string, string> Settings { get; set; }
-
-
-        public string DefaultObjectService { get; set; }
-
-        public Type DefaultObjectServiceType 
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(DefaultObjectService) ? Type.GetType(DefaultObjectService) : typeof(NPocoObjectService);
-            }
-        }
-    }
-
-    public interface IUIOMaticConfiguration
-    {
-        string PluginFolder { get; }
-        Dictionary<string, string> Settings { get; set; }
-        Type DefaultObjectServiceType { get;  }
-
-        string DefaultObjectService { get; set; }
+        public string RteFieldEditorButtons { get; set; } =
+            "[\"preview\", \"|\", \"undo\", \"redo\", \"|\", \"copy\", \"cut\", \"paste\", \"|\", \"bold\", \"italic\", \"|\", \"link\", \"unlink\"]";
     }
 }

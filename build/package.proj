@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
 	<PropertyGroup>
-  		<TargetFrameworks>netcoreapp3.1;net462</TargetFrameworks>
+  		<TargetFrameworks>net6.0</TargetFrameworks>
 	</PropertyGroup>
 	<!-- IMPORTS -->
 	<PropertyGroup>
@@ -16,7 +16,7 @@
 	<!-- SHARED PROPERTIES -->
 	<PropertyGroup>
 		<PackageName>UIOMatic</PackageName>
-		<MinUmbracoVersion>9.0.0</MinUmbracoVersion>
+		<MinUmbracoVersion>10.0.0</MinUmbracoVersion>
 		<Readme>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Readme>
 		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
@@ -68,8 +68,8 @@
 	<!-- PREPARE FILES -->
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
-			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).dll" />
-			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net5.0\$(ProjectName).pdb" />
+			<BinFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net6.0\$(ProjectName).dll" />
+			<PdbFiles Include="$(ProjectDir)\bin\$(BuildConfig)\net6.0\$(ProjectName).pdb" />
 			<SrcFiles Include="$(ProjectDir)\**\*.cs" Exclude="$(ProjectDir)\obj\**"/>
 			<PluginFiles Include="$(ProjectDir)\App_Plugins\UIOMatic\**\*.*" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
@@ -82,8 +82,8 @@
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildUmbDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<!-- Nuget -->
-		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net5.0" />
-		<Copy SourceFiles="@(PdbFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net5.0" />
+		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net6.0" />
+		<Copy SourceFiles="@(PdbFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net6.0" />
 		<Copy SourceFiles="@(PluginFiles)" DestinationFiles="@(PluginFiles->'$(BuildNuGetDir)\content\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />

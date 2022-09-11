@@ -6,6 +6,8 @@ using UIOMatic.Attributes;
 using UIOMatic.Enums;
 using UIOMatic.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core;
@@ -22,10 +24,9 @@ using Umbraco.Cms.Web.Common.ModelBinders;
 
 namespace UIOMatic.Web.Controllers
 {
-    //[UmbracoTreeAuthorize("uiomatic")]
     [Tree(Constants.SectionAlias, Constants.TreeAlias, TreeTitle = "UI-O-Matic", SortOrder = 1)]
     [PluginController("UIOMatic")]
-    public class UIOMaticTreeController : TreeController, ISearchableTree
+    public class UIOMaticTreeController : TreeController
     {
         private IUIOMaticObjectService _service;
         private readonly IUIOMaticHelper Helper;
@@ -37,10 +38,11 @@ namespace UIOMatic.Web.Controllers
             UmbracoApiControllerTypeCollection umbracoApiControllerTypeCollection,
             IMenuItemCollectionFactory menuItemCollectionFactory,
             IEventAggregator eventAggregator,
-            IUIOMaticHelper helper)
+            IUIOMaticHelper helper,
+            IUIOMaticObjectService uioMaticObjectService)
             : base(localizedTextService, umbracoApiControllerTypeCollection, eventAggregator)
         {
-            _service = UIOMaticObjectService.Instance;
+            _service = uioMaticObjectService;
             _menuItemCollectionFactory = menuItemCollectionFactory ?? throw new ArgumentNullException(nameof(menuItemCollectionFactory));
             Helper = helper;
         }
@@ -223,13 +225,5 @@ namespace UIOMatic.Web.Controllers
                 return menu;
             }
         }
-
-        IEnumerable<SearchResultEntity> ISearchableTree.Search(string query, int pageSize, long pageIndex, out long totalFound, string searchFrom)
-        {
-            totalFound = 0;
-            return new List<SearchResultEntity>();
-        }
     }
-
-
 }

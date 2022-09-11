@@ -1,0 +1,142 @@
+﻿<div ng-controller="uioMatic.ObjectListController" class="uiomatic">
+    <umb-load-indicator ng-if="loading"></umb-load-indicator>
+
+
+    <umb-editor-view>
+
+
+        <div class="umb-editor-header">
+            <div class="flex items-center" style="height: 100%;">
+                <div class="flex items-center" style="flex: 1;">
+                    <div id="nameField" class="umb-editor-header__name-and-description" style="flex: 1 1 auto;">
+                        <div class="umb-panel-header-name" title="">{{title}}</div>
+                    </div>
+                </div>
+
+                <div class="pull-right" style="position: relative;" ng-show="listViewActions">
+                    <umb-button type="button" button-style="white" action="dropdown.isOpen = !dropdown.isOpen" label-key="general_actions" show-caret="true" has-popup="true" is-expanded="dropdown.isOpen">
+
+                    </umb-button>
+
+                    <ul class="umb-actions dropdown-menu" role="menu" on-outside-click="close()" ng-if="dropdown.isOpen" on-close="dropdown.isOpen = false" deep-blur="dropdown.isOpen = false">
+                        <li role="menuitem" class="umb-action" ng-repeat="action in listViewActions">
+                            <button type="button" ng-click="openAction(action)">
+                                <i class="icon {{action.icon}}" aria-hidden="true" ng-show="action.icon"></i> <span class="menu-label">{{action.name}}</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <umb-editor-container>
+
+            <umb-editor-sub-header>
+
+                <div class="umb-editor-sub-header__content-left">
+                    <div class="btn-group" ng-hide="readOnly">
+                        <a class="btn btn-white" ng-click="navigate('/' + currentSection + '/uiomatic/edit/' + typeAlias)">
+                            <localize key="actions_create" class="ng-isolate-scope ng-scope">Create</localize>
+                        </a>
+                    </div>
+
+
+                    <div class="btn-group" ng-show="!readonly && isAnythingSelected()">
+                        <a class="btn umb-button__button btn-white umb-button--xs" ng-disabled="actionInProgress" ng-click="delete()" prevent-default="">
+                            <i class="icon-trash umb-button__icon" aria-hidden="true"></i>
+                            <localize key="actions_delete">Delete</localize>
+                        </a>
+                    </div>
+
+                    <div class="btn-group uiomatic__filter-label" ng-class="{ readonly:readOnly }" ng-if="filterProperties.length > 0">
+                        Filter by:
+                    </div>
+
+                    <div class="btn-group" ng-repeat="property in filterProperties">
+                        <span ng-include="property.view"></span>
+                    </div>
+                </div>
+                <div class="umb-editor-sub-header__content-right">
+                    <form class="form-search pull-right ng-pristine ng-valid" novalidate="">
+                        <div class="inner-addon left-addon">
+                            <i class="icon icon-search"></i>
+                            <input type="text" class="form-control ng-pristine ng-valid" localize="placeholder" placeholder="@placeholders_search" ng-model="searchFilter" prevent-enter-submit="" no-dirty-check="" ng-change="search(searchFilter)">
+                        </div>
+                    </form>
+
+                </div>
+            </umb-editor-sub-header>
+
+            <div class="umb-listview">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td class="checkbox-column" ng-hide="readOnly">
+                                <input type="checkbox" ng-click="toggleSelectAll($event)">
+                            </td>
+                            <td ng-repeat="prop in properties">
+                                <a href="" class="sortable" ng-click="order(prop.columnName)">{{prop.name}}</a>
+                                <i class="icon" ng-class="{'icon-navigation-up': !reverse, 'icon-navigation-down': reverse}" ng-show="predicate == prop.columnName"></i>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in rows" ng-class="{selected: isRowSelected(row)}">
+                            <td class="checkbox-column" ng-hide="readOnly">
+                                <i class="icon icon-edit"></i>
+                                <input type="checkbox" name="selectedItems[]" value="{{getObjectKey(row)}}" ng-checked="isRowSelected(row)" ng-click="toggleSelection(getObjectKey(row))" />
+                            </td>
+                            <td ng-repeat="prop in properties">
+                                <div ng-switch="isColumnLinkable(prop, $index)" ng-init="property = {value:row[prop.key], view:prop.view, config:prop.config}">
+                                    <!-- Fake property object so we can reuse views -->
+                                    <a class="table__link" ng-click="navigate('/' + currentSection + '/uiomatic/edit/' + getObjectKey(row) + '%3Fta=' + typeAlias)" ng-switch-when="true">
+                                        <span ng-include="prop.view"></span>
+                                    </a>
+                                    <span ng-switch-when="false">
+                                        <span ng-include="prop.view"></span>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot ng-if="legacyPagination && totalPages > 1">
+                        <tr>
+                            <th colspan="{{properties.length + 1}}">
+                                <div class="pagination-right">
+                                    <uiomatic-pagination page-number="currentPage"
+                                                         total-pages="totalPages"
+                                                         on-next="nextPage"
+                                                         on-prev="prevPage"
+                                                         on-go-to-page="setPage">
+                                    </uiomatic-pagination>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="text-center">
+                    Total items: {{totalItems}}
+                </div>
+                <div ng-if="!legacyPagination && totalPages > 1" class="text-center">
+                    <umb-pagination page-number="currentPage"
+                                    total-pages="totalPages"
+                                    on-next="nextPage"
+                                    on-prev="prevPage"
+                                    on-go-to-page="setPage">
+                    </umb-pagination>
+                </div>
+
+            </div>
+        </umb-editor-container>
+
+        <umb-editor-footer>
+
+        </umb-editor-footer>
+
+    </umb-editor-view>
+
+
+</div>

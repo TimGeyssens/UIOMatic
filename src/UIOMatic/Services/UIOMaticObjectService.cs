@@ -22,99 +22,49 @@ namespace UIOMatic.Services
         public static event EventHandler<DeleteEventArgs> DeletingObjects;
         public static event EventHandler<DeleteEventArgs> DeletedObjects;
 
-        private static Lazy<IUIOMaticObjectService> _instance = 
-            new Lazy<IUIOMaticObjectService>(() =>
-
-             new NPocoObjectService(ServiceLocator.ServiceProvider.GetService<AppCaches>(),
-                 ServiceLocator.ServiceProvider.GetService<IHostingEnvironment>(),
-                 ServiceLocator.ServiceProvider.GetService<IUIOMaticHelper>())
-            //(IUIOMaticObjectService)Activator.CreateInstance(ServiceLocator.ServiceProvider.GetService<IUIOMaticConfiguration>().DefaultObjectServiceType ?? typeof(UIOMaticConfiguration), null));
-            );
-       
-                          
-                
-       
-        private UIOMaticObjectService()
-        { }
-
-        public static IUIOMaticObjectService Instance
+        public void OnBuildingQuery(QueryEventArgs args)
         {
-            get
-            {
-                return _instance.Value;
-            }
+            BuildingQuery?.Invoke(this, args);
         }
 
-        public static void OnBuildingQuery(QueryEventArgs args)
+        public void OnBuiltQuery(QueryEventArgs args)
         {
-            if (BuildingQuery != null)
-            {
-                BuildingQuery(Instance, args);
-            }
+            BuiltQuery?.Invoke(this, args);
         }
 
-        public static void OnBuiltQuery(QueryEventArgs args)
+        public void OnScaffoldingObject(ObjectEventArgs args)
         {
-            if (BuiltQuery != null)
-            {
-                BuiltQuery(Instance, args);
-            }
+            ScaffoldingObject?.Invoke(this, args);
         }
 
-        public static void OnScaffoldingObject(ObjectEventArgs args)
+        public void OnUpdatingObject(ObjectEventArgs args)
         {
-            if (ScaffoldingObject != null)
-            {
-                ScaffoldingObject(Instance, args);
-            }
+            UpdatingObject?.Invoke(this, args);
         }
 
-        public static void OnUpdatingObject(ObjectEventArgs args)
+        public void OnUpdatedObject(ObjectEventArgs args)
         {
-            if (UpdatingObject != null)
-            {
-                UpdatingObject(Instance, args);
-            }
+            UpdatedObject?.Invoke(this, args);
         }
 
-        public static void OnUpdatedObject(ObjectEventArgs args)
+        public void OnCreatingObject(ObjectEventArgs args)
         {
-            if (UpdatedObject != null)
-            {
-                UpdatedObject(Instance, args);
-            }
+            CreatingObject?.Invoke(this, args);
         }
 
-        public static void OnCreatingObject(ObjectEventArgs args)
+        public void OnCreatedObject(ObjectEventArgs args)
         {
-            if (CreatingObject != null)
-            {
-                CreatingObject(Instance, args);
-            }
+            CreatedObject?.Invoke(this, args);
         }
 
-        public static void OnCreatedObject(ObjectEventArgs args)
+        public void OnDeletingObjects(DeleteEventArgs args)
         {
-            if (CreatedObject != null)
-            {
-                CreatedObject(Instance, args);
-            }
+            DeletingObjects?.Invoke(this, args);
         }
 
-        public static void OnDeletingObjects(DeleteEventArgs args)
+        public void OnDeletedObjects(DeleteEventArgs args)
         {
-            if (DeletingObjects != null)
-            {
-                DeletingObjects(Instance, args);
-            }
-        }
-
-        public static void OnDeletedObjects(DeleteEventArgs args)
-        {
-            if (DeletedObjects != null)
-            {
-                DeletedObjects(Instance, args);
-            }
+            DeletedObjects?.Invoke(this, args);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace UIOMatic.ContentApps
         internal const int Weight = -100;
 
 
-        public ContentApp GetContentAppFor(object source, IEnumerable<IReadOnlyUserGroup> userGroups)
+        public ContentApp GetContentAppFor(Type type, IEnumerable<IReadOnlyUserGroup> userGroups)
         {
             return new ContentApp
             {
