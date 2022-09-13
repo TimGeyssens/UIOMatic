@@ -58,7 +58,7 @@ namespace UIOMatic.Web.Controllers
 
             var root = rootResult.Value;
 
-            root.Path = $"{Constants.SectionAlias}/{Constants.TreeAlias}/";
+            root.Path = $"{SectionAlias}/{TreeAlias}/";
             root.Icon = "icon-wand";
             root.HasChildren = true;
             root.MenuUrl = null;
@@ -97,7 +97,7 @@ namespace UIOMatic.Web.Controllers
                                 attri.FolderName,
                                 attri.FolderIcon,
                                 true,
-                                "uiomatic");
+                                SectionAlias);
 
                             nodes.Add(node);
                         }
@@ -111,7 +111,7 @@ namespace UIOMatic.Web.Controllers
                                 attri.FolderName,
                                 attri.FolderIcon,
                                 false,
-                                "uiomatic/uiomatic/list/" + alias);
+                                $"{SectionAlias}/{TreeAlias}/list/" + alias);
 
                             node.SetContainerStyle();
 
@@ -128,7 +128,7 @@ namespace UIOMatic.Web.Controllers
                                attri.FolderName,
                                attri.FolderIcon,
                                true,
-                               "uiomatic");
+                               SectionAlias);
 
                         nodes.Add(node);
                     }
