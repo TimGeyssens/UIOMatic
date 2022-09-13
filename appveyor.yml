@@ -25,7 +25,7 @@ before_build:
 
 build_script:
   - dotnet build src/UIOMatic.sln
-  - dotnet pack src/UIOMatic/UIOMatic.sln -v {version}
+  - dotnet pack src/UIOMatic/UIOMatic.sln -o artifacts -p:PackageVersion={version}
   
 artifacts:
   - path: artifacts\*.nupkg
