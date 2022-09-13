@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
@@ -9,6 +9,7 @@
         <Product>...</Product>
         <PackageTags>umbraco plugin package</PackageTags>
         <RootNamespace>UIOMatic</RootNamespace>
+	    <StaticWebAssetBasePath>App_Plugins/UIOMatic</StaticWebAssetBasePath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,16 +17,5 @@
         <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="App_Plugins\UIOMatic\**\*.*">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-        <None Include="build\**\*.*">
-            <Pack>True</Pack>
-            <PackagePath>build</PackagePath>
-        </None>
     </ItemGroup>
 </Project>
