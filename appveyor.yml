@@ -24,7 +24,8 @@ before_build:
   - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
 
 build_script:
-  - msbuild build/package.proj 
+  - dotnet build src/UIOMatic.sln
+  - dotnet pack src/UIOMatic/UIOMatic.sln -v {version}
   
 artifacts:
   - path: artifacts\*.nupkg
