@@ -11,6 +11,7 @@ public class UIOMaticPackageManifest : IManifestFilter
     {
         manifests.Add(new PackageManifest
         {
+            PackageName = "UI-O-Matic",
             Scripts = new []
             {
                 "/App_Plugins/UIOMatic/backoffice/assets/js/angular-relative-date.js",

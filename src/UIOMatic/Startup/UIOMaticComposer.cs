@@ -22,7 +22,9 @@ namespace UIOMatic.Startup
             builder.Services.AddSingleton<IUIOMaticObjectService, NPocoObjectService>();
 
             builder.Services.Configure<UIOMaticConfiguration>(builder.Config.GetSection("UIOMatic"));
-            
+
+            builder.ManifestFilters().Append<UIOMaticPackageManifest>();
+
             builder.UiomaticContentApps().Append<UiomaticEditorContentAppFactory>();
         }
     }
