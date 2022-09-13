@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UIOMatic.ContentApps;
 using UIOMatic.Interfaces;
 using UIOMatic.Services;
+using UIOMatic.Startup.Dashboards;
 using UIOMatic.Web;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -26,6 +27,8 @@ namespace UIOMatic.Startup
             builder.ManifestFilters().Append<UIOMaticPackageManifest>();
 
             builder.UiomaticContentApps().Append<UiomaticEditorContentAppFactory>();
+
+            builder.AddDashboard<UIOMaticSummaryDashboard>();
         }
     }
 }
