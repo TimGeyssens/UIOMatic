@@ -1,13 +1,12 @@
 
 # version format
-version: {packageversion}.{build}
+version: 5.0.1.{build}
 
 # environment
 environment:
   packageversion: 5.0.1
 
 image: Visual Studio 2022
-
 
 # Do not build on tags
 skip_tags: true
