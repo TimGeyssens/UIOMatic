@@ -24,8 +24,6 @@ namespace UIOMatic.Startup
 
             builder.Services.Configure<UIOMaticConfiguration>(builder.Config.GetSection("UIOMatic"));
 
-            builder.ManifestFilters().Append<UIOMaticPackageManifest>();
-
             builder.UiomaticContentApps().Append<UiomaticEditorContentAppFactory>();
 
             builder.AddDashboard<UIOMaticSummaryDashboard>();

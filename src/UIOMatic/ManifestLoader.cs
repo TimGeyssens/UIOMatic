@@ -1,17 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Manifest;
-using Umbraco.Cms.Core.PropertyEditors;
 
-namespace UIOMatic.Startup;
+namespace UIOMatic;
 
-public class UIOMaticPackageManifest : IManifestFilter
+internal class ManifestLoader : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+    {
+        builder.ManifestFilters().Append<ManifestFilter>();
+    }
+}
+
+internal class ManifestFilter : IManifestFilter
 {
     public void Filter(List<PackageManifest> manifests)
     {
         manifests.Add(new PackageManifest
         {
             PackageName = "UI-O-Matic",
+            AllowPackageTelemetry = true,
             Scripts = new []
             {
                 "/App_Plugins/UIOMatic/backoffice/assets/js/angular-relative-date.js",

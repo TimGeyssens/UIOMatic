@@ -19,4 +19,8 @@
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UIOMatic.Core\UIOMatic.Core.csproj" />
+  </ItemGroup>
+
 </Project>
