@@ -20,13 +20,19 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
 
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+
 before_build:
   - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
 
 build_script:
   - dotnet build src/UIOMatic.sln
-  - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts /p:PackageVersion=$(APPVEYOR_BUILD_VERSION)
-  - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts /p:PackageVersion=$(APPVEYOR_BUILD_VERSION)
+  - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
+  - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts
   
 artifacts:
   - path: artifacts\*.nupkg
