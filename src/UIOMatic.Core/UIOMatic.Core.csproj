@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<ContentTargetFolders>.</ContentTargetFolders>
-		<Product>UIOMatic</Product>
-		<PackageId>Nibble.Umbraco.UIOMatic</PackageId>
-		<Title>UIOMatic</Title>
+		<Product>UIOMatic Core</Product>
+		<PackageId>Nibble.Umbraco.UIOMatic.Core</PackageId>
+		<Title>UIOMatic Core</Title>
 		<Description>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Description>
 		<PackageLicenseName>AholeCloud license</PackageLicenseName>
 		<PackageLicenseUrl>https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md</PackageLicenseUrl>
@@ -14,19 +14,14 @@
 		<PackageIconUrl>https://raw.githubusercontent.com/TimGeyssens/UIOMatic/v2/docs/img/uiomatic.png</PackageIconUrl>
 		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
-		<StaticWebAssetBasePath>App_Plugins/UIOMatic</StaticWebAssetBasePath>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 		<Version>1.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
 		<PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
 		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\UIOMatic.Core\UIOMatic.Core.csproj" />
 	</ItemGroup>
 
 </Project>

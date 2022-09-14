@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic", "UIOMatic\UIOMat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic.Site", "UIOMatic.Site\UIOMatic.Site.csproj", "{538FE3FA-4607-4C5F-B4C4-9148D2A37FA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIOMatic.Core", "UIOMatic.Core\UIOMatic.Core.csproj", "{2E3F309D-73AE-4CDB-BD56-A3A85583422C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{538FE3FA-4607-4C5F-B4C4-9148D2A37FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538FE3FA-4607-4C5F-B4C4-9148D2A37FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538FE3FA-4607-4C5F-B4C4-9148D2A37FA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

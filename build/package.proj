@@ -23,6 +23,8 @@
 		<PackageLicenseName>AholeCloud license</PackageLicenseName>
 		<PackageLicenseUrl>https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md</PackageLicenseUrl>
 		<ProjectUrl>https://github.com/TimGeyssens/UIOMatic</ProjectUrl>
+		<ContentTargetFolders>.</ContentTargetFolders>
+		<StaticWebAssetBasePath>App_Plugins/UIOMatic</StaticWebAssetBasePath>
 	</PropertyGroup>
 	<!-- NUGET ONLY PROPERTIES -->
 	<PropertyGroup>

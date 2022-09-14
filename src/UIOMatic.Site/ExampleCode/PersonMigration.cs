@@ -52,7 +52,6 @@ namespace UIOMatic.Site.ExampleCode
 
         public void Terminate()
         {
-            throw new NotImplementedException();
         }
     }
 
