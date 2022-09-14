@@ -14,14 +14,14 @@ skip_tags: true
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
-  assembly_version: '{packageversion}'
-  assembly_file_version: '{packageversion}'
+  assembly_version: '$(packageversion)'
+  assembly_file_version: '$(packageversion)'
 
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '{packageversion}'
-  package_version: '{packageversion}'
+  version: '$(packageversion)'
+  package_version: '$(packageversion)'
 
 before_build:
   - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
