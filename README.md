@@ -54,7 +54,7 @@ Will generate the following UI
 Important before using please make sure you read the license: since charges might apply [AholeCloud](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md)
 
 ## Documentation ##
-For the full documentation please go to [https://timgeyssens.gitbook.io/ui-o-matic/](https://timgeyssens.gitbook.io/ui-o-matic//)
+For the full documentation please go to [https://timgeyssens.gitbook.io/ui-o-matic/](https://timgeyssens.gitbook.io/ui-o-matic/)
 ## The Team ##
 
 * [Tim Geyssens](https://github.com/TimGeyssens)
