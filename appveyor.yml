@@ -1,10 +1,10 @@
 
 # version format
-version: 5.1.2.{build}
+version: 5.1.3.{build}
 
 # environment
 environment:
-  packageversion: 5.1.2
+  packageversion: 5.1.3
 
 image: Visual Studio 2022
 
