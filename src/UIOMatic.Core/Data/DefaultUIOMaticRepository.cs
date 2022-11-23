@@ -215,7 +215,7 @@ namespace UIOMatic.Data
                 query = a2.Query;
 
 
-                var p = scope.Database.Page<object>(pageNumber, itemsPerPage, query.SQL);
+                var p = scope.Database.Page<object>(pageNumber, itemsPerPage, query);
 
                 return new UIOMaticPagedResult
                 {
