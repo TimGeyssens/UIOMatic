@@ -14,7 +14,7 @@
     <copyright></copyright>
     <licenseUrl></licenseUrl>
     <language></language>
-    <tags></tags>
+    <tags>Umbraco-Marketplace</tags>
     <dependencies>
       <dependency id="Nibble.Umbraco.UIOMatic.Core" version="4.0.0" />
       <dependency id="Umbraco.Cms.Core" version="9.0.0" />
