@@ -5,14 +5,14 @@
 		<Product>UIOMatic</Product>
 		<PackageId>Nibble.Umbraco.UIOMatic</PackageId>
 		<Title>UIOMatic</Title>
-		<Description>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Description>
+		<Description>Auto generate an integrated crud UI in Umbraco for a db table based on npoco poco and more</Description>
 		<PackageLicenseName>AholeCloud license</PackageLicenseName>
 		<PackageLicenseUrl>https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md</PackageLicenseUrl>
-		<PackageTags>umbraco plugin package</PackageTags>
+		<PackageTags>umbraco plugin package umbraco-marketplace</PackageTags>
 		<PackageProjectUrl>https://github.com/TimGeyssens/UIOMatic</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/TimGeyssens/UIOMatic</RepositoryUrl>
 		<PackageIconUrl>https://raw.githubusercontent.com/TimGeyssens/UIOMatic/v2/docs/img/uiomatic.png</PackageIconUrl>
-		<AuthorName>Tim Geyssens, Matt Brailsford and other contributors</AuthorName>
+		<AuthorName>Tim Geyssens and other contributors</AuthorName>
 		<AuthorUrl>https://github.com/TimGeyssens/UIOMatic</AuthorUrl>
 		<StaticWebAssetBasePath>App_Plugins/UIOMatic</StaticWebAssetBasePath>
 		<Version>1.0.0</Version>
