@@ -5,7 +5,7 @@
 
 Please be aware of the [License Model](https://github.com/TimGeyssens/UIOMatic/blob/v3/LICENSE.md) before using this package since additional charges might apply if you are an Umbraco Gold Partner. And it is prohibited to use the Software on the Cloud offering of Umbraco.
 
-**Auto generate an integrated crud UI in Umbraco for a db table based on a [npoco ](<https://github.com/schotime/NPoco>)poco**
+**Auto generate an integrated crud UI in Umbraco for a db table based on a [npoco ](<https://github.com/schotime/NPoco>)poco and more!**
 
 Simply decorate your class and properties with some additional attributes.
 
