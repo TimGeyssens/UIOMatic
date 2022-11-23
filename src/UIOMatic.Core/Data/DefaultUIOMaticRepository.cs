@@ -195,19 +195,19 @@ namespace UIOMatic.Data
                 }
 
                 // Sort
-                // BUG: There is a bug in the peta poco version used that errors if sort column is wrapped in [] so need to make sure it's not
+              
                 if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
                 {
-                    query.OrderBy(sortColumn + " " + sortOrder);
+                    query.OrderBy("[" + sortColumn + "] " + sortOrder);
                 }
                 else if (!string.IsNullOrEmpty(_config.SortColumn) && !string.IsNullOrEmpty(_config.SortOrder))
                 {
-                    query.OrderBy(_config.SortColumn + " " + _config.SortOrder);
+                    query.OrderBy("[" +_config.SortColumn + "] " + _config.SortOrder);
                 }
                 else
                 {
                     var primaryKeyColum = _typeInfo.Type.GetPrimaryKeyName();
-                    query.OrderBy(primaryKeyColum + " asc");
+                    query.OrderBy("[" + primaryKeyColum + "] asc");
                 }
 
                 var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, query, sortColumn, sortOrder, searchTerm, filters);
