@@ -36,7 +36,7 @@
 		<Owners>Tim Geyssens, Matt Brailsford and other contributors</Owners>
 		<Summary>Auto generate an integrated crud UI in Umbraco for a db table based on a npoco poco</Summary>
 		<IconUrl>https://raw.githubusercontent.com/TimGeyssens/UIOMatic/v2/docs/img/uiomatic.png</IconUrl>
-		<Tags>umbraco</Tags>
+		<Tags>umbraco-marketplace umbraco</Tags>
 		<Language>en-GB</Language>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	</PropertyGroup>
