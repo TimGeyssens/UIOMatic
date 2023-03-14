@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using NPoco;
 using UIOMatic.Attributes;
+using UIOMatic.Front.Umbraco.Data;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace UIOMatic.Site.ExampleCode
 {
-    [UIOMatic("people", "People", "Person", FolderIcon = "icon-users", ItemIcon = "icon-user", RenderType =Enums.UIOMaticRenderType.List, ShowOnSummaryDashboard = true)]
+    [UIOMatic("people", "People", "Person", FolderIcon = "icon-users", ItemIcon = "icon-user", RenderType =Enums.UIOMaticRenderType.List, ShowOnSummaryDashboard = true,
+        RepositoryType = typeof(DefaultUIOMaticRepository))]
     [TableName("People")]
     public class Person
     {
@@ -22,7 +24,7 @@ namespace UIOMatic.Site.ExampleCode
         [UIOMaticField(Name = "Last name", Description = "Enter the persons last name")]
         public string LastName { get; set; }
 
-        [UIOMaticField(Name = "Picture", Description = "Select a picture", View = UIOMatic.Constants.FieldEditors.File)]
+        [UIOMaticField(Name = "Picture", Description = "Select a picture", View = UIOMatic.Front.Umbraco.Constants.FieldEditors.File)]
         public string Picture { get; set; }
 
         public override string ToString()

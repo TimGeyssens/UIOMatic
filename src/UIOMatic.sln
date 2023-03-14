@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic", "UIOMatic\UIOMat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic.Site", "UIOMatic.Site\UIOMatic.Site.csproj", "{538FE3FA-4607-4C5F-B4C4-9148D2A37FA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIOMatic.Core", "UIOMatic.Core\UIOMatic.Core.csproj", "{2E3F309D-73AE-4CDB-BD56-A3A85583422C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic.Core", "UIOMatic.Core\UIOMatic.Core.csproj", "{2E3F309D-73AE-4CDB-BD56-A3A85583422C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic.Front.Umbraco", "UIOMatic.Front.Umbraco\UIOMatic.Front.Umbraco.csproj", "{0A8F5A0D-5779-4338-B7EA-02F9C1E7AC4F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIOMatic.Front.API", "UIOMatic.Front.API\UIOMatic.Front.API.csproj", "{7A68A28F-FC86-4B84-AC2A-73369CF2E376}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "uiomatic.spa", "UIOMatic.SPA\uiomatic.spa.esproj", "{6630129E-A34A-452F-9365-E3455340BD82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,20 @@ Global
 		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E3F309D-73AE-4CDB-BD56-A3A85583422C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A8F5A0D-5779-4338-B7EA-02F9C1E7AC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A8F5A0D-5779-4338-B7EA-02F9C1E7AC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A8F5A0D-5779-4338-B7EA-02F9C1E7AC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A8F5A0D-5779-4338-B7EA-02F9C1E7AC4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A68A28F-FC86-4B84-AC2A-73369CF2E376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A68A28F-FC86-4B84-AC2A-73369CF2E376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A68A28F-FC86-4B84-AC2A-73369CF2E376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A68A28F-FC86-4B84-AC2A-73369CF2E376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6630129E-A34A-452F-9365-E3455340BD82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6630129E-A34A-452F-9365-E3455340BD82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6630129E-A34A-452F-9365-E3455340BD82}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6630129E-A34A-452F-9365-E3455340BD82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6630129E-A34A-452F-9365-E3455340BD82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6630129E-A34A-452F-9365-E3455340BD82}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

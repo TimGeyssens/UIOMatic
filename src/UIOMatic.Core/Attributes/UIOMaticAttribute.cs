@@ -39,7 +39,7 @@ namespace UIOMatic.Attributes
             RenderType = UIOMaticRenderType.Tree;
             SortOrder = "ASC";
             ReadOnly = false;
-            RepositoryType = typeof(DefaultUIOMaticRepository);
+            //RepositoryType = typeof(DefaultUIOMaticRepository);
             HideFromTree = false;
             ListViewActions = null;
             ShowOnSummaryDashboard = false;

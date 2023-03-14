@@ -20,8 +20,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
+	  <Compile Remove="Web\**" />
+	  <EmbeddedResource Remove="Web\**" />
+	  <None Remove="Web\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Data\DefaultUIOMaticRepository.cs" />
+	  <Compile Remove="Services\NPocoObjectService.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Include="Web\PostModels\ObjectPostModel.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
 </Project>

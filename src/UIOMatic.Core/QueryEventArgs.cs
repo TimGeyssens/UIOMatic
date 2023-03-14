@@ -6,7 +6,7 @@ namespace UIOMatic
 {
     public class QueryEventArgs : EventArgs
     {
-        public QueryEventArgs(Type objectType, string tableName, NPoco.Sql query, string sortColumn,
+        public QueryEventArgs(Type objectType, string tableName, string query, string sortColumn,
             string sortOrder, string searchTerm, IDictionary<string, string> filters)
         {
             ObjectType = objectType;
@@ -22,7 +22,7 @@ namespace UIOMatic
 
         public string TableName { get; set; }
 
-        public NPoco.Sql Query { get; set; }
+        public string Query { get; set; }
 
         public string SortColumn { get; set; }
 

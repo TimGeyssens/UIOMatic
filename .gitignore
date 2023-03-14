@@ -110,3 +110,5 @@ build/_temp
 applicationhost.config
 *.Matt.sln
 src/msbuild.rsp
+src/UIOMatic.SPA/node_modules/
+src/ngrok.exe

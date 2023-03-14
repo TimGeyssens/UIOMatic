@@ -1,0 +1,45 @@
+{
+  "name": "UIOMatic CRUD Application",
+  "contentTypes": [
+    {
+      "name": "people",
+      "label": "People",
+      "endpoint": "https://localhost:7170/Object",
+      "fields": [
+        {
+          "name": "Firstname",
+          "label": "Firstname",
+          "type": "text"
+        },
+        {
+          "name": "Lastname",
+          "label": "Lastname",
+          "type": "text"
+        },
+        {
+          "name": "Picture",
+          "label": "Picture",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "movies",
+      "label": "Movies",
+      "endpoint": "https://localhost:7170/Object",
+      "fields": [
+        {
+          "name": "Name",
+          "label": "Name",
+          "type": "text"
+        },
+        {
+          "name": "Genre",
+          "label": "Genre",
+          "type": "text"
+        }
+       
+      ]
+    }
+  ]
+}

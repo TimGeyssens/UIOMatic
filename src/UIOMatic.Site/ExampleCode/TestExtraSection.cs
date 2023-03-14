@@ -1,5 +1,7 @@
-﻿using UIOMatic.Interfaces;
-using UIOMatic.Web.Controllers;
+﻿using UIOMatic.Front.Umbraco;
+using UIOMatic.Front.Umbraco.Controllers;
+using UIOMatic.Interfaces;
+
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.Events;

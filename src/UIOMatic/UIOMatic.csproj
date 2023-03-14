@@ -27,6 +27,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\UIOMatic.Core\UIOMatic.Core.csproj" />
+		<ProjectReference Include="..\UIOMatic.Front.Umbraco\UIOMatic.Front.Umbraco.csproj" />
 	</ItemGroup>
 
 </Project>

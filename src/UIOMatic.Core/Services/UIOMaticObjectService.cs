@@ -1,8 +1,7 @@
 ﻿using System;
 using UIOMatic;
 using UIOMatic.Interfaces;
-using Umbraco.Cms.Core.Cache;
-using Umbraco.Cms.Core.Hosting;
+
 
 namespace UIOMatic.Services
 {
