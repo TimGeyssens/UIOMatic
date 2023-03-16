@@ -1,4 +1,4 @@
-﻿namespace UIOMatic
+﻿namespace UIOMatic.Front.Umbraco
 {
     public class UIOMaticConfiguration
     {
