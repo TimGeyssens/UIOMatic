@@ -1,47 +1,20 @@
-import Vue from "vue";
 
-import config from "./config";
-import makeCrudModule from "./store/crud";
-import makeCrudRoutes from "./router/crud";
-import makeService from "./services/api";
-import router from "./router";
-import store from "./store";
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import axios from 'axios'
 
-import App from "./App.vue";
-import FormContainer from "./components/FormContainer.vue";
-import ListingContainer from "./components/ListingContainer.vue";
+Vue.config.productionTip = false
 
-Vue.config.productionTip = false;
-var contentTypes;
-var response = fetch(`https://localhost:7170/UIOMatic/GetAll`)
-    .then(response => contentTypes = response.json());
+// Load config from REST API
+axios.get('https://api.example.com/config')
+  .then(({ data: config }) => {
+    // Set global config
+    Vue.prototype.$config = config
 
+    new Vue({
+      router,
+      render: h => h(App)
+    }).$mount('#app')
+  })
 
-
-config.contentTypes.forEach(contentType => {
-  // Register dynamically generated store modules.
-  store.registerModule(
-    contentType.name,
-    makeCrudModule({
-        service: makeService(contentType)
-    })
-  );
-
-  // Register dynamically generated routes.
-  router.addRoutes(
-    makeCrudRoutes({
-      components: {
-        FormContainer,
-        ListingContainer
-      },
-      contentType
-    })
-  );
-});
-
-new Vue({
-  render: h => h(App),
-  router,
-  store,
-   
-}).$mount("#app");
