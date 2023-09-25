@@ -16,6 +16,14 @@
                     typeAlias: $scope.model.config.typeAlias,
                     textTemplate: $scope.model.config.textTemplate,
                     selectedIds: $scope.selectedIds
+                },
+                submit: function (selectedIds) {
+                    $scope.selectedIds = selectedIds;
+                    getFullDetails();
+                    editorService.close();
+                },
+                close: function () {
+                    editorService.close();
                 }
             });
         }
