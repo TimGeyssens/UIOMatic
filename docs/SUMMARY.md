@@ -17,4 +17,3 @@
 * [FurtherReading](14.FurtherReading.md)
 * [Content Apps](<15. ContentApps.md>)
 * [SPA and Front.API](16.SPAAndFrontAPI.md)
-* [index](index.md)
