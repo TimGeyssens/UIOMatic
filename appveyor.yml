@@ -46,7 +46,10 @@ build_script:
   - dotnet build UIOMatic.sln --configuration Release
   - dotnet pack UIOMatic.Core/UIOMatic.Core.csproj -o ../artifacts
   - dotnet pack UIOMatic.Front.API/UIOMatic.Front.API.csproj -o ../artifacts
-  - dotnet pack UIOMatic.SPA/UIOMatic.SPA.csproj -o ../artifacts
+  - cd UIOMatic.SPA
+  - npm install
+  - npm run build
+  - cd ..
   - dotnet pack UIOMatic.Front.Umbraco/UIOMatic.Front.Umbraco.csproj -o ../artifacts
   - dotnet pack UIOMatic/UIOMatic.csproj -o ../artifacts
   - cd ..
