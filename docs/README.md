@@ -91,8 +91,8 @@ will generate the following crud UI
 
 v8&#x20;
 
-![](broken-reference)
+![](img/examplev8.png)
 
 v7&#x20;
 
-![](broken-reference)
+![](img/example.png)
