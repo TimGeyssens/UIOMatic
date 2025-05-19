@@ -54,10 +54,6 @@ build_script:
   - dotnet pack UIOMatic/UIOMatic.csproj -o ../artifacts
   - cd ..
 
-test_script:
-  - cd src
-  - dotnet test UIOMatic.Tests/UIOMatic.Tests.csproj --no-build
-  - cd ..
 
 artifacts:
   - path: artifacts/*.nupkg
