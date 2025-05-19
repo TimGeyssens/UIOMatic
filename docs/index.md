@@ -82,6 +82,68 @@ v8
 v7
 ![](img/gettingstartedexample.png)
 
+# UIOMatic Documentation #
+
+## Table of Contents ##
+
+1. [Usage](01.Usage.md)
+2. [Default Editor Views](02.DefaultEditorViews.md)
+3. [Custom Editor Views](03.CustomEditorViews.md)
+4. [Custom List Views](04.CustomListViews.md)
+5. [Custom Actions](05.CustomActions.md)
+6. [Custom Validators](06.CustomValidators.md)
+7. [Custom Field Types](07.CustomFieldTypes.md)
+8. [Custom Field Editors](08.CustomFieldEditors.md)
+9. [Custom Field Views](09.CustomFieldViews.md)
+10. [Custom Field Validators](10.CustomFieldValidators.md)
+11. [Custom Field Actions](11.CustomFieldActions.md)
+12. [Custom Field Types](12.CustomFieldTypes.md)
+13. [Custom Field Editors](13.CustomFieldEditors.md)
+14. [Custom Field Views](14.CustomFieldViews.md)
+15. [Custom Field Validators](15.CustomFieldValidators.md)
+16. [SPA and Front.API](16.SPAAndFrontAPI.md)
+
+## Overview ##
+
+UIOMatic is a framework that allows you to create custom database tables and manage them through the Umbraco backoffice. It also provides a standalone SPA and Front.API for managing your data without Umbraco.
+
+## Features ##
+
+- Create and manage custom database tables
+- Integrate with Umbraco backoffice
+- Standalone SPA and Front.API
+- Custom editor views
+- Custom list views
+- Custom actions
+- Custom validators
+- Custom field types
+- Custom field editors
+- Custom field views
+- Custom field validators
+- Custom field actions
+
+## Getting Started ##
+
+1. Install the required NuGet packages
+2. Decorate your classes with the `UIOMatic` attribute
+3. Decorate your properties with the `UIOMaticField` attribute
+4. Configure your database connection
+5. Start using UIOMatic!
+
+For more detailed instructions, see the [Usage](01.Usage.md) documentation.
+
+## Standalone Usage ##
+
+If you don't want to use Umbraco, you can use the standalone Front.API and SPA components. See the [SPA and Front.API documentation](16.SPAAndFrontAPI.md) for more details.
+
+## Contributing ##
+
+Contributions are welcome! Please see the [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License ##
+
+UIOMatic is licensed under the MIT License. See the [License](LICENSE) file for more details.
+
 
 
 
