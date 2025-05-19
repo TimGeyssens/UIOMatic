@@ -36,6 +36,7 @@ build_script:
   - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
   - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts
   - dotnet pack src/UIOMatic.Front.API/UIOMatic.Front.API.csproj -o artifacts
+  - dotnet pack src/UIOMatic.Front.Umbraco/UIOMatic.Front.Umbraco.csproj -o artifacts
   
   # Build SPA
   - cd src/UIOMatic.SPA

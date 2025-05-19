@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id></id>
-    <version>0.0.0</version>
-    <title></title>
-    <authors></authors>
-    <owners></owners>
-    <projectUrl></projectUrl>
-    <iconUrl></iconUrl>
-    <requireLicenseAcceptance></requireLicenseAcceptance>
-    <description></description>
-    <summary></summary>
-    <copyright></copyright>
-    <licenseUrl></licenseUrl>
-    <language></language>
+    <id>UIOMatic</id>
+    <version>7.0.0</version>
+    <title>UIOMatic</title>
+    <authors>Tim Geyssens</authors>
+    <owners>Tim Geyssens</owners>
+    <projectUrl>https://github.com/TimGeyssens/UIOMatic</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>UIOMatic package for Umbraco</description>
+    <copyright>Copyright 2024</copyright>
     <tags>Umbraco-Marketplace</tags>
     <dependencies>
-      <dependency id="Nibble.Umbraco.UIOMatic.Core" version="4.0.0" />
-      <dependency id="Umbraco.Cms.Core" version="9.0.0" />
-      <dependency id="Umbraco.Cms" version="9.0.0" />
+      <dependency id="UIOMatic.Core" version="7.0.0" />
+      <dependency id="UIOMatic.Front.Umbraco" version="7.0.0" />
+      <dependency id="Umbraco.Cms.Core" version="11.0.0" />
+      <dependency id="Umbraco.Cms.Web" version="11.0.0" />
     </dependencies>
   </metadata>
   <files />
