@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import { Editor as TinyMCEEditor } from '@tinymce/tinymce-vue'
+import Editor from '@tinymce/tinymce-vue'
 import { rteConfig } from '../../config'
 
 export default {
   name: 'RichTextField',
   components: {
-    Editor: TinyMCEEditor
+    Editor
   },
   props: {
     modelValue: {
