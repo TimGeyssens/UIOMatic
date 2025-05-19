@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^5.1.1",
     "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.6.2",
     "easymde": "^2.20.0",
