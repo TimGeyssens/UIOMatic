@@ -1,15 +1,19 @@
-
 # version format
-version: 5.1.4.{build}
+version: 7.0.0.{build}
 
 # environment
 environment:
-  packageversion: 5.1.4
+  packageversion: 7.0.0
+  nodejs_version: "18.17.0"
 
 image: Visual Studio 2022
 
 # Do not build on tags
 skip_tags: true
+
+# Install Node.js
+install:
+  - ps: Install-Product node $env:nodejs_version
 
 assembly_info:
   patch: true
@@ -27,9 +31,20 @@ before_build:
   - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
 
 build_script:
+  # Build .NET projects
   - dotnet build src/UIOMatic.sln
   - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
   - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts
+  - dotnet pack src/UIOMatic.Front.API/UIOMatic.Front.API.csproj -o artifacts
+  
+  # Build SPA
+  - cd src/UIOMatic.SPA
+  - npm install
+  - npm run build
+  - cd ../..
+  
+  # Create SPA NuGet package
+  - nuget pack build/UIOMatic.SPA.nuspec -OutputDirectory artifacts
   
 artifacts:
   - path: artifacts\*.nupkg

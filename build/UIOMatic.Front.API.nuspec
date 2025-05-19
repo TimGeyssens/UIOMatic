@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>UIOMatic.Front.API</id>
+    <version>7.0.0</version>
+    <title>UIOMatic Front API</title>
+    <authors>Tim Geyssens</authors>
+    <owners>Tim Geyssens</owners>
+    <projectUrl>https://github.com/TimGeyssens/UIOMatic</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>UIOMatic Front API package for handling UIOMatic data operations</description>
+    <copyright>Copyright 2024</copyright>
+    <tags>UIOMatic Umbraco API</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNetCore.Authentication.JwtBearer" version="7.0.0" />
+      <dependency id="LiteDB" version="5.0.17" />
+      <dependency id="UIOMatic.Core" version="7.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\UIOMatic.Front.API\bin\Release\net7.0\UIOMatic.Front.API.dll" target="lib\net7.0" />
+    <file src="..\src\UIOMatic.Front.API\bin\Release\net7.0\UIOMatic.Front.API.pdb" target="lib\net7.0" />
+  </files>
+</package> 
