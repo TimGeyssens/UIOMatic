@@ -15,7 +15,12 @@ init:
   - git config --global core.autocrlf true
 
 install:
-  - ps: Install-Product node $env:nodejs_version x64
+  - ps: |
+      $nodeVersion = $env:nodejs_version
+      $nodeUrl = "https://nodejs.org/dist/v$nodeVersion/node-v$nodeVersion-x64.msi"
+      $nodeInstaller = "node-installer.msi"
+      Invoke-WebRequest -Uri $nodeUrl -OutFile $nodeInstaller
+      Start-Process -FilePath msiexec.exe -ArgumentList "/i $nodeInstaller /quiet /norestart" -Wait
   - node --version
   - npm --version
   - dotnet restore
@@ -44,4 +49,4 @@ deploy:
     secure: YOUR_NUGET_API_KEY
   on:
     branch: master
-    appveyor_repo_tag: true 
+    appveyor_repo_tag: true
