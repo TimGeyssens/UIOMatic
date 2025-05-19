@@ -22,7 +22,7 @@ install:
       Start-Process -FilePath msiexec.exe -ArgumentList "/i $nodeInstaller /quiet /norestart" -Wait
   - node --version
   - npm --version
-  - dotnet restore
+  - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
 
 assembly_info:
   patch: true
