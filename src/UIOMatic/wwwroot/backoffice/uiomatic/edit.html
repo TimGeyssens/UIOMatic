@@ -1,0 +1,94 @@
+﻿<form name="objectForm"
+      ng-controller="uioMatic.ObjectEditController"
+      ng-show="loaded"
+      ng-submit="save(object)"
+      val-form-manager
+      class="uiomatic">
+    <umb-editor-view>
+
+
+        <!--<umb-header tabs="content.tabs">-->
+
+
+        <div ng-if="type.nameFieldIndex > -1">
+            <div class="umb-editor-header">
+                <div class="flex items-center" style="height: 100%;">
+                    <div class="flex items-center" style="flex: 1;">
+                        <div class="umb-editor-header__name-and-description" style="flex: 1 1 auto;">
+                            <div class="umb-editor-header__name-wrapper">
+                                <label for="headerName" class="sr-only">{{headerCaption}}</label>
+                                <input class="umb-editor-header__name-input" id="headerName" ng-model="properties[type.nameFieldIndex].value" placeholder="Enter {{properties[type.nameFieldIndex].name}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <umb-editor-navigation data-element="editor-sub-views"
+                                               navigation="type.apps"
+                                               on-select="selectNavigationItem(item)">
+                        </umb-editor-navigation>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-if="type.nameFieldIndex == -1">
+
+            <umb-editor-header name="headerCaption"
+                               name-locked="headerCaption"
+                               hide-icon="true"
+                               hide-description="true"
+                               hide-alias="true"
+                               navigation="type.apps">
+            </umb-editor-header>
+
+
+        </div>
+
+
+
+        <!--</umb-header>-->
+
+        <umb-editor-container>
+
+
+            <umb-editor-sub-views sub-views="type.apps"
+                                  model="type">
+            </umb-editor-sub-views>
+
+       
+        </umb-editor-container>
+
+        <umb-editor-footer>
+
+            <umb-editor-footer-content-right>
+                <div class="btn-group" ng-show="fromList">
+                    <a class="btn" ng-click="navigate(returnUrl)">
+                        <localize key="buttons_returnToList">Return to list</localize>
+                    </a>
+                </div>
+
+                <div class="btn-group" ng-hide="readOnly">
+                    <umb-button type="submit"
+                                data-hotkey="ctrl+s"
+                                button-style="primary"
+                                state="saveButtonState"
+                                label-key="buttons_save"
+                                label="Save"
+                                ng-show="editing"></umb-button>
+                    <umb-button type="submit"
+                                data-hotkey="ctrl+s"
+                                button-style="primary"
+                                state="saveButtonState"
+                                label="Create"
+                                ng-hide="editing"></umb-button>
+                </div>
+            </umb-editor-footer-content-right>
+
+
+        </umb-editor-footer>
+    </umb-editor-view>
+</form>
+
+

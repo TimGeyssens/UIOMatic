@@ -1,0 +1,63 @@
+{
+  "name": "uiomatic-spa",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@vueup/vue-quill": "^1.2.0",
+    "axios": "^1.6.2",
+    "easymde": "^2.20.0",
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.49.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "vite": "^5.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "vue/setup-compiler-macros": true
+    },
+    "extends": [
+      "plugin:vue/vue3-recommended",
+      "eslint:recommended",
+      "@vue/eslint-config-prettier"
+    ],
+    "rules": {
+      "vue/multi-word-component-names": "off",
+      "vue/no-v-html": "off",
+      "vue/require-default-prop": "off"
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "keywords": [],
+  "description": ""
+}

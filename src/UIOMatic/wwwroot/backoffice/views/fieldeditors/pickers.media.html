@@ -1,0 +1,15 @@
+﻿<div ng-controller="UIOMatic.FieldEditors.Pickers.MediaController">
+    <ul class="unstyled list-icons" ng-if="node">
+        <li>
+            <i class="icon icon-delete red hover-show pull-right" ng-click="clear()"></i>
+            <i class="icon {{node.icon}} hover-hide"></i>
+            <a href prevent-default ng-click="openMediaPicker()">{{node.name}}</a>
+        </li>
+    </ul>
+
+    <a ng-if="!node" href ng-click="openMediaPicker()" prevent-default>
+        <localize key="general_choose">Choose a node</localize>...
+    </a>
+
+
+</div>

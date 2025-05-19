@@ -1,0 +1,42 @@
+
+# version format
+version: 5.1.4.{build}
+
+# environment
+environment:
+  packageversion: 5.1.4
+
+image: Visual Studio 2022
+
+# Do not build on tags
+skip_tags: true
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '$(packageversion)'
+  assembly_file_version: '$(packageversion)'
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '$(packageversion)'
+  package_version: '$(packageversion)'
+
+before_build:
+  - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
+
+build_script:
+  - dotnet build src/UIOMatic.sln
+  - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
+  - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts
+  
+artifacts:
+  - path: artifacts\*.nupkg
+
+deploy:
+  provider: NuGet
+  server:
+  api_key:
+    secure: oK4E7nnsqROELHTg1p+1+DZjDZ8TK6zq6mMiOOEOFbkwcxBkjZPjMZAn7NbFnRVj
+  artifact: /.*\.nupkg/

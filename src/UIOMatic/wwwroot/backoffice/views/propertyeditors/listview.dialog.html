@@ -1,0 +1,56 @@
+﻿
+<form name="objectForm"
+      ng-controller="UIOMatic.PropertyEditors.ListViewDialog"
+      ng-show="loaded"
+      ng-submit="save(object)"
+      val-form-manager
+      class="uiomatic">
+
+
+    <div class="umb-panel-body umb-scrollable row-fluid" style="top: 10px;">
+
+        <div class="tab-content form-horizontal">
+            <div class="umb-pane">
+                <div ng-if="type.nameFieldIndex > -1">
+                    <umb-content-name placeholder="@placeholders_entername" ng-model="properties[type.nameFieldIndex].value" />
+                </div>
+                <div ng-if="type.nameFieldIndex == -1">
+                    <h3 ng-if="!editing"><localize key="general_create">Opret</localize></h3>
+                    <h3 ng-if="editing"><span ng-show="!readOnly"><localize key="general_update">Opdatér</localize></span></h3>
+                </div>
+            </div>
+
+            <umb-tab ng-repeat="tab in content.tabs | filter:tab != null" id="tab{{tab.id}}" rel="{{tab.label}}">
+                <div class="umb-pane">
+                    <div ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: tab.label}">
+                        <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
+                            <div ng-include="property.view"></div>
+                        </umb-control-group>
+                    </div>
+                </div>
+            </umb-tab>
+            <div class="umb-pane" ng-if="content.tabs == null">
+                <div ng-repeat="property in properties | removeProperty:type.nameFieldKey | filter:{tab: tab.label}">
+                    <umb-control-group label="{{property.name}}" description="{{property.description}}" ng-if="!queryString[property.columnName]">
+                        <div ng-include="property.view"></div>
+                    </umb-control-group>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+            <div class="btn-toolbar umb-btn-toolbar pull-right">
+                <a href ng-click="close()" class="btn btn-link">
+                    <localize key="general_cancel">Fortryd</localize>
+                </a>
+                <button class="btn btn-primary">
+                    <localize key="buttons_save">Gem</localize>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
