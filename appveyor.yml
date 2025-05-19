@@ -1,58 +1,47 @@
-# version format
-version: 7.0.0.{build}
-
-# environment
-environment:
-  packageversion: 7.0.0
-  nodejs_version: "18.17.0"
-
+version: 1.0.{build}
 image: Visual Studio 2022
 
-# Do not build on tags
-skip_tags: true
+environment:
+  nodejs_version: "18.19.0"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  NUGET_XMLDOC_MODE: skip
 
-# Install Node.js
+branches:
+  only:
+    - master
+    - v7
+
+init:
+  - git config --global core.autocrlf true
+
 install:
-  - ps: Install-Product node $env:nodejs_version
-
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '$(packageversion)'
-  assembly_file_version: '$(packageversion)'
-
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '$(packageversion)'
-  package_version: '$(packageversion)'
+  - ps: Install-Product node $env:nodejs_version x64
+  - node --version
+  - npm --version
+  - dotnet restore
 
 before_build:
-  - appveyor-retry dotnet restore src/UIOMatic.sln -v Minimal
+  - dotnet build --no-restore
 
 build_script:
-  # Build .NET projects
-  - dotnet build src/UIOMatic.sln
-  - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
+  - dotnet build src/UIOMatic.sln --configuration Release
   - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts
   - dotnet pack src/UIOMatic.Front.API/UIOMatic.Front.API.csproj -o artifacts
+  - dotnet pack src/UIOMatic.SPA/UIOMatic.SPA.csproj -o artifacts
   - dotnet pack src/UIOMatic.Front.Umbraco/UIOMatic.Front.Umbraco.csproj -o artifacts
-  
-  # Build SPA
-  - cd src/UIOMatic.SPA
-  - npm install
-  - npm run build
-  - cd ../..
-  
-  # Create SPA NuGet package
-  - nuget pack build/UIOMatic.SPA.nuspec -OutputDirectory artifacts
-  
+  - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
+
+test_script:
+  - dotnet test src/UIOMatic.Tests/UIOMatic.Tests.csproj --no-build
+
 artifacts:
-  - path: artifacts\*.nupkg
+  - path: artifacts/*.nupkg
+    name: NuGet Packages
 
 deploy:
   provider: NuGet
-  server:
   api_key:
-    secure: oK4E7nnsqROELHTg1p+1+DZjDZ8TK6zq6mMiOOEOFbkwcxBkjZPjMZAn7NbFnRVj
-  artifact: /.*\.nupkg/
+    secure: YOUR_NUGET_API_KEY
+  on:
+    branch: master
+    appveyor_repo_tag: true 
