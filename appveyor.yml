@@ -1,19 +1,18 @@
+# version format
 version: 1.0.{build}
-image: Visual Studio 2022
 
+# environment
 environment:
   nodejs_version: "18.19.0"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   NUGET_XMLDOC_MODE: skip
 
-branches:
-  only:
-    - master
-    - v7
+image: Visual Studio 2022
 
-init:
-  - git config --global core.autocrlf true
+# Do not build on tags
+skip_tags: true
 
+# Install Node.js
 install:
   - ps: |
       $nodeVersion = $env:nodejs_version
@@ -25,19 +24,35 @@ install:
   - npm --version
   - dotnet restore
 
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '$(packageversion)'
+  assembly_file_version: '$(packageversion)'
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '$(packageversion)'
+  package_version: '$(packageversion)'
+
 before_build:
   - dotnet build --no-restore
 
 build_script:
-  - dotnet build src/UIOMatic.sln --configuration Release
-  - dotnet pack src/UIOMatic.Core/UIOMatic.Core.csproj -o artifacts
-  - dotnet pack src/UIOMatic.Front.API/UIOMatic.Front.API.csproj -o artifacts
-  - dotnet pack src/UIOMatic.SPA/UIOMatic.SPA.csproj -o artifacts
-  - dotnet pack src/UIOMatic.Front.Umbraco/UIOMatic.Front.Umbraco.csproj -o artifacts
-  - dotnet pack src/UIOMatic/UIOMatic.csproj -o artifacts
+  - cd src
+  - dotnet build UIOMatic.sln --configuration Release
+  - dotnet pack UIOMatic.Core/UIOMatic.Core.csproj -o ../artifacts
+  - dotnet pack UIOMatic.Front.API/UIOMatic.Front.API.csproj -o ../artifacts
+  - dotnet pack UIOMatic.SPA/UIOMatic.SPA.csproj -o ../artifacts
+  - dotnet pack UIOMatic.Front.Umbraco/UIOMatic.Front.Umbraco.csproj -o ../artifacts
+  - dotnet pack UIOMatic/UIOMatic.csproj -o ../artifacts
+  - cd ..
 
 test_script:
-  - dotnet test src/UIOMatic.Tests/UIOMatic.Tests.csproj --no-build
+  - cd src
+  - dotnet test UIOMatic.Tests/UIOMatic.Tests.csproj --no-build
+  - cd ..
 
 artifacts:
   - path: artifacts/*.nupkg
