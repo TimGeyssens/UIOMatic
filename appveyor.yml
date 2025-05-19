@@ -37,7 +37,9 @@ dotnet_csproj:
   package_version: '$(packageversion)'
 
 before_build:
+  - cd src
   - dotnet build --no-restore
+  - cd ..
 
 build_script:
   - cd src
