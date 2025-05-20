@@ -42,24 +42,43 @@ namespace UIOMatic.Front.API.Controllers
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(typeof(LoginResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 401)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         public IActionResult Login([FromBody] LoginRequest request)
         {
             try
             {
+                if (request == null || string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+                {
+                    return BadRequest(new ErrorResponse { Message = "Username and password are required" });
+                }
+
                 var user = _userService.AuthenticateUser(request.Username, request.Password);
                 if (user == null)
                 {
-                    return Unauthorized(new { message = "Invalid username or password" });
+                    return Unauthorized(new ErrorResponse { Message = "Invalid username or password" });
                 }
 
                 var token = _jwtService.GenerateToken(user);
-                return Ok(new { token });
+                return Ok(new LoginResponse { Token = token });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during login");
-                return StatusCode(500, new { message = "An error occurred during login" });
+                return StatusCode(500, new ErrorResponse { Message = "An error occurred during login" });
             }
         }
     }
+
+    public class ErrorResponse
+    {
+        public string Message { get; set; }
+    }
+
+    public class LoginResponse
+    {
+        public string Token { get; set; }
+    }
+} 
 } 

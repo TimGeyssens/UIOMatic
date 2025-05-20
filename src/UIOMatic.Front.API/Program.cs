@@ -59,10 +59,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("SpaPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Vite's default port
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(
+            "http://localhost:5173",  // Vite's default port
+            "http://localhost:3000",  // Alternative port
+            "http://localhost:8080"   // Another common port
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 
@@ -98,7 +102,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Add CORS middleware
+// Add CORS middleware before other middleware
 app.UseCors("SpaPolicy");
 
 // Add static file serving
@@ -108,8 +112,12 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Map controllers with explicit route prefix
 app.MapControllers();
 
 app.MapGraphQL("/graphql");
+
+// Add a catch-all route for the SPA
+app.MapFallbackToFile("index.html");
 
 app.Run();
