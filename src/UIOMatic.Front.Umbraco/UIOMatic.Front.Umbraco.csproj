@@ -35,4 +35,17 @@
     <None Remove="App_Plugins\**" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <AppPluginsFolder>$(MSBuildProjectDirectory)\App_Plugins</AppPluginsFolder>
+    <SiteAppPluginsFolder>$(MSBuildProjectDirectory)\..\UIOMatic.Site\wwwroot\App_Plugins</SiteAppPluginsFolder>
+  </PropertyGroup>
+
+  <Target Name="CopyAppPlugins" AfterTargets="Build">
+    <ItemGroup>
+      <AppPluginsFiles Include="$(AppPluginsFolder)\**\*.*" />
+    </ItemGroup>
+    <Message Text="Copying App_Plugins to $(SiteAppPluginsFolder)" Importance="high" />
+    <Copy SourceFiles="@(AppPluginsFiles)" DestinationFolder="$(SiteAppPluginsFolder)\%(RecursiveDir)" />
+  </Target>
+
 </Project>
