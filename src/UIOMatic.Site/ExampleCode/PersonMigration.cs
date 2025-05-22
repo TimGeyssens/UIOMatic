@@ -5,15 +5,15 @@ using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
-using UIOMatic.Core.Migrations;
-using UIOMatic.Interfaces;
+using UIOMatic.Front.Umbraco.Migrations;
+using UIOMatic.Front.Umbraco;
 using System.Threading.Tasks;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseModelDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UIOMatic.Front.Umbraco.Migrations;
+using System.Data;
 
 namespace UIOMatic.Site.ExampleCode
 {
@@ -70,20 +70,31 @@ namespace UIOMatic.Site.ExampleCode
 
     public class PersonMigration : UIOMaticMigrationBase
     {
-        public override void Migrate()
+        public PersonMigration(IMigrationContext context, IUIOMaticHelper helper) 
+            : base(context, helper)
         {
-            EnsureTableExists<Person>();
-            EnsureColumnExists<Person>(x => x.FirstName);
-            EnsureColumnExists<Person>(x => x.LastName);
-            EnsureColumnExists<Person>(x => x.Email);
-            EnsureColumnExists<Person>(x => x.Phone);
-            EnsureColumnExists<Person>(x => x.Address);
-            EnsureColumnExists<Person>(x => x.City);
-            EnsureColumnExists<Person>(x => x.Country);
-            EnsureColumnExists<Person>(x => x.PostalCode);
-            EnsureColumnExists<Person>(x => x.Created);
-            EnsureColumnExists<Person>(x => x.Updated);
-            EnsureIndexExists<Person>(x => x.Email, true);
+        }
+
+        protected override void Migrate()
+        {
+            Create.Table("Person");
+            Alter.Table("Person")
+                .AddColumn("FirstName").AsString()
+                .AddColumn("LastName").AsString()
+                .AddColumn("Email").AsString()
+                .AddColumn("Phone").AsString()
+                .AddColumn("Address").AsString()
+                .AddColumn("City").AsString()
+                .AddColumn("Country").AsString()
+                .AddColumn("PostalCode").AsString()
+                .AddColumn("Created").AsDateTime()
+                .AddColumn("Updated").AsDateTime();
+
+            Create.Index("IX_Person_Email")
+                .OnTable("Person")
+                .OnColumn("Email")
+                .Ascending()
+                .WithOptions().Unique();
         }
     }
 }
