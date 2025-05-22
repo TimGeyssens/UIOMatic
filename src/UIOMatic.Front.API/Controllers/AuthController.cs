@@ -81,4 +81,3 @@ namespace UIOMatic.Front.API.Controllers
         public string Token { get; set; }
     }
 } 
-} 

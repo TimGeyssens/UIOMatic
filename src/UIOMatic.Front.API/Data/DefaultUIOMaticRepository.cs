@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UIOMatic.Extensions;
 using UIOMatic.Interfaces;
 using UIOMatic.Services;
@@ -37,31 +38,25 @@ namespace UIOMatic.Front.API.Data
             _typeInfo = typeInfo;
             _uioMaticObjectService = uioMaticObjectService;
             _db = db;
-
-     
-
         }
 
         public DefaultUIOMaticRepository()
         {
-
         }
 
-        public virtual IEnumerable<object> GetAll(string sortColumn = null, string sortOrder = null)
+        public virtual async Task<IEnumerable<object>> GetAllAsync(string sortColumn = null, string sortOrder = null)
         {
             var q = _db.Query();
-
             var query = q.Select("*").From(_typeInfo.TableName);
-
             var result = _db.Compiler.Compile(query);
 
             var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, result.Sql, sortColumn ?? string.Empty, sortOrder ?? string.Empty, "", null);
             _uioMaticObjectService.OnBuildingQuery(a1);
             query = _db.Query().SelectRaw(a1.Query);
-   
-            if (!string.IsNullOrWhiteSpace(this._config.DeletedColumnName))
+
+            if (!string.IsNullOrWhiteSpace(_config.DeletedColumnName))
             {
-                query.WhereRaw(this._config.DeletedColumnName + " = 0");
+                query.WhereRaw(_config.DeletedColumnName + " = 0");
             }
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
@@ -71,14 +66,12 @@ namespace UIOMatic.Front.API.Data
 
             result = _db.Compiler.Compile(query);
 
-            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, result.Sql.Remove(0,6), sortColumn ?? string.Empty, sortOrder ?? string.Empty, "", null);
+            var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, result.Sql.Remove(0, 6), sortColumn ?? string.Empty, sortOrder ?? string.Empty, "", null);
             _uioMaticObjectService.OnBuiltQuery(a2);
-            return _db.Select(a2.Query);
-
-              
+            return await _db.SelectAsync(a2.Query);
         }
 
-        public virtual UIOMaticPagedResult GetPaged(
+        public virtual async Task<UIOMaticPagedResult> GetPagedAsync(
             int pageNumber,
             int itemsPerPage,
             string searchTerm = "",
@@ -86,259 +79,190 @@ namespace UIOMatic.Front.API.Data
             string sortColumn = "",
             string sortOrder = "")
         {
-
-            var numberDataTypes = new[] {
-                typeof(Byte),
-                typeof(Decimal),
-                typeof(Double),
-                typeof(Int16),
-                typeof(Int32),
-                typeof(Int64),
-                typeof(SByte),
-                typeof(Single),
-                typeof(UInt16),
-                typeof(UInt32),
-
-                typeof(Byte?),
-                typeof(Decimal?),
-                typeof(Double?),
-                typeof(Int16?),
-                typeof(Int32?),
-                typeof(Int64?),
-                typeof(SByte?),
-                typeof(Single?),
-                typeof(UInt16?),
-                typeof(UInt32?)
-            };
-
-            var guidDataTypes = new[] {
-                typeof(Guid),
-                typeof(Guid?)
-            };
-
-            var dateDataTypes = new[] {
-                typeof(DateTime),
-                typeof(DateTime?)
-            };
-
-            var boolDataTypes = new[] {
-                typeof(bool),
-                typeof(bool?)
-            };
-
-
-
-            var q = _db.Query();
-
-            var query = q.Select("*").From(_typeInfo.TableName);
-
-            //var result = _db.Compiler.Compile(query);
-            //var a1 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, result.Sql, sortColumn, sortOrder, "", null);
-            //_uioMaticObjectService.OnBuildingQuery(a1);
-            //query = _db.Query().SelectRaw(a1.Query);
-
-            if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
-            {
-                query.WhereRaw(this._config.DeletedColumnName + " = 0");
-            }
-            else
-            {
-                query.WhereRaw("1=1");
-            }
-
-            //Filter by search term
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                //query.whw("AND (1=0");
-
-                var c = 0;
-                foreach (var property in _typeInfo.Type.GetProperties())
-                {
-                    var attris = property.GetCustomAttributes(true);
-                    if (attris.All(x => x.GetType() != typeof(IgnoreAttribute)))
-                    {
-                        var columnName = property.Name;
-
-                        var columnAttri = attris.FirstOrDefault(x => x.GetType() == typeof(ColumnAttribute)) as ColumnAttribute;
-                        if (columnAttri != null)
-                            columnName = columnAttri.Name;
-
-                        //guid
-                        else if (guidDataTypes.Contains(property.PropertyType))
-                        {
-                            Guid searchGuid;
-                            if (Guid.TryParse(searchTerm, out searchGuid))
-                            {
-                                query.Or().WhereRaw(columnName + " = @0", searchGuid);
-                            }
-                        }
-                        //number / boolean
-                        else if (numberDataTypes.Contains(property.PropertyType) || boolDataTypes.Contains(property.PropertyType))
-                        {
-                            decimal searchNumber;
-                            if (decimal.TryParse(searchTerm, out searchNumber))
-                            {
-                                query.Or().WhereRaw(columnName + " = @0", searchNumber);
-                            }
-                        }
-                        //date
-                        else if (dateDataTypes.Contains(property.PropertyType))
-                        {
-                            DateTime searchDate;
-                            if (DateTime.TryParse(searchTerm, out searchDate))
-                            {
-                                query.Or().WhereRaw(columnName + " >=  @0 AND " + columnName + " < @1", searchDate.Date, searchDate.AddDays(1).Date);
-                            }
-                        }
-                        else if (property.PropertyType == typeof(string))
-                        {
-                            query.Or().WhereLike(columnName, searchTerm);
-                        }
-
-                        c++;
-                    }
-                }
-
-                //query.Append(")");
-            }
-
-            //if (filters != null && filters.Any())
-            //{
-            //    foreach (var filter in filters)
-            //    {
-            //        query.Append("AND " + filter.Key + " = @0", filter.Value);
-            //    }
-            //}
-
-            //Sort
-
-
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
-            {
-                query.OrderByRaw("[" + sortColumn + "] " + sortOrder);
-            }
-            else if (!string.IsNullOrEmpty(_config.SortColumn) && !string.IsNullOrEmpty(_config.SortOrder))
-            {
-                query.OrderByRaw("[" + _config.SortColumn + "] " + _config.SortOrder);
-            }
-            else
-            {
-                var primaryKeyColum = "Id";/* _typeInfo.Type.GetPrimaryKeyName()*/;
-                query.OrderByRaw("[" + primaryKeyColum + "] asc");
-            }
-
-            //result = _db.Compiler.Compile(query);
-
-            //var a2 = new QueryEventArgs(_typeInfo.Type, _typeInfo.TableName, result.Sql.Remove(0, 6), sortColumn, sortOrder, "", null);
-            //_uioMaticObjectService.OnBuiltQuery(a2);
-            //query = _db.Query().SelectRaw(a2.Query);
-
-            var p = query.Paginate(pageNumber, itemsPerPage);
-          
+            var query = BuildPagedQuery(searchTerm, filters, sortColumn, sortOrder);
+            var total = await GetTotalRecordCountAsync();
+            var items = await _db.SelectAsync(query);
 
             return new UIOMaticPagedResult
             {
-                CurrentPage = p.Page,
-                ItemsPerPage = p.PerPage,
-                TotalItems = p.Count,
-                TotalPages = p.TotalPages,
-                Items = p.List
+                CurrentPage = pageNumber,
+                ItemsPerPage = itemsPerPage,
+                TotalItems = total,
+                TotalPages = (int)Math.Ceiling((double)total / itemsPerPage),
+                Items = items
             };
-            
         }
 
-        public virtual object Get(string id)
+        public virtual async Task<object> GetAsync(string id)
         {
-            var q = _db.Query();
+            var query = _db.Query()
+                .Select("*")
+                .From(_typeInfo.TableName)
+                .Where(_typeInfo.PrimaryKeyName, id);
 
-            var query = q.Select("*").From(_typeInfo.TableName);
-            query.WhereRaw("id" + " = " + id);
-            return _db.Get(query).FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(_config.DeletedColumnName))
+            {
+                query.WhereRaw(_config.DeletedColumnName + " = 0");
+            }
 
-
-           
-
-            //    var query = new Sql().Select("*").From(_typeInfo.TableName);
-            //    var table = NPoco.TableInfo.FromPoco(_typeInfo.Type);
-            //    query.Append("WHERE " + table.PrimaryKey + " = " + id);
-
-            //    return scope.Database.Query(_typeInfo.Type, query.SQL).FirstOrDefault();
-
+            return await _db.FirstOrDefaultAsync(query);
         }
 
-        public virtual object Create(object entity)
+        public virtual async Task<object> CreateAsync(object entity)
         {
+            var a1 = new ObjectEventArgs(_typeInfo.Type, entity);
+            _uioMaticObjectService.OnCreatingObject(a1);
+            entity = a1.Object;
 
-            var values = entity.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(x => x.Name != "Id")
-                .ToDictionary(prop => prop.Name, prop => prop.GetValue(entity, null));
+            var id = await _db.InsertAsync(_typeInfo.TableName, entity);
+            entity = await GetAsync(id.ToString());
 
-            var id = _db.Query(_typeInfo.TableName).InsertGetId<int>(values);
+            var a2 = new ObjectEventArgs(_typeInfo.Type, entity);
+            _uioMaticObjectService.OnCreatedObject(a2);
 
-            //if (!this._typeInfo.DateCreatedFieldKey.IsNullOrWhiteSpace())
-            //{
-            //    entity.SetPropertyValue(this._typeInfo.DateCreatedFieldKey, DateTime.Now);
-            //}
-
-            //if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
-            //{
-            //    entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
-            //}
-
-            //if (_typeInfo.AutoIncrementPrimaryKey)
-            //    scope.Database.Insert(_typeInfo.TableName, _typeInfo.PrimaryKeyColumnName, true, entity);
-            //else
-            //    scope.Database.Insert(entity);
-            values.Add("Id", id);
-            return values;
-            
+            return a2.Object;
         }
 
-        public virtual object Update(object entity)
+        public virtual async Task<object> UpdateAsync(object entity)
         {
+            var a1 = new ObjectEventArgs(_typeInfo.Type, entity);
+            _uioMaticObjectService.OnUpdatingObject(a1);
+            entity = a1.Object;
 
-            var values = entity.GetType()
-               .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-               .Where(x => x.Name != "Id")
-               .ToDictionary(prop => prop.Name, prop => prop.GetValue(entity, null));
+            await _db.UpdateAsync(_typeInfo.TableName, entity);
+            entity = await GetAsync(entity.GetPropertyValue(_typeInfo.PrimaryKeyName).ToString());
 
-            var id = entity.GetType()
-               .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-               .FirstOrDefault(x => x.Name == "Id");
+            var a2 = new ObjectEventArgs(_typeInfo.Type, entity);
+            _uioMaticObjectService.OnUpdatedObject(a2);
 
-            _db.Query(_typeInfo.TableName).Where(id.Name,id.GetValue(entity,null)).Update(values);
-            //        if (!this._typeInfo.DateModifiedFieldKey.IsNullOrWhiteSpace())
-            //        {
-            //            entity.SetPropertyValue(this._typeInfo.DateModifiedFieldKey, DateTime.Now);
-            //        }
-            return entity;
-
+            return a2.Object;
         }
 
-        public virtual void Delete(string[] ids)
+        public virtual async Task DeleteAsync(string[] ids)
         {
-            _db.Query(_typeInfo.TableName).WhereIn(_config.DeletedColumnName.IsNullOrWhiteSpace() ? "Id": _config.DeletedColumnName, ids).Delete();
+            var a1 = new DeleteEventArgs(_typeInfo.Type, ids);
+            _uioMaticObjectService.OnDeletingObjects(a1);
+            ids = a1.Ids;
 
-          
+            foreach (var id in ids)
+            {
+                if (!string.IsNullOrWhiteSpace(_config.DeletedColumnName))
+                {
+                    await _db.Query(_typeInfo.TableName)
+                        .Where(_typeInfo.PrimaryKeyName, id)
+                        .UpdateAsync(new { [_config.DeletedColumnName] = 1 });
+                }
+                else
+                {
+                    await _db.Query(_typeInfo.TableName)
+                        .Where(_typeInfo.PrimaryKeyName, id)
+                        .DeleteAsync();
+                }
+            }
+
+            var a2 = new DeleteEventArgs(_typeInfo.Type, ids);
+            _uioMaticObjectService.OnDeletedObjects(a2);
         }
 
-        public virtual long GetTotalRecordCount()
+        public virtual async Task<long> GetTotalRecordCountAsync()
         {
-            return _db.Query(_typeInfo.TableName).Count<long>();
-           
-          
+            var query = _db.Query()
+                .SelectRaw("COUNT(*)")
+                .From(_typeInfo.TableName);
 
-            //    var sql = string.Format("SELECT COUNT(1) FROM {0}", _typeInfo.TableName);
+            if (!string.IsNullOrWhiteSpace(_config.DeletedColumnName))
+            {
+                query.WhereRaw(_config.DeletedColumnName + " = 0");
+            }
 
-            //    if (!this._config.DeletedColumnName.IsNullOrWhiteSpace())
-            //    {
-            //        sql += string.Format(" WHERE {0} = 0", this._config.DeletedColumnName);
-            //    }
-
-            //    return scope.Database.ExecuteScalar<long>(sql);
-            //}
+            return await _db.ExecuteScalarAsync<long>(query);
         }
 
+        private Query BuildPagedQuery(string searchTerm, IDictionary<string, string> filters, string sortColumn, string sortOrder)
+        {
+            var query = _db.Query()
+                .Select("*")
+                .From(_typeInfo.TableName);
+
+            if (!string.IsNullOrWhiteSpace(_config.DeletedColumnName))
+            {
+                query.WhereRaw(_config.DeletedColumnName + " = 0");
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                ApplySearchTerm(query, searchTerm);
+            }
+
+            if (filters != null && filters.Any())
+            {
+                foreach (var filter in filters)
+                {
+                    query.Where(filter.Key, filter.Value);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortOrder))
+            {
+                query.OrderByRaw(sortColumn + " " + sortOrder);
+            }
+
+            return query;
+        }
+
+        private void ApplySearchTerm(Query query, string searchTerm)
+        {
+            var numberDataTypes = new[]
+            {
+                typeof(Byte), typeof(Decimal), typeof(Double), typeof(Int16), typeof(Int32),
+                typeof(Int64), typeof(SByte), typeof(Single), typeof(UInt16), typeof(UInt32),
+                typeof(Byte?), typeof(Decimal?), typeof(Double?), typeof(Int16?), typeof(Int32?),
+                typeof(Int64?), typeof(SByte?), typeof(Single?), typeof(UInt16?), typeof(UInt32?)
+            };
+
+            var guidDataTypes = new[] { typeof(Guid), typeof(Guid?) };
+            var dateDataTypes = new[] { typeof(DateTime), typeof(DateTime?) };
+            var boolDataTypes = new[] { typeof(bool), typeof(bool?) };
+
+            foreach (var property in _typeInfo.Type.GetProperties())
+            {
+                var attris = property.GetCustomAttributes(true);
+                if (attris.All(x => x.GetType() != typeof(IgnoreAttribute)))
+                {
+                    var columnName = property.Name;
+                    var columnAttri = attris.FirstOrDefault(x => x.GetType() == typeof(ColumnAttribute)) as ColumnAttribute;
+                    if (columnAttri != null)
+                    {
+                        columnName = columnAttri.Name;
+                    }
+
+                    if (guidDataTypes.Contains(property.PropertyType))
+                    {
+                        if (Guid.TryParse(searchTerm, out var searchGuid))
+                        {
+                            query.Or().WhereRaw(columnName + " = @0", searchGuid);
+                        }
+                    }
+                    else if (numberDataTypes.Contains(property.PropertyType) || boolDataTypes.Contains(property.PropertyType))
+                    {
+                        if (decimal.TryParse(searchTerm, out var searchNumber))
+                        {
+                            query.Or().WhereRaw(columnName + " = @0", searchNumber);
+                        }
+                    }
+                    else if (dateDataTypes.Contains(property.PropertyType))
+                    {
+                        if (DateTime.TryParse(searchTerm, out var searchDate))
+                        {
+                            query.Or().WhereRaw(columnName + " >= @0 AND " + columnName + " < @1", searchDate.Date, searchDate.AddDays(1).Date);
+                        }
+                    }
+                    else if (property.PropertyType == typeof(string))
+                    {
+                        query.Or().WhereLike(columnName, searchTerm);
+                    }
+                }
+            }
+        }
     }
 }

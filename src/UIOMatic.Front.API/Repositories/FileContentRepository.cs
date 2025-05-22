@@ -11,6 +11,8 @@ using UIOMatic.Front.API.Models;
 using UIOMatic.Models;
 using UIOMatic.Attributes;
 using UIOMatic.Core.Repositories;
+using UIOMatic.Services;
+using Newtonsoft.Json;
 
 namespace UIOMatic.Front.API.Repositories
 {
@@ -21,6 +23,10 @@ namespace UIOMatic.Front.API.Repositories
         private string _filePattern;
         private Type _entityType;
         private int _nextId;
+        private readonly UIOMaticObjectService _uioMaticObjectService;
+        private readonly UIOMaticAttribute _attr;
+        private readonly UIOMaticTypeInfo _typeInfo;
+        private readonly string _filePath;
 
         public FileContentRepository() : this(null)
         {
@@ -49,6 +55,17 @@ namespace UIOMatic.Front.API.Repositories
                 _nextId = 1;
                 File.WriteAllText(System.IO.Path.Combine(_contentPath, ".nextid"), _nextId.ToString());
             }
+        }
+
+        public FileContentRepository(
+            UIOMaticAttribute attr,
+            UIOMaticTypeInfo typeInfo,
+            UIOMaticObjectService uioMaticObjectService)
+        {
+            _attr = attr;
+            _typeInfo = typeInfo;
+            _uioMaticObjectService = uioMaticObjectService;
+            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "UIOMatic", $"{typeInfo.Type.Name}.json");
         }
 
         private async Task SaveNextId()
@@ -309,6 +326,122 @@ namespace UIOMatic.Front.API.Repositories
         private object GetPropertyValue(object obj, string propertyName)
         {
             return obj.GetType().GetProperty(propertyName)?.GetValue(obj);
+        }
+
+        public override async Task<IEnumerable<object>> GetAllAsync(string sortColumn = "", string sortOrder = "")
+        {
+            var items = await ReadFromFile();
+            if (!string.IsNullOrEmpty(sortColumn))
+            {
+                items = sortOrder == "asc"
+                    ? items.OrderBy(x => x[sortColumn])
+                    : items.OrderByDescending(x => x[sortColumn]);
+            }
+            return items.Select(x => _uioMaticObjectService.MapToObject(_typeInfo.Type, x));
+        }
+
+        public override async Task<object> GetAsync(string id)
+        {
+            var items = await ReadFromFile();
+            var item = items.FirstOrDefault(x => x["Id"].ToString() == id);
+            return item != null ? _uioMaticObjectService.MapToObject(_typeInfo.Type, item) : null;
+        }
+
+        public override async Task<object> CreateAsync(object entity)
+        {
+            var items = await ReadFromFile();
+            var doc = _uioMaticObjectService.MapToDocument(entity);
+            doc["Id"] = Guid.NewGuid().ToString();
+            items.Add(doc);
+            await WriteToFile(items);
+            return entity;
+        }
+
+        public override async Task<object> UpdateAsync(object entity)
+        {
+            var items = await ReadFromFile();
+            var doc = _uioMaticObjectService.MapToDocument(entity);
+            var index = items.FindIndex(x => x["Id"].ToString() == doc["Id"].ToString());
+            if (index >= 0)
+            {
+                items[index] = doc;
+                await WriteToFile(items);
+            }
+            return entity;
+        }
+
+        public override async Task DeleteAsync(string[] ids)
+        {
+            var items = await ReadFromFile();
+            items.RemoveAll(x => ids.Contains(x["Id"].ToString()));
+            await WriteToFile(items);
+        }
+
+        public override async Task<object> ValidateAsync(object entity)
+        {
+            return await Task.FromResult(_uioMaticObjectService.Validate(_typeInfo.Type, entity));
+        }
+
+        public override async Task<long> GetTotalRecordCountAsync()
+        {
+            var items = await ReadFromFile();
+            return items.Count;
+        }
+
+        public override async Task<UIOMaticPagedResult> GetPagedAsync(
+            int pageNumber,
+            int itemsPerPage,
+            string searchTerm = "",
+            IDictionary<string, string> filters = null,
+            string sortColumn = "",
+            string sortOrder = "")
+        {
+            var items = await ReadFromFile();
+            if (!string.IsNullOrEmpty(sortColumn))
+            {
+                items = sortOrder == "asc"
+                    ? items.OrderBy(x => x[sortColumn])
+                    : items.OrderByDescending(x => x[sortColumn]);
+            }
+            if (filters != null && filters.Any())
+            {
+                foreach (var filter in filters)
+                {
+                    items = items.Where(x => x[filter.Key].ToString() == filter.Value);
+                }
+            }
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                items = items.Where(x => x.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+            }
+            var totalItems = items.Count();
+            var results = items.Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage)
+                .Select(x => _uioMaticObjectService.MapToObject(_typeInfo.Type, x));
+            return new UIOMaticPagedResult
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = itemsPerPage,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)itemsPerPage),
+                Items = results
+            };
+        }
+
+        private async Task<List<Dictionary<string, object>>> ReadFromFile()
+        {
+            if (!File.Exists(_filePath))
+            {
+                return new List<Dictionary<string, object>>();
+            }
+
+            var json = await File.ReadAllTextAsync(_filePath);
+            return System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, object>>>(json) ?? new List<Dictionary<string, object>>();
+        }
+
+        private async Task WriteToFile(List<Dictionary<string, object>> items)
+        {
+            var json = System.Text.Json.JsonSerializer.Serialize(items);
+            await File.WriteAllTextAsync(_filePath, json);
         }
     }
 } 

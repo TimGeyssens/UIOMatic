@@ -1,38 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UIOMatic.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
-using UIOMatic.Models;
-using Umbraco.Cms.Web.Common.Attributes;
+using UIOMatic.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Extensions;
 
 namespace UIOMatic.Front.Umbraco.Web.Controllers
 {
     [PluginController("UIOMatic")]
-    public class PropertyEditorsApiController: UmbracoAuthorizedJsonController
+    public class PropertyEditorsApiController : UmbracoAuthorizedJsonController
     {
-        private readonly IUIOMaticHelper _helper;
         private readonly IUIOMaticObjectService _service;
+        private readonly IUIOMaticHelper _helper;
 
-        public PropertyEditorsApiController(IUIOMaticObjectService uioMaticObjectService,
-            IUIOMaticHelper helper)
+        public PropertyEditorsApiController(IUIOMaticHelper helper, IUIOMaticObjectService uioMaticObjectService)
         {
-            _service = uioMaticObjectService;
             _helper = helper;
+            _service = uioMaticObjectService;
         }
 
-        public IEnumerable<UIOMaticTypeInfo> GetAllTypes()
+        [HttpGet]
+        public IActionResult GetPropertyEditors(string typeAlias)
+        {
+            var type = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = _service.GetPropertyEditors(type);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllTypes()
         {
             var types = _helper.GetUIOMaticTypes();
-            return types.Select(x => _service.GetTypeInfo(x));
-        }
-
-        public IEnumerable<string> GetAllColumns(string typeAlias)
-        {
-            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetAllColumns(t);
+            return Ok(types);
         }
     }
 }

@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.62-alpha">
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <!-- Command to run on project build -->
     <BuildCommand></BuildCommand>
     <!-- Command to run on project clean -->

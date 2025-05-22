@@ -1,7 +1,11 @@
-﻿namespace UIOMatic.Front.Umbraco
+﻿using Microsoft.Extensions.Configuration;
+
+namespace UIOMatic.Front.Umbraco
 {
     public class UIOMaticConfiguration
     {
+        public const string SectionName = "UIOMatic";
+
         public int DefaultListViewPageSize { get; set; } = 10;
 
         public string RteFieldEditorButtons { get; set; } =

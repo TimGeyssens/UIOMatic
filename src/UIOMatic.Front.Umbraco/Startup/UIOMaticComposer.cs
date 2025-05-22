@@ -10,6 +10,7 @@ using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Mapping;
 using Umbraco.Cms.Core.Notifications;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UIOMatic.Front.Umbraco.Startup
 {
@@ -17,18 +18,20 @@ namespace UIOMatic.Front.Umbraco.Startup
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            builder.AddNotificationHandler<ServerVariablesParsingNotification, UIOMaticServerVariablesHandler>();
+            builder.Services
+                .AddSingleton<IUIOMaticHelper, UIOMaticHelper>()
+                .AddSingleton<UIOMaticObjectService>()
+                .AddSingleton<IUIOMaticObjectService, NPocoObjectService>()
+                .AddSingleton<UIOMaticServerVariablesHandler>();
 
-            builder.Services.AddSingleton<IUIOMaticHelper, UIOMaticHelper>();
-            builder.Services.AddSingleton<UIOMaticObjectService>();
-            builder.Services.AddSingleton<IUIOMaticObjectService, NPocoObjectService>();
-
-            builder.Services.Configure<UIOMaticConfiguration>(builder.Config.GetSection("UIOMatic"));
+            builder.Services.Configure<UIOMaticConfiguration>(
+                builder.Config.GetSection(UIOMaticConfiguration.SectionName));
 
             builder.WithCollectionBuilder<MapDefinitionCollectionBuilder>()
                 .Add<UIOMaticTypeInfoMapping>();
 
-            builder.UiomaticContentApps().Append<UiomaticEditorContentAppFactory>();
+            builder.UiomaticContentApps()
+                .Append<UiomaticEditorContentAppFactory>();
 
             builder.AddDashboard<UIOMaticSummaryDashboard>();
         }

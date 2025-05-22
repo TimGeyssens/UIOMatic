@@ -5,6 +5,15 @@ using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
+using UIOMatic.Core.Migrations;
+using UIOMatic.Interfaces;
+using System.Threading.Tasks;
+using Umbraco.Cms.Infrastructure.Persistence.DatabaseModelDefinitions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UIOMatic.Front.Umbraco.Migrations;
 
 namespace UIOMatic.Site.ExampleCode
 {
@@ -22,16 +31,20 @@ namespace UIOMatic.Site.ExampleCode
         private readonly IMigrationPlanExecutor _migrationPlanExecutor;
         private readonly IKeyValueService _keyValueService;
         private readonly IRuntimeState _runtimeState;
+        private readonly IUIOMaticHelper _helper;
 
-        public PersonMigrationComponent(ICoreScopeProvider coreScopeProvider,
+        public PersonMigrationComponent(
+            ICoreScopeProvider coreScopeProvider,
             IMigrationPlanExecutor migrationPlanExecutor,
             IKeyValueService keyValueService,
-            IRuntimeState runtimeState)
+            IRuntimeState runtimeState,
+            IUIOMaticHelper helper)
         {
             _coreScopeProvider = coreScopeProvider;
             _migrationPlanExecutor = migrationPlanExecutor;
             _keyValueService = keyValueService;
             _runtimeState = runtimeState;
+            _helper = helper;
         }
 
         public void Initialize()
@@ -55,16 +68,22 @@ namespace UIOMatic.Site.ExampleCode
         }
     }
 
-    public class PersonMigration : MigrationBase
+    public class PersonMigration : UIOMaticMigrationBase
     {
-        public PersonMigration(IMigrationContext context) : base(context)
+        public override void Migrate()
         {
-        }
-
-        protected override void Migrate()
-        {
-            if (!TableExists("People"))
-                Create.Table<Person>().Do();
+            EnsureTableExists<Person>();
+            EnsureColumnExists<Person>(x => x.FirstName);
+            EnsureColumnExists<Person>(x => x.LastName);
+            EnsureColumnExists<Person>(x => x.Email);
+            EnsureColumnExists<Person>(x => x.Phone);
+            EnsureColumnExists<Person>(x => x.Address);
+            EnsureColumnExists<Person>(x => x.City);
+            EnsureColumnExists<Person>(x => x.Country);
+            EnsureColumnExists<Person>(x => x.PostalCode);
+            EnsureColumnExists<Person>(x => x.Created);
+            EnsureColumnExists<Person>(x => x.Updated);
+            EnsureIndexExists<Person>(x => x.Email, true);
         }
     }
 }

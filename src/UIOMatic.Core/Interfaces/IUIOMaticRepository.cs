@@ -1,25 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UIOMatic.Models;
 
 namespace UIOMatic.Interfaces
 {
     public interface IUIOMaticRepository
     {
-        IEnumerable<object> GetAll(string sortColumn = "", string sortOrder = "");
+        Task<IEnumerable<object>> GetAllAsync(string sortColumn = "", string sortOrder = "");
 
-        UIOMaticPagedResult GetPaged(int pageNumber, int itemsPerPage,
+        Task<UIOMaticPagedResult> GetPagedAsync(
+            int pageNumber, 
+            int itemsPerPage,
             string searchTerm = "",
             IDictionary<string, string> filters = null,
-            string sortColumn = "", string sortOrder = "");
+            string sortColumn = "", 
+            string sortOrder = "");
     
-        object Get(string id);
+        Task<object> GetAsync(string id);
 
-        object Create(object entity);
+        Task<object> CreateAsync(object entity);
 
-        object Update(object entity);
+        Task<object> UpdateAsync(object entity);
 
-        void Delete(string[] id);
+        Task DeleteAsync(string[] ids);
 
-        long GetTotalRecordCount();
+        Task<long> GetTotalRecordCountAsync();
     }
 }

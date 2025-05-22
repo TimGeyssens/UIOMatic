@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/package.manifest-8.0.0.json",
+  "name": "UIOMatic",
+  "version": "6.0.0",
+  "allowPackageTelemetry": true,
+  "extensions": [
+    {
+      "name": "UIOMatic Section",
+      "alias": "uiomatic.section",
+      "type": "section",
+      "js": "/App_Plugins/UIOMatic/backoffice/components/list/uiomatic-list.js",
+      "elementName": "uiomatic-list",
+      "meta": {
+        "label": "UIOMatic",
+        "pathname": "uiomatic"
+      }
+    },
+    {
+      "name": "UIOMatic Edit",
+      "alias": "uiomatic.edit",
+      "type": "sectionView",
+      "js": "/App_Plugins/UIOMatic/backoffice/components/edit/uiomatic-edit.js",
+      "elementName": "uiomatic-edit",
+      "meta": {
+        "pathname": "edit"
+      }
+    },
+    {
+      "name": "UIOMatic Delete",
+      "alias": "uiomatic.delete",
+      "type": "sectionView",
+      "js": "/App_Plugins/UIOMatic/backoffice/components/delete/uiomatic-delete.js",
+      "elementName": "uiomatic-delete",
+      "meta": {
+        "pathname": "delete"
+      }
+    }
+  ]
+} 

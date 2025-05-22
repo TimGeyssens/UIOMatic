@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 
@@ -8,9 +9,9 @@ namespace UIOMatic.Data
 {
     public abstract class AbstractUIOMaticRepository<TEntity, TId> : IUIOMaticRepository
     {
-        public abstract IEnumerable<TEntity> GetAll(string sortColumn = "", string sortOrder = "");
+        public abstract Task<IEnumerable<TEntity>> GetAllAsync(string sortColumn = "", string sortOrder = "");
 
-        public abstract UIOMaticPagedResult<TEntity> GetPaged(
+        public abstract Task<UIOMaticPagedResult<TEntity>> GetPagedAsync(
             int pageNumber,
             int itemsPerPage,
             string searchTerm = "",
@@ -18,24 +19,25 @@ namespace UIOMatic.Data
             string sortColumn = "",
             string sortOrder = "");
 
-        public abstract TEntity Get(TId id);
+        public abstract Task<TEntity> GetAsync(TId id);
 
-        public abstract TEntity Create(TEntity entity);
+        public abstract Task<TEntity> CreateAsync(TEntity entity);
 
-        public abstract TEntity Update(TEntity entity);
+        public abstract Task<TEntity> UpdateAsync(TEntity entity);
 
-        public abstract void Delete(TId[] ids);
+        public abstract Task DeleteAsync(TId[] ids);
 
-        public abstract long GetTotalRecordCount();
+        public abstract Task<long> GetTotalRecordCountAsync();
 
         #region IUIOMaticRepository
 
-        IEnumerable<object> IUIOMaticRepository.GetAll(string sortColumn, string sortOrder)
+        async Task<IEnumerable<object>> IUIOMaticRepository.GetAllAsync(string sortColumn, string sortOrder)
         {
-            return GetAll(sortColumn, sortOrder).Select(x => (object)x);
+            var result = await GetAllAsync(sortColumn, sortOrder);
+            return result.Select(x => (object)x);
         }
 
-        UIOMaticPagedResult IUIOMaticRepository.GetPaged(
+        async Task<UIOMaticPagedResult> IUIOMaticRepository.GetPagedAsync(
             int pageNumber,
             int itemsPerPage,
             string searchTerm,
@@ -43,7 +45,7 @@ namespace UIOMatic.Data
             string sortColumn,
             string sortOrder)
         {
-            var r = GetPaged(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
+            var r = await GetPagedAsync(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
 
             return new UIOMaticPagedResult
             {
@@ -55,24 +57,26 @@ namespace UIOMatic.Data
             };
         }
 
-        object IUIOMaticRepository.Get(string id)
+        async Task<object> IUIOMaticRepository.GetAsync(string id)
         {
-            return Get((TId)TypeDescriptor.GetConverter(typeof(TId)).ConvertFromInvariantString(id));
+            var convertedId = (TId)TypeDescriptor.GetConverter(typeof(TId)).ConvertFromInvariantString(id);
+            return await GetAsync(convertedId);
         }
 
-        object IUIOMaticRepository.Create(object entity)
+        async Task<object> IUIOMaticRepository.CreateAsync(object entity)
         {
-            return Create((TEntity)entity);
+            return await CreateAsync((TEntity)entity);
         }
 
-        object IUIOMaticRepository.Update(object entity)
+        async Task<object> IUIOMaticRepository.UpdateAsync(object entity)
         {
-            return Update((TEntity)entity);
+            return await UpdateAsync((TEntity)entity);
         }
 
-        void IUIOMaticRepository.Delete(string[] ids)
+        async Task IUIOMaticRepository.DeleteAsync(string[] ids)
         {
-            Delete(ids.Select(x => (TId)TypeDescriptor.GetConverter(typeof(TId)).ConvertFromInvariantString(x)).ToArray());
+            var convertedIds = ids.Select(x => (TId)TypeDescriptor.GetConverter(typeof(TId)).ConvertFromInvariantString(x)).ToArray();
+            await DeleteAsync(convertedIds);
         }
 
         #endregion

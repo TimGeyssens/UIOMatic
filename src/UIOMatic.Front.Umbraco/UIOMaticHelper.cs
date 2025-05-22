@@ -13,35 +13,35 @@ using Umbraco.Extensions;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Scoping;
-using IHostingEnvironment = Umbraco.Cms.Core.Hosting.IHostingEnvironment;
 using UIOMatic.Front.Umbraco.Data;
 using UIOMatic.Front.Umbraco.Extensions;
+using IHostingEnvironment = Umbraco.Cms.Core.Hosting.IHostingEnvironment;
 
 namespace UIOMatic.Front.Umbraco
 {
     public class UIOMaticHelper : IUIOMaticHelper
     {
-        private readonly AppCaches _appCaches;
+        private readonly IAppPolicyCache _runtimeCache;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IScopeProvider _scopeProvider;
+        private readonly ICoreScopeProvider _scopeProvider;
         private readonly UIOMaticObjectService _uioMaticObjectService;
         private readonly ILogger<IUIOMaticHelper> _logger;
 
-        public UIOMaticHelper(AppCaches appCaches, 
+        public UIOMaticHelper(
+            IAppPolicyCache runtimeCache,
             IHostingEnvironment hostingEnvironment,
-            IScopeProvider scopeProvider,
+            ICoreScopeProvider scopeProvider,
             UIOMaticObjectService uioMaticObjectService,
             ILogger<IUIOMaticHelper> logger)
         {
-            _appCaches = appCaches;
+            _runtimeCache = runtimeCache;
             _hostingEnvironment = hostingEnvironment;
             _scopeProvider = scopeProvider;
             _uioMaticObjectService = uioMaticObjectService;
             _logger = logger;
         }
 
-
-        public  IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
+        public IUIOMaticRepository GetRepository(UIOMaticAttribute attr, UIOMaticTypeInfo typeInfo)
         {
             if (attr.RepositoryType == null)
                 return (IUIOMaticRepository)Activator.CreateInstance(typeof(DefaultUIOMaticRepository), attr, typeInfo, _scopeProvider, _uioMaticObjectService);
@@ -51,81 +51,38 @@ namespace UIOMatic.Front.Umbraco
                 : (IUIOMaticRepository)Activator.CreateInstance(attr.RepositoryType, _scopeProvider);
         }
 
-        public  IEnumerable<Type> GetUIOMaticTypes()
+        public IEnumerable<Type> GetUIOMaticTypes()
         {
             return GetUIOMaticFolderTypes().Where(x => x.HasAttribute<UIOMaticAttribute>());
         }
 
-        public  IEnumerable<Type> GetUIOMaticFolderTypes()
+        public IEnumerable<Type> GetUIOMaticFolderTypes()
         {
-            var cachedItems = GetLocalCacheItem<IEnumerable<Type>>("UIOMaticFolderTypes");
-
-            // First cache request, need to set values
-            if (cachedItems == null)
-            {
-                var UIOMaticTypes = EnsureUIOMaticTypes();
-                InsertLocalCacheItem("UIOMaticFolderTypes", () => UIOMaticTypes);
-                cachedItems = UIOMaticTypes;
-                _logger.LogDebug(string.Format("UIOMaticFolderTypes added to cache and returned from runtime with {0} items", cachedItems.Count()));
-
-            }
-            else
-            {
-                _logger.LogDebug(string.Format("UIOMaticFolderTypes returned directly from cache with {0} items", cachedItems.Count()));
-            }
-
-            return cachedItems;
+            return _runtimeCache.GetCacheItem("UIOMaticFolderTypes", () => EnsureUIOMaticTypes());
         }
 
-        private  IEnumerable<Type> EnsureUIOMaticTypes()
+        private IEnumerable<Type> EnsureUIOMaticTypes()
         {
-            var allTypes = new List<Type>();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var types = new List<Type>();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
             {
                 try
                 {
-                    allTypes.AddRange(assembly.GetTypes());
+                    types.AddRange(assembly.GetTypes().Where(x => x.HasAttribute<UIOMaticFolderAttribute>()));
                 }
-                catch (ReflectionTypeLoadException)
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Error loading types from assembly {Assembly}", assembly.FullName);
                 }
             }
-
-            var typesWithMyAttribute =
-                from t in allTypes
-                let attributes = t.GetCustomAttributes(typeof(UIOMaticFolderAttribute), true)
-                where attributes != null && attributes.Length > 0
-                select t; // UIOMaticFolderAttribute is the base type for all UIOMatic entities
-
-            // Ensure unique aliases
-            var aliases = new List<string>();
-
-            var assemblesWithfolderAttributes = new List<Tuple<string, UIOMaticFolderAttribute>>();
-
-            foreach (var typeWithMyAttribute in typesWithMyAttribute)
-            {
-                assemblesWithfolderAttributes.Add(new Tuple<string, UIOMaticFolderAttribute>(typeWithMyAttribute.Assembly.FullName, typeWithMyAttribute.GetCustomAttribute<UIOMaticFolderAttribute>(true)));
-            }
-
-            // dedupe the list of assemblies and attributes
-            assemblesWithfolderAttributes = assemblesWithfolderAttributes.Distinct().ToList();
-
-            foreach (var typeWithMyAttribute in assemblesWithfolderAttributes)
-            {
-                var attr = typeWithMyAttribute.Item2;
-                if (aliases.Any(x => x == attr.Alias))
-                    throw new ApplicationException("Multiple UI-O-Matic model types found with alias '" + attr.Alias + "'. Please ensure all types have a unique alias value.");
-
-                aliases.Add(attr.Alias);
-            }
-
-            return typesWithMyAttribute;
+            return types;
         }
 
-        public  Type GetUIOMaticTypeByAlias(string typeAlias, bool includeFolders = false, bool throwNullError = false)
+        public Type GetUIOMaticTypeByAlias(string typeAlias, bool includeFolders = false, bool throwNullError = false)
         {
             var t = (includeFolders ? GetUIOMaticFolderTypes() : GetUIOMaticTypes()).FirstOrDefault(x => {
-                var attr = x.GetCustomAttribute<UIOMaticFolderAttribute>(true);  // UIOMaticFolderAttribute is the base type for all UIOMatic entities
+                var attr = x.GetCustomAttribute<UIOMaticFolderAttribute>(true);
                 return attr == null || attr.Alias.IsNullOrWhiteSpace()
                     ? x.Name == typeAlias
                     : attr.Alias == typeAlias;
@@ -137,17 +94,6 @@ namespace UIOMatic.Front.Umbraco
             }
 
             return t;
-        }
-
-        private T GetLocalCacheItem<T>(string cacheKey)
-        {
-            var cachedItem = _appCaches.RuntimeCache.GetCacheItem<T>(cacheKey);
-            return cachedItem;
-        }
-
-        private void InsertLocalCacheItem<T>(string cacheKey, Func<T> getCacheItem)
-        {
-             _appCaches.RuntimeCache.InsertCacheItem<T>(cacheKey, getCacheItem);
         }
     }
 

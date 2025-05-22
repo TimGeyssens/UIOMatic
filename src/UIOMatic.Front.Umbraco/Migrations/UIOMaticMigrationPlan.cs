@@ -4,18 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Umbraco.Cms.Core.Packaging;
+using Umbraco.Cms.Core.Services;
 
 namespace UIOMatic.Front.Umbraco.Migrations
 {
     public class UIOMaticMigrationPlan : PackageMigrationPlan
     {
-        public UIOMaticMigrationPlan() : base("UIOMatic", "UIOMatic")
+        private readonly IUserService _userService;
+
+        public UIOMaticMigrationPlan(IUserService userService) 
+            : base("UIOMatic", "UIOMatic")
         {
+            _userService = userService;
         }
 
         protected override void DefinePlan()
         {
-            To<AddAllowedSectionToAdmins>("state-3.0.0");
+            To<AddAllowedSectionToAdmins>("state-1");
         }
     }
 }

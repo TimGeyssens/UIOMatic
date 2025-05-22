@@ -6,11 +6,17 @@ using static Umbraco.Cms.Core.Constants;
 
 namespace UIOMatic.Front.Umbraco.ContentApps
 {
+    /// <summary>
+    /// Factory for creating UIOMatic editor content apps
+    /// </summary>
     internal class UiomaticEditorContentAppFactory : IUiomaticContentAppFactory
     {
+        /// <summary>
+        /// The weight of the content app
+        /// </summary>
         internal const int Weight = -100;
 
-
+        /// <inheritdoc />
         public ContentApp GetContentAppFor(Type type, IEnumerable<IReadOnlyUserGroup> userGroups)
         {
             return new ContentApp

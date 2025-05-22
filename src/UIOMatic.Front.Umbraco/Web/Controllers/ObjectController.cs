@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using UIOMatic.Attributes;
 using UIOMatic.Services;
 using UIOMatic.Web.PostModels;
@@ -11,7 +13,6 @@ using Newtonsoft.Json.Serialization;
 using UIOMatic.Front.Umbraco.ContentApps;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.BackOffice.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Models.Membership;
 using UIOMatic.Front.Umbraco.Models;
@@ -23,13 +24,14 @@ namespace UIOMatic.Front.Umbraco.Web.Controllers
     [PluginController("UIOMatic")]
     public class ObjectController : UmbracoAuthorizedJsonController
     {
-        private IUIOMaticObjectService _service;
+        private readonly IUIOMaticObjectService _service;
         private readonly UiomaticContentAppFactoryCollection _contentAppsFactoryCollection;
         private readonly IEnumerable<IReadOnlyUserGroup> _usergroups;
-        private readonly IUIOMaticHelper Helper;
+        private readonly IUIOMaticHelper _helper;
         private readonly IUmbracoMapper _umbracoMapper;
 
-        public ObjectController(UiomaticContentAppFactoryCollection contentAppsFactoryCollection, 
+        public ObjectController(
+            UiomaticContentAppFactoryCollection contentAppsFactoryCollection,
             IEnumerable<IReadOnlyUserGroup> usergroups,
             IUIOMaticHelper helper,
             IUIOMaticObjectService uioMaticObjectService,
@@ -38,102 +40,89 @@ namespace UIOMatic.Front.Umbraco.Web.Controllers
             _service = uioMaticObjectService;
             _contentAppsFactoryCollection = contentAppsFactoryCollection;
             _usergroups = usergroups;
-            Helper = helper;
+            _helper = helper;
             _umbracoMapper = umbracoMapper;
         }
 
         [HttpGet]
-        public IEnumerable<object> GetAll(string typeAlias, string sortColumn, string sortOrder)
+        public async Task<IActionResult> GetAll(string typeAlias, string sortColumn, string sortOrder)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetAll(t, sortColumn, sortOrder);
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = await _service.GetAllAsync(t, sortColumn, sortOrder);
+            return Ok(result);
         }
 
         [HttpGet]
-        public IEnumerable<object> GetFilterLookup(string typeAlias, string keyPropertyName, string valuePropertyName)
+        public async Task<IActionResult> GetFilterLookup(string typeAlias, string keyPropertyName, string valuePropertyName)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetFilterLookup(t, keyPropertyName, valuePropertyName); 
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = await _service.GetFilterLookupAsync(t, keyPropertyName, valuePropertyName);
+            return Ok(result);
         }
 
         [HttpGet]
-        public UIOMatic.Models.UIOMaticPagedResult GetPaged(string typeAlias, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
+        public async Task<IActionResult> GetPaged(string typeAlias, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
-           
-
-            // Need a better approache than this as this is hacky and horrible
-            // Probably want to switch to a HttpPost method and just pass a json body instead
-            var filtersDict = (filters ?? "").Split('|')
-                .InGroupsOf(2) 
-                .ToDictionary(x => x.First(), x => x.Last())
-                .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
-                .ToDictionary(x => x.Key, x => x.Value);
-
-            //Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
-
-            return _service.GetPaged(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
-        }
-        [HttpGet]
-        public UIOMatic.Models.UIOMaticPagedResult GetPagedWithNodeId(string typeAlias, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
-        {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-
-            // Need a better approache than this as this is hacky and horrible
-            // Probably want to switch to a HttpPost method and just pass a json body instead
             var filtersDict = (filters ?? "").Split('|')
                 .InGroupsOf(2)
                 .ToDictionary(x => x.First(), x => x.Last())
                 .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
                 .ToDictionary(x => x.Key, x => x.Value);
 
-           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
-
-            return _service.GetPagedWithNodeId(t,nodeId,nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
+            var result = await _service.GetPagedAsync(t, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
+            return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPagedWithNodeId(string typeAlias, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, string filters, string searchTerm)
+        {
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+
+            var filtersDict = (filters ?? "").Split('|')
+                .InGroupsOf(2)
+                .ToDictionary(x => x.First(), x => x.Last())
+                .Where(x => !x.Key.IsNullOrWhiteSpace() && !x.Value.IsNullOrWhiteSpace())
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            var result = await _service.GetPagedWithNodeIdAsync(t, nodeId, nodeIdField, itemsPerPage, pageNumber, sortColumn, sortOrder, filtersDict, searchTerm);
+            return Ok(result);
+        }
 
         [HttpGet]
-        public UIOMaticTypeInfo GetTypeInfo(string typeAlias, bool includePropertyInfo)
+        public IActionResult GetTypeInfo(string typeAlias, bool includePropertyInfo)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-
-            //Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
 
             var info = _service.GetTypeInfo(t, includePropertyInfo);
             var derivedInfo = _umbracoMapper.Map<UIOMaticTypeInfo>(info);
             derivedInfo.Apps = _contentAppsFactoryCollection.GetContentAppsFor(t, _usergroups);
 
-            return derivedInfo;
+            return Ok(derivedInfo);
         }
 
         [HttpGet]
-        public object GetById(string typeAlias, string id)
+        public async Task<IActionResult> GetById(string typeAlias, string id)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-
-            //Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
-
-            return _service.GetById(t, id);
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = await _service.GetByIdAsync(t, id);
+            return Ok(result);
         }
 
         [HttpGet]
-        public object GetScaffold(string typeAlias)
+        public IActionResult GetScaffold(string typeAlias)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-
-           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new UIOMaticSerializerContractResolver();
-
-            return _service.GetScaffold(t);
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = _service.GetScaffold(t);
+            return Ok(result);
         }
 
         [HttpGet]
-        public object GetSummaryDashboardTypes()
+        public async Task<IActionResult> GetSummaryDashboardTypes()
         {
-           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
-
-            return Helper.GetUIOMaticTypes().Select(x => x.GetCustomAttribute<UIOMaticAttribute>(false))
+            var result = await Task.FromResult(_helper.GetUIOMaticTypes()
+                .Select(x => x.GetCustomAttribute<UIOMaticAttribute>(true))
                 .Where(x => x.ShowOnSummaryDashboard)
                 .Select(x => new
                 {
@@ -143,46 +132,48 @@ namespace UIOMatic.Front.Umbraco.Web.Controllers
                     folderIcon = x.FolderIcon,
                     renderType = x.RenderType.ToString(),
                     readOnly = x.ReadOnly
-                });
+                }));
+            return Ok(result);
         }
 
         [HttpPost]
-        public object Create(ObjectPostModel model)
+        public async Task<IActionResult> Create(ObjectPostModel model)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
-            return _service.Create(t, model.Value);
+            var t = _helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+            var result = await _service.CreateAsync(t, model.Value);
+            return Ok(result);
         }
 
         [HttpPost]
-        public object Update(ObjectPostModel model)
+        public async Task<IActionResult> Update(ObjectPostModel model)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
-            return _service.Update(t, model.Value);
+            var t = _helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+            var result = await _service.UpdateAsync(t, model.Value);
+            return Ok(result);
         }
 
         [HttpDelete]
-        public string[] DeleteByIds(string typeAlias, string ids)
+        public async Task<IActionResult> DeleteByIds(string typeAlias, string ids)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.DeleteByIds(t, ids.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = await _service.DeleteByIdsAsync(t, ids.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+            return Ok(result);
         }
 
         [HttpGet]
-        public object GetTotalRecordCount(string typeAlias)
+        public async Task<IActionResult> GetTotalRecordCount(string typeAlias)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
-            return _service.GetTotalRecordCount(t);
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = await _service.GetTotalRecordCountAsync(t);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IEnumerable<ValidationResult> Validate(ObjectPostModel model) 
+        public IActionResult Validate(ObjectPostModel model)
         {
-            var t = Helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
-
-           // Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
-
-            return _service.Validate(t, model.Value);
+            var t = _helper.GetUIOMaticTypeByAlias(model.TypeAlias, throwNullError: true);
+            var result = _service.Validate(t, model.Value);
+            return Ok(result);
         }
-
     }
 }

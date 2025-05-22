@@ -1,156 +1,206 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UIOMatic.Extensions;
 using UIOMatic.Attributes;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
-using System.ComponentModel.DataAnnotations;
 using NPoco;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Hosting;
 using UIOMatic.Services;
-using IHostingEnvironment = Umbraco.Cms.Core.Hosting.IHostingEnvironment;
 using UIOMatic.Front.Umbraco.Extensions;
-
+using System.Reflection;
+using Umbraco.Cms.Infrastructure.Scoping;
+using IHostingEnvironment = Umbraco.Cms.Core.Hosting.IHostingEnvironment;
+using Umbraco.Cms.Core.Services;
 
 namespace UIOMatic.Front.Umbraco.Services
 {
-    
     public class NPocoObjectService : IUIOMaticObjectService
     {
-
         private readonly AppCaches _appCaches;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IUIOMaticHelper Helper;
+        private readonly IUIOMaticHelper _helper;
         private readonly UIOMaticObjectService _uioMaticObjectService;
+        private readonly IScopeProvider _scopeProvider;
+        private readonly IUserService _userService;
 
-
-        public NPocoObjectService(AppCaches appCaches, 
+        public NPocoObjectService(
+            AppCaches appCaches,
             IHostingEnvironment hostingEnvironment,
             IUIOMaticHelper helper,
-            UIOMaticObjectService uioMaticObjectService)
+            UIOMaticObjectService uioMaticObjectService,
+            IScopeProvider scopeProvider,
+            IUserService userService)
         {
             _appCaches = appCaches;
             _hostingEnvironment = hostingEnvironment;
-            Helper = helper;
+            _helper = helper;
             _uioMaticObjectService = uioMaticObjectService;
+            _scopeProvider = scopeProvider;
+            _userService = userService;
         }
 
-        public IEnumerable<object> GetAll(Type type, string sortColumn = "", string sortOrder = "")
+        public async Task<IEnumerable<object>> GetAllAsync(Type type)
         {
-            var typeInfo = GetTypeInfo(type); 
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
 
-            return repo.GetAll(sortColumn, sortOrder);
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repository.GetAllAsync();
+            scope.Complete();
+            return result;
         }
 
-        public UIOMaticPagedResult GetPaged(Type type, int itemsPerPage, int pageNumber, 
-            string sortColumn = "", string sortOrder = "",
-            IDictionary<string, string> filters = null,
-            string searchTerm = "")
+        public async Task<IEnumerable<object>> GetPagedAsync(Type type, int pageNumber, int pageSize, string sortColumn, string sortOrder, string searchTerm)
+        {
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var filters = new Dictionary<string, string>();
+            var result = await repository.GetPagedAsync(pageNumber, pageSize, searchTerm, filters, sortColumn, sortOrder);
+            scope.Complete();
+            return result.Items;
+        }
+
+        public async Task<object> GetByIdAsync(Type type, string id)
+        {
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repository.GetAsync(id);
+            scope.Complete();
+            return result;
+        }
+
+        public async Task<object> CreateAsync(Type type, IDictionary<string, object> values)
+        {
+            var entity = MapToObject(type, values);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repository.CreateAsync(entity);
+            scope.Complete();
+            return result;
+        }
+
+        public async Task<object> UpdateAsync(Type type, IDictionary<string, object> values)
+        {
+            var entity = MapToObject(type, values);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repository.UpdateAsync(entity);
+            scope.Complete();
+            return result;
+        }
+
+        public async Task<string[]> DeleteByIdsAsync(Type type, string[] ids)
+        {
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            await repository.DeleteAsync(ids);
+            scope.Complete();
+            return ids;
+        }
+
+        public async Task<IEnumerable<object>> GetAllAsync(Type type, string sortColumn, string sortOrder)
+        {
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repository.GetAllAsync(sortColumn, sortOrder);
+            scope.Complete();
+            return result;
+        }
+
+        public async Task<UIOMaticPagedResult> GetPagedAsync(Type type, int itemsPerPage, int pageNumber, string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm)
+        {
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
+                throw new InvalidOperationException($"Type {type.Name} does not have a UIOMaticAttribute");
+            var typeInfo = GetTypeInfo(type);
+            var repository = _helper.GetRepository(attri, typeInfo);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repository.GetPagedAsync(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
+            scope.Complete();
+            return result;
+        }
+
+        public async Task<UIOMaticPagedResult> GetPagedWithNodeIdAsync(
+            Type type,
+            int nodeId,
+            string nodeIdField,
+            int itemsPerPage,
+            int pageNumber,
+            string sortColumn,
+            string sortOrder,
+            IDictionary<string, string> filters,
+            string searchTerm)
         {
             var typeInfo = GetTypeInfo(type);
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
+            if (attri == null)
+            {
+                throw new InvalidOperationException($"Type {type.Name} is not decorated with UIOMaticAttribute");
+            }
+            var repo = _helper.GetRepository(attri, typeInfo);
 
-            return repo.GetPaged(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
+            filters ??= new Dictionary<string, string>();
+            filters[nodeIdField] = nodeId.ToString();
+
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repo.GetPagedAsync(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
+            scope.Complete();
+            return result;
         }
-        public UIOMaticPagedResult GetPagedWithNodeId(Type type, int nodeId, string nodeIdField, int itemsPerPage, int pageNumber,
-          string sortColumn, string sortOrder, IDictionary<string, string> filters, string searchTerm)
+
+        public async Task<long> GetTotalRecordCountAsync(Type type)
         {
             var typeInfo = GetTypeInfo(type);
             var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
+            if (attri == null)
+            {
+                throw new InvalidOperationException($"Type {type.Name} is not decorated with UIOMaticAttribute");
+            }
+            var repo = _helper.GetRepository(attri, typeInfo);
 
-            filters.Add(nodeIdField,nodeId.ToString());
-
-            return repo.GetPaged(pageNumber, itemsPerPage, searchTerm, filters, sortColumn, sortOrder);
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repo.GetTotalRecordCountAsync();
+            scope.Complete();
+            return result;
         }
 
-        public object GetById(Type type, string id)
-        {
-            var typeInfo = GetTypeInfo(type);
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);            
-
-            return repo.Get(id);
-        }
-
-        public object Create(Type type, IDictionary<string, object> values)
-        {
-            var obj = CreateAndPopulateType(type, values);
-
-            var typeInfo = GetTypeInfo(type);
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
-            
-            var a1 = new ObjectEventArgs(typeInfo.Type, obj);
-            _uioMaticObjectService.OnCreatingObject(a1);
-            obj = a1.Object;
-
-            obj = repo.Create(obj);
-
-            var a2 = new ObjectEventArgs(typeInfo.Type, obj);
-            _uioMaticObjectService.OnCreatedObject(a2);
-
-            return a2.Object;
-        }
-
-        public object Update(Type type, IDictionary<string, object> values)
-        {
-            var obj = CreateAndPopulateType(type, values);
-
-            var typeInfo = GetTypeInfo(type);
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
-
-            var a1 = new ObjectEventArgs(typeInfo.Type, obj);
-            _uioMaticObjectService.OnUpdatingObject(a1);
-            obj = a1.Object;
-
-            obj = repo.Update(obj);
-
-            var a2 = new ObjectEventArgs(typeInfo.Type, obj);
-            _uioMaticObjectService.OnUpdatedObject(a2);
-
-            return a2.Object;
-        }
-
-        public string[] DeleteByIds(Type type, string[] ids)
-        {
-            var typeInfo = GetTypeInfo(type);
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
-            
-            var a1 = new DeleteEventArgs(typeInfo.Type, ids);
-            _uioMaticObjectService.OnDeletingObjects(a1);
-            ids = a1.Ids;
-
-            repo.Delete(ids);
-            
-            var a2 = new DeleteEventArgs(typeInfo.Type, ids);
-            _uioMaticObjectService.OnDeletedObjects(a2);
-
-            return a2.Ids;
-        }
-
-        public long GetTotalRecordCount(Type type)
-        {
-            var typeInfo = GetTypeInfo(type);
-            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
-            var repo = Helper.GetRepository(attri, typeInfo);
-
-            return repo.GetTotalRecordCount();
-        }
-
-        //TODO: Move validation out of ObjectService? as I think it isn't PetaPoco specific
         public IEnumerable<ValidationResult> Validate(Type type, IDictionary<string, object> values)
         {
             var obj = CreateAndPopulateType(type, values);
@@ -165,282 +215,240 @@ namespace UIOMatic.Front.Umbraco.Services
 
         public IEnumerable<string> GetAllColumns(Type type)
         {
-            foreach (var prop in type.GetProperties())
-            {
-                var attri = prop.GetCustomAttribute<IgnoreAttribute>();
-                if (attri == null)
-                {
-                    var column = prop.GetColumnName();
-                    if (!column.IsNullOrWhiteSpace())
-                        yield return prop.GetColumnName();
-                }
-            }
+            var typeInfo = GetTypeInfo(type);
+            return typeInfo.RawProperties.Select(x => x.Name);
         }
 
-        public IEnumerable<object> GetFilterLookup(Type type, string keyPropertyName, string valuePropertyName)
+        public async Task<IEnumerable<object>> GetFilterLookupAsync(Type type, string keyPropertyName, string valuePropertyName)
         {
-            // Sorry Marc, I don't actually think this is the best way of doing this as we are fetching all objects
-            // and getting the distinct values in memory, which could be quite intensive, 
-            // but I can't think of another way right now.
-
-            var distinctData = new Dictionary<string, object>(); 
-            var data = GetAll(type); 
-
-            foreach (var dataItem in data)
+            var typeInfo = GetTypeInfo(type);
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null)
             {
-                var keyPropValue = type.GetPropertyValue(keyPropertyName, dataItem);
-                if (keyPropValue != null && !distinctData.ContainsKey(keyPropValue.ToString()))
-                {
-                    distinctData.Add(keyPropValue.ToString(), dataItem);
-                }
+                throw new InvalidOperationException($"Type {type.Name} is not decorated with UIOMaticAttribute");
             }
+            var repo = _helper.GetRepository(attri, typeInfo);
 
-            var returnData = distinctData.Values.Select(x => new {
-                key = type.GetPropertyValue(keyPropertyName, x),
-                value = type.GetPropertyValue(valuePropertyName, x)
+            using var scope = _scopeProvider.CreateScope();
+            var result = await repo.GetAllAsync();
+            scope.Complete();
+
+            return result.Select(x =>
+            {
+                var key = x.GetType().GetProperty(keyPropertyName)?.GetValue(x);
+                var value = x.GetType().GetProperty(valuePropertyName)?.GetValue(x);
+
+                return new { Key = key, Value = value };
             });
-
-            return returnData;
         }
 
-        public UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties =  false)
+        public UIOMaticTypeInfo GetTypeInfo(Type type, bool populateProperties = false)
         {
-          
-            // Types shouldn't change without an app pool recycle so might as well cache these
-            return (UIOMaticTypeInfo)_appCaches.RuntimeCache.Get("PetaPocoObjectService_GetTypeInfo_" + type.AssemblyQualifiedName + "_" + populateProperties, () =>
+            var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+            if (attri == null) return null;
+
+            var typeInfo = new UIOMaticTypeInfo
             {
-                var attri = type.GetCustomAttribute<UIOMaticAttribute>();
+                Alias = attri.Alias,
+                DisplayNamePlural = attri.FolderName,
+                DisplayNameSingular = attri.ItemName,
+                FolderIcon = attri.FolderIcon,
+                ItemIcon = attri.ItemIcon,
+                Name = type.Name,
+                TableName = type.Name,
+                PrimaryKeyColumnName = "Id",
+                AutoIncrementPrimaryKey = true,
+                RenderType = attri.RenderType,
+                ReadOnly = attri.ReadOnly,
+                Path = new[] { attri.FolderName },
+                Type = type,
+                SortColumn = attri.SortColumn,
+                SortOrder = attri.SortOrder
+            };
 
-                var editableProperties = new List<UIOMaticEditablePropertyInfo>();
-                var listViewProperties = new List<UIOMaticViewablePropertyInfo>();
-                var listViewFilterProperties = new List<UIOMaticFilterPropertyInfo>();
-                var rawProperties = new List<UIOMaticPropertyInfo>();
-                var actions = new List<UIOMaticActionInfo>();
+            if (populateProperties)
+            {
+                typeInfo.RawProperties = GetPropertyEditors(type).ToArray();
+                typeInfo.EditableProperties = GetFields(type).OfType<UIOMaticEditablePropertyInfo>().ToArray();
+                typeInfo.ListViewProperties = GetFields(type).OfType<UIOMaticViewablePropertyInfo>().ToArray();
+                typeInfo.ListViewFilterProperties = GetFields(type).OfType<UIOMaticFilterPropertyInfo>().ToArray();
+            }
 
-                var nameFieldKey = "";
-                var dateCreatedFieldKey = "";
-                var dateModifiedFieldKey = "";
-
-                var props = type.GetProperties().ToArray();
-                foreach (var prop in props)
-                {
-                    var attris = prop.GetCustomAttributes().ToArray();
-
-                    // Get date created property key
-                    if (attris.Any(x => x.GetType() == typeof(UIOMaticDateCreatedAttribute)))
-                    {
-                        dateCreatedFieldKey = prop.Name;
-                    }
-
-                    // Get date modified property key
-                    if (attris.Any(x => x.GetType() == typeof(UIOMaticDateModifiedAttribute)))
-                    {
-                        dateModifiedFieldKey = prop.Name;
-                    }
-
-                    // Process properties
-                    if (populateProperties)
-                    {
-                        // Check for regular properties
-                        var attri2 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticFieldAttribute)) as UIOMaticFieldAttribute;
-                        if (attri2 != null)
-                        {
-                            var view = attri2.GetView();
-
-                            // If field was left as textfield, see if we have a better match based on type
-                            if (attri2.View == "textfield")
-                            {
-                                if (prop.PropertyType == typeof(bool)) view = Constants.FieldEditors.ViewPaths[Constants.FieldEditors.CheckBox];
-                                if (prop.PropertyType == typeof(DateTime)) view = Constants.FieldEditors.ViewPaths[Constants.FieldEditors.DateTime];
-                                if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long)) view = Constants.FieldEditors.ViewPaths[Constants.FieldEditors.Number];
-                            }
-
-                            var pi = new UIOMaticEditablePropertyInfo
-                            {
-                                Key = prop.Name,
-                                Name = attri2.Name.IsNullOrWhiteSpace() ? prop.Name.ToSentenceCase() : attri2.Name,
-                                ColumnName = prop.GetColumnName(),
-                                Tab = attri2.Tab.IsNullOrWhiteSpace() ? "General" : attri2.Tab,
-                                TabOrder = attri2.TabOrder,
-                                Description = attri2.Description,
-                                View = _hostingEnvironment.ToAbsolute(view),
-                                Type = prop.PropertyType.ToString(),
-                                Config = attri2.Config.IsNullOrWhiteSpace() ? null : (JObject)JsonConvert.DeserializeObject(attri2.Config),
-                                Order = attri2.Order
-                            };
-
-
-                            if (attri2.IsNameField)
-                            {
-                                nameFieldKey = prop.Name;
-                            }
-
-                            editableProperties.Add(pi);
-                        }
-                        else
-                        {
-                            //TODO: If someone needs to re-instate supporting non-attributed properties, logic to handle these should be added here
-                        }
-
-                        // Check for list view properties
-                        var attri3 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFieldAttribute)) as UIOMaticListViewFieldAttribute;
-                        if (attri3 != null)
-                        {
-                            var view = attri3.GetView();
-
-                            // Handle custom views?
-
-                            var pi = new UIOMaticViewablePropertyInfo
-                            {
-                                Key = prop.Name,
-                                Name = attri3.Name.IsNullOrWhiteSpace() ? prop.Name : attri3.Name,
-                                ColumnName = prop.GetColumnName(),
-                                View = _hostingEnvironment.ToAbsolute(view),
-                                Type = prop.PropertyType.ToString(),
-                                Config = attri3.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri3.Config),
-                                Order = attri3.Order
-                            };
-
-                            listViewProperties.Add(pi);
-                        }
-
-                        // Check for list view filter properties
-                        var attri4 = attris.FirstOrDefault(x => x.GetType() == typeof(UIOMaticListViewFilterAttribute)) as UIOMaticListViewFilterAttribute;
-                        if (attri4 != null)
-                        {
-                            var view = attri4.GetView();
-                            var keyProp = attri4.KeyField.IsNullOrWhiteSpace() ? prop : props.FirstOrDefault(x => x.Name == attri4.KeyField);
-
-                            // Handle custom views?
-                            var pi = new UIOMaticFilterPropertyInfo
-                            {
-                                Key = prop.Name,
-                                Name = attri4.Name.IsNullOrWhiteSpace() ? prop.Name.ToSentenceCase() : attri4.Name,
-                                ColumnName = prop.GetColumnName(),
-                                KeyPropertyName = keyProp.Name,
-                                KeyColumnName = keyProp.GetColumnName(),
-                                View = _hostingEnvironment.ToAbsolute(view),
-                                Type = prop.PropertyType.ToString(),
-                                Config = attri4.Config.IsNullOrWhiteSpace() ? null : (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(attri4.Config),
-                                Order = attri4.Order
-                            };
-
-                            listViewFilterProperties.Add(pi);
-                        }
-
-                        // Check for date/modified properties
-                        if (prop.GetCustomAttribute<UIOMaticDateCreatedAttribute>() != null)
-                        {
-                            dateCreatedFieldKey = prop.Name;
-                        }
-                        if (prop.GetCustomAttribute<UIOMaticDateModifiedAttribute>() != null)
-                        {
-                            dateModifiedFieldKey = prop.Name;
-                        }
-
-                        // Raw properties
-                        rawProperties.Add(new UIOMaticPropertyInfo
-                        {
-                            Key = prop.Name,
-                            Name = prop.Name,
-                            Type = prop.PropertyType.ToString()
-                        });
-                    }
-                }
-
-                // Calculate the types path
-                var path = new List<string>(new[] { attri.Alias, attri.ParentAlias });
-                var parentTypeAlias = attri.ParentAlias;
-                while (parentTypeAlias != "-1")
-                {
-                    var parentType = Helper.GetUIOMaticTypeByAlias(parentTypeAlias, includeFolders: true);
-                    if (parentType != null)
-                    {
-                        var parentAttri = parentType.GetCustomAttribute<UIOMaticFolderAttribute>();
-                        parentTypeAlias = parentAttri.ParentAlias;
-                    }
-                    else
-                    {
-                        parentTypeAlias = "-1";
-                    }
-
-                    path.Add(parentTypeAlias);
-                }
-                path.Reverse();
-
-                if(attri.ListViewActions != null)
-                {
-                    foreach(var action in attri.ListViewActions)
-                    {
-                        var attri5 = action.GetCustomAttribute<UIOMaticActionAttribute>();
-
-                        if (attri5 != null)
-                        {
-
-                            actions.Add(new UIOMaticActionInfo
-                            {
-                                Alias = attri5.Alias,
-                                Name = attri5.Name,
-                                View = _hostingEnvironment.ToAbsolute(attri5.View),
-                                Icon = attri5.Icon,
-                                Config = attri5.Config.IsNullOrWhiteSpace() ? null : (JObject)JsonConvert.DeserializeObject(attri5.Config),
-
-                            });
-                        }
-                    }
-                }
-
-                return new UIOMaticTypeInfo
-                {
-                    Alias = attri.Alias,
-                    DisplayNamePlural = attri.FolderName,
-                    DisplayNameSingular = attri.ItemName,
-                    FolderIcon = attri.FolderIcon,
-                    ItemIcon = attri.ItemIcon,
-                    Name = type.Name,
-                    TableName = type.GetTableName(),
-                    RenderType = attri.RenderType,
-                    PrimaryKeyColumnName = type.GetPrimaryKeyName(),
-                    AutoIncrementPrimaryKey = type.AutoIncrementPrimaryKey(),
-                    NameFieldKey = nameFieldKey,
-                    ReadOnly = attri.ReadOnly,
-                    EditableProperties = editableProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
-                    ListViewProperties = listViewProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
-                    ListViewFilterProperties = listViewFilterProperties.OrderBy(x => x.Order).ThenBy(x => x.Name).ToArray(),
-                    RawProperties = rawProperties.ToArray(),
-                    Path = path.ToArray(),
-                    Type = type,
-                    ListViewActions = actions.ToArray(),
-                    SortColumn = attri.SortColumn,
-                    SortOrder = attri.SortOrder,
-                    DateCreatedFieldKey = dateCreatedFieldKey,
-                    DateModifiedFieldKey = dateModifiedFieldKey
-                };
-            });
+            return typeInfo;
         }
 
         public object GetScaffold(Type type)
         {
-            var obj = Activator.CreateInstance(type);
-
-            var a1 = new ObjectEventArgs(type, obj);
-            _uioMaticObjectService.OnScaffoldingObject(a1);
-
-            return a1.Object;
+            return Activator.CreateInstance(type);
         }
 
-        private object CreateAndPopulateType(Type type, IDictionary<string, object> values)
+        public IEnumerable<object> GetAllUsers()
         {
-            var settings =  new JsonSerializerSettings
+            return _userService.GetAll(0, int.MaxValue, out _).Select(x => new { Id = x.Id, Name = x.Name });
+        }
+
+        public object CreateAndPopulateType(Type type, IDictionary<string, object> values)
+        {
+            var entity = Activator.CreateInstance(type);
+            foreach (var kvp in values)
             {
-                ContractResolver = new UIOMatic.Serialization.UIOMaticSerializerContractResolver()
+                entity.SetPropertyValue(kvp.Key, kvp.Value);
+            }
+            return entity;
+        }
+
+        public object MapToObject(Type type, IDictionary<string, object> values)
+        {
+            return CreateAndPopulateType(type, values);
+        }
+
+        public IDictionary<string, object> MapToDocument(object obj)
+        {
+            var result = new Dictionary<string, object>();
+            var properties = obj.GetType().GetProperties();
+            foreach (var prop in properties)
+            {
+                result[prop.Name] = prop.GetValue(obj);
+            }
+            return result;
+        }
+
+        public void OnCreatingObject(ObjectEventArgs args)
+        {
+            _uioMaticObjectService.OnCreatingObject(args);
+        }
+
+        public void OnCreatedObject(ObjectEventArgs args)
+        {
+            _uioMaticObjectService.OnCreatedObject(args);
+        }
+
+        public void OnUpdatingObject(ObjectEventArgs args)
+        {
+            _uioMaticObjectService.OnUpdatingObject(args);
+        }
+
+        public void OnUpdatedObject(ObjectEventArgs args)
+        {
+            _uioMaticObjectService.OnUpdatedObject(args);
+        }
+
+        public void OnDeletingObjects(DeleteEventArgs args)
+        {
+            _uioMaticObjectService.OnDeletingObjects(args);
+        }
+
+        public void OnDeletedObjects(DeleteEventArgs args)
+        {
+            _uioMaticObjectService.OnDeletedObjects(args);
+        }
+
+        public void OnScaffoldingObject(ObjectEventArgs args)
+        {
+            _uioMaticObjectService.OnScaffoldingObject(args);
+        }
+
+        public void OnBuildingQuery(QueryEventArgs args)
+        {
+            _uioMaticObjectService.OnBuildingQuery(args);
+        }
+
+        public void OnBuiltQuery(QueryEventArgs args)
+        {
+            _uioMaticObjectService.OnBuiltQuery(args);
+        }
+
+        private UIOMaticTypeInfo BuildTypeInfo(Type type, bool populateProperties)
+        {
+            var properties = type.GetProperties();
+            var propertyList = new List<UIOMaticPropertyInfo>();
+
+            foreach (var prop in properties)
+            {
+                var attri = prop.GetCustomAttribute<UIOMaticFieldAttribute>();
+                if (attri != null)
+                {
+                    var propertyInfo = new UIOMaticPropertyInfo
+                    {
+                        Name = prop.Name,
+                        Key = prop.Name,
+                        ColumnName = prop.Name,
+                        Type = prop.PropertyType.Name,
+                        Order = attri.Order
+                    };
+
+                    propertyList.Add(propertyInfo);
+                }
+            }
+
+            var typeInfo = new UIOMaticTypeInfo
+            {
+                Type = type,
+                RawProperties = propertyList.ToArray()
             };
 
-            var json = JsonConvert.SerializeObject(values, settings);
-            var obj = JsonConvert.DeserializeObject(json, type,settings);
-            return obj;
+            if (populateProperties)
+            {
+                typeInfo.EditableProperties = propertyList.OfType<UIOMaticEditablePropertyInfo>().ToArray();
+                typeInfo.ListViewProperties = propertyList.OfType<UIOMaticViewablePropertyInfo>().ToArray();
+                typeInfo.ListViewFilterProperties = propertyList.OfType<UIOMaticFilterPropertyInfo>().ToArray();
+            }
+
+            return typeInfo;
         }
 
-      
+        public IEnumerable<UIOMaticPropertyInfo> GetPropertyEditors(Type type)
+        {
+            var properties = type.GetProperties();
+            var result = new List<UIOMaticPropertyInfo>();
+
+            foreach (var prop in properties)
+            {
+                var fieldAttri = prop.GetCustomAttribute<UIOMaticFieldAttribute>();
+                if (fieldAttri == null) continue;
+
+                var property = new UIOMaticPropertyInfo
+                {
+                    Key = prop.Name,
+                    Name = fieldAttri.Name,
+                    ColumnName = prop.Name,
+                    Type = prop.PropertyType.Name,
+                    Order = fieldAttri.Order
+                };
+
+                result.Add(property);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<UIOMaticPropertyInfo> GetFields(Type type)
+        {
+            var properties = type.GetProperties();
+            var result = new List<UIOMaticPropertyInfo>();
+
+            foreach (var prop in properties)
+            {
+                var fieldAttri = prop.GetCustomAttribute<UIOMaticFieldAttribute>();
+                if (fieldAttri == null) continue;
+
+                var property = new UIOMaticPropertyInfo
+                {
+                    Key = prop.Name,
+                    Name = fieldAttri.Name,
+                    ColumnName = prop.Name,
+                    Type = prop.PropertyType.Name,
+                    Order = fieldAttri.Order
+                };
+
+                result.Add(property);
+            }
+
+            return result;
+        }
     }
 }
+
+
+
+

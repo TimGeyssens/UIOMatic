@@ -6,12 +6,9 @@ using Umbraco.Cms.Core.Models.ContentEditing;
 
 namespace UIOMatic.Front.Umbraco.Models
 {
-    public class UIOMaticTypeInfo: UIOMatic.Models.UIOMaticTypeInfo
+    public class UIOMaticTypeInfo : UIOMatic.Models.UIOMaticTypeInfo
     {
-
         [JsonProperty("apps")]
-        public IEnumerable<ContentApp> Apps { get; set; }
-
-
+        public IEnumerable<ContentApp> Apps { get; set; } = new List<ContentApp>();
     }
 }

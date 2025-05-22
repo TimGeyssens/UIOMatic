@@ -1,28 +1,35 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Migrations;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations;
-using static Umbraco.Cms.Core.Constants;
+using Umbraco.Extensions;
 
 namespace UIOMatic.Front.Umbraco.Migrations
 {
     public class AddAllowedSectionToAdmins : MigrationBase
     {
-        private readonly IUserService _uService;
+        private readonly IUserService _userService;
 
-        public AddAllowedSectionToAdmins(IMigrationContext context, IUserService uService)
+        public AddAllowedSectionToAdmins(IMigrationContext context, IUserService userService)
             : base(context)
         {
-            _uService = uService;
+            _userService = userService;
         }
 
         protected override void Migrate()
         {
-            var userGroup = _uService.GetUserGroupByAlias(Security.AdminGroupAlias);
-
-            if (userGroup != null && !userGroup.AllowedSections.Contains(Constants.SectionAlias))
+            var adminGroup = _userService.GetUserGroupByAlias("admin");
+            if (adminGroup != null)
             {
-                userGroup.AddAllowedSection(Constants.SectionAlias);
-                _uService.Save(userGroup);
+                var sections = adminGroup.AllowedSections.ToList();
+                if (!sections.Contains("uiomatic"))
+                {
+                    sections.Add("uiomatic");
+                    _userService.Save(adminGroup, sections.Select(x => x.GetHashCode()).ToArray());
+                }
             }
         }
     }

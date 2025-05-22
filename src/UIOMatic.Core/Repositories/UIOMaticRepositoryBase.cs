@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using UIOMatic.Interfaces;
 using UIOMatic.Models;
 
@@ -14,14 +15,18 @@ namespace UIOMatic.Core.Repositories
             // This makes the method optional for existing repositories
         }
 
-        public abstract IEnumerable<object> GetAll(string sortColumn, string sortOrder);
-        public abstract object GetById(string id);
-        public abstract object Get(string id);
-        public abstract object Create(object entity);
-        public abstract object Update(object entity);
-        public abstract void Delete(string[] ids);
-        public abstract IEnumerable<ValidationResult> Validate(object entity);
-        public abstract long GetTotalRecordCount();
-        public abstract UIOMaticPagedResult GetPaged(int pageNumber, int itemsPerPage, string searchTerm, IDictionary<string, string> filters, string sortColumn, string sortOrder);
+        public abstract Task<IEnumerable<object>> GetAllAsync(string sortColumn = "", string sortOrder = "");
+        public abstract Task<object> GetAsync(string id);
+        public abstract Task<object> CreateAsync(object entity);
+        public abstract Task<object> UpdateAsync(object entity);
+        public abstract Task DeleteAsync(string[] ids);
+        public abstract Task<long> GetTotalRecordCountAsync();
+        public abstract Task<UIOMaticPagedResult> GetPagedAsync(
+            int pageNumber, 
+            int itemsPerPage, 
+            string searchTerm = "", 
+            IDictionary<string, string> filters = null, 
+            string sortColumn = "", 
+            string sortOrder = "");
     }
 } 

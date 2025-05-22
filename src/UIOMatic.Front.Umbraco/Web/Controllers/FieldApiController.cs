@@ -1,26 +1,38 @@
-﻿using System.Collections.Generic;
-using Umbraco.Cms.Core.Models.Membership;
-using Umbraco.Cms.Core.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using UIOMatic.Attributes;
+using UIOMatic.Interfaces;
+using UIOMatic.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Extensions;
 
 namespace UIOMatic.Front.Umbraco.Web.Controllers
 {
     [PluginController("UIOMatic")]
     public class FieldApiController : UmbracoAuthorizedJsonController
     {
+        private readonly IUIOMaticObjectService _service;
+        private readonly IUIOMaticHelper _helper;
 
-        private readonly IUserService _userService;
-        
-        public FieldApiController(IUserService userService)
+        public FieldApiController(IUIOMaticHelper helper, IUIOMaticObjectService uioMaticObjectService)
         {
-            _userService = userService;
+            _helper = helper;
+            _service = uioMaticObjectService;
         }
 
-        public IEnumerable<IUser> GetAllUsers()
+        [HttpGet]
+        public IActionResult GetFields(string typeAlias)
         {
-            long total = 0;
-            return _userService.GetAll(0, 1000, out total); //TODO: Limit what data gets sent down the line
+            var t = _helper.GetUIOMaticTypeByAlias(typeAlias, throwNullError: true);
+            var result = _service.GetFields(t);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            var users = _service.GetAllUsers();
+            return Ok(users);
         }
     }
 }
